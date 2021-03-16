@@ -1,0 +1,30 @@
+
+<div class="modal-dialog modal-dialog-centered" data-action="bg_close">
+  <div class="modal-content">
+    {{#options.title}}
+    <div class="modal-header">
+      <h2 class="modal-title">{{{options.title}}}</h2>
+      {{#options.show_close}}
+      <button type="button" class="btn-close" data-action="close"></button>
+      {{/options.show_close}}
+    </div>
+    {{/options.title}}
+    <div class="modal-body">
+      {{#options.message}}
+      <div class="modal-message">
+        {{{options.message}}}
+      </div>
+      {{/options.message}}
+      {{#options.choices}}
+      <div class="choices d-grid gap-2">
+          <button class="btn btn-link btn-lg mb-4" data-id="{{.id}}" data-action="choice">{{{.label}}}</button>
+      </div>
+      {{/options.choices}}
+    </div>
+    <div class="modal-footer">
+      {{#options.buttons}}
+      <button type="button" class="btn btn-lg me-5 {{.extra_classes|default(btn-link)}}" data-action="{{.action}}" data-id="{{.id}}">{{.label}}</button>
+      {{/options.buttons}}
+    </div>
+  </div>
+</div>

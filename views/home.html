@@ -1,0 +1,9 @@
+<div class="content user-select-none">
+    <div class="d-grid gap-2 mt-5">
+        {{#test_buttons}}
+        <button class="btn btn-lg btn-block mb-2 {{.btn_class|default(btn-primary)}}" data-{{.action_name|default(action)}}="{{.action}}">
+            {{{.label}}}
+        </button>
+        {{/test_buttons}}
+    </div>
+</div>

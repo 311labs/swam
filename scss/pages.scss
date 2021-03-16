@@ -1,0 +1,49 @@
+div#page_home {
+    div.content-box {
+        margin-top: 20vh;
+        text-align: center;
+        button.broadcast-start, button.broadcast-stop, button.broadcast-cancel {
+            font-size: 80px;
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            margin: 40px;
+            border: none;
+            background: white;
+            color: #007cff;
+            padding: 0;
+            &:active {
+                // box-shadow: 0;
+            }
+        }
+
+        button.broadcast-stop {
+            i {
+                width: 160px;
+                height: 160px;
+                box-shadow: 0 0 0 5px #D11D35;
+                animation: shadow-expansion 0.9s ease-in-out infinite alternate;
+                border-radius: 50%;
+                padding: 10px;
+                background: #D11D35;
+                color: white;
+            }
+        }
+
+        button.select-mic {
+            font-size: 2rem;
+            svg {
+                height: 40px;
+            }
+        }
+    }
+}
+
+@keyframes shadow-expansion {
+     from {
+         box-shadow: 0 0 0 30px #D11D35;
+    }
+     to {
+         box-shadow: 0 0 0 0 #D11D35;
+    }
+}

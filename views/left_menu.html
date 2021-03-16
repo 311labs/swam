@@ -1,0 +1,37 @@
+<div class="container">
+	<h1><i class="bi bi-award"></i> SWAM App</h1>
+	<div class="label-field" data-label="version">{{HAL.version|default(1.0.0)}}</div>
+	<div id="nav">
+		<ul class="nav-items">
+			<li class="nav-break"></li>
+			<li class="nav-name">pages</li>
+			<li>
+				<ul class="permissions">
+					{{#getScrubbedPerms|iter}}
+						<li>{{{.value|yesno_icon}}} {{.key}}</li>
+					{{/getScrubbedPerms|iter}}
+				</ul>
+			</li>
+			<li>
+				<button class="btn btn-link" data-showpage="about">
+					<i class="bi bi-gear-fill"></i> About
+				</button>
+			</li>
+			<li>
+				<button class="btn btn-link" data-showpage="home">
+					<i class="bi bi-gear-fill"></i> Home
+				</button>
+			</li>
+			<li class="nav-break"></li>
+			<li class="nav-name">settings</li>
+			<li>
+				{{#._settings_list}}
+				<div class="form-check form-switch form-switch-lg">
+				  <input class="form-check-input" type="checkbox" id="{{.key}}" {{#.value}}checked{{/.value}}>
+				  <label class="form-check-label" for="{{.key}}">{{.label}}</label>
+				</div>
+				{{/._settings_list}}
+			</li>
+		</ul>
+	</div>
+</div>
