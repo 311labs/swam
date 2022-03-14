@@ -1,0 +1,6 @@
+#!#MERGE
+
+pages/**/*.html
+
+
+

@@ -1,0 +1,262 @@
+
+
+
+body.app {
+	position: absolute;
+	top:0;left:0;right:0;bottom:0;
+
+	#panel-main {
+		transition-property: left, right;
+		header {
+			position: absolute;
+			left: 0;
+			top: 0;
+			right: 0;
+			width: 100%;
+			height: $topbar-height;
+			background: $topbar-background;
+			color: $topbar-color;
+			font-size: $topbar-font-size;
+			line-height: $topbar-height;
+			border-bottom: $topbar-border;
+			box-shadow: $topbar-box-shadow;
+			z-index: 100;
+
+			.title-left {
+				position: absolute;
+				left: 0;
+				top: 0;
+				min-width: 50px;
+				font-size: 12px;
+				padding-left: 10px;
+			}
+
+			.title-center {
+				width: 100%;
+				text-align: center;
+				text-transform: uppercase;
+
+			}
+
+			.title-right {
+				position: absolute;
+				right: 0;
+				top: 0;
+				min-width: 50px;
+				text-align: right;
+				font-size: 12px;
+				padding-right: 10px;
+			}
+		}
+
+		#pages {
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+
+			background: $page-background;
+
+			&.page-scroll {
+				overflow-y: auto;
+			}
+
+			&.page-padded {
+				padding: 15px;
+			}
+
+			&.has-topbar {
+				top: $topbar-height;
+			}
+
+			&.has-footer {
+				padding-bottom: $topbar-height;
+			}
+		}
+	}
+
+	#panel-left {
+		position: absolute;
+		left: 0px;
+		top: 0;
+		bottom: 0;
+		width: $panel-left-width;
+		background: $panel-left-background;
+		color: $panel-left-color;
+		transform: translateX(-120%);
+		user-select: none;
+	}
+}
+
+body.panel-animate {
+	div#panel-left,
+	div#panel-main {
+		transition-duration: 400ms;
+	}
+}
+
+body.bottom-bar-reveal {
+	div#panel-main {
+		bottom: 100px;
+	}
+}
+
+
+body.panel-left-reveal {
+	div#panel-main {
+		left: $panel-left-width;
+	}
+	div#panel-left{
+		transform: translateX(0)
+	}
+}
+
+body.panel-left-reveal.slide {
+	div#panel-main {
+		right: -$panel-left-width;
+	}
+}
+
+body.panel-left-reveal-partial {
+
+	div#panel-left {
+		width: $panel-left-partial-width;
+		left: $panel-left-partial-width;
+	}
+	div#panel-main {
+		left: $panel-left-partial-width;
+		right: -$panel-left-partial-width;
+		div#panel-left div#nav ul.nav-items ul.nav-submenu li {
+		    padding-left: 2px;
+		}
+	}
+}
+
+
+body.panel-right-reveal {
+	div#panel-main {
+		right: $panel-right-width;
+	}
+}
+
+
+
+
+@media (max-width: 760px) {
+	body.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
+		div#panel-main {
+			left: 0;
+		}
+	}
+
+	body.panel-left-reveal-mobile-menu {
+		div#panel-main{
+			left: $panel-left-width;
+			right: -$panel-left-width;
+		}
+	}
+}
+body.use-mobile-menu {
+	.topnav-brand{
+		.brand-img {
+			display: none;
+		}
+		.brand-title {
+			position: absolute;
+			opacity: 0.2;
+			left: 50px;
+		}
+		.mobile-menu-icon {
+			display: inline-block;
+		}
+	}
+
+	&.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
+		div#panel-main {
+			left: 0;
+		}
+	}
+
+	&.panel-left-reveal-mobile-menu {
+		div#panel-main{
+			left: $panel-left-width;
+			right: -$panel-left-width;
+		}
+	}
+}
+
+
+@media
+(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Retina-specific stuff here */
+    div#panel-left.no-group div#nav ul.nav-items > li {
+        font-weight: 200;
+    }
+}
+
+
+.print-only {
+	display: none;
+}
+
+@media print {
+	@page {
+		margin: 0mm;
+	}
+	.print-only {
+		display: block !important;
+	}
+	.no-print, .no-print *
+	{
+		display: none !important;
+	}
+	html{
+		max-height: 297.01 mm;
+		max-width: 209.97 mm;
+	}
+	div#panel-left {
+		display: none;
+	}
+	div.page-view-body{
+		padding-top: 10px !important;
+	}
+	body.panel-left-reveal {
+		div#panel-main {
+			left: 0px !important;
+		}
+		#pages {
+			top:0px !important;
+		}
+	}
+	.et-page {
+		overflow: visible !important;
+	}
+	.page-view-header {
+        display: none !important;
+	}
+	div.page-view-body {
+		overflow: auto!important;
+	}
+	.et-wrapper, #panel-main, #app, html, #panel-main, body, #page, div.page-view, section.page, div.page-view-body, div.page-toc{
+		position: unset !important;
+		float : none !important ;
+		overflow:none !important;
+	}
+	html, #panel-main{
+		height: 100%;
+	}
+	.et-wrapper {
+		height: auto !important;
+	}
+	div#admin-bar {
+		display: none;
+	}
+	nav.topnav {
+		display: none;
+	}
+}
+
+
+
+

@@ -1,0 +1,20 @@
+{
+    "title": "ACS Portal",
+    "index_file": "/plugins/swam/templates/basic.html",
+    "js_files": [
+        "/plugins/bootstrap/bootstrap5.js",
+        "includes.js"
+    ],
+    "mustache_files": [
+        "templates.js"
+    ],
+    "css_files": [
+        "/plugins/bootstrap/bootstrap5.css",
+        "includes.css"
+    ],
+    "static_files": [
+        "imgs",
+        "/plugins/bootstrap/fonts"
+    ],
+    "version": "0.1.158"
+}

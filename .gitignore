@@ -1,0 +1,12 @@
+*~
+*.log
+*.pot
+*.pyc
+*.pyo
+.updated
+.ssh_known_hosts
+.idea
+/var
+/output
+.DS_Store
+.swam_cache

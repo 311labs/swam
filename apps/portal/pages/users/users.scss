@@ -1,0 +1,55 @@
+#users {
+    .voucher-panel{
+        max-width: 320px;
+        height: 110px;
+        border-radius: 8px;
+        border: 1px solid #cccccc;
+        margin-bottom: 20px;
+        cursor: pointer;
+        .voucher-id {
+            font-size: 10px;
+            padding:5px 10px;
+        }
+        .voucher-barcode {
+            width: 100%;
+            height: 30px;
+            background: url(/static/common/imgs/barcode.jpg) no-repeat left center;
+            background-size: cover;
+            opacity: 0.2;
+        }
+        .voucher-value{
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            padding:5px 10px;
+        }
+    }
+
+    div.trans-redemption-header {
+        div.bottom-header {
+            
+        }
+        div.trans-header-summary {
+            
+            &.redemption {
+                // background: #573a63;
+                .background-image-tint {
+                    background: url(/static/common/imgs/bgs/transaction_redemption_bg.jpg) no-repeat left center;
+                    background-size: cover;
+                    background-position-y: 10%;
+                }
+            } 
+            &.paid, &.balance-approved {
+                // color: white;
+                // background: #583a63;
+            }
+            .advanced-value {
+                font-size: 32px;
+                padding: 20px 0px;
+            }
+    
+        }
+            
+    }
+    
+}

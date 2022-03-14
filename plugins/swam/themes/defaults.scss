@@ -1,0 +1,207 @@
+
+$orange: #fd9608;
+$red: #AF3B3D;
+$blue: #0d6efd;
+$black: #1a1a1a;
+$white: white;
+$yellow: #FFF776;
+$green: #4E8474;
+$green-dark: #386758;
+$purple: #6610f2;
+
+$gray-darker: lighten(#000, 13.5%);
+$gray-dark: lighten(#000, 20%);
+$gray: lighten(#000, 60.5%);
+$gray-light: lighten(#000, 80%);
+$gray-lighter: lighten(#000, 90%);
+$gray-lightest: lighten(#000, 97.25%);
+
+$page-background: white;
+
+$panel-background: #fff;
+$panel-color: #000;
+$panel-header-bg: $blue;
+$panel-header-color: #fff;
+
+$primary: $blue;
+$brand-primary: $primary;
+$brand-success: $green;
+$brand-info: #0dcaf0;
+$brand-warning: $orange;
+$brand-danger: $red;
+$brand-default: $gray-light;
+$brand-other: $black;
+
+
+// button colors
+$btn-default-color: white;
+$btn-default-bg: green;
+
+$btn-primary-color: white;
+$btn-primary-bg: $primary;
+
+$btn-info-color: white;
+$btn-info-bg: $brand-info;
+
+$btn-optional-color: white;
+$btn-optional-bg: $brand-other;
+
+$btn-success-color: white;
+$btn-success-bg: $brand-success;
+
+$btn-warning-color: white;
+$btn-warning-bg: $red;
+
+$btn-error-color: $btn-warning-color;
+$btn-error-bg: $orange;
+
+$btn-cancel-color: white;
+$btn-cancel-bg: $orange;
+
+$btn-link-color: $blue;
+
+$panel-center-background: white;
+$panel-center-color: #333333;
+
+$topbar-height: 60px;
+$topbar-background: #4C99D7;
+$topbar-border: 1px solid rgba(0,0,0,0.3);
+$topbar-box-shadow: 0 0 4px 1px rgba(0,0,0,0.5);
+$topbar-color: #ffffff;
+$topbar-font-size: 18px;
+
+$panel-left-font-size: 16px;
+$panel-left-sub-font-size: 12px;
+$panel-left-width: 200px;
+$panel-left-partial-width: 50px;
+$panel-left-background: #494F51;
+$panel-left-color: #CBFFE1;
+$panel-left-active-color: #6cf;
+$panel-left-active-bg: white;
+$panel-left-active-sub-color: #6cf;
+$panel-left-active-sub-bg: transparent;
+
+$panel-left-logo-color: orange;
+$panel-left-logo-bg: transparent;
+$panel-left-logo-height: 20px;
+
+$panel-left-nogroup-background: #583a63;
+$panel-left-nogroup-color: white;
+$panel-left-nogroup-active-color: #6cf;
+$panel-left-hover-color: white;
+$panel-left-hover-bg: $blue;
+$panel-left-shadow: none;
+
+$panel-right-width: $panel-left-width;
+$panel-right-background: $panel-left-background;
+$panel-right-color: $panel-left-color;
+
+$model-select-border: 1px solid #525151;
+$model-select-background: #313131;
+$model-select-hover-background: #313131;
+
+$sheet-header-height: $topbar-height;
+$sheet-header-background: $topbar-background;
+$sheet-header-color: $topbar-color;
+
+$gray-darker: lighten(#000, 13.5%);
+$gray-dark: lighten(#000, 20%);
+$gray: lighten(#000, 50%);
+$gray-light: lighten(#000, 65%);
+$gray-lighter: lighten(#000, 80%);
+$gray-lightest: lighten(#000, 92%);
+
+$waiting-text-color: white;
+$waiting-spinner-color: white;
+
+$chat-background: white;
+$chat-bubble-who-color: #666666;
+$chat-bubble-border: 2px solid #CCCCCC;
+$chat-bubble-radius: 6px;
+$chat-bubble-background: $red;
+$chat-bubble-tip: #CCCCCC;
+$chat-bubble-color: white;
+$chat-bubble-shadow: none;
+$chat-avatar-border: 1px;
+$chat-message-size: 18px;
+
+$chat-bubble-group-border: 2px solid $chat-bubble-tip;
+$chat-bubble-group-background: #F4F4F4;
+$chat-bubble-group-color: black;
+$chat-bubble-group-tip: $chat-bubble-tip;
+
+$private-chat: #E7BFBF;
+
+$chat-bubble-you-border: 2px solid $private-chat;
+$chat-bubble-you-background: $chat-bubble-group-background;
+$chat-bubble-you-color: black;
+$chat-bubble-you-tip: $private-chat;
+
+$chat-bubble-me-border: 2px solid $private-chat;
+$chat-bubble-me-background: $chat-bubble-group-background;
+$chat-bubble-me-color: black;
+$chat-bubble-me-tip: $private-chat;
+
+$chat-footer-color: $blue;
+$chat-footer-background: #F4F4F4;
+$chat-input-background: white;
+$chat-input-border: 1px solid #CCCCCC;
+
+$header-background: #2E2F33;
+$footer-background: #2E2F33;
+$footer-height: 50px;
+
+
+$dialog-header-background: #4e4e4e;
+$dialog-header-color: #ffffff;
+$dialog-modal-background: rgba(255,255,255,0.51);
+$dialog-radius: 4px;
+$dialog-color: black;
+$dialog-background: #E6E6E6;
+
+$brand-icon-color: white;
+
+$page-view-border: 1px;
+
+$page-toc-bg: white;
+$page-toc-title-bg: #eeeeee;
+$page-toc-title-color: #646464;
+$page-toc-padding: 0;
+$page-toc-collapsed-padding: 15px 5px 15px 15px;
+$page_toc_width: 250px;
+$page-toc-width:$page_toc_width;
+
+$page-panel-bg: white;
+$page-panel-color: black;
+$page-panel-border: 1px solid #ccc;
+$page-panel-shadow: none;
+$page-panel-radius: 5px;
+
+$page_overflow_y: auto;
+
+$tooltip-color: black;
+$tooltip-background: white;
+$tooltip-content-background: white;
+
+$instagram: #305d8a;
+$facebook: #2e427c;
+$twitter: #7bb3d3;
+$linkedin: #0d64b0;
+$youtube: #b12015;
+$pinterest: #c01522;
+$google: #c43130;
+
+$form-control-min-height: 32px;
+$form-label-color: #8a8a8a;
+
+
+@mixin nolist {
+	list-style: none;
+	list-style-image: none;
+	margin: 0;
+	padding: 0;
+}
+
+
+
+

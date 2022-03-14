@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "SWAM"
+version = "0.2.6"
+description = "Simple Web App for Mobile"
+authors = ["Ian Starnes <ian@311labs.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+libsass = "^0.21.0"
+rcssmin = "^1.1.0"
+rjsmin = "^1.2.0"
+htmlmin = "^0.1.12"
+objict = {git = "https://github.com/311labs/objict.git"}
+xmltodict = "^0.12.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
