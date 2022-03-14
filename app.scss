@@ -36,6 +36,7 @@ $brand-default: $gray-light;
 $brand-other: $gray-dark;
 
 $panel-left-width: 450px;
+$panel-left-font-size: 2rem;
 $panel-left-background: #424242;
 $panel-left-color: white;
 $panel-left-action-color: #66CCFF;
@@ -61,11 +62,12 @@ $panel-center-background: white;
 $panel-center-color: #333333;
 
 $topbar-height: 100px;
-$topbar-background: #0F80FF;
+$topbar-background: #AE0922;
 $topbar-border: 1px solid rgba(0,0,0,0.3);
 $topbar-color: #ffffff;
 $topbar-font-size: 36px;
 $topbar-icon-height: 54px;
+$topbar-shadow: 0 0 10px rgb(0 0 0 / 90%);
 
 $page_overflow_y: scroll;
 
@@ -86,4 +88,59 @@ div.label-field {
 
 .btn-link {
 	text-decoration: none;
+	&:focus, &:active {
+		outline: 0;
+		box-shadow: none;
+	}
 }
+
+div#panel-left {
+	ul.services {
+		> li {
+			font-size: 1.4rem;
+		}
+
+	}
+}
+
+div.news-summary {
+	padding: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+div.news-list {
+	position: absolute;
+	top: 100px;
+	left: 0;
+	right: 0;
+	bottom: 25px;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+}
+
+div.news-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100px;
+	background: black;
+	color: white;
+	padding: 20px;
+	font-size: 40px;
+}
+
+#page_home {
+	div.button-bezel {
+		width: 240px;
+		height: 240px;
+		border: 25px solid #CCCCCC;
+		margin: 15px auto;
+		border-radius: 50%;
+		button {
+			margin: 0 !important;
+		}
+	}
+}
+

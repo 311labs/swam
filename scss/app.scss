@@ -29,6 +29,7 @@ body {
             line-height: $topbar-height;
             z-index: 100;
             border-bottom: $topbar-border;
+            box-shadow: $topbar-shadow;
 
             svg {
                 fill: $topbar-color;
@@ -36,6 +37,13 @@ body {
                 width: auto;
                 vertical-align: middle;
                 margin-top: -4px;
+            }
+
+            button {
+                color: $topbar-color;
+                &:active {
+                    color: $topbar-color;
+                }
             }
 
             .title-left {
@@ -204,7 +212,7 @@ div#panel-left {
         ul.nav-items {
             @include nolist;
             > li {
-                button[data-action] {
+                button[data-action], button[data-showpage] {
                     cursor: pointer;
                     font-size: 2rem;
                     color: $panel-left-action-color;

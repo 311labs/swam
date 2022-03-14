@@ -11,6 +11,7 @@ window.SWAM = {
     },
     renderTemplate: function(template, context) {
         var defaults = {};
+        if (window.app) defaults.app = window.app;
         if (window.app) defaults.APP = window.app;
         if (SWAM.HAL) defaults.HAL = SWAM.HAL;
         context = _.extend({}, context, defaults);
@@ -38,7 +39,7 @@ SWAM.EventSupport = {
                 if (cb.__context__) context = cb.__context__;
                 cb.call(context, data);
             } catch (err) {
-                console.trace();
+                console.error(err);
             }
         }
     },
@@ -147,6 +148,11 @@ SWAM.HAL = _.extend({
     triggerEvent: function(service, event, data) {
         SWAM.HAL.trigger(service + ":" + event, data);
     },
+    getSetting: function(key, defaultValue) {
+        if (!this.config) return  defaultValue;
+        if (_.isUndefined(this.config[key])) return defaultValue;
+        return this.config[key];
+    },
     toast: function(msg) {this.send("hal", "toast", msg)}
 }, SWAM.EventSupport, SWAM.SendWaitSupport);
 
@@ -190,8 +196,8 @@ try {
 SWAM.View = SWAM.Object.extend({
     options: {},
     _events: {
-        "click [data-action], .action": "on_action_click",
-        "click [data-showpage], .action": "on_showpage_click",
+        "click [data-action]": "on_action_click",
+        "click [data-showpage]": "on_showpage_click",
         "click :checkbox": "on_checkbox_handler",
         "change input": "on_input_handler"
     },
@@ -269,6 +275,7 @@ SWAM.View = SWAM.Object.extend({
     removeFromDOM: function() {
         if (!this.$parent) return;
         this.on_dom_removing();
+        this.undelegateEvents();
         this.$el.remove();
         var $par = this.$parent;
         this.$parent = null;
@@ -291,7 +298,6 @@ SWAM.View = SWAM.Object.extend({
     renderChildren: function() {
         if (!this.children) return;
         _.each(this.children, function(view, el_sel) {
-            console.log("renderChild");
             var $parent = this.$el.find(el_sel);
             if ($parent) {
                 view.addToDOM($parent);
@@ -318,7 +324,8 @@ SWAM.View = SWAM.Object.extend({
       return this;
     },
     undelegateEvents: function() {
-      if (this.$el) this.$el.off('.delegateEvents' + this.vid);
+      if (!this.$el)  return;
+      this.$el.off('.delegateEvents' + this.vid);
       this.unbindHalEvents();
       return this;
     },
@@ -366,6 +373,7 @@ SWAM.View = SWAM.Object.extend({
     },
 
     on_action_click: function(evt) {
+        evt.stopPropagation();
         var action = $(evt.currentTarget).data("action");
         if (!action) return;
         var func_name = "on_action_" + action;
@@ -373,6 +381,7 @@ SWAM.View = SWAM.Object.extend({
     },
 
     on_showpage_click: function(evt) {
+        evt.stopPropagation();
         var page_name = $(evt.currentTarget).data("showpage");
         if (!page_name) return;
         var func_name = "on_showpage_" + page_name;
@@ -461,16 +470,18 @@ SWAM.Dialog = SWAM.View.extend({
         return dlg;
     },
     yesno: function(opts) {
+        opts.no_lbl = opts.no_lbl || "no";
+        opts.yes_lbl = opts.yes_lbl || "yes";
         opts.buttons = [
             {
-                id: "no",
+                id: opts.no_lbl,
                 action:"choice",
-                label:"no"
+                label:opts.no_lbl
             },
             {
-                id: "yes",
+                id: opts.yes_lbl,
                 action:"choice",
-                label:"yes"
+                label:opts.yes_lbl
             }
         ];
         return this.alert(opts);
@@ -645,7 +656,6 @@ SWAM.TouchExtension = {
     on_touch_end_mouse: function(evt) {
         $(window).off("mouseup", this._bind_end_mouse);
         $(window).off("mousemove", this._bind_move_mouse);
-        console.log("mouse off");
         this.on_touch_end(evt);
     },
 
@@ -866,12 +876,14 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
     getPage: function(name) {
         return this._pages[name];
     },
-    setActivePage: function(name) {
+    setActivePage: function(name, params) {
         var page = this._pages[name];
         var $parent = this.$el.find(this._page_el_id);
         if (page && $parent) {
+            page.params = params;
+            if (page == this.active_page) return this.render();
             if (this.active_page) {
-                page._prev_page = this.active_dialog;
+                page._prev_page = this.active_page;
                 this.active_page.removeFromDOM();
             }
             // check for topbar
@@ -896,7 +908,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
         return this._pages[name] == this.active_page;
     },
     goBack: function() {
-        if (this.active_dialog._prev_page) this.setActivePage(this.active_dialog._prev_page.page_name);
+        if (this.active_page._prev_page) this.setActivePage(this.active_page._prev_page.page_name);
     },
     start: function() {
         this.started = true;
@@ -914,6 +926,18 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
 
     hideLeftPanel: function(evt) {
         $("body").removeClass("panel-left-reveal-partial").addClass("panel-animate");
+    },
+
+    toggleLeftPanel: function(evt) {
+        if (this.isLeftPanelVisible()) {
+            this.hideLeftPanel();
+        } else {
+            this.showLeftPanel();
+        }
+    },
+
+    isLeftPanelVisible: function() {
+        return $("body").hasClass("panel-left-reveal-partial");
     },
 
     on_swipe_begin: function(evt) {
@@ -1016,8 +1040,8 @@ SWAM.Localize = {
 
     'yesno_icon': function(value, attr, fmt) {
         var v = this.bool(value);
-        var yes_icon = "bi bi-toggle-on";
-        var no_icon = "bi bi-toggle-off";
+        var yes_icon = "bi bi-check-circle-fill";
+        var no_icon = "bi bi-slash-circle";
         var action = null;
         if (_.isArray(fmt)) {
             yes_icon = fmt[0];
@@ -1091,7 +1115,7 @@ SWAM.Localize = {
                 d[v] = "0" + d[v];
             }
         });
-        return _parseDateString(d, fmt || 'MM:ss');
+        return this.formatDate(d, attr, fmt || 'MM:ss');
     },
     'prettytimer': function(seconds, attr, fmt) {
         var interval = Math.floor(seconds / 31536000);
@@ -1136,7 +1160,7 @@ SWAM.Localize = {
                 d[v] = "0" + d[v];
             }
         });
-        return _parseDateString(d, fmt || 'MM:ss');
+        return this.formatDate(d, attr, fmt || 'MM:ss');
     },
     'safe_datetime': function(value, attr, fmt) {
         if(_.isUndefined(value)||(value === null)||(value == 0)) {
@@ -1155,9 +1179,93 @@ SWAM.Localize = {
         }
         return value;
     },
+    'dateobj': function(value) {
+        if((value === null)||(value == 0)) {
+            return null;
+        }
+        var d = new Date(value);
+        var ret = {
+            yyyy: d.getFullYear(),
+            MM: d.getMonth() + 1,
+            dd: d.getDate(),
+            HH: d.getHours(),
+            mm: d.getMinutes(),
+            ss: d.getSeconds(),
+            M: d.getMonth() + 1,
+            d: d.getDate(),
+            H: d.getHours(),
+            m: d.getMinutes(),
+            s: d.getSeconds(),
+            dow: d.getDay(),
+            ms: d.getMilliseconds()
+        };
+        ret.yy = ret.yyyy % 100;
+        ret.y = ret.yyyy % 100;
+        ret.hh = ret.H % 12;
+        ret.h = ret.hh;
+        if(ret.hh === 0) {
+            ret.hh = 12;
+            ret.h = 12;
+        }
+        ret.tt = (ret.H < 12) ? 'am' : 'pm';
+        ret.TT = (ret.H < 12) ? 'AM' : 'PM';
+        ret.t = (ret.H < 12) ? 'am' : 'pm';
+        ret.T = (ret.H < 12) ? 'AM' : 'PM';
+
+        _.each(['yy', 'MM', 'dd', 'hh', 'HH', 'mm', 'ss'], function(v) {
+            if(ret[v] < 10) {
+                ret[v] = "0" + ret[v];
+            } else {
+                ret[v] = ret[v];
+            }
+        });
+        return ret;
+    },
+    'datetime': function(value, attr, fmt) {
+        if((value === null)||(value == 0)) {
+            return '';
+        }
+        var d = this.dateobj(this.safe_datetime(value));
+        if (!fmt) fmt = "yyyy-MM-dd HH:mm:ss t";
+        return this.formatDate(d, attr, fmt);
+    },
+    'date': function(value, attr, fmt) {
+        if(value === null) {
+            return '';
+        }
+        if(!fmt) fmt = "yyyy-MM-dd";
+        var d = this.dateobj(this.safe_datetime(value));
+        return this.formatDate(d, attr, fmt);
+    },
+    'time': function(value, attr, fmt) {
+        if(value === null) {
+            return '';
+        }
+        if(!fmt) fmt = "HH:mm:ss t";
+        var d = this.dateobj(this.safe_datetime(value));
+        return this.formatDate(d, attr, fmt);
+    },
+    "formatDate": function(obj, attr, fmt) {
+        var tok = '';
+        var ret = '';
+        _.each(fmt.split('').concat(['_']), function(c) {
+            if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+                tok += c;
+            } else {
+                if(tok && obj.hasOwnProperty(tok)) {
+                    ret += obj[tok];
+                } else {
+                    ret += tok;
+                }
+                tok = '';
+                if(c != '_') {
+                    ret += c;
+                }
+            }
+        });
+        return ret;
+    },
     'default': function(value, attr, fmt) {
-        console.log("default called");
-        console.log(value);
         var arg1, arg2 = null;
         if (_.isArray(fmt)) {
             arg1 = fmt[0];
@@ -1173,26 +1281,6 @@ SWAM.Localize = {
     },
 }
 
-window._parseDateString = function(obj, fmt) {
-    var tok = '';
-    var ret = '';
-    _.each(fmt.split('').concat(['_']), function(c) {
-        if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            tok += c;
-        } else {
-            if(tok && obj.hasOwnProperty(tok)) {
-                ret += obj[tok];
-            } else {
-                ret += tok;
-            }
-            tok = '';
-            if(c != '_') {
-                ret += c;
-            }
-        }
-    });
-    return ret;
-}
 
 window.sleep = function(time) {
     // sleep(500).then(() => {
@@ -1372,6 +1460,7 @@ String.prototype.formatWithDict = function(dict) {
 };
 
 String.Random = function(length, possible) {
+    length = length || 16;
     var text = "";
     possible = possible || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for(var i = 0; i < length; i++) {
