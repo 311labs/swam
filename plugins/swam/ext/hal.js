@@ -1,4 +1,5 @@
 
+
 SWAM.SendWaitSupport = {
     // stores wait timers by "event:name", you can only have one per wait type
     _wait_timers: {},

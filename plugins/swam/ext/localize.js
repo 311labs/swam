@@ -317,5 +317,91 @@ SWAM.Localize = {
         }
         return value;
     },
+    'prettyjson': function(value, attr, fmt) {
+        if (_.isObject(value)) {
+            return window.syntaxHighlight(value);
+            // return JSON.stringify(value, undefined, 2);
+        } else if (!value) {
+            return "";
+        }
+
+        resp = value.trim();
+        if (resp.length && (resp[0] == "{")) {
+            value = resp.replace(/u\'/g, '"');
+            value = value.replace(/\t/g, '');
+            value = value.replace(/\n/g, '');
+            value = value.replace(/\'/g, '"');
+            value = value.replace(/None/g, 'null');
+            value = value.replace(/True/g, 'true');
+            value = value.replace(/False/g, 'false');
+            value = value.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '')
+            try {
+                value = JSON.parse(value);
+                return window.syntaxHighlight(value);
+                // return JSON.stringify(value, undefined, 2);
+            } catch(err) {
+                console.log(err);
+            }
+        }
+        return resp;
+    },
+    'prettyxml': function(xml) {
+        var formatted = '';
+        var reg = /(>)(<)(\/*)/g;
+        xml = xml.replace(reg, '$1\r\n$2$3');
+        var pad = 0;
+        jQuery.each(xml.split('\r\n'), function(index, node) {
+            var indent = 0;
+            if (node.match( /.+<\/\w[^>]*>$/ )) {
+                indent = 0;
+            } else if (node.match( /^<\/\w/ )) {
+                if (pad != 0) {
+                    pad -= 1;
+                }
+            } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+                indent = 1;
+            } else {
+                indent = 0;
+            }
+
+            var padding = '';
+            for (var i = 0; i < pad; i++) {
+                padding += '  ';
+            }
+
+            formatted += padding + node + '\r\n';
+            pad += indent;
+        });
+
+        return formatted.htmlEncode();
+    },
+    'prettystacktrace': function(value, attr, fmt) {
+        if (_.isObject(value)) return this.prettyjson(value, attr, fmt);
+        if (_.isString(value) && (value.startsWith("<") || (value.indexOf("<GMF") >= 0))) return this.prettyxml(value);
+        if ((value.indexOf("aceback") == -1) && (value.indexOf("stack:") == -1)) return this.prettyjson(value, attr, fmt);
+        if (value.indexOf("aceback") != -1) {
+            value = value.replace(/Traceback/g, function(url) {
+                return '<b>' + url + '</b>';
+            });
+            value = value.replace(/[A-Za-z]*:/ig, function(url) {
+                return '<b style=\'color: red;\'>' + url + '</b>';
+            });
+            value = value.replace(/line [0-9]+/g, function(url) {
+                return '<b style=\'color: green;\'>' + url + '</b>';
+            });
+            value = value.replace(/\".*\"/g, function(url) {
+                return '<b style="color: #337ab7;">' + url + '</b>';
+            });
+        } else {
+            // value = value.replace(/[A-Za-z]*:/ig, function(url) {
+            //  return '<b style=\'color: #337ab7;\'>' + url + '</b>';
+            // });
+            value = value.replace(/error:\s*([^\n\r]*)/ig, function(url) {
+                return '<b style=\'color: red\'>' + url + '</b>';
+            });
+        }
+
+        return value;
+    },
 }
 

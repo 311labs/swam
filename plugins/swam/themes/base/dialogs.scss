@@ -1,0 +1,32 @@
+body.app {
+	div.modal {
+	    background: rgba(0,0,0,0.6);
+	    div.spinner-icon {
+	    	position: absolute;
+	    	color: white;
+	    }
+	}
+
+	pre {
+		div.field-value {
+			color: black;
+		}
+
+		span.key {
+			color: #39d;
+		}
+		span.string {
+			color: #2c7;
+		}
+		span.number {
+			color: orange;
+		}
+		span.boolean {
+			color: #1b9;
+			&.false {
+				color: #e43;
+			}
+		}
+	}
+}
+

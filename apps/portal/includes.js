@@ -6,5 +6,6 @@
 
 app_init.js
 pages/**/*.js
+views/**/*.js
 app.js
 

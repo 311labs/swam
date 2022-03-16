@@ -31,6 +31,7 @@ parser.add_option("--bump_major", action="store_true", dest="bump_major", defaul
 parser.add_option("--app_path", type="str", dest="app_path", default="apps", help="app path to compile from")
 
 version = "0.1.1"
+compile_info = nobjict(is_compiling=False)
 
 
 def readVersion():
@@ -296,6 +297,7 @@ class SCSSFile(SwamFile):
             if "Undefined variable" in reason:
                 print(reason)
             else:
+                print(reason)
                 key = "on line "
                 if key in reason:
                     pos = reason.find(key) + len(key)
@@ -483,7 +485,7 @@ def copyStatic(app_path, path, opts):
 
 def buildApps(opts):
     copyCore(os.path.join("plugins", "jquery.js"), opts)
-
+    compile_info.is_compiling = True
     for name in os.listdir(opts.app_path):
         path = os.path.join(opts.app_path, name)
         if os.path.isdir(path):
@@ -502,6 +504,7 @@ def buildApps(opts):
             config = APPS.get(name, None)
             if config and not config.disable:
                 buildApp(path, config, opts)
+    compile_info.is_compiling = False
 
 
 class FileWatcher():
@@ -540,17 +543,19 @@ def runHTTP(opts):
             super().__init__(*args, directory=opts.output, **kwargs)
 
         def do_GET(self):
+            while compile_info.is_compiling:
+                time.sleep(0.5)
             for name in APP_PATHS:
-                print(self.path)
+                # print(self.path)
                 path = urlparse(self.path).path
                 ext = os.path.splitext(path)[1]
-                print(ext)
+                # print(ext)
                 if path[1:].startswith(name):
                     if not ext:
                         self.path = os.path.join(APP_PATHS[name], 'index.html')
                     else:
                         self.path = "/apps" + self.path
-                        print(self.path)
+                        # print(self.path)
             return super().do_GET()
 
     socketserver.TCPServer.allow_reuse_address = True

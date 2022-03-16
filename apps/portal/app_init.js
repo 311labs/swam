@@ -1,6 +1,6 @@
-window.ACS = {};
-ACS.Pages = {};
-ACS.View = {};
+window.PORTAL = {};
+PORTAL.Pages = {};
+PORTAL.Views = {};
 
 window.template_root = "apps.portal";
 
@@ -20,9 +20,11 @@ $(document).ready(function() {
 
   try {
     $("div.pre-loader-msg").text("INIT...");
-    window.app = new ACS.App();
-    $("div.pre-loader-msg").text("STARTING...");
-    window.app.start();
+    window.app = new PORTAL.App();
+    setTimeout(function() {
+      $("div.pre-loader-msg").text("STARTING...");
+      window.app.start();
+    }, 500);
   } catch(err) {
       console.log(err);
       if (!window.last_error) {

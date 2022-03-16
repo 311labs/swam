@@ -10,7 +10,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ACS PORTAL</title>
+    <title>{{title}}</title>
     {{css_includes}}
 
     <style>
@@ -150,6 +150,7 @@
   </div>
 
   <script type="text/javascript">
+    window.app_version = "{{version}}";
     window.isDevToolsOpen = function() {
       var r = /./
       window.devtools_open = false;

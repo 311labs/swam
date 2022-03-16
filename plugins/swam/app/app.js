@@ -1,15 +1,21 @@
 
 
-SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
-    template: "<div id='panel-left'>&nbsp;</div><div id='panel-main'><header id='title-bar'></header><div id='pages' class='has-topbar'></div></div>",
+SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).extend({
+    template: "<div id='panel-left'></div><div id='panel-main'><header id='title-bar'></header><div id='pages' class='has-topbar'></div></div>",
     _pages: {},
     active_page: null,
     started: false,
     defaults: {
+        title: "Put Title in app.defaults",
         root: "/",
-        page_el_id: "#pages"
+        page_el_id: "#pages",
+        catch_errors: true, // catch and show popup for uncaught errors
     },
     addPage: function(name, view, routes) {
+        if (!view.getRoute) {
+            alert("Unable to add page: " + name + "!   Most likely it is not have type SWAM.Page");
+            return;
+        }
         this._pages[name] = view;
         view.page_name = name;
         view.id = "page_" + name;
@@ -24,13 +30,22 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
     getPage: function(name) {
         return this._pages[name];
     },
+    showPage: function(name, params) {
+        this.setActivePage(name, params);
+    },
     setActivePage: function(name, params) {
         var page = this._pages[name];
         var $parent = this.$el.find(this.options.page_el_id);
         if (page && $parent) {
             if (page == this.active_page) {
                 page.setParams(params);
-                return this.render();
+                if (!page.isInDOM()) {
+                    $parent.empty();
+                    page.addToDOM($parent);
+                } else {
+                    page.render();
+                }
+                return;
             }
             if (this.active_page) {
                 page._prev_page = this.active_page;
@@ -47,12 +62,14 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
             $parent.empty();
             page.setParams(params);
             page.addToDOM($parent);
+            page.updateURL();
             this.trigger("page:change");
             if (!this.started) {
                 this.start();
             }
         } else {
             console.warn("invalid page: " + name);
+            this.setActivePage("not_found", {invalid_page: name});
         }
 
     },
@@ -62,41 +79,40 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
     goBack: function() {
         if (this.active_page._prev_page) this.setActivePage(this.active_page._prev_page.page_name);
     },
+
     start: function() {
-        console.log("app.start");
-        console.log("yup");
+        if (this.options.catch_errors) this.enableErrorCatcher();
+        this.version = window.app_version;
         this.$el = $("body");
         this.started = true;
         this.location = window.location;
         this.history = window.history;
         this.root = this.options.root;
+        window.addEventListener("popstate", this.on_pop_state);
         this.on_init_pages();
         this.render();
         this.starting_url = this.getPath();
-        this.on_initial_route();
+        this.on_started();
     },
 
     showTopBar: function() { this.$el.find("#title-bar").show(); },
     hideTopBar: function() { this.$el.find("#title-bar").hide(); },
 
-    showLeftPanel: function(evt) {
-        $("body").addClass("panel-animate panel-left-reveal-partial");
-    },
-
-    hideLeftPanel: function(evt) {
-        $("body").removeClass("panel-left-reveal-partial").addClass("panel-animate");
-    },
-
-    toggleLeftPanel: function(evt) {
-        if (this.isLeftPanelVisible()) {
-            this.hideLeftPanel();
+    showLeftPanel: function(partial) {
+        if (partial) {
+            this.$el.addClass("panel-animate").removeClass("panel-left-reveal").addClass("panel-left-reveal-partial");
         } else {
-            this.showLeftPanel();
+            this.$el.addClass("panel-animate").removeClass("panel-left-reveal-partial").addClass("panel-left-reveal");
         }
+
     },
 
-    isLeftPanelVisible: function() {
-        return $("body").hasClass("panel-left-reveal-partial");
+    hideLeftPanel: function() {
+        this.$el.addClass("panel-animate").removeClass("panel-left-reveal");
+    },
+
+    isLeftPanelOpen: function() {
+        return this.$el.hasClass("panel-left-reveal");
     },
 
     on_swipe_begin: function(evt) {
@@ -123,10 +139,10 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
         
     },
 
-    on_initial_route: function() {
-        this.loadUrl();
+    on_started: function() {
+        this.loadRoute();
         if (!this.active_page) {
-            console.warn("failed to load starting page");
+            console.warn("failed to load starting page: " + this.getPath());
             if (this._pages.not_found) {
                 this.setActivePage("not_found", {"path":this.getPath()});
             }
@@ -172,15 +188,132 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend({
         }.bind(this));
     },
 
-    loadUrl: function(path) {
+    on_busy_timeout: function(opts) {
+        SWAM.Dialog.alert("timed out");
+    },
+
+    cancelBusy: function(canceled) {
+        if (this._busy_info) {
+            if (this._wait_timer) {
+                clearTimeout(this._wait_timer);
+                this._wait_timer = undefined;
+                if (canceled && this._busy_info.cancel_callback) this._busy_info.cancel_callback(this._busy_info);
+            }
+            if (this._wait_interval) {
+                clearInterval(this._wait_interval);
+                this._wait_interval = undefined;
+                if (canceled && this._busy_info.cancel_callback) this._busy_info.cancel_callback(this._busy_info);
+            }
+            this._busy_info = null;
+            this.hideBusy();
+        }
+    },
+
+    showBusy: function(opts) {
+        options = _.extend({timeout:120000}, opts);
+        this.cancelBusy();
+        if (_.isNumber(options.timeout)) {
+            this._busy_info = options;
+            this._busy_dlg = SWAM.Dialog.showLoading(opts);
+            this._wait_timer = setTimeout(function(evt){
+                this.cancelBusy(false);
+                if (options.callback) {
+                    this.cancelBusy(false);
+                    this.hideBusy();
+                    options.callback(options);
+                } else {
+                    this.on_busy_timeout(options);
+                }
+            }.bind(this), options.timeout);
+        } else if (_.isNumber(options.count_down)) {
+            // this.waiting.show(options.count_down);
+            // options._counter = options.count_down;
+            // options.step = options.step || 1;
+            // this._wait_interval = setInterval(function(){
+            //     options._counter -= options.step;
+            //     if (options._counter <= 0) {
+            //         this.cancelBusy(false);
+            //         if(this.waiting) this.waiting.hide();
+            //         if (options.callback) options.callback(options);
+            //     } else if (this.waiting) {
+            //          this.waiting.setMessage(options._counter);
+            //     } else {
+            //         clearInterval(this._wait_interval);
+            //     }
+            // }.bind(this), 999);
+        } else {
+            this._busy_dlg = SWAM.Dialog.showLoading(opts);
+        }
+    },
+
+    hideBusy: function() {
+        if (this._busy_dlg) {
+            this._busy_dlg.dismiss();
+            this._busy_dlg = null;
+        }
+    },
+
+    on_uncaught_error: function(message, url, line, col, error, evt) {
+        this.hideBusy();
+        SWAM.Dialog.alert({title:"Uncaught App Error", message:"<pre class='text-left'>" + error.stack + "</pre>", classes:"modal-lg"});
+        return false;
+    },
+
+    enableErrorCatcher: function() {
+        if (!this._on_error_event) {
+            this._on_error_event = function(e) {
+                console.log("error event fired");
+                console.log(e);
+                if (e.error) {
+                    // only handle if an error is included with event
+                    return app.on_uncaught_error(e.message, e.filename, e.lineno, e.colno, e.error, e);
+                }else if(e.reason) {
+                    return app.on_uncaught_error(e.reason.message, e.type, 0, 0, e.reason, e);
+                }
+            };
+        } else {
+            window.removeEventListener("unhandledrejection",  this._on_error_event);
+            window.removeEventListener("error", this._on_error_event);
+        }
+        window.addEventListener("unhandledrejection",  this._on_error_event);
+        window.addEventListener("error", this._on_error_event);
+    },
+
+    loadRoute: function(path) {
+        if (!path) path = this.getPath();
+        if (path.startsWith(this.options.root)) path = path.substr(this.options.root.length);
         return _.some(this._routes, function(handler) {
             if (handler.route.test(path)) {
+                console.log("loadRoute: " + path);
                 handler.callback(path);
                 return;
             }
         })
-    }
+    },
 
+    loadPageFromURL: function() {
+        this.loadRoute();
+        if (!this.active_page) {
+            console.warn("failed to load starting page: " + this.getPath());
+            if (this._pages.not_found) {
+                this.setActivePage("not_found", {"path":this.getPath()});
+            }
+        }
+    },
+
+    on_pop_state: function(evt) {
+        if (evt.state) {
+            console.log("NAV CHANGE: " + evt.state.path);
+            app.loadRoute(evt.state.path);
+        }
+    },
+
+    navigate: function(path, trigger, title) {
+        if (this._nav_path == path) return; 
+        this._nav_path = path;
+        if (title) document.title = title;
+        window.history.pushState({"path":path}, "", path);
+    }
 });
 
 SWAM.RE = SWAM.RE || {};

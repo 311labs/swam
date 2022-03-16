@@ -202,6 +202,15 @@ $form-label-color: #8a8a8a;
 	padding: 0;
 }
 
+@mixin clearfix {
+	&:before, &:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
 
 
 

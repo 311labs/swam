@@ -7,46 +7,22 @@ body.app {
 
 	#panel-main {
 		transition-property: left, right;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
 		header {
 			position: absolute;
 			left: 0;
 			top: 0;
 			right: 0;
-			width: 100%;
 			height: $topbar-height;
 			background: $topbar-background;
 			color: $topbar-color;
-			font-size: $topbar-font-size;
-			line-height: $topbar-height;
 			border-bottom: $topbar-border;
 			box-shadow: $topbar-box-shadow;
 			z-index: 100;
-
-			.title-left {
-				position: absolute;
-				left: 0;
-				top: 0;
-				min-width: 50px;
-				font-size: 12px;
-				padding-left: 10px;
-			}
-
-			.title-center {
-				width: 100%;
-				text-align: center;
-				text-transform: uppercase;
-
-			}
-
-			.title-right {
-				position: absolute;
-				right: 0;
-				top: 0;
-				min-width: 50px;
-				text-align: right;
-				font-size: 12px;
-				padding-right: 10px;
-			}
 		}
 
 		#pages {
@@ -58,20 +34,30 @@ body.app {
 
 			background: $page-background;
 
-			&.page-scroll {
-				overflow-y: auto;
-			}
+			div.page-view {
+				&.page-fullscreen {
+					position: absolute;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					right: 0;
+				}
+				
+				&.page-scroll {
+					overflow-y: auto;
+				}
 
-			&.page-padded {
-				padding: 15px;
-			}
+				&.page-padded {
+					padding: 15px;
+				}
 
-			&.has-topbar {
-				top: $topbar-height;
-			}
+				&.has-topbar {
+					top: $topbar-height;
+				}
 
-			&.has-footer {
-				padding-bottom: $topbar-height;
+				&.has-footer {
+					padding-bottom: $topbar-height;
+				}
 			}
 		}
 	}
@@ -144,13 +130,17 @@ body.panel-right-reveal {
 
 
 @media (max-width: 760px) {
-	body.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
+	body.app.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
 		div#panel-main {
 			left: 0;
 		}
+
+		div#panel-left {
+			z-index: 0;
+		}
 	}
 
-	body.panel-left-reveal-mobile-menu {
+	body.app.panel-left-reveal-mobile-menu {
 		div#panel-main{
 			left: $panel-left-width;
 			right: -$panel-left-width;

@@ -2,14 +2,24 @@
 SWAM.Models = SWAM.Models || {};
 
 SWAM.Model = SWAM.Object.extend({
-    defaults: {url:""},
+    defaults: {
+        url:"",
+        stale_after_ms: 60000, // default 60s stale
+    },
     attributes: {},
     id: null,
+    last_fetched_at: null,
 
     initialize: function(attributes, opts) {
         this.id = null;
         this.set(attributes);
         this.options = _.extend({}, this.defaults, opts);
+        this.on_init();
+    },
+
+    on_init: function() {
+        // this is just a simple helper method to avoid having to call inheritance chains
+        
     },
 
     getUrl: function() {
@@ -91,6 +101,7 @@ SWAM.Model = SWAM.Object.extend({
     _on_fetched: function(data, status) {
         if (data && data.data) {
             this.set(data.data);
+            this.last_fetched_at = Date.now();
             this.trigger("fetched", this);
         }
     },
@@ -102,18 +113,55 @@ SWAM.Model = SWAM.Object.extend({
         }
     },
 
+    isStale: function() {
+        if (!this.last_fetched_at) return true;
+        return (Date.now() - this.last_fetched_at) > this.options.stale_after_ms;
+    },
+
+    abort: function() {
+        if (this._request) {
+            this._request.abort();
+            this._request = null;
+        }
+    },
+
     fetch: function(callback, opts) {
-        SWAM.Rest.GET(this.getUrl(), null, function(response, status) {
+        this.abort();
+        if (opts && opts.if_stale) {
+            if (!this.isStale()) {
+                if (callback) callback(this, "success", this.attributes);
+                return;
+            }
+        }
+        this._request = SWAM.Rest.GET(this.getUrl(), null, function(response, status) {
+            this._request = null;
             this._on_fetched(response, status);
-            if (callback) callback(this, status, response);
+            if (callback) callback(this, response);
         }.bind(this), opts);
     },
 
+    fetchDebounced: function(callback, opts) {
+        if (!this._debounce_fetch) {
+           this.options.fetch_debounce_time = this.options.fetch_debounce_time || 400;
+           this._debounce_fetch = window.debounce( 
+               this.fetch.bind(this),
+               this.options.fetch_debounce_time
+           );
+        }
+        this._debounce_fetch(callback, opts);
+    },
+
     save: function(data, callback, opts) {
+        this.abort();
         this.set(data);
-        SWAM.Rest.POST(this.getUrl(), data, function(response, status) {
+        this._request = SWAM.Rest.POST(this.getUrl(), data, function(response, status) {
+            this._request = null;
             this._on_saved(response, status);
-            if (callback) callback(this, status, response);
+            if (callback) callback(this, response);
         }.bind(this), opts);
     },
+
+    deleteModel: function(callback, opts) {
+        throw Exception("not implemented");
+    }
 });

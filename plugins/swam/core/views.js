@@ -1,6 +1,8 @@
 
 SWAM.View = SWAM.Object.extend({
-    defaults: {},
+    defaults: {
+        replaces_el: false
+    },
     _events: {
         "click [data-action]": "on_action_click",
         "click [data-showpage]": "on_showpage_click",
@@ -23,7 +25,9 @@ SWAM.View = SWAM.Object.extend({
             if (opts.id) this.id = opts.id;
             if (opts.tagName) this.tagName = opts.tagName;
         }
-        this.options = _.extend({}, this.defaults, opts);
+        super_defaults = this.constructor.__super__.defaults || {};
+        super_defaults = _.deepClone(super_defaults);
+        this.options = _.extend(super_defaults, this.defaults, opts);
         this.events = _.extend({}, this._events, this.events, this.options.events);
         this.hal_events = _.extend({}, this.hal_events, this.options.hal_events);
         this.children = {};
@@ -69,6 +73,10 @@ SWAM.View = SWAM.Object.extend({
         if (this.data_attrs) _.each(this.data_attrs, function(val, key){this.$el.data(key, val);}.bind(this));
         this.$el.attr(attrs);
     },
+    isInDOM: function() {
+        if (!this.$el) return false;
+        return this.$el.closest(document.documentElement).length;
+    },
     addToDOM: function($el) {
         if (this.$parent) this.removeFromDOM();
         this.$parent = $el;
@@ -85,22 +93,16 @@ SWAM.View = SWAM.Object.extend({
         if (!this.$parent) return;
         this.on_dom_removing();
         this.undelegateEvents();
-        this.$el.remove();
         var $par = this.$parent;
         this.$parent = null;
+        this.$el.remove();
         this.on_dom_removed($par);
     },
     render: function() {
-        if (!this.template && this.templateName) {
-            SWAM.fetchTemplate(this.templateName, function(name, template){
-                this.template = template;
-                this.render();
-            }.bind(this));
-            return false;
-        }
-        if (!this.template) return console.warn("cannot render, missing template");
+        this._last_render = Date.now();
         this.on_pre_render();
-        this.$el.html(SWAM.renderTemplate(this.template, this));
+        console.log("rendering: " + this.vid);
+        this.on_render();
         this.renderChildren();
         this.on_post_render();
     },
@@ -141,11 +143,14 @@ SWAM.View = SWAM.Object.extend({
       return this;
     },
     on_action_click: function(evt) {
-        evt.stopPropagation();
         var action = $(evt.currentTarget).data("action");
-        if (!action) return;
+        if (!action) return true;
         var func_name = "on_action_" + action;
-        if (_.isFunction(this[func_name])) this[func_name](evt);
+        if (_.isFunction(this[func_name])) {
+            return this[func_name](evt);
+            // evt.stopPropagation();
+        }
+        return true;
     },
 
     on_showpage_click: function(evt) {
@@ -158,6 +163,7 @@ SWAM.View = SWAM.Object.extend({
         } else {
             app.setActivePage(page_name);
         }
+        return false;
     },
 
     on_checkbox_handler: function(evt) {
@@ -192,5 +198,6 @@ SWAM.View = SWAM.Object.extend({
     on_dom_removing: function() {},
     on_dom_removed: function() { this.$el.empty(); },
     on_pre_render: function() {},
+    on_render: function() {  if (this.template) this.$el.html(SWAM.renderTemplate(this.template, this));},
     on_post_render: function() {},
 });

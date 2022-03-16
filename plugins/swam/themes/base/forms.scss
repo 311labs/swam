@@ -1,0 +1,212 @@
+div.form-container {
+	padding: 5px;
+}
+
+.inputimage-wrapper {
+  // required
+  position: relative;
+  overflow: hidden;
+
+  &.thumbnail-media-picker {
+    outline: none;
+  }
+  &.thumbnail-picker, &.thumbnail-media-picker {
+    width: 216px;
+    text-align: center;
+
+    img {
+        object-fit: contain;
+        max-width: 200px;
+        min-height: 200px;
+        max-height: 200px;
+    }
+
+    padding: 8px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+
+  }
+
+  &.thumbnail-picker-md {
+    max-width: 132px;
+    padding: 4px;
+    margin: 0 auto;
+    img {
+        max-width: 120px;
+        min-height: 120px;
+        max-height: 120px;
+    }
+  }
+
+  &.thumbnail-picker-small {
+    max-width: 84px;
+    padding: 4px;
+    margin: 0 auto;
+    img {
+        max-width: 76px;
+        min-height: 76px;
+        max-height: 76px;
+    }
+  }
+
+  input {
+    // required
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+}
+
+
+.inputfile-wrapper {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    clear: both;
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        filter: alpha(opacity=0);
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        opacity: 0;
+        display: none;
+        font-size: 100px;
+        cursor: pointer;
+        border: 1px dashed #000000;
+    }
+    .inputfile {
+        position: relative;
+        display: block;
+        @include clearfix;
+    }
+    .inputfile-feedback {
+        background: none;
+        font-size: 12px;
+        border: none;
+        color: #6fb7de;
+        transition: color 0.2s ease-in;
+        &:focus {
+            outline: none;
+        }
+    }
+    .inputfile-feedback2 {
+        // required
+        float: left;
+        overflow: hidden;
+        text-decoration: none;
+        margin-left: 5px;
+        // end required
+        display: inline-block;
+        line-height: 30px;
+        border: 0;
+        color: white;
+        width: 100%;
+        height: 30px;
+        border-radius: 4px;
+        background-color: #909293;
+        font-weight: bold;
+        margin: 0;
+        &.hovered {
+            background-color: #cccccc;
+        }
+        .inputfile:focus & {
+            border: 1px solid $green;
+        }
+        &.populated {
+            font-style: normal;
+            text-transform: none;
+            line-height: 14px;
+            height: 30px;
+            width: 100%;
+            padding: 6px;
+            background: #fff;
+            border: 2px solid #BABCBE;
+            font-size: 120%;
+            box-shadow: 0 2px 5px #DDD inset;
+            color: #F69F25;
+            text-align: left;
+            padding-left: 24px;
+            overflow-x: hidden;
+            background: url("/static/twin_input/img/icon-generic.gif") no-repeat 3px center;
+            &.inputfile-ext-jpg, &.inputfile-ext-gif, &.inputfile-ext-png, &.inputfile-ext-jpeg, &.inputfile-ext-bmp {
+                background: url("/static/twin_input/img/icon-image.gif") no-repeat 3px center;
+            }
+            &.inputfile-ext-mp3, &.inputfile-ext-mp4, &.inputfile-ext-mov, &.inputfile-ext-swf, &.inputfile-ext-wav, &.inputfile-ext-m4v {
+                background: url("/static/twin_input/img/icon-media.gif") no-repeat 3px center;
+            }
+            &.inputfile-ext-zip, &.inputfile-ext-tar, &.inputfile-ext-gz, &.inputfile-ext-sit {
+                background: url("/static/twin_input/img/icon-zip.gif") no-repeat 3px center;
+            }
+        }
+    }
+
+
+    .inputfile-info {
+        font-style: italic;
+    }
+    .inputfile-opener {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+    &:hover {
+        .inputfile-feedback {
+            color: #cc3300;
+        }
+    }
+}
+
+
+#image-editor {
+	.row {
+		margin: 0;
+	}
+
+	.image-preview, .image-cropped {
+		img, canvas {
+			display: block;
+			margin: 0 auto;
+		}
+	}
+
+	.jcrop-holder {
+		margin: 0 auto;
+	}
+
+	.filters {
+		margin: 10px;
+		text-align: center;
+		.filter {
+			display: inline-block;
+			vertical-align: top;
+			text-align: center;
+			width: 100px;
+			height: 30px;
+			line-height: 30px;
+			margin: 4px;
+			background: #ccc;
+			box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+			cursor: pointer;
+			&:hover {
+				background: #ffcccc;
+			}
+
+			&.active {
+				box-shadow: none;
+				background: #cc6666;
+			}
+		}
+	}
+}
+

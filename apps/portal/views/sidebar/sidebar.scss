@@ -1,0 +1,38 @@
+div#panel-left {
+	div.main {
+		display: flex;
+		flex-wrap: nowrap;
+		height: 100vh;
+		height: -webkit-fill-available;
+		max-height: 100vh;
+		overflow-x: auto;
+		overflow-y: hidden;
+
+		div.sidebar-container {
+			width: 100%;
+		}
+
+		div.version {
+			font-size: 0.8rem;
+			text-align: center;
+			color: #858585;
+		}
+
+		ul.nav.nav-pills li a {
+			&:hover {
+				background: #cccccc;
+				color: #0d6efd;
+			}
+		}
+	}
+}
+
+body.app.panel-left-reveal {
+	div#panel-left {
+		z-index: 400;
+		box-shadow: 0 1px 11px 1px rgba(0,0,0,0.2);
+	}
+}
+
+
+

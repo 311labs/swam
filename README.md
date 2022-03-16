@@ -22,3 +22,7 @@ The framework is built around the following core classes:
  * SWAM.Page - this is a view that is considered the core content
  * SWAM.Dialog - this is a dialog view
 
+## TODO
+
+ * decrypt JWT and check if expired
+ 

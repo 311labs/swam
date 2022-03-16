@@ -6,7 +6,7 @@ window.sleep = function(time) {
     time = time || 0;
     return new Promise(function(resolve) {
       setTimeout(resolve, time);
-    });
+    }).catch(error => alert(error.message));
 }
 
 window.debounce = function (func, context, threshold, execAsap) {
@@ -294,6 +294,16 @@ if (typeof String.prototype.startsWith != 'function') {
   };
 }
 
+Storage.prototype.setObject = function(key, value) {
+    this.setItem(key, JSON.stringify(value));
+};
+
+Storage.prototype.getObject = function(key) {
+    var value = this.getItem(key);
+    return value && JSON.parse(value);
+};
+
+
 if (window._) {
     window._.deepClone = function(object) {
         var clone = _.clone(object);
@@ -307,3 +317,57 @@ if (window._) {
         return clone;
   };
 }
+
+window.browser_guid = function() {
+
+    // var nav = window.navigator;
+    // var screen = window.screen;
+    // var guid = nav.mimeTypes.length;
+    // guid += nav.userAgent.replace(/\D+/g, '');
+    // guid += nav.plugins.length;
+    // guid += screen.height || '';
+    // guid += screen.width || '';
+    // guid += screen.pixelDepth || '';
+
+    // return guid;
+
+    return [navigator.userAgent,
+      [ screen.height, screen.width, screen.colorDepth ].join("x"),
+      ( new Date() ).getTimezoneOffset(),
+      !!window.sessionStorage,
+      !!window.localStorage,
+      $.map( navigator.plugins, function(p) {
+        return [
+          p.name,
+          p.description,
+          $.map( p, function(mt) {
+            return [ mt.type, mt.suffixes ].join("~");
+          }).join(",")
+        ].join("::");
+      }).join(";")
+    ].join("###").hash();
+};
+
+window.syntaxHighlight = function(json) {
+    if (typeof json != 'string') {
+         json = JSON.stringify(json, undefined, 4);
+    }
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+            if (/false/.test(match)) cls += ' false';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+};
+

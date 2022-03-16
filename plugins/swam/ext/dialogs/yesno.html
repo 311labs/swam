@@ -1,0 +1,15 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content rounded-4 shadow">
+    <div class="modal-body p-4 text-center">
+      <h5 class="mb-0">{{{options.title}}}</h5>
+      {{#options.message}}
+      <p class="mb-0">{{{options.message}}}</p>
+      {{/options.message}}
+    </div>
+    <div class="modal-footer flex-nowrap p-0">
+      <button type="button" data-action="choice" data-id="yes" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>{{options.yes_lbl}}</strong></button>
+      <button type="button" data-action="choice" data-id="no" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">{{options.no_lbl}}</button>
+    </div>
+  </div>
+</div>
+

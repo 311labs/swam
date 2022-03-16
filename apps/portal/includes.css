@@ -3,5 +3,6 @@
 /plugins/swam/themes/defaults.scss
 settings.scss
 /plugins/swam/themes/base/*.scss
+/plugins/swam/ext/imageeditor/*.css
 pages/**/*.scss
-
+views/**/*.scss
