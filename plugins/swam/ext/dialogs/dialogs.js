@@ -69,6 +69,10 @@ SWAM.Dialog = SWAM.View.extend({
         }.bind(this));
     },
     getData: function(evt) {
+        if (!_.isEmpty(this.children)) {
+            var form = this.children[".modal-body"];
+            if (form && form.getData) return form.getData();
+        }
         return SWAM.Form.getData(this.$el.find("form"));
     },
 },{
@@ -125,25 +129,38 @@ SWAM.Dialog = SWAM.View.extend({
         return dlg;
     },
     showView: function(view, opts) {
-        opts = opts || {"title": "Info"};
-        opts.buttons = [
-            {
-                id: "cancel",
-                action:"choice",
-                label: "Cancel"
-            },
-            {
-                id: "save",
-                action:"choice",
-                label: "Save"
-            }
-        ];
+        var defaults = {
+            title: "View",
+            buttons: [
+                {
+                    action:"close",
+                    label:"Cancel"
+                }
+            ]
+        };
+        opts = _.extend(defaults, opts);
         var dlg = new this(opts);
         dlg.addChild(".modal-body", view);
         dlg.show();
         return dlg;
     },
     showForm: function(fields, opts) {
+        var defaults = {
+            title: "Edit",
+            buttons: [
+                {
+                    id: "cancel",
+                    action:"choice",
+                    label: "Cancel"
+                },
+                {
+                    id: "save",
+                    action:"choice",
+                    label: "Save"
+                }
+            ]
+        };
+        opts = _.extend(defaults, opts);
         return this.showView(new SWAM.Form.View({fields:fields, defaults:opts.defaults, model:opts.model}), opts);
     },
     showModel: function(model, fields, options) {

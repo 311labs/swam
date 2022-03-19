@@ -190,6 +190,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_busy_timeout: function(opts) {
         SWAM.Dialog.alert("timed out");
+        this.cancelBusy();
     },
 
     cancelBusy: function(canceled) {
@@ -210,7 +211,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     showBusy: function(opts) {
-        options = _.extend({timeout:120000}, opts);
+        options = _.extend({timeout:12000}, opts);
         this.cancelBusy();
         if (_.isNumber(options.timeout)) {
             this._busy_info = options;
@@ -248,6 +249,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     hideBusy: function() {
         if (this._busy_dlg) {
+            this.cancelBusy();
             this._busy_dlg.dismiss();
             this._busy_dlg = null;
         }

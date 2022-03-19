@@ -7,6 +7,7 @@ SWAM.Model = SWAM.Object.extend({
         stale_after_ms: 60000, // default 60s stale
     },
     attributes: {},
+    params: {},
     id: null,
     last_fetched_at: null,
 
@@ -14,6 +15,7 @@ SWAM.Model = SWAM.Object.extend({
         this.id = null;
         this.set(attributes);
         this.options = _.extend({}, this.defaults, opts);
+        this.params = _.extend({}, this.params, this.options.params);
         this.on_init();
     },
 
@@ -133,7 +135,7 @@ SWAM.Model = SWAM.Object.extend({
                 return;
             }
         }
-        this._request = SWAM.Rest.GET(this.getUrl(), null, function(response, status) {
+        this._request = SWAM.Rest.GET(this.getUrl(), this.params, function(response, status) {
             this._request = null;
             this._on_fetched(response, status);
             if (callback) callback(this, response);

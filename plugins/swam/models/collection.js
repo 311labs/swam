@@ -3,104 +3,105 @@ SWAM.Collections = SWAM.Collections || {};
 
 SWAM.Collection = SWAM.Object.extend({
     defaults: {
-        url:""
+        Model: SWAM.Model
     },
-    attributes: {},
-    id: null,
 
-    initialize: function(attributes, opts) {
+    params: {size:50},
+    models: [],
+
+    initialize: function(models, opts) {
+        if (_.isObject(models) && !_.isArray(models)){
+            opts = models;
+            models = [];
+        } 
         this.id = null;
-        this.set(attributes);
+        this.set(models);
         this.options = _.extend({}, this.defaults, opts);
+        this.params = _.extend({}, this.params, this.options.params);
     },
 
     getUrl: function() {
-
+        if (this.options.url) return url;
     },
 
-    set: function(key, value) {
-        if (_.isObject(key)) {
-            this._prev_attributes = _.deepClone(this.attributes);
-            this.attributes = _.extend({}, this.attributes, key);
-            if (!_.isEqual(this._prev_attributes, this.attributes)) {
-                console.log("model changed");
-                this.trigger("change", this);
-            }
-        } else {
-            if (this.attributes[key] != value) {
-                this.attributes[key] = value;
-                this.trigger("change", this);
-            }
-            
+    set: function(models, append) {
+        if (!append) {
+            this.models = [];
         }
-        if (this.attributes.id) this.id = this.attributes.id;
+
+        _.each(models, function(m){
+            this.models.push(new this.options.Model(m));
+        }.bind(this));
+
+        this.size = this.models.length;
+        this.length = this.models.length;
     },
 
-    get: function(key, defaultValue, localize) {
-        if (localize) {
-            return this.lookup(key  + "|" + localize);
-        }
-
-        var sub = key.split('.');
-        var a = sub.shift();
-        var ret = options.default;
-
-        if (key.startsWith('.')) {
-            a = sub.shift();
-            ret = this;
-        } else {
-            ret = this.attributes[a];
-        }
-
-        if ((ret === undefined) && (a && this[a])) {
-            if (_.isFunction(this[a])) {
-                ret = this[a]();
-            } else {
-                ret = this[a];
-            }
-        }
-
-        if ((ret === undefined) || (ret === null)) {
-            //console.log("data.get.ret: ?");
-            ret = options.default;
-            return ret;
-        }
-
-        while (sub.length) {
-            if (ret.attributes && ret.attributes.hasOwnProperty(sub[0])) {
-                ret = ret.attributes[sub[0]];
-            } else if (ret.hasOwnProperty(sub[0])) {
-                ret = ret[sub[0]];
-            } else if (_.isArray(ret) && (ret.indexOf(sub[0]) >= 0)) {
-                return true;
-            } else {
-                return options.default;
-            }
-
-            if (ret === null) {
-                return options.default;
-            }
-            sub.shift();
-        }
-        return ret;
+    reset: function() {
+        this.models = [];
+        this.count = 0;
+        this.start = 0;
+        this.size = 0;
+        this.length = 0;
+        this.params.start = 0;
+        this.trigger("reset", this);
     },
 
-    lookup: function(key) {
-        var mc = new Mustache.Context(this);
-        return mc.lookup(key);
+    getAt: function(index) {
+        if (index > this.models.length) return undefined;
+        return this.models[index];
+    },
+
+    get: function(id) {
+        return _.findWhere(this.models, {id:id});
+    },
+
+    parseResponse: function(resp) {
+        this.set(resp.data, this.options.append);
+        this.count = resp.count;
+        this.start = resp.start;
+        this.pagesize = resp.size;
+
+        this.visible_pages = this.options.visible_pages || 4;
+        this.current_page = Math.ceil(this.start / this.pagesize);
+        this.total_pages = Math.ceil(this.count / this.pagesize);
+        this._start_page = Math.min(this.current_page-2, this.total_pages - this.visible_pages);
+        this._start_page = Math.max(0, this._start_page);
+        this.has_more_pages = (this._start_page  + this.visible_pages) < this.total_pages;
+        this.has_less_pages = this._start_page > 0;
     },
 
     _on_fetched: function(data, status) {
-        if (data && data.data) {
-            this.set(data.data);
+        this.trigger('loading:end', this);
+        if (data && _.isArray(data.data)) {
+            this.parseResponse(data);
             this.trigger("fetched", this);
         }
     },
 
     fetch: function(callback, opts) {
-        SWAM.Rest.GET(this.options.url, null, function(data, status) {
+        this.trigger('loading:begin', this);
+        SWAM.Rest.GET(this.options.url, this.params, function(data, status) {
             this._on_fetched(data, status);
             if (callback) callback(this, status, data);
         }.bind(this), opts);
+    },
+
+    next: function(callback, opts) {
+        this.start = this.start || 0;
+        this.params.start += this.params.size;
+        if ((this.count) && (this.params.start > this.count)) {
+            this.params.start = 0;
+        }
+        this.fetch(callback, opts);
+    },
+
+    prev: function(callback, opts) {
+        this.start = this.start || 0;
+        this.params.start -= this.params.size;
+        if ((this.count) && (this.params.start < 0)) {
+            this.params.start = this.count - this.params.size;
+        }
+        this.fetch(callback, opts);
     }
 });
