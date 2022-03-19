@@ -1,3 +1,4 @@
+SWAM.Views = SWAM.Views || {};
 
 SWAM.View = SWAM.Object.extend({
     defaults: {
@@ -25,6 +26,7 @@ SWAM.View = SWAM.Object.extend({
             if (opts.id) this.id = opts.id;
             if (opts.tagName) this.tagName = opts.tagName;
         }
+        this._event_listeners = {};
         super_defaults = this.constructor.__super__.defaults || {};
         super_defaults = _.deepClone(super_defaults);
         this.options = _.extend(super_defaults, this.defaults, opts);
@@ -38,20 +40,29 @@ SWAM.View = SWAM.Object.extend({
             delete this.options.$parent;
             this.addToDOM(opts.$parent);
         }
+        this.on_init();
+    },
+    on_init: function() {
+
     },
     setParams: function(params) {
         this.params = params;
     },
+    normalizeElSel: function(el_sel) {
+        if (!el_sel.startsWith("#") && !el_sel.startsWith(".")) el_sel = "#" + el_sel;
+        return el_sel;
+    },
     addChild: function(el_sel, view) {
         this.children[el_sel] = view;
-        var $parent = this.$el.find(el_sel);
+        if (!el_sel.startsWith("#") && !el_sel.startsWith(".")) el_sel = "#" + el_sel;
+        var $parent = this.$el.find(this.normalizeElSel(el_sel));
         if ($parent) {
             view.addToDOM($parent);
         }
     },
     removeChild: function(el_sel) {
         if (this.children[el_sel]) {
-            this.$el.find(el_sel).empty();
+            this.$el.find(this.normalizeElSel(el_sel)).empty();
             delete this.children[el_sel];
         }
     },
@@ -109,7 +120,7 @@ SWAM.View = SWAM.Object.extend({
     renderChildren: function() {
         if (!this.children) return;
         _.each(this.children, function(view, el_sel) {
-            var $parent = this.$el.find(el_sel);
+            var $parent = this.$el.find(this.normalizeElSel(el_sel));
             if ($parent) {
                 view.addToDOM($parent);
             }

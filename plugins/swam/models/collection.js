@@ -18,6 +18,7 @@ SWAM.Collection = SWAM.Object.extend({
         this.set(models);
         this.options = _.extend({}, this.defaults, opts);
         this.params = _.extend({}, this.params, this.options.params);
+        if (!this.options.url) this.options.url = this.options.Model.prototype.defaults.url;
     },
 
     getUrl: function() {
@@ -30,7 +31,9 @@ SWAM.Collection = SWAM.Object.extend({
         }
 
         _.each(models, function(m){
-            this.models.push(new this.options.Model(m));
+            var model = new this.options.Model(m);
+            this.models.push(model);
+            this.trigger("add", model);
         }.bind(this));
 
         this.size = this.models.length;
@@ -45,6 +48,20 @@ SWAM.Collection = SWAM.Object.extend({
         this.length = 0;
         this.params.start = 0;
         this.trigger("reset", this);
+    },
+
+    add: function(model) {
+        if (!this.get(model)) {
+            this.models.push(model);
+            this.trigger("add", model);
+        }
+    },
+
+    remove: function(model) {
+        if (this.get(model)) {
+            this.models.remove(model);
+            this.trigger("remove", model);
+        }
     },
 
     getAt: function(index) {
@@ -72,11 +89,11 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     _on_fetched: function(data, status) {
-        this.trigger('loading:end', this);
         if (data && _.isArray(data.data)) {
             this.parseResponse(data);
             this.trigger("fetched", this);
         }
+        this.trigger('loading:end', this);
     },
 
     fetch: function(callback, opts) {

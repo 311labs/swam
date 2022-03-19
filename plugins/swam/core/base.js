@@ -59,17 +59,23 @@ window.SWAM = {
 
 
 SWAM.EventSupport = {
-    _event_listeners: {},
     on: function(event, handler, context) {
+        if (!_.isObject(this._event_listeners)) this._event_listeners = {};
+        if (!_.isFunction(handler)) {
+            console.warn("event: " + event + " passed an invalid or undefined handler");
+            return;
+        }
         if (context) handler.__context__ = context;
         if (!this._event_listeners[event]) this._event_listeners[event] = [];
         if (this._event_listeners[event].indexOf(handler) < 0) this._event_listeners[event].push(handler);
     },
     off: function(event, handler) {
+        if (!_.isObject(this._event_listeners)) this._event_listeners = {};
         if (!this._event_listeners[event]) return;
         if (this._event_listeners[event].indexOf(handler) >= 0) this._event_listeners[event].remove(handler);
     },
     trigger: function(event, data) {
+        if (!_.isObject(this._event_listeners)) this._event_listeners = {};
         if (!this._event_listeners[event]) return;
         for (var i = 0; i < this._event_listeners[event].length; i++) {
             try {

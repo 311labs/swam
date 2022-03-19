@@ -11,14 +11,15 @@ PORTAL.App = SWAM.App.extend({
 	},
 
 	on_init_pages: function() {
-		this.addChild("#title-bar", new PORTAL.Views.Header());
-		this.addChild("#panel-left", new PORTAL.Views.SideBar());
+		this.addChild("title-bar", new PORTAL.Views.Header());
+		this.addChild("panel-left", new PORTAL.Views.SideBar());
 
 		this.addPage("not_found", new PORTAL.Pages.NotFound(), ["404"]);
 		this.addPage("login", new PORTAL.Pages.Login(), ["login"]);
 
 		this.addPage("dashboard", new PORTAL.Pages.Dashboard(), ["dashboard", ":group/dashboard"]);
 		this.addPage("members", new PORTAL.Pages.Members(), ["members", ":group/members"]);
+		this.addPage("groups", new PORTAL.Pages.Groups(), ["groups", ":group/groups"]);
 	},
 
 	logout: function() {
@@ -32,7 +33,7 @@ PORTAL.App = SWAM.App.extend({
 	},
 
 	on_loggedin: function() {
-		this.getChild("#title-bar").render();
+		this.getChild("title-bar").render();
 		this.showLeftPanel();
 	},
 
@@ -41,7 +42,7 @@ PORTAL.App = SWAM.App.extend({
 		SWAM.Rest.GET("/rpc/version", {}, function(resp, status) {
 			if (resp.status) {
 				app.api_version = resp.data;
-				app.getChild("#panel-left").render();
+				app.getChild("panel-left").render();
 			}
 		});
 		// first we get the active user
