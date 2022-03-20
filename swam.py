@@ -24,7 +24,7 @@ parser.add_option("-m", "--minify", action="store_true", dest="minify", default=
 parser.add_option("-w", "--watch", action="store_true", dest="watch", default=False, help="watch for changes and auto refresh")
 parser.add_option("-s", "--serve", action="store_true", dest="serve", default=False, help="serve for changes and auto refresh")
 parser.add_option("-o", "--output", type="str", dest="output", default="output", help="static output path")
-parser.add_option("-p", "--port", type="int", dest="port", default="8080", help="http port")
+parser.add_option("-p", "--port", type="int", dest="port", default="8081", help="http port")
 parser.add_option("-b", "--bump_rev", action="store_true", dest="bump_rev", default=False, help="bump version revision")
 parser.add_option("--bump_minor", action="store_true", dest="bump_minor", default=False, help="bump version minor")
 parser.add_option("--bump_major", action="store_true", dest="bump_major", default=False, help="bump version major")
@@ -77,6 +77,9 @@ class FileCache():
 
     def anyChanged(self):
         for path in self.cache:
+            if not os.path.exists(path):
+                self.removeOld()
+                return True
             if self.cache[path].mtime != os.path.getmtime(path):
                 print(path)
                 print(self.cache[path].mtime)
@@ -440,6 +443,8 @@ def buildApp(app_path, config, opts):
     output_path = os.path.join(opts.output, app_path, "index.html")
     index = IndexFile(fpath, opts.output, force=True, output_path=output_path)
     if is_dirty or index.hasChanged():
+        # load to check for any changes
+        config = objict.fromFile(os.path.join(app_path, "app.json"))
         # bump local version
         if config.version is None:
             config.version = "1.0.0"
@@ -508,7 +513,7 @@ def buildApps(opts):
 
 
 class FileWatcher():
-    def __init__(self, opts, freq=2.0):
+    def __init__(self, opts, freq=1.0):
         self.opts = opts
         self._thread = None
         self._watch_freq = freq

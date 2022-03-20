@@ -6,7 +6,7 @@ It has very basic routing and is a very basic Model View Controller based framew
 
 ## WHY
 
-I have been using this for years as a simple and easy way to rapidly prototype mobile apps.  These apps most often ended up in production and thus seem to scale well.   I am lazy when it comes to the UI and like to write as little as possible.
+I have been using this for years as a simple and easy way to rapidly prototype mobile apps.  These apps most often ended up in production and thus seem to scale well.   I am lazy when it comes to the UI and like to write as little as possible.  I also needed logic that works in non es6, (lots of old mobile devices).
 
 ## Quick Start
 

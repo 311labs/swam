@@ -1,4 +1,3 @@
-
 window.PORTAL = window.PORTAL || {}
 
 PORTAL.App = SWAM.App.extend({
@@ -7,7 +6,7 @@ PORTAL.App = SWAM.App.extend({
 		title: "PORTAL DEMO",
 		root: "/portal/",
 		api_url: "https://api.itf.io",
-		home_page: "dashboard"
+		home_page: "examples"
 	},
 
 	on_init_pages: function() {
@@ -17,6 +16,7 @@ PORTAL.App = SWAM.App.extend({
 		this.addPage("not_found", new PORTAL.Pages.NotFound(), ["404"]);
 		this.addPage("login", new PORTAL.Pages.Login(), ["login"]);
 
+		this.addPage("examples", new PORTAL.Pages.Examples(), ["examples", ":group/examples"]);
 		this.addPage("dashboard", new PORTAL.Pages.Dashboard(), ["dashboard", ":group/dashboard"]);
 		this.addPage("members", new PORTAL.Pages.Members(), ["members", ":group/members"]);
 		this.addPage("groups", new PORTAL.Pages.Groups(), ["groups", ":group/groups"]);
@@ -38,6 +38,7 @@ PORTAL.App = SWAM.App.extend({
 	},
 
 	on_started: function() {
+		Toast.setTheme(TOAST_THEME.DARK);
 		// get the api version
 		SWAM.Rest.GET("/rpc/version", {}, function(resp, status) {
 			if (resp.status) {

@@ -1,9 +1,9 @@
-
-
-
 body.app {
 	position: absolute;
 	top:0;left:0;right:0;bottom:0;
+}
+
+#app_body {
 
 	#panel-main {
 		transition-property: left, right;
@@ -31,16 +31,16 @@ body.app {
 			left: 0;
 			bottom: 0;
 			right: 0;
-
+			overflow-y: auto;
 			background: $page-background;
 
 			div.page-view {
 				&.page-fullscreen {
-					position: absolute;
-					top: 0;
-					left: 0;
-					bottom: 0;
-					right: 0;
+					// position: absolute;
+					// top: 0;
+					// left: 0;
+					// bottom: 0;
+					// right: 0;
 				}
 				
 				&.page-scroll {
@@ -52,7 +52,7 @@ body.app {
 				}
 
 				&.has-topbar {
-					top: $topbar-height;
+					margin-top: $topbar-height;
 				}
 
 				&.has-footer {
@@ -75,21 +75,21 @@ body.app {
 	}
 }
 
-body.panel-animate {
+#app_body.panel-animate {
 	div#panel-left,
 	div#panel-main {
 		transition-duration: 400ms;
 	}
 }
 
-body.bottom-bar-reveal {
+#app_body.bottom-bar-reveal {
 	div#panel-main {
 		bottom: 100px;
 	}
 }
 
 
-body.panel-left-reveal {
+#app_body.panel-left-reveal {
 	div#panel-main {
 		left: $panel-left-width;
 	}
@@ -98,13 +98,13 @@ body.panel-left-reveal {
 	}
 }
 
-body.panel-left-reveal.slide {
+#app_body.panel-left-reveal.slide {
 	div#panel-main {
 		right: -$panel-left-width;
 	}
 }
 
-body.panel-left-reveal-partial {
+#app_body.panel-left-reveal-partial {
 
 	div#panel-left {
 		width: $panel-left-partial-width;
@@ -120,7 +120,7 @@ body.panel-left-reveal-partial {
 }
 
 
-body.panel-right-reveal {
+#app_body.panel-right-reveal {
 	div#panel-main {
 		right: $panel-right-width;
 	}
@@ -130,7 +130,7 @@ body.panel-right-reveal {
 
 
 @media (max-width: 760px) {
-	body.app.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
+	#app_body.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
 		div#panel-main {
 			left: 0;
 		}
@@ -140,14 +140,14 @@ body.panel-right-reveal {
 		}
 	}
 
-	body.app.panel-left-reveal-mobile-menu {
+	#app_body.panel-left-reveal-mobile-menu {
 		div#panel-main{
 			left: $panel-left-width;
 			right: -$panel-left-width;
 		}
 	}
 }
-body.use-mobile-menu {
+#app_body.use-mobile-menu {
 	.topnav-brand{
 		.brand-img {
 			display: none;

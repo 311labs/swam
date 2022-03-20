@@ -55,7 +55,38 @@ SWAM.Rest = {
         }
         request.url = url;
         request.complete = function(xhr, status) {
-            if (callback) callback(xhr.responseJSON, status);
+            if (xhr.status == 200) {
+                if (callback) callback(xhr.responseJSON, xhr.status);
+            } else {
+                if (callback) {
+                    var resp = {status:false, error_code: xhr.status, error: status};
+                    if (status === 'timeout') {
+                        resp.error = 'Request timed-out';
+                        resp.error_code = 522;
+                    } else if (status === 'abort') {
+                        resp.error = 'Request aborted';
+                        resp.error_code = 420;
+                    } else if (status === 'parsererror') {
+                        resp.error = 'Request got jumbled-up';
+                    } else if (xhr.status == 400) {
+                        resp.error = "bad request";
+                    } else if (xhr.status == 401) {
+                        resp.error = "Unauthorized";
+                    } else if (xhr.status == 403) {
+                        resp.error = "Forbidden";
+                    } else if (xhr.status == 404) {
+                        resp.error = "page not found";
+                    } else if (xhr.status == 408) {
+                        resp.error = "request timed out";
+                    } else if (xhr.status == 429) {
+                        resp.error = "server busy";
+                    } else if (xhr.status == 500) {
+                        resp.error = "Internal Server Error";
+                    }
+                    callback(resp, xhr.status);
+                }
+            }
+            
         };
 
         $.ajax(request);

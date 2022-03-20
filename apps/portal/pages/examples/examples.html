@@ -1,0 +1,128 @@
+<h1>Examples</h1>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Dropdown button
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+  </ul>
+</div>
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    Dialog Tests
+  </div>
+  <div class="card-body">
+    <p class="card-text">The framework makes it easy to create basic dialogs including forms.</p>
+    <a href="#" class="btn btn-primary m-2" data-action="test_form">Test Form Dialog</a>
+    <a href="#" class="btn btn-primary m-2" data-action="test_show_model">Test Show Model</a>
+    <a href="#" class="btn btn-primary m-2" data-action="test_edit_model" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tooltips are fun">Test Edit Model</a>
+    <a href="#" class="btn btn-warning m-2" data-action="test_uncaught_error">Test Uncaught Error</a>
+  </div>
+</div>
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    Busy Overlay
+  </div>
+  <div class="card-body">
+    <p class="card-text">Show busy overlay quickly and easily.</p>
+
+    <p class="card-text">Provide icons for more context.</p>
+    <div class="highlight">
+          <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+          <pre><code>app.showBusy({icon:"download", timeout:4000, no_timeout_alert:true});</code></pre>
+    </div>
+
+    {{#busy_examples}}
+    <a href="#" class="btn btn-primary m-2" data-action="busy" data-kind="{{.}}">{{{.|icon}}}</a>
+    {{/busy_examples}}
+
+  </div>
+</div>
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    Popover
+  </div>
+  <div class="card-body">
+    <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+  </div>
+</div>
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    Toast
+  </div>
+  <div class="card-body">
+    <div class="highlight">
+          <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+          <pre><code>    let toast = {
+        title: "Voila!",
+        message: "How easy was that?",
+        status: TOAST_STATUS.SUCCESS,
+        timeout: 5000
+    }
+    Toast.create(toast);</code></pre>
+    </div>
+    <button class="btn btn-success m-2" data-action="toast" data-kind="success">Show Success Toast</button>
+    <button class="btn btn-warning m-2" data-action="toast" data-kind="warning">Show Warning Toast</button>
+    <button class="btn btn-danger m-2" data-action="toast" data-kind="danger">Show Danger Toast</button>
+    <button class="btn btn-info m-2" data-action="toast" data-kind="info">Show Info Toast</button>
+  </div>
+</div>
+
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    Accordian
+  </div>
+  <div class="card-body">
+
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Accordion Item #1
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Accordion Item #2
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Accordion Item #3
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

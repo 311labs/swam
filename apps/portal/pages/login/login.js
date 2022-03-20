@@ -28,6 +28,29 @@ PORTAL.Pages.Login = SWAM.Page.extend({
             app.hideLeftPanel();
             app.setActivePage(this.page_name);
         }
+    },
+
+    on_action_change_api: function() {
+        SWAM.Dialog.showForm([
+            {
+                label: "Select API Endpoint",
+                name: "api_url",
+                type: "select",
+                options: [
+                    "http://localhost:8000",
+                    "https://api.itf.io"
+                ],
+                default: app.options.api_url
+            }
+        ], {
+            title: "Change API Enpoint",
+            callback: function(dlg, choice) {
+                console.log(dlg.getData());
+                app.setProperty("api_url", dlg.getData().api_url);
+                dlg.dismiss();
+                this.render();
+            }.bind(this)
+        })
     }
 
 });

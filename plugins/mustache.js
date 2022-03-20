@@ -58,7 +58,11 @@ Mustache.Context.prototype.ext_include = function(name) {
     return SWAM.renderTemplate(template_path, context);
 };
 
-Mustache.Context.prototype.ext_dot = function() {
+Mustache.Context.prototype.ext_dot = function(name) {
+    if (name.startsWith(".|")) {
+        var info = this.parseValueName(name.slice(1));
+        if (info.length) return this.applyFilters(this.view, info[0].filters);
+    }
     return this.view;
 };
 
@@ -253,7 +257,7 @@ Mustache.Context.prototype.applyFilters = function(context, filters) {
 
 Mustache.Context.prototype.findValue = function(name) {
     // if simple local ref, call dot ext
-    if (name === ".") return this.ext_dot();
+    if ((name === ".")||(name.startsWith(".|"))) return this.ext_dot(name);
     var index = name.indexOf('<');
     if ((index >= 0)&&(index <= 3)) return name;
 

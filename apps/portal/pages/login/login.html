@@ -19,5 +19,6 @@
     </div>
     <button class="w-100 btn btn-lg btn-primary" data-action="login">Sign in</button>
     <p class="mt-5 mb-3 text-muted">© 2022</p>
+    {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
   </form>
 </main>

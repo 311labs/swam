@@ -403,5 +403,8 @@ SWAM.Localize = {
 
         return value;
     },
+    'icon': function(value, attr, fmt) {
+        return SWAM.Icons[value];
+    }
 }
 

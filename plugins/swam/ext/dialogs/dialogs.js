@@ -57,7 +57,6 @@ SWAM.Dialog = SWAM.View.extend({
         if (["no", "cancel"].indexOf(this.choice.lower()) > 0) return this.dismiss();
         this.trigger("dialog:choice", this);
         if (this.options.callback) this.options.callback(this, this.choice);
-        this.dismiss();
     },
     on_action_bg_close: function(evt) {
         this.dismiss();
@@ -123,7 +122,12 @@ SWAM.Dialog = SWAM.View.extend({
         return this.alert(opts);
     },
     showLoading: function(opts) {
-        opts = _.extend({template:"plugins.swam.ext.dialogs.loader"}, opts);
+        if (opts.icon) {
+            if (!opts.icon.startsWith("<")) {
+                opts.icon = SWAM.Icons[opts.icon];
+            }
+        }
+        opts = _.extend({template:"plugins.swam.ext.dialogs.loader", color:"warning"}, opts);
         var dlg = new this(opts);
         dlg.show();
         return dlg;
@@ -189,7 +193,7 @@ SWAM.Dialog = SWAM.View.extend({
 
         var dlg = new this(options);
         return dlg.show();
-    },
+    }
 });
 
 

@@ -309,7 +309,7 @@ if (window._) {
         var clone = _.clone(object);
 
         _.each(clone, function(value, key) {
-          if (_.isObject(value)) {
+          if (_.isObject(value) && !_.isFunction(value)) {
             clone[key] = _.deepClone(value);
           }
         });

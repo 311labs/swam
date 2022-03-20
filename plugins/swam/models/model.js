@@ -13,9 +13,9 @@ SWAM.Model = SWAM.Object.extend({
 
     initialize: function(attributes, opts) {
         this.id = null;
-        this.set(attributes);
-        this.options = _.extend({}, this.defaults, opts);
+        this.init_options(opts);
         this.params = _.extend({}, this.params, this.options.params);
+        this.set(attributes);
         this.on_init();
     },
 
@@ -131,7 +131,7 @@ SWAM.Model = SWAM.Object.extend({
         this.abort();
         if (opts && opts.if_stale) {
             if (!this.isStale()) {
-                if (callback) callback(this, "success", this.attributes);
+                if (callback) callback(this, 200, this.attributes);
                 return;
             }
         }

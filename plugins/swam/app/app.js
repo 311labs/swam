@@ -5,11 +5,20 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     _pages: {},
     active_page: null,
     started: false,
+    icons: SWAM.Icons,
     defaults: {
         title: "Put Title in app.defaults",
         root: "/",
         page_el_id: "#pages",
         catch_errors: true, // catch and show popup for uncaught errors
+    },
+    on_init: function() {
+        this.on("property:change", this.on_prop_change, this);
+    },
+    on_prop_change: function(evt) {
+        console.log("on_prop_change");
+        console.log(evt);
+        if (_.isFunction(this["on_prop_" + evt.key])) this["on_prop_" + evt.key](evt.value);
     },
     addPage: function(name, view, routes) {
         if (!view.getRoute) {
@@ -82,8 +91,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     start: function() {
         if (this.options.catch_errors) this.enableErrorCatcher();
+        this.loadSettings();
         this.version = window.app_version;
-        this.$el = $("body");
+        this.$el = $("#app_body");
         this.started = true;
         this.location = window.location;
         this.history = window.history;
@@ -93,6 +103,14 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.render();
         this.starting_url = this.getPath();
         this.on_started();
+    },
+
+    loadSettings: function() {
+        this.options.api_url = this.getProperty("api_url", this.options.api_url);
+    },
+
+    on_prop_api_url: function(value) {
+        this.options.api_url = value;
     },
 
     showTopBar: function() { this.$el.find("#title-bar").show(); },
@@ -189,7 +207,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     on_busy_timeout: function(opts) {
-        SWAM.Dialog.alert("timed out");
+        if (!SWAM.active_dialog.options.no_timeout_alert) {
+            SWAM.Dialog.alert("timed out");
+        }
         this.cancelBusy();
     },
 
@@ -249,9 +269,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     hideBusy: function() {
         if (this._busy_dlg) {
-            this.cancelBusy();
             this._busy_dlg.dismiss();
             this._busy_dlg = null;
+            this.cancelBusy();
         }
     },
 

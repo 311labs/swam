@@ -1,5 +1,5 @@
 SWAM.Form.View = SWAM.View.extend({
-    classes: "form-view",
+    classes: "form-view mb-4",
     files: {},
 
     on_render: function() {

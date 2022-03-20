@@ -27,7 +27,7 @@ div#panel-left {
 	}
 }
 
-body.app.panel-left-reveal {
+#app_body.panel-left-reveal {
 	div#panel-left {
 		z-index: 400;
 		box-shadow: 0 1px 11px 1px rgba(0,0,0,0.2);

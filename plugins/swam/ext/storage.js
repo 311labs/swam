@@ -13,6 +13,7 @@ SWAM.StorageExtension = {
         } else {
             window.localStorage.setItem(key, value);
         }
+        this.trigger("property:change", {key:key, value:value});
     },
 
     getProperty: function(key, dvalue) {

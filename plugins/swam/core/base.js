@@ -92,6 +92,7 @@ SWAM.EventSupport = {
 
 
 // Very simple and clean non es6 js class/objects
+// Needed to support old android and other legacy devices
 SWAM.Object = function(attributes, options) {
     this.initialize.apply(this, arguments);
 }
@@ -115,7 +116,16 @@ SWAM.Object.extend = function(protoProps, staticProps) {
     return child;
 }
 
-_.extend(SWAM.Object.prototype, {initialize: function() {}}, SWAM.EventSupport);
+_.extend(SWAM.Object.prototype, {
+        defaults: {},
+        initialize: function(opts) { this.init_options(opts); }, 
+        init_options: function(opts) {
+            super_defaults = this.constructor.__super__.defaults || {};
+            super_defaults = _.deepClone(super_defaults);
+            this.options = _.extend(super_defaults, this.defaults, opts);
+        }
+    },
+    SWAM.EventSupport);
 
 var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 try {

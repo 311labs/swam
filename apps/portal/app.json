@@ -3,6 +3,7 @@
     "index_file": "/plugins/swam/templates/basic.html",
     "js_files": [
         "/plugins/bootstrap/bootstrap5.js",
+        "/plugins/clipboard.js",
         "includes.js"
     ],
     "mustache_files": [
@@ -17,5 +18,5 @@
         "imgs",
         "/plugins/bootstrap/fonts"
     ],
-    "version": "0.1.922"
+    "version": "0.1.1320"
 }

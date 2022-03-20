@@ -1,4 +1,5 @@
 SWAM.Views = SWAM.Views || {};
+SWAM.Ext = SWAM.Ext || {};
 
 SWAM.View = SWAM.Object.extend({
     defaults: {
@@ -27,9 +28,7 @@ SWAM.View = SWAM.Object.extend({
             if (opts.tagName) this.tagName = opts.tagName;
         }
         this._event_listeners = {};
-        super_defaults = this.constructor.__super__.defaults || {};
-        super_defaults = _.deepClone(super_defaults);
-        this.options = _.extend(super_defaults, this.defaults, opts);
+        this.init_options(opts);
         this.events = _.extend({}, this._events, this.events, this.options.events);
         this.hal_events = _.extend({}, this.hal_events, this.options.hal_events);
         this.children = {};
