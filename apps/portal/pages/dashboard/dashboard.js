@@ -1,7 +1,7 @@
 
 PORTAL.Pages.Dashboard = SWAM.Page.extend({
     template: ".pages.dashboard",
-    classes: "page-view page-fullscreen page-padded has-topbar",
+    classes: "page-view page-padded has-topbar",
 
     on_action_test_form: function(evt) {
         var fields = [

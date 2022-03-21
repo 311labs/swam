@@ -26,9 +26,3 @@
         background-color: #0d6efd;
     }
 }
-
-#list #count {
-    &:before {
-        content: "total items: "
-    }
-}

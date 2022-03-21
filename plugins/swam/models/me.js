@@ -4,6 +4,10 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     },
 
+    defaults: {
+        auto_refresh_jwt: true
+    },
+
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
         this.credentials = app.getObject("credentials", {});
@@ -21,30 +25,70 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     isAuthenticated: function() {
-    	return !_.isEmpty(this.credentials.access) || !_.isEmpty(this.credentials.token);
+        if (_.isEmpty(this.credentials)) return false;
+        if (this.credentials.kind == "JWT") {
+            return this.authExpiresIn() > 0;
+        }
+    	return !_.isEmpty(this.credentials.token);
+    },
+
+    startAutoJwtRefresh: function() {
+        if (!this._auto_jwt_timer) {
+            var timeout = (this.authExpiresIn() - 300) * 1000; // refresh 5 min before expires
+            if (timeout < 4000) {
+                timeout = 5000;
+            }
+            this._auto_jwt_timer = setTimeout(function(){
+                this._auto_jwt_timer = null;
+                this.refreshJWT();
+            }.bind(this), timeout);
+        }
+    },
+
+    stopAutoJwtRefresh: function() {
+        if (this._auto_jwt_timer) {
+            stopTimeout(this._auto_jwt_timer);
+            this._auto_jwt_timer = null;
+        }
+    },
+
+    setJWT: function(data) {
+        this.credentials.kind = "JWT";
+        this.credentials.access = data.access;
+        this.credentials.refresh = data.refresh;
+        this.credentials.jwt = parseJWT(data.access);
+        if (data.id) this.id = data.id;
+        if (this.credentials.access) {
+            app.setProperty("credentials", this.credentials);
+            SWAM.Rest.credentials = this.credentials;
+        }
+        this.startAutoJwtRefresh();
     },
 
     login: function(username, password, callback, opts) {
         SWAM.Rest.POST("/rpc/account/jwt/login", {username:username, password:password}, function(response, status) {
         	if (response.status) {
         		// credentials get stored in SWAM.Rest
-        		this.credentials.kind = "JWT";
-        		this.credentials.access = response.data.access;
-        		this.credentials.refresh = response.data.refresh;
-        		if (response.data.id) this.id = response.data.id;
-        		if (this.credentials.access) {
-        			app.setProperty("credentials", this.credentials);
-        			SWAM.Rest.credentials = this.credentials;
-        		}
+        		this.setJWT(response.data);
         	}
             if (callback) callback(this, response);
         }.bind(this), opts);
     },
 
     logout: function() {
+        this.stopAutoJwtRefresh();
         this.credentials = {};
         SWAM.Rest.credentials = null;
         app.setProperty("credentials", null);
+    },
+
+    authExpiresIn: function() {
+        if ((_.isEmpty(this.credentials)) || (_.isEmpty(this.credentials.jwt))) return 0;
+        return this.credentials.jwt.exp - parseInt(Date.now() / 1000);
+    },
+
+    isAuthExpiring: function() {
+        return (this.authExpiresIn() - 300) < 0;
     },
 
     refreshJWT: function(callback, opts) {
@@ -56,14 +100,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         SWAM.Rest.POST("/rpc/account/jwt/refresh", {refresh_token:this.credentials.refresh}, function(response, status) {
             if (response.status) {
                 // credentials get stored in SWAM.Rest
-                this.credentials.kind = "JWT";
-                this.credentials.access = response.data.access;
-                this.credentials.refresh = response.data.refresh;
-                if (response.data.id) this.id = response.data.id;
-                if (this.credentials.access) {
-                    app.setProperty("credentials", this.credentials);
-                    SWAM.Rest.credentials = this.credentials;
-                }
+                this.setJWT(response.data);
             } else {
                 this.logout();
             }

@@ -405,6 +405,78 @@ SWAM.Localize = {
     },
     'icon': function(value, attr, fmt) {
         return SWAM.Icons[value];
-    }
+    },
+
+    'subtract': function(value, attr, fmt) {
+        return this.minus(value, attr, fmt);
+    },
+
+    'minus': function(value, attr, fmt) {
+        var m = 0;
+        if (_.isNumber(fmt)){
+            m = fmt;
+        } else if (fmt && fmt.isNumber()) {
+            m = Number(fmt);
+        }
+        return value - m;
+    },
+
+    'add': function(value, attr, fmt) {
+        return this.plus(value, attr, fmt);
+    },
+
+    'plus': function(value, attr, fmt) {
+        var m = 0;
+        if (_.isNumber(fmt)){
+            m = fmt;
+        } else if (fmt && fmt.isNumber()) {
+            m = Number(fmt);
+        }
+        if (_.isNumber(value)) {
+            value = value;
+        } else if (value && value.isNumber()) {
+            value = Number(value);
+        }
+        return value + m;
+    },
+
+    'multiply': function(value, attr, fmt) {
+        var m = 1;
+        if (_.isNumber(fmt)){
+            m = fmt;
+        } else if (fmt && fmt.isNumber()) {
+            m = Number(fmt);
+        }
+        return value * m;
+    },
+    'divide': function(value, attr, fmt) {
+        // console.log(fmt);
+        if (_.isString(fmt)) fmt = fmt.removeAll("'");
+        var m = 1;
+        if (_.isNumber(fmt)){
+            m = fmt;
+        } else if (_.isString(fmt) && fmt.isNumber()) {
+            m = Number(fmt);
+        }
+        return value / m;
+    },
+    'has': function(value, attr, fmt) {
+        if (_.isString(value)) {
+            return value.includes(fmt);
+        }
+        return false;
+    },
+
+    'hasperm': function(value, attr, fmt) {
+        var values;
+        if (_.isString(fmt)) {
+            fmt = fmt.removeAll("'");
+            values = fmt.split(',');
+        } else {
+            values = fmt;
+        }
+        if (value.hasPerm) return value.hasPerm(values);
+        return false
+    },
 }
 

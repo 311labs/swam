@@ -45,254 +45,9 @@ window.debounce = function (func, context, threshold, execAsap) {
     };
 };
 
-window.findNestedValue = function(obj, key, default_value) {
-    if (key[0] == '.') key = key.slice(1);
-    var res = window.getNestedValue(obj, key, undefined);
-    if (res != undefined) {
-        return res;
-    }
-    for(var prop in obj) {
-        if (obj.hasOwnProperty(prop) && _.isObject(obj[prop])) {
-            robj = obj[prop];
-            // check if the key is here
-            var res = window.getNestedValue(robj, key, undefined);
-            if (res != undefined) {
-                return res;
-            }
-            // go another level deep
-            res = window.findNestedValue(robj, key, undefined);
-            if (res != undefined) {
-                return res;
-            }
-        }
-    }
-    return default_value;
-};
 
-window.getNestedValue = function(obj, key, default_valued) {
-    var sub = key.split('.');
-    var ret = obj;
-    while (sub.length) {
-        if (ret.attributes && ret.attributes.hasOwnProperty(sub[0])) {
-            ret = ret.attributes[sub[0]];
-        } else if (ret.hasOwnProperty(sub[0])) {
-            ret = ret[sub[0]];
-        } else {
-            return default_valued;
-        }
-        if (ret === null) {
-            return default_valued;
-        }
-        sub.shift();
-    }
-    return ret;
-};
+// BEGIN STRING EXT
 
-Array.prototype.remove = function() {
-    var what, a = arguments,
-        L = a.length,
-        ax;
-    if ((L == 1) && (_.isArray(a[0]))) {
-        count = this.removeList(a[0]);
-    } else {
-        count = this.removeList(a);
-    }
-    return this;
-};
-
-Array.prototype.removeList = function(lst) {
-    var what, a = lst,
-        L = a.length,
-        ax;
-    var count = 0;
-    while (L && this.length) {
-        what = a[--L];
-        while ((ax = this.indexOf(what)) !== -1) {
-            count += 1;
-            this.splice(ax, 1);
-        }
-    }
-    return count;
-};
-
-Array.prototype.has = function() {
-    if ((arguments.length == 1) && (_.isArray(arguments[0]))) {
-        var lst = arguments[0];
-        var i = lst.length;
-        var c = 0;
-        while (i--) {
-            var item = lst[i];
-            if (this.indexOf(item) >= 0) c += 1;
-        }
-        return c;
-    } else if (arguments.length > 0) {
-        return this.has(Array.from(arguments).sort(function (a, b) { return a - b; }));
-    }
-    return false;
-};
-
-String.prototype.replaceAll = function(oldVal, newVal) {
-    if (typeof oldVal !== "string" || typeof newVal !== "string" || oldVal === "") {
-        return this;
-    }
-    if (oldVal == newVal) {
-        return this;
-    }
-    try {
-        var returnVal = this;
-        try {
-            var replaceAllRegex = function(str) {
-                return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-            }
-            oldvalue = oldvalue.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-            // var replaceAllRegex = new RegExp(eval("/" + RegExp.escape(oldVal) + "/gm"));
-            return this.replace(oldvalue, newVal);
-        } catch (invalidRegExp) {}
-        var loopCount = 0; /* hit a RegExp exception, do it the old fashioned way */
-        while (returnVal.contains(oldVal) && loopCount < 1000) {
-            returnVal = returnVal.replace(oldVal, newVal);
-            loopCount++;
-        }
-        return returnVal;
-    } catch (exc) {}
-    return this;
-};
-
-String.prototype.removeAll = function(str) {
-    return this.replaceAll(str, "");
-};
-
-String.prototype.slugify = function() {
-    // remove non-words and replace consecutive spaces with a hyphen
-    return this.toLowerCase().replace(/[^\w ]+/g, '').replace(/[ ]+/g, '-');
-};
-
-String.prototype.removeAll = function(str) {
-    return this.replaceAll(str, "");
-};
-
-String.prototype.toInt = function() {
-    return parseInt(this.removeAll(',').removeAll('$').removeAll("%"), 10);
-};
-
-String.prototype.toNumberString = function() {
-    return this.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-};
-
-String.prototype.toNumber = function() {
-    return Number(this);
-};
-
-String.prototype.toFloat = function() {
-    return parseFloat(this.removeAll(',').removeAll('$').removeAll("%"));
-};
-
-String.prototype.upper = String.prototype.toUpperCase;
-String.prototype.lower = String.prototype.toLowerCase;
-
-// Gracias STACKOVERFLOW Crescent Fresh & Niaz
-String.prototype.urlify = function(text) {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
-    // var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return this.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
-    });
-};
-
-String.prototype.format = function() {
-  // "This is {0} {1} {0}".format("another", "test")
-  var arg1 = arguments[0];
-  if (_.isObject(arg1)) return this.formatWithDict(arg1);
-  var formatted = this;
-  for (arg in arguments) {
-    formatted = formatted.replaceAll("{" + arg + "}", String(arguments[arg]));
-  }
-  return formatted;
-};
-
-String.prototype.formatWithDict = function(dict) {
-  // "This is {name} {place} {name}".formatWithDict("another", "test")
-  var formatted = this;
-  for (key in dict) {
-    formatted = formatted.replaceAll("{" + key + "}", String(dict[key]));
-  }
-  return formatted;
-};
-
-String.Random = function(length, possible) {
-    length = length || 16;
-    var text = "";
-    possible = possible || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for(var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-};
-
-RegExp.escape = function(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
-
-String.prototype.toHex = function(){
-    // var hex, i;
-
-    // var result = "";
-    // for (i=0; i<this.length; i++) {
-    //     hex = this.charCodeAt(i).toString(16);
-    //     result += ("000"+hex).slice(-4);
-    // }
-
-    // return result
-
-    // utf8 to latin1
-    var s = unescape(encodeURIComponent(this))
-    var h = ''
-    for (var i = 0; i < s.length; i++) {
-        h += s.charCodeAt(i).toString(16)
-    }
-    return h
-}
-
-String.prototype.fromHex = function(){
-    var s = ''
-    for (var i = 0; i < this.length; i+=2) {
-        s += String.fromCharCode(parseInt(this.substr(i, 2), 16))
-    }
-    return decodeURIComponent(escape(s))
-}
-
-String.prototype.contains = function(str, caseSensitive) {
-    if (typeof caseSensitive != "boolean") {
-        caseSensitive = true;
-    }
-    try {
-        if (typeof str == "undefined") {
-            return false;
-        }
-        if (typeof str != "string") {
-            str = String(str);
-        }
-        if (typeof str != "string" || str === "") {
-            return false;
-        }
-        if (!caseSensitive) {
-            return (this.toLowerCase().indexOf(str.toLowerCase()) != -1);
-        }
-        return (this.indexOf(str) != -1);
-    } catch (exc) {}
-    return false;
-};
-
-String.prototype.endsWith = function(suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
-
-if (typeof String.prototype.startsWith != 'function') {
-  // see below for better implementation!
-  String.prototype.startsWith = function (str){
-    return this.indexOf(str) == 0;
-  };
-}
 
 Storage.prototype.setObject = function(key, value) {
     this.setItem(key, JSON.stringify(value));
@@ -302,6 +57,8 @@ Storage.prototype.getObject = function(key) {
     var value = this.getItem(key);
     return value && JSON.parse(value);
 };
+
+
 
 
 if (window._) {
@@ -370,4 +127,64 @@ window.syntaxHighlight = function(json) {
         return '<span class="' + cls + '">' + match + '</span>';
     });
 };
+
+window.parseJWT = function(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
+
+window.findNestedValue = function(obj, key, default_value) {
+    if (key[0] == '.') key = key.slice(1);
+    var res = window.getNestedValue(obj, key, undefined);
+    if (res != undefined) {
+        return res;
+    }
+    for(var prop in obj) {
+        if (obj.hasOwnProperty(prop) && _.isObject(obj[prop])) {
+            robj = obj[prop];
+            // check if the key is here
+            var res = window.getNestedValue(robj, key, undefined);
+            if (res != undefined) {
+                return res;
+            }
+            // go another level deep
+            res = window.findNestedValue(robj, key, undefined);
+            if (res != undefined) {
+                return res;
+            }
+        }
+    }
+    return default_value;
+};
+
+window.getNestedValue = function(obj, key, default_valued) {
+    var sub = key.split('.');
+    var ret = obj;
+    while (sub.length) {
+        if (ret.attributes && ret.attributes.hasOwnProperty(sub[0])) {
+            ret = ret.attributes[sub[0]];
+        } else if (ret.hasOwnProperty(sub[0])) {
+            ret = ret[sub[0]];
+        } else {
+            return default_valued;
+        }
+        if (ret === null) {
+            return default_valued;
+        }
+        sub.shift();
+    }
+    return ret;
+};
+
+window.isDict = function(obj) {
+    if (_.isArray(obj)) return false;
+    return (_.isObject(obj) && obj && (obj["__super__"] == undefined));
+};
+
 

@@ -8,10 +8,10 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         var data = SWAM.Form.getData(this.$el.find("form"));
         if (data.signin_username && data.signin_password) {
             app.showBusy({icon:'<i class="bi bi-key"></i>'});
-            app.me.login(data.signin_username, data.signin_password, function(model, status, data){
+            app.me.login(data.signin_username, data.signin_password, function(model, data){
                 app.hideBusy();
-                app.on_loggedin();
                 if (app.me.isAuthenticated()) {
+                    app.on_loggedin();
                     app.loadRoute(this.starting_url);
                 } else {
                     SWAM.Dialog.alert({"title":"Login Failed", "message": data.error});

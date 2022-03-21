@@ -2,7 +2,7 @@
 
 SWAM.Views.ListPagination = SWAM.View.extend({
     tagName: "ul",
-    classes: "pagination pagination-sm justify-content-end mt-3",
+    classes: "pagination pagination-sm justify-content-end",
     template: "plugins.swam.ext.lists.pagination",
 
     on_init: function() {
@@ -23,11 +23,18 @@ SWAM.Views.ListPagination = SWAM.View.extend({
 
 SWAM.Views.ListPaginationCount = SWAM.View.extend({
     tagName: "div",
-    classes: "fs-6 mt-4 text-muted",
+    classes: "fs-6 text-muted",
     template: "plugins.swam.ext.lists.paginationcount",
 
     on_init: function() {
-        this.collection().on("loading:end", this.render.bind(this));
+        this.is_loading = false;
+        this.collection().on("loading:begin", this.on_collection_change, this);
+        this.collection().on("loading:end", this.on_collection_change, this);
+    },
+
+    on_collection_change: function() {
+        this.is_loading = this.collection().is_loading;
+        this.render();
     },
 
     collection: function() {
@@ -38,6 +45,7 @@ SWAM.Views.ListPaginationCount = SWAM.View.extend({
 
 SWAM.Views.PaginatedList = SWAM.View.extend({
     template: "plugins.swam.ext.lists.paginatedlist",
+    classes: "swam-paginated-list",
     defaults: {
         List: SWAM.Views.List,
     },
@@ -58,4 +66,6 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
     }
 
 });
+
+
 

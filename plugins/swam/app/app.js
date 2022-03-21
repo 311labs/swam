@@ -13,6 +13,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         catch_errors: true, // catch and show popup for uncaught errors
     },
     on_init: function() {
+        // turn on smart parameter parsing ('sss', 22, model.name) where model.name value is passed into localize
+        if (window.Mustache) window.Mustache.smart_params = 1;
+        
         this.on("property:change", this.on_prop_change, this);
     },
     on_prop_change: function(evt) {

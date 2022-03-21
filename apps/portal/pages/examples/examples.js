@@ -1,9 +1,13 @@
 
 PORTAL.Pages.Examples = SWAM.Page.extend(SWAM.Ext.BS).extend({
     template: ".pages.examples",
-    classes: "page-view page-fullscreen page-padded has-topbar",
+    classes: "page-view page-padded has-topbar",
 
     busy_examples: _.keys(SWAM.Icons),
+
+    on_init: function() {
+        this.addChild("test_form", new SWAM.Form.View({fields:SWAM.Form.TestFields}));
+    },
 
     on_action_test_form: function(evt) {
         var fields = [
@@ -86,6 +90,10 @@ PORTAL.Pages.Examples = SWAM.Page.extend(SWAM.Ext.BS).extend({
             }
         }
         Toast.create(toast);
+    },
+
+    on_action_form_json: function(evt) {
+        SWAM.Dialog.alert({title:"Form Data", json:SWAM.Form.TestFields});
     },
 
     on_post_render: function() {

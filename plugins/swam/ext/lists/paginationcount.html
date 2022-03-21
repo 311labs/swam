@@ -1,1 +1,11 @@
-Showing {{collection.start}} to {{collection.end}} of {{collection.count}} entries
+{{^is_loading}}
+	{{#collection.count}}
+	Showing {{collection.start|add('1')}} to {{collection.end}} of {{collection.count}} entries
+	{{/collection.count}}
+	{{^collection.count}}
+	0 entries
+	{{/collection.count}}
+{{/is_loading}}
+{{#is_loading}}
+<div class="spinner-border spinner-border-sm" role="status"></div>  <strong>Loading...</strong>
+{{/is_loading}}

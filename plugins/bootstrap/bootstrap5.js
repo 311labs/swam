@@ -19,7 +19,7 @@
 /** Container that generated toasts will be inserted into. */
 const TOAST_CONTAINER = document.createElement("div");
 TOAST_CONTAINER.id = "toastContainer";
-TOAST_CONTAINER.className = "toast-container position-fixed top-0 end-0";
+TOAST_CONTAINER.className = "toast-container position-fixed top-1 end-0";
 TOAST_CONTAINER.setAttribute("aria-live", "polite");
 document.body.appendChild(TOAST_CONTAINER);
 /** HTML markup for the toast template. */
@@ -201,7 +201,7 @@ class Toast {
         }
 
         if (_.isFunction(toastOptions.on_click)) {
-          $(toastEl).on("click", function(evt) {
+          $(toastBody).on("click", function(evt) {
             var t = bootstrap.Toast.getInstance(toastEl)
             toastOptions.on_click(evt, t, toastOptions);
           });
@@ -217,7 +217,7 @@ class Toast {
         if (this.currentToastCount >= this.maxToastCount) {
             if (!this.queueEnabled)
                 return;
-            this.queue.push(toastToQueue);
+            this.queue.push(toastInfo);
             return;
         }
 
@@ -252,6 +252,18 @@ class Toast {
                 break;
         }
     }
+
+    static removeToast(toastInfo) {
+      var has_child = false;
+      for(var c in TOAST_CONTAINER.children) {
+          if (toastInfo.toast == c) {
+            has_child = true;
+            break;
+          }
+      }
+      this.currentToastCount--;
+      if (has_child) TOAST_CONTAINER.removeChild(toastInfo.toast);
+    }
     /**
      * Inserts toast HTML onto page and sets up for toast deletion.
      * @param {IToast} toastInfo The toast object to be rendered.
@@ -270,8 +282,7 @@ class Toast {
         this.currentToastCount++;
         // When the toast hides, remove it from the DOM
         toastInfo.toast.addEventListener('hidden.bs.toast', () => {
-            TOAST_CONTAINER.removeChild(toastInfo.toast);
-            this.currentToastCount--;
+            this.removeToast(toastInfo);
             if (this.queueEnabled && this.queue.length > 0 && this.currentToastCount < this.maxToastCount) {
                 const queuedToast = this.queue.shift();
                 this.render(queuedToast);

@@ -5,7 +5,9 @@ SWAM.Collection = SWAM.Object.extend({
     defaults: {
         Model: SWAM.Model,
         size: 50,
-        max_visible_pages: 4
+        max_visible_pages: 4,
+        reset_after_fetch: true,
+        fetch_debounced: true  // by default debounce fetch requests (ie avoid double clicks, etc)
     },
 
     params: {},
@@ -17,6 +19,7 @@ SWAM.Collection = SWAM.Object.extend({
             models = [];
         } 
         this.id = _.uniqueId("collection");;
+        this.is_loading = false;
         this.set(models);
         this.init_options(opts);
         this.params = _.extend({size:this.options.size}, this.params, this.options.params);
@@ -138,8 +141,10 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     _on_fetched: function(resp, status) {
+        this.is_loading = false;
         if (resp.status) {
             if (resp && _.isArray(resp.data)) {
+                if (this.options.reset_after_fetch) this.reset();
                 this.parseResponse(resp);
                 this.trigger("fetched", this);
             }
@@ -150,6 +155,15 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     fetch: function(callback, opts) {
+        if (this.options.fetch_debounced) {
+            this.fetchDebounced(callback, opts);
+        } else {
+            this._fetch(callback, opts);
+        }
+    },
+
+    _fetch: function(callback, opts) {
+        this.is_loading = true;
         this.trigger('loading:begin', this);
         SWAM.Rest.GET(this.options.url, this.params, function(data, status) {
             this._on_fetched(data, status);
@@ -157,10 +171,23 @@ SWAM.Collection = SWAM.Object.extend({
         }.bind(this), opts);
     },
 
+    fetchDebounced: function(callback, opts) {
+        if (!this._debounce_fetch) {
+            this._debounce_time = this.options.debounce_time || 400;
+           this._debounce_fetch = window.debounce(
+               this._fetch.bind(this),
+               this._debounce_time
+           );
+        }
+        this.is_loading = true;
+        this.trigger('loading:begin', this);
+        this._debounce_fetch(callback, opts);
+    },
+
     fetchPage: function(page, callback, opts) {
         page = parseInt(page, 10) - 1;
         this.params.start = page * this.size;
-        this.reset();
+        if (!this.options.reset_after_fetch) this.reset();
         this.fetch(callback, opts);
     },
 

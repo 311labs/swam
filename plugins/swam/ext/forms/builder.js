@@ -39,6 +39,7 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 
 	_.each(fields, function(field) {
 		if (!field) return;
+		if ((field == "")|| (field == " ")) field = {type:"line", columns:12};
 		if (field.type == "group") {
 			if (field.columns) {
 				if (grp_col_total == 0) {
@@ -61,7 +62,11 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 			return;
 		}
 
-		var $row = $("<div />").addClass("form-container");
+		append_label = field.floating_label;
+		var $row = $("<div />").addClass("swam-form-input");
+		if (field.floating_label) {
+			$row.addClass("form-floating");
+		}
 		var $label;
 		if (field.label) {
 			$label = $("<label for='" + field.name + "' />").addClass("form-label").text(field.label);
@@ -83,16 +88,19 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 			if ($label) $label.append('<a class="input-help"  data-balloon-pos="'+ field.help_pos + '" aria-label="' + field.help + '" data-balloon-length="' + field.help_length + '" href="#"><i class="fas fa-question-circle"></i></a>');
 		}
 
-		if (!field.type && !field.name) field.type = "spacer";
+		if (!field.type && !field.name) {
+			field.type = "spacer";
+			if (!field.columns) field.columns = 12;
+		}
 		if (!field.type) field.type = "text";
 
-		if ((field.type == "date")||(field.type == "datemonth")) {
-			field.icon = "fa fa-calendar";
+		if ((field.type == "date")||(field.type == "datemonth")||(field.type == "daterange")) {
+			field.icon = "bi bi-calendar";
 		} else if (field.type == "datetime") {
-            field.icon = "far fa-clock";
+            field.icon = "bi bi-clock";
 		}
 		else if (field.type == "timepicker") {
-            field.icon = "far fa-clock";
+            field.icon = "bi bi-clock";
         }
 
 		if (field.type == "textarea") {
@@ -155,33 +163,11 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 			$span.append($img);
 			$span.append($spanlabel);
 			$input.append($span);
-		} else if (field.type == "daterange") {
-			if (!field.placeholder) field.placeholder = "Select Date Range";
-			if (!field.classes) field.classes = "daterange-input";
-			if (field.name) {
-				var $start_input = $("<input />")
-					.prop('name', field.name + "start")
-					.prop('type', 'hidden');
-				var $end_input = $("<input />")
-					.prop('name', field.name + "end")
-					.prop('type', 'hidden');
-
-				$row.append($start_input);
-				$row.append($end_input);
-			}
-
-			$input = $("<div />")
-				.data("name", field.name)
-				.prop("id", field.name)
-				.append($("<i />").addClass("fas fa-calendar"))
-				.append("<span>" + field.placeholder + "</span>")
-				.append($("<i />").addClass("fa fa-caret-down pull-right"));
-			// $label = null;
         } else if (field.type == "datetime") {
             if (!field.placeholder) field.placeholder = "Select Date";
             if (!field.classes) field.classes = "datetime-input";
             $input = $("<div />")
-                .append($("<i />").addClass("fas fa-calendar"))
+                .append($("<i />").addClass("bi bi-calendar"))
                 .append("<span>" + field.placeholder + "</span>")
                 .append($("<i />").addClass("fa fa-caret-down pull-right"));
             // $label = null;
@@ -336,13 +322,14 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 			$label.addClass("form-check-label");
 			$input.prop('type', "checkbox");
 			$input.attr("role", "switch");
+			if (field.default) $input.prop('checked', 1);
 			// $input.attr("data-size", "mini");
 			// $input.attr("data-on", "success");
 			// $input.attr("data-off", "danger");
 			if (_.isString(field.value)) $input.attr("data-value", field.value)
 		} else if (field.type == "color") {
 			$input = $("<input />")
-				.addClass("input-" + field.type)
+				.addClass("form-control form-control-" + field.type)
 				.prop("type", "color")
 				.prop('name', field.name);
 		} else {
@@ -359,7 +346,7 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 				$input.prop("name", field.name);
 			}
 
-			if ((field.type == "date")||(field.type == "datemonth")) {
+			if ((field.type == "date")||(field.type == "datemonth")||(field.type == "timepicker")) {
 				$input.prop('type', "text");
 			} else if (field.type == 'tags') {
 				$input.prop('type', "text");
@@ -404,7 +391,7 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 				if ($label && !append_label) $row.append($label);
 				if ((field.type == "date")||(field.type == "datemonth")) $fg.addClass("date");
 				$fg.append($input);
-				$fg.append("<div class='input-group-btn'><button class='btn btn-default'><i class='" + field.button.icon + "'></i></button></div>");
+				$fg.append("<button class='btn btn-default btn btn-outline-secondary'><i class='" + field.button.icon + "'></i></button>");
 				$row.append($fg);
 				if ($label && append_label) $row.append($label);
 			} else if (field.icon) {
@@ -414,7 +401,7 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 				if ($label && !append_label) $row.append($label);
 				if ((field.type == "date")||(field.type == "datemonth")) $fg.addClass("date");
 				$fg.append($input);
-				$fg.append("<div class='input-group-addon'><i class='" + field.icon + "'></i></div>");
+				$fg.append("<div class='input-group-text'><i class='" + field.icon + "'></i></div>");
 				$row.append($fg);
 				if ($label && append_label) $row.append($label);
 			} else {
@@ -599,3 +586,6 @@ SWAM.Form.build = function(fields, defaults, $form, model, fake_fields, extra, n
 
 	return $form;
 }
+
+
+

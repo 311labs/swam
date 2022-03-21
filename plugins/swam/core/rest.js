@@ -7,6 +7,8 @@ SWAM.Rest = {
         cache: false,
     },
 
+    debug_delay_ms: 0, // optional delay sending request by n ms
+
     // credentials: {
     //     kind: "JWT",
     //     access: null,
@@ -88,6 +90,14 @@ SWAM.Rest = {
             }
             
         };
+
+        if (this.debug_delay_ms) {
+            console.warn("DEBUG MODE: delaying rest request by " + this.debug_delay_ms + " ms");
+            setTimeout(function() {
+                $.ajax(request);
+            }, this.debug_delay_ms);
+            return;
+        }
 
         $.ajax(request);
     }
