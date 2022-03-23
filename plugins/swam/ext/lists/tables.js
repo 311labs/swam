@@ -67,17 +67,21 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend({
 
 
 SWAM.Views.Table = SWAM.Views.List.extend({
-    classes: "swam-table table table-striped",
+    classes: "swam-table swam-table-bs table table-striped",
     tagName: "table",
 
     defaults: {
         ItemView: SWAM.Views.TableItem,
-        sort_down_icon: '<i class="bi bi-caret-down-fill"></i>',
-        sort_up_icon: '<i class="bi bi-caret-up-fill"></i>'
+        sort_down_icon: ' <i class="bi bi-sort-down" data-action="sort"></i>',
+        sort_up_icon: ' <i class="bi bi-sort-up" data-action="sort"></i>',
+        sort_icon: ' <i class="bi bi-arrow-down-up text-muted" data-action="sort"></i>',
+        filter_icon_active: ' <i class="bi bi-filter" data-action="filter"></i>',
+        filter_icon: ' <i class="bi bi-filter text-muted" data-action="filter"></i>'
     },
 
     on_action_sort: function(evt) {
-    	var sort_field = $(evt.currentTarget).data("sort");
+        var $column = $(evt.currentTarget).parent();
+    	var sort_field = $column.data("sort");
     	if (!sort_field) return;
     	this.collection.sort_field = sort_field;
     	this.collection.sort_descending = !this.collection.sort_descending;
@@ -91,6 +95,23 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     	}
     	this.trigger("sort", this, sort_field);
     	this.collection.fetch();
+    },
+
+    on_action_filter: function(evt) {
+        evt.stopPropagation();
+        var $column = $(evt.currentTarget).parent();
+        var filter = $column.data("filter");
+        var label = $column.data("label");
+        if (!_.isArray(filter)) {
+            if (!filter.name) filter.name = $column.data("field");
+            filter = [filter];
+        }
+        SWAM.Dialog.showForm(filter, {"title":"Filter " + label, callback: function(dlg, choice){
+            var data = dlg.getData();
+            console.log(data);
+            SWAM.Dialog.alert({title:"Debug", json:data});
+            dlg.dismiss();
+        }});
     },
 
     on_pre_render: function() {
@@ -121,7 +142,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     			if (!column.sort_field) column.sort_field = column.field;
     			if (column.sort) column.sort_field = column.sort;
     			$el.addClass("sortable");
-    			$el.attr("data-action", "sort");
+    			// $el.attr("data-action", "sort");
     			$el.data("sort", column.sort_field);
     			if (this.collection.sort_field == column.sort_field) {
     				if (this.collection.sort_descending) {
@@ -129,16 +150,24 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     				} else {
     					lbl = lbl + " " + this.options.sort_up_icon;
     				}
-    			}
+    			} else if (this.options.sort_icon) {
+                    lbl = lbl + " " + this.options.sort_icon;
+                }
     		}
+
+            if (column.filter) {
+                lbl = lbl + " " + this.options.filter_icon;
+                $el.data("filter", column.filter);
+            }
 
     		if (column.classes) {
     			$el.addClass(column.classes);
     		}
+
+            $el.data("label", column.label);
+            $el.data("field", column.field);
     		$el.html(lbl);
     		this.$header.append($el);
-    		$el.data("sort", column.sort_field);
-    		$el.on("click", this._bound_click_sort);
     	} else {
     		this.$header.append("<th>" + column + "</th>");
     	}
@@ -149,7 +178,8 @@ SWAM.Views.Table = SWAM.Views.List.extend({
 SWAM.Views.PaginatedTable = SWAM.Views.PaginatedList.extend({
 	defaults: {
 		List: SWAM.Views.Table,
-	}
+	},
+    classes: "swam-paginated-table swam-paginated-table-bs"
 
 });
 

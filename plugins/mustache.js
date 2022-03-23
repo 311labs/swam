@@ -58,6 +58,15 @@ Mustache.Context.prototype.ext_include = function(name) {
     return SWAM.renderTemplate(template_path, context);
 };
 
+Mustache.Context.prototype.ext_icon = function(name) {
+    var keys = this.parseValueName(name);
+    if (!keys.length) return null;
+    var icon = SWAM.Icons[keys[0].params];
+    if (!icon) icon = '<i class="bi bi-' + keys[0].params + '"></i>'
+    return icon;
+};
+
+
 Mustache.Context.prototype.ext_dot = function(name) {
     if (name.startsWith(".|")) {
         var info = this.parseValueName(name.slice(1));
@@ -66,7 +75,7 @@ Mustache.Context.prototype.ext_dot = function(name) {
     return this.view;
 };
 
-Mustache.Context.prototype.ext_list = ["INCLUDE", "LANG"];
+Mustache.Context.prototype.ext_list = ["INCLUDE", "LANG", "ICON"];
 
 Mustache.Context.prototype.runExtCheck = function(name){
     // first lets check our extensions

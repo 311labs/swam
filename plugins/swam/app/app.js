@@ -75,7 +75,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             page.setParams(params);
             page.addToDOM($parent);
             page.updateURL();
-            this.trigger("page:change");
+            this.trigger("page:change", name);
             if (!this.started) {
                 this.start();
             }
@@ -280,7 +280,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_uncaught_error: function(message, url, line, col, error, evt) {
         this.hideBusy();
-        SWAM.Dialog.alert({title:"Uncaught App Error", message:"<pre class='text-left'>" + error.stack + "</pre>", classes:"modal-lg"});
+        SWAM.Dialog.alert({title:"Uncaught App Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
         return false;
     },
 

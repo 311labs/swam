@@ -1,9 +1,13 @@
 {{#options.title}}
-<div class='list-title'>{{options.title}}</div>
+<div class='swam-list-title'>{{#options.icon}}{{{options.icon|icon}}} {{/options.icon}}{{{options.title}}}</div>
 {{/options.title}}
-<div id='list'></div>
-<nav class='row swam-paginated-list-footer'>
-	<div class='col' id="counter"></div>
-	<div class='col' id='pager'></div>
-</nav>
+<div class="swam-table-group">
+	<div id='filters'></div>
+	<div id='list'></div>
+	<nav class='row swam-paginated-list-footer'>
+		<div class='col' id="counter"></div>
+		<div class='col' id='pager'></div>
+	</nav>
+</div>
+
 

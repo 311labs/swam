@@ -7,7 +7,10 @@ SWAM.Icons = {
     "clock": '<i class="bi bi-clock"></i>',
     "payment": '<i class="bi bi-credit-card-fill"></i>',
     "plug": '<i class="bi bi-plug-fill"></i>',
-    "wrench": '<i class="bi bi-wrench"></i>'
+    "wrench": '<i class="bi bi-wrench"></i>',
+    "group": '<i class="bi bi-people-fill"></i>',
+    "user": '<i class="bi bi-person-fill"></i>',
+    "reload": '<i class="bi bi-arrow-repeat"></i>',
 };
 
 

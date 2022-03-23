@@ -5,6 +5,18 @@ body.app {
 	    	position: absolute;
 	    	color: white;
 	    }
+
+	    div.modal-content {
+	    	background-color: $dialog-background;
+	    	form {
+	    		margin-top: 1rem;
+	    	}
+	    }
+
+	    div.modal-header {
+	    	background: $dialog-header-background;
+	    	color: $dialog-header-color;
+	    }
 	}
 
 	pre {

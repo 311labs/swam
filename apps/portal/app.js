@@ -16,10 +16,19 @@ PORTAL.App = SWAM.App.extend({
 		this.addPage("not_found", new PORTAL.Pages.NotFound(), ["404"]);
 		this.addPage("login", new PORTAL.Pages.Login(), ["login"]);
 
-		this.addPage("examples", new PORTAL.Pages.Examples(), ["examples", ":group/examples"]);
 		this.addPage("dashboard", new PORTAL.Pages.Dashboard(), ["dashboard", ":group/dashboard"]);
 		this.addPage("members", new PORTAL.Pages.Members(), ["members", ":group/members"]);
 		this.addPage("groups", new PORTAL.Pages.Groups(), ["groups", ":group/groups"]);
+
+		this.on_init_examples();
+	},
+
+	on_init_examples: function() {
+		this.addPage("examples_pages", new PORTAL.Pages.ExamplePages(), ["examples/pages"]);
+		this.addPage("examples_dialogs", new PORTAL.Pages.ExampleDialogs(), ["examples/dialogs"]);
+		this.addPage("examples_forms", new PORTAL.Pages.ExampleForms(), ["examples/forms"]);
+		this.addPage("examples_tables", new PORTAL.Pages.ExampleTables(), ["examples/tables"]);
+		this.addPage("examples_misc", new PORTAL.Pages.ExampleMisc(), ["examples/misc"]);
 	},
 
 	logout: function() {

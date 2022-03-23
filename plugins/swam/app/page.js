@@ -1,3 +1,5 @@
+SWAM.Pages = {};
+
 SWAM.Page = SWAM.View.extend({
 	classes: "page-view",
 	

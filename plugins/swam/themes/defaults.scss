@@ -2,7 +2,7 @@
 
 $white:   white;
 $black:   #1a1a1a;
-$blue:    #0d6efd;
+$blue:    #17a2b8;
 $indigo:  #6610f2;
 $purple:  #6f42c1;
 $pink:    #d63384;
@@ -12,6 +12,7 @@ $yellow:  #ffc107;
 $green:   #198754;
 $teal:    #20c997;
 $cyan:    #0dcaf0;
+$offblack: #504A50;
 
 $gray-darker: lighten(#000, 13.5%);
 $gray-dark: lighten(#000, 20%);
@@ -36,6 +37,13 @@ $brand-danger: $red;
 $brand-default: $gray-light;
 $brand-other: $black;
 
+
+$table-header-bg: $offblack;
+$table-header-color: white;
+
+$pager-color: $primary;
+$pager-active-bg: $primary;
+$pager-active-color: white;
 
 // button colors
 $btn-default-color: white;
@@ -78,10 +86,10 @@ $panel-left-font-size: 16px;
 $panel-left-sub-font-size: 12px;
 $panel-left-width: 200px;
 $panel-left-partial-width: 50px;
-$panel-left-background: #494F51;
-$panel-left-color: #CBFFE1;
-$panel-left-active-color: #6cf;
-$panel-left-active-bg: white;
+$panel-left-background: #343a40;
+$panel-left-color: #c2c7d0;
+$panel-left-active-color: white;
+$panel-left-active-bg: $primary;
 $panel-left-active-sub-color: #6cf;
 $panel-left-active-sub-bg: transparent;
 
@@ -93,7 +101,7 @@ $panel-left-nogroup-background: #583a63;
 $panel-left-nogroup-color: white;
 $panel-left-nogroup-active-color: #6cf;
 $panel-left-hover-color: white;
-$panel-left-hover-bg: $blue;
+$panel-left-hover-bg: rgba(255,255,255,.1);
 $panel-left-shadow: none;
 
 $panel-right-width: $panel-left-width;
@@ -156,15 +164,13 @@ $footer-background: #2E2F33;
 $footer-height: 50px;
 
 
-$dialog-header-background: #4e4e4e;
-$dialog-header-color: #ffffff;
+$dialog-header-background: inherit;
+$dialog-header-color: black;
 $dialog-modal-background: rgba(255,255,255,0.51);
-$dialog-radius: 4px;
 $dialog-color: black;
-$dialog-background: #E6E6E6;
+$dialog-background: white;
 
 $brand-icon-color: white;
-
 $page-view-border: 1px;
 
 $page-toc-bg: white;

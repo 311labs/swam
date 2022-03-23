@@ -2,11 +2,26 @@ SWAM.Form.View = SWAM.View.extend({
     classes: "form-view mb-4",
     files: {},
 
+    events: {
+        "click :checkbox": "on_checkbox_handler",
+        "change input": "on_input_handler",
+        "change select": "on_input_handler",
+        // "submit": "on_submit",
+        "click form.search button": "on_submit"
+    },
+
     on_render: function() {
         this.$el.html(SWAM.Form.build(this.options.fields, this.options.default, this.options.model));
     },
 
+    on_submit: function(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        return true;
+    },
+
     on_post_render: function() {
+        this.$el.on("submit", this.on_submit, this);
         this.on_init_widgets();
     },
 
@@ -50,7 +65,7 @@ SWAM.Form.View = SWAM.View.extend({
     on_init_datepicker: function() {
         if (!window.easepick) return;
 
-        var list = [].slice.call(this.$el[0].querySelectorAll('.input-date input'))
+        var list = [].slice.call(this.$el[0].querySelectorAll('input.input-date '))
         this._date_pickers = list.map(function (sel) {
           return new easepick.create({element:sel,
                 css: [
@@ -63,7 +78,7 @@ SWAM.Form.View = SWAM.View.extend({
     on_init_daterangepicker: function($root) {
         if (!window.easepick) return;
 
-        var list = [].slice.call(this.$el[0].querySelectorAll('.input-daterange input'))
+        var list = [].slice.call(this.$el[0].querySelectorAll('input.input-daterange'))
         this._daterange_pickers = list.map(function (sel) {
           return new easepick.create({element:sel,
                 plugins: ['RangePlugin'],
@@ -81,10 +96,37 @@ SWAM.Form.View = SWAM.View.extend({
             comp.hide();
         });
         this._date_pickers = [];
-
+        this.off("submit", this.on_submit, this);
         // _.each(this._bs_popovers, function(item){
         //     item.dispose();
         // });
+    },
+
+    on_checkbox_handler: function(evt) {
+        var $el = $(evt.currentTarget);
+        var name = $el.attr("name");
+        if (!name) name = $el.attr("id");
+        if (!name) return;
+        var func_name = "on_checkbox_" + name;
+        if (_.isFunction(this[func_name])) {
+            this[func_name](evt, $el.is(":checked"));
+        } else if (_.isFunction(this["on_checkbox_change"])) {
+            this.on_checkbox_change(name, $el.is(":checked"));
+        }
+    },
+
+    on_input_handler: function(evt) {
+        var $el = $(evt.currentTarget);
+        var name = $el.attr("name");
+        if (!name) name = $el.attr("id");
+        if (!name) return;
+        var func_name = "on_input_" + name;
+        if (_.isFunction(this[func_name])) this[func_name](evt, $el.val());
+        if (_.isFunction(this[func_name])) {
+            this[func_name](evt, $el.val());
+        } else if (_.isFunction(this["on_input_change"])) {
+            this.on_input_change(name, $el.val(), evt);
+        }
     },
 
 });

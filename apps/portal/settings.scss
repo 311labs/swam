@@ -1,4 +1,5 @@
-$brand-primary-color: #FCC431;
+$brand-primary-color: #17a2b8;
+$brand-color: $brand-primary-color;
 $brand-primary-bg: #212222;
 
 $topbar-height: 50px;
@@ -12,11 +13,18 @@ $panel-left-font-size: 16px;
 $panel-left-sub-font-size: 12px;
 $panel-left-width: 250px;
 $panel-left-partial-width: 50px;
-$panel-left-background: #212529;
-$panel-left-color: black;
-$panel-left-active-color: #6cf;
-$panel-left-active-bg: white;
+$panel-left-background: #343a40;
+$panel-left-color: #c2c7d0;
+$panel-left-active-color: white;
+$panel-left-active-bg: $primary;
 $panel-left-active-sub-color: #6cf;
 $panel-left-active-sub-bg: transparent;
 
-$page-background: #dddddd;
+$page-background: #f4f6f9;
+
+
+$dialog-header-background: #17a2b8 linear-gradient(180deg,#3ab0c3,#17a2b8) repeat-x!important;
+$dialog-header-color: white;
+$dialog-modal-background: rgba(255,255,255,0.51);
+$dialog-color: #212529;
+$dialog-background: #f9f9f9;

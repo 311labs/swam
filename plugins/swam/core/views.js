@@ -7,9 +7,7 @@ SWAM.View = SWAM.Object.extend({
     },
     _events: {
         "click [data-action]": "on_action_click",
-        "click [data-showpage]": "on_showpage_click",
-        "click :checkbox": "on_checkbox_handler",
-        "change input": "on_input_handler"
+        "click [data-showpage]": "on_showpage_click"
     },
     hal_events: {},
     tagName: "div",
@@ -76,12 +74,14 @@ SWAM.View = SWAM.Object.extend({
         this.delegateEvents();
     },
     updateAttributes: function() {
+        if (this.options.classes) this.classes = this.options.classes;
         var attrs = {};
         if (this.attrs) attrs = _.extend(attrs, this.attrs);
         if (this.classes) attrs.class = this.classes;
         if (this.id) attrs.id = this.id;
         if (this.data_attrs) _.each(this.data_attrs, function(val, key){this.$el.data(key, val);}.bind(this));
         this.$el.attr(attrs);
+        if (this.options.add_classes) this.$el.addClass(this.options.add_classes);
     },
     isInDOM: function() {
         if (!this.$el) return false;
@@ -111,7 +111,7 @@ SWAM.View = SWAM.Object.extend({
     render: function() {
         this._last_render = Date.now();
         this.on_pre_render();
-        console.log("rendering: " + this.vid);
+        // console.log("rendering: " + this.vid);
         this.on_render();
         this.renderChildren();
         this.on_post_render();
@@ -174,33 +174,6 @@ SWAM.View = SWAM.Object.extend({
             app.setActivePage(page_name);
         }
         return false;
-    },
-
-    on_checkbox_handler: function(evt) {
-        var $el = $(evt.currentTarget);
-        var name = $el.attr("name");
-        if (!name) name = $el.attr("id");
-        if (!name) return;
-        var func_name = "on_checkbox_" + name;
-        if (_.isFunction(this[func_name])) {
-            this[func_name](evt, $el.is(":checked"));
-        } else if (_.isFunction(this["on_checkbox_change"])) {
-            this.on_checkbox_change(name, $el.is(":checked"));
-        }
-    },
-
-    on_input_handler: function(evt) {
-        var $el = $(evt.currentTarget);
-        var name = $el.attr("name");
-        if (!name) name = $el.attr("id");
-        if (!name) return;
-        var func_name = "on_input_" + name;
-        if (_.isFunction(this[func_name])) this[func_name](evt, $el.val());
-        if (_.isFunction(this[func_name])) {
-            this[func_name](evt, $el.val());
-        } else if (_.isFunction(this["on_input_change"])) {
-            this.on_input_change(name, $el.val());
-        }
     },
 
     on_dom_adding: function() {},

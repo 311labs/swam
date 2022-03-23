@@ -8,7 +8,7 @@ Number.prototype.isFloat = function() {
 };
 
 Number.prototype.toInt = function() {
-    return this;
+    return this.valueOf();
 };
 
 Number.prototype.toCurrency = function() {

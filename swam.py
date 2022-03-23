@@ -398,7 +398,7 @@ class IndexFile(SwamFile):
             self.output.write(html)
 
 
-def buildIncludes(FileClass, app_path, includes, output, opts):
+def buildIncludes(FileClass, app_path, includes, output, static_paths, opts):
     is_dirty = False
     for ipath in includes:
         fpath = ipath
@@ -410,6 +410,11 @@ def buildIncludes(FileClass, app_path, includes, output, opts):
         if opts.force or js.hasChanged():
             is_dirty = True
             js.compile()
+        print(static_paths)
+        print(ipath)
+        if static_paths and not ipath.startswith("/"):
+            ipath = "/" + os.path.join(app_path, ipath)
+            print(ipath)
         output.append(ipath)
     return is_dirty
 
@@ -420,15 +425,15 @@ def buildApp(app_path, config, opts):
     css_includes = []
 
     if config.js_files:
-        if buildIncludes(JSFile, app_path, config.js_files, js_includes, opts):
+        if buildIncludes(JSFile, app_path, config.js_files, js_includes, config.static_paths, opts):
             is_dirty = True
 
     if config.mustache_files:
-        if buildIncludes(MustacheFile, app_path, config.mustache_files, js_includes, opts):
+        if buildIncludes(MustacheFile, app_path, config.mustache_files, js_includes, config.static_paths, opts):
             is_dirty = True
 
     if config.css_files:
-        if buildIncludes(SCSSFile, app_path, config.css_files, css_includes, opts):
+        if buildIncludes(SCSSFile, app_path, config.css_files, css_includes, config.static_paths, opts):
             is_dirty = True
 
     if config.static_files:
@@ -489,6 +494,7 @@ def copyStatic(app_path, path, opts):
 
 
 def buildApps(opts):
+    started_at = time.time()
     copyCore(os.path.join("plugins", "jquery.js"), opts)
     compile_info.is_compiling = True
     for name in os.listdir(opts.app_path):
@@ -508,8 +514,11 @@ def buildApps(opts):
 
             config = APPS.get(name, None)
             if config and not config.disable:
+                app_started_at = time.time()
                 buildApp(path, config, opts)
+                print("\t{} compile time: {}".format(name, time.time() - app_started_at))
     compile_info.is_compiling = False
+    print("total compile time: {:.3f}".format(time.time() - started_at))
 
 
 class FileWatcher():
@@ -556,6 +565,7 @@ def runHTTP(opts):
                 ext = os.path.splitext(path)[1]
                 # print(ext)
                 if path[1:].startswith(name):
+                    print(self.path)
                     if not ext:
                         self.path = os.path.join(APP_PATHS[name], 'index.html')
                     else:

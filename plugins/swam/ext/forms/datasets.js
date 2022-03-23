@@ -70,12 +70,10 @@ SWAM.DataSets = {
 	},
 
 	genders: {
-		"": "Select Gender",
 		"m": "Male",
 		"f": "Female"
 	},
 	hours: {
-        "": "Select Time",
 		"0": "12AM (Midnight)",
 		"1": "1AM",
 		"2": "2AM",
@@ -103,7 +101,6 @@ SWAM.DataSets = {
 	},
 
 	hours_select: [
-        {value:"", label:"Select Time"},
 		{value:"0", label:"12:00 AM (Midnight)"},
 		{value:"1", label:"1:00 AM"},
 		{value:"2", label:"2:00 AM"},

@@ -20,5 +20,6 @@
         "imgs",
         "/plugins/bootstrap/fonts"
     ],
-    "version": "0.1.1618"
+    "static_paths": true,
+    "version": "0.1.2265"
 }

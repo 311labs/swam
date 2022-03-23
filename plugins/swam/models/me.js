@@ -10,14 +10,21 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
-        this.credentials = app.getObject("credentials", {});
+        var credentials = this.setJWT(app.getObject("credentials", {}));
         this.attributes = app.getObject("me", this.attributes);
-        if (!_.isEmpty(this.credentials)) SWAM.Rest.credentials = this.credentials;
+        if (!_.isEmpty(this.credentials)) {
+            SWAM.Rest.credentials = this.credentials;
+            if ((this.credentials.kind == "JWT") && (this.isOrCanAuth())) this.startAutoJwtRefresh();
+        }
         if (!this.attributes.id) {
         	this.id = "me";
         } else {
         	this.id = this.attributes.id;
         }
+    },
+
+    isOrCanAuth: function() {
+        return this.isAuthenticated() || (this.authExpiresIn() > 60);
     },
 
     isAuthed: function() {
@@ -35,7 +42,9 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     startAutoJwtRefresh: function() {
         if (!this._auto_jwt_timer) {
             var timeout = (this.authExpiresIn() - 300) * 1000; // refresh 5 min before expires
-            if (timeout < 4000) {
+            if (!this.isAuthed()) {
+                timeout = 100;
+            } else if (timeout < 4000) {
                 timeout = 5000;
             }
             this._auto_jwt_timer = setTimeout(function(){
@@ -57,6 +66,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         this.credentials.access = data.access;
         this.credentials.refresh = data.refresh;
         this.credentials.jwt = parseJWT(data.access);
+        this.credentials.jwt_refresh = parseJWT(data.refresh);
         if (data.id) this.id = data.id;
         if (this.credentials.access) {
             app.setProperty("credentials", this.credentials);
@@ -85,6 +95,11 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     authExpiresIn: function() {
         if ((_.isEmpty(this.credentials)) || (_.isEmpty(this.credentials.jwt))) return 0;
         return this.credentials.jwt.exp - parseInt(Date.now() / 1000);
+    },
+
+    refreshExpiresIn: function() {
+        if ((_.isEmpty(this.credentials)) || (_.isEmpty(this.credentials.refresh)) || (_.isEmpty(this.credentials.jwt))) return 0;
+        return this.credentials.jwt_refresh.exp - parseInt(Date.now() / 1000);
     },
 
     isAuthExpiring: function() {

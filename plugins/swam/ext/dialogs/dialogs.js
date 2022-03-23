@@ -6,9 +6,10 @@ SWAM.Dialog = SWAM.View.extend({
     template: "plugins.swam.ext.dialogs.base",
     data_attrs: {"action":"bg_close"},
     defaults: {
-        can_dismiss: true,
+        can_dismiss: false,
         show_close: true,
         replaces_el: false,
+        size: null, // null=normal, sm, lg, xl
         buttons: [
             {
                 action:"close",
@@ -18,6 +19,11 @@ SWAM.Dialog = SWAM.View.extend({
     },
     events: {
         "click": "on_dlg_click"
+    },
+    dialog_sizes: {
+        "medium": "lg",
+        "small": "sm",
+        "large": "xl"
     },
     on_dlg_click: function(evt) {
         if ($(evt.target).hasClass("modal")) {
@@ -59,10 +65,13 @@ SWAM.Dialog = SWAM.View.extend({
         if (this.options.callback) this.options.callback(this, this.choice);
     },
     on_action_bg_close: function(evt) {
-        this.dismiss();
-        this.trigger("dialog:closed", this);
+        if (this.options.can_dismiss) {
+            this.dismiss();
+            this.trigger("dialog:closed", this);
+        }
     },
     on_post_render: function() {
+        if (this.options.size) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_sizes[this.options.size]);
         window.sleep(200).then(function(){
             this.$el.addClass("show");
         }.bind(this));

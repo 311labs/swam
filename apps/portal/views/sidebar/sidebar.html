@@ -1,36 +1,36 @@
-<div class="sidebar-container d-flex flex-column flex-shrink-0 p-3 bg-light">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+<div class="sidebar-container d-flex flex-column flex-shrink-0 p-3">
+    <div class="sidebar-brand d-flex align-items-center text-color-brand mb-3">
+      <img src="/apps/portal/imgs/logo.png" height="50">
       <span class="fs-4">ACM Portal</span>
-    </a>
+    </div>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li>
-        <a href="{{app.root}}dashboard" class="nav-link link-dark" data-showpage="dashboard">
+        <a href="{{app.root}}dashboard" class="nav-link" data-showpage="dashboard">
           <i class="bi bi-speedometer2"></i>
           Dashboard
         </a>
       </li>
       <li>
-        <a href="{{app.root}}members" class="nav-link link-dark" data-showpage="members">
+        <a href="{{app.root}}members" class="nav-link" data-showpage="members">
           <i class="bi bi-people-fill"></i>
           Members
         </a>
       </li>
       <li>
-        <a href="{{app.root}}groups" class="nav-link link-dark" data-showpage="groups">
+        <a href="{{app.root}}groups" class="nav-link" data-showpage="groups">
           <i class="bi bi-people-fill"></i>
           Groups
         </a>
       </li>
       <li>
-        <a href="{{app.root}}locks" class="nav-link link-dark" data-showpage="locks">
+        <a href="{{app.root}}locks" class="nav-link" data-showpage="locks">
           <i class="bi bi-key"></i>
           Locks
         </a>
       </li>
       <li>
-        <a href="{{app.root}}reports" class="nav-link link-dark" data-showpage="reports">
+        <a href="{{app.root}}reports" class="nav-link" data-showpage="reports">
           <i class="bi bi-journal-richtext"></i>
           Reports
         </a>
@@ -38,11 +38,40 @@
       <li>
         <hr>
       </li>
-      <li>
-        <a href="{{app.root}}examples" class="nav-link link-dark" data-showpage="examples">
+      <li class="mb-1">
+        <a href="#examples-collapse" role="button" class="nav-link nav-link-toggle" data-bs-toggle="collapse">
           <i class="bi bi-journal-richtext"></i>
           Examples
         </a>
+        <div class="collapse sidebar-collapse" id="examples-collapse" style="">
+          <ul class="nav nav-sm flex-column">
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_pages">
+              {{{ICON(layout-sidebar)}}} Pages
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_dialogs">
+              {{{ICON(menu-up)}}} Dialog
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_forms">
+              {{{ICON(window)}}} Forms
+            </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_tables">
+              {{{ICON(table)}}} Tables
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_misc">
+              {{{ICON(wrench)}}} Misc
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
     <hr>

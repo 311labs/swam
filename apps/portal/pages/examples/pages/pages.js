@@ -1,6 +1,6 @@
 
-PORTAL.Pages.Examples = SWAM.Page.extend(SWAM.Ext.BS).extend({
-    template: ".pages.examples",
+PORTAL.Pages.ExamplePages = SWAM.Page.extend(SWAM.Ext.BS).extend({
+    template: ".pages.examples.pages",
     classes: "page-view page-padded has-topbar",
 
     busy_examples: _.keys(SWAM.Icons),
