@@ -3,6 +3,39 @@
 
 <div class="card mt-5">
   <div class="card-header">
+    Basic Dialogs
+  </div>
+  <div class="card-body">
+    <p class="card-text">Dialogs can be created with simple javascript.</p>
+    <div class="highlight">
+          <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+<pre>
+<code>SWAM.Dialog.show({title:"Alert Dialog", message:"This is a simple alert"});
+
+SWAM.Dialog.warning({title:"Warning Dialog", message:"This is a warning alert!"});
+
+SWAM.Dialog.yesno({
+    title:"Yes/No",
+    message:"Do you want to close this dialog?", 
+    lbl_yes:"I guess so", lbl_no:"Never!",
+    callback: function(dlg, choice) {
+        dlg.dismiss();
+        SWAM.Dialog.show("Your choice was: " + choice);
+    }
+});
+</code></pre>
+    </div>
+    <a href="#" class="btn btn-primary m-2" data-action="alert_dialog">Alert Dialog</a>
+    <a href="#" class="btn btn-danger m-2" data-action="warning_dialog">Warning Dialog</a>
+    <a href="#" class="btn btn-secondary m-2" data-action="choices_dialog">Choices Dialog</a>
+    <a href="#" class="btn btn-info m-2" data-action="yesno_dialog">Yes/No Dialog</a>
+    
+  </div>
+</div>
+
+
+<div class="card mt-5">
+  <div class="card-header">
     Dialog Tests
   </div>
   <div class="card-body">
@@ -15,4 +48,3 @@
 
   </div>
 </div>
-

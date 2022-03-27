@@ -36,6 +36,9 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 
 SWAM.Form.buildField = function(fc, form_info) {
 	var func_name = fc.type;
+	if (fc.name) {
+		SWAM.Form.Builder.getValue(fc, form_info);
+	}
 	if (_.isFunction(SWAM.Form.Builder[func_name])) {
 		SWAM.Form.Builder[func_name](fc);
 	} else {
@@ -43,6 +46,7 @@ SWAM.Form.buildField = function(fc, form_info) {
 	}
 	
 	if (fc.$input) {
+		if (fc.name) fc.$input.attr("name", fc.name);
 		if (fc.required) fc.$input.prop("required", true);
 		if (fc.disabled) fc.$input.attr("disabled", "disabled");
 		if (fc.placeholder) fc.$input.attr("placeholder", fc.placeholder);
@@ -57,7 +61,8 @@ SWAM.Form.buildField = function(fc, form_info) {
 				fc.$input.attr("data-" + attr, fc.data[attr]);
 			}
 		}
-		if (fc.name) {
+
+		if (fc.value) {
 			SWAM.Form.Builder.value(fc, form_info);
 		}
 		
@@ -65,25 +70,16 @@ SWAM.Form.buildField = function(fc, form_info) {
 } 
 
 SWAM.Form.buildGroup = function(fc, form_info) {
-	// if (grp_col_total == 0) {
-	// 	$prow = $("<div />").addClass('row');
-	// 	$prow.appendTo($form);
-	// }
-	// var col_size = "sm";
-	// if (field.column_size) col_size = field.column_size;
-	// var $col = $("<div />").addClass('col-'+col_size+'-' + field.columns);
-	// if (field.columns_classes) $col.addClass(field.columns_classes);
-	// grp_col_total += field.columns;
-	// if (grp_col_total >= 12) grp_col_total = 0;
-
 	fc.$el = $("<div />");
-	$row = SWAM.Form.build(fc.fields, form_info.defaults, form_info.model, {"$form":fc.$el});
+	SWAM.Form.build(fc.fields, form_info.defaults, form_info.model, {"$form":fc.$el});
+	fc.$el= fc.$el.find(".row").first(); // get back to the row element
+	if (fc.classes) fc.$el.addClass(fc.classes);
 	SWAM.Form.Builder.row(fc, form_info);
 }
 
 SWAM.Form.Builder = {};
 
-SWAM.Form.Builder.value = function(fc, form_info) {
+SWAM.Form.Builder.getValue = function(fc, form_info) {
 	if (form_info.defaults && (form_info.defaults[fc.name] != undefined)) fc.default = form_info.defaults[fc.name];
 	if ((fc.value == undefined) && (fc.default != undefined)) fc.value = fc.default;
 
@@ -94,7 +90,9 @@ SWAM.Form.Builder.value = function(fc, form_info) {
 			fc.value = form_info.model.get(fc.name, fc.value, fc.localize);
 		}
 	}
+}
 
+SWAM.Form.Builder.value = function(fc, form_info) {
 	fc.$input.val(fc.value);
 	if (fc.is_checkbox) {
 		if (fc.value == undefined) fc.value = 0;
@@ -104,8 +102,6 @@ SWAM.Form.Builder.value = function(fc, form_info) {
 	} else {
 		fc.$input.attr("data-value", fc.value);
 	}
-	
-	
 }
 
 SWAM.Form.Builder.row = function(fc, form_info) {
@@ -119,7 +115,8 @@ SWAM.Form.Builder.row = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.column = function(fc, form_info) {
-	fc.$column = $("<div />").addClass("col-" + fc.column_size + "-" + fc.columns);
+	if (!fc.columns_classes) fc.columns_classes = "col-" + fc.column_size + "-" + fc.columns;
+	fc.$column = $("<div />").addClass(fc.columns_classes);
 	fc.$column.append(fc.$el);
 }
 
@@ -131,27 +128,31 @@ SWAM.Form.Builder.form_wrap = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.orderLabel = function(fc, form_info) {
-	if (fc.name) {
-		fc.$input.attr("id", fc.name);
-		fc.$label.prop("for", fc.name);
-	}
-	if (!fc.append_label) {
-		fc.$el.append(fc.$label);
+	if (!fc.label) {
 		fc.$el.append(fc.$input);
 	} else {
-		fc.$el.append(fc.$input);
-		fc.$el.append(fc.$label);
+		if (fc.name) {
+			fc.$input.attr("id", fc.name);
+			fc.$label.prop("for", fc.name);
+		}
+		if (!fc.append_label) {
+			fc.$el.append(fc.$label);
+			fc.$el.append(fc.$input);
+		} else {
+			fc.$el.append(fc.$input);
+			fc.$el.append(fc.$label);
+		}
 	}
 }
 
 SWAM.Form.Builder.label = function(fc, form_info) {
-	var lbl =$("<label for='" + fc.name + "' />").addClass("form-label");
+	
 	if (fc.label) {
+		var lbl =$("<label for='" + fc.name + "' />").addClass("form-label");
 		lbl.text(fc.label);
-	} else {
-		lbl.addClass("empty");
+		return lbl;
 	}
-	return lbl;
+	return null;
 }
 
 SWAM.Form.Builder.text = function(fc, form_info) {
@@ -360,7 +361,7 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 		.attr("id", fc.did)
 		.attr("data-bs-toggle", "dropdown")
 		.attr("aria-expanded", "false")
-		.addClass("btn btn-secondary")
+		.addClass("btn btn-secondary dropdown-toggle")
 		.html(fc.label);
 
 	if (fc.className) {
@@ -399,7 +400,7 @@ SWAM.Form.Builder.buttongroup = function(fc, form_info) {
 		btn.$el = fc.$wrap;
 		if (btn.type == "dropdown") {
 			SWAM.Form.Builder.dropdown(btn, form_info);
-			btn.$child.attr("class", "btn-group");
+			btn.$child.attr("class", "btn-group").attr("role", "group");
 		} else {
 			SWAM.Form.Builder.button(btn, form_info);
 		}
@@ -415,7 +416,12 @@ SWAM.Form.Builder.image = function(fc, form_info) {
 		.addClass("input-" + fc.type);
 	fc.$input.prop("type", "file");
 	fc.$input.data("label", fc.label);
+
+	if (fc.value) {
+		fc.$input.data("image", fc.value);
+	}
 	fc.$el.append(fc.$input);
+	fc.value = null;
 	return fc;
 }
 

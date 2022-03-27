@@ -1,5 +1,5 @@
 
-<div class="modal-dialog modal-dialog-centered {{options.classes}}">
+<div class="modal-dialog modal-dialog-centered {{options.add_classes}}">
   <div class="modal-content rounded-6 shadow">
     {{#options.title}}
     <div class="modal-header border-bottom-1">
@@ -9,7 +9,7 @@
       {{/options.show_close}}
     </div>
     {{/options.title}}
-    <div class="modal-body py-0">
+    <div class="modal-body">
       {{#options.message}}
       <p>
         {{{options.message}}}
@@ -20,14 +20,16 @@
       {{/options.pre}}
       {{#options.choices}}
       <div class="choices d-grid gap-2">
-          <button class="btn btn-link btn-lg mb-4" data-id="{{.id}}" data-action="choice">{{{.label}}}</button>
+          <button class="btn btn-info btn-lg mb-4" data-id="{{.id}}" data-action="choice">{{{.label}}}</button>
       </div>
       {{/options.choices}}
     </div>
+    {{^options.no_buttons}}
     <div class="modal-footer flex-nowrap p-0">
       {{#options.buttons}}
-      <button type="button" class="btn btn-lg text-decoration-none ms-3 {{.extra_classes|default(btn-link)}}" data-action="{{.action}}" data-id="{{.id}}">{{.label}}</button>
+      <button type="button" class="btn-lg text-decoration-none ms-3 {{.classes|default(options.btn_primary)}}" data-action="{{.action}}" data-id="{{.id}}">{{.label}}</button>
       {{/options.buttons}}
     </div>
+    {{/options.no_buttons}}
   </div>
 </div>

@@ -13,9 +13,24 @@ body.app {
 	    	}
 	    }
 
-	    div.modal-header {
-	    	background: $dialog-header-background;
-	    	color: $dialog-header-color;
+	    div.modal-primary div.modal-header {
+	    	background: $primary;
+	    	color: white;
+	    }
+
+	    div.modal-secondary div.modal-header {
+	    	background: $brand-secondary;
+	    	color: white;
+	    }
+
+	    div.modal-warning div.modal-header {
+	    	background: $brand-warning;
+	    	color: white;
+	    }
+
+	    div.modal-danger div.modal-header {
+	    	background: $brand-danger;
+	    	color: white;
 	    }
 	}
 

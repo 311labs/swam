@@ -17,8 +17,12 @@ PORTAL.Pages.ExampleMisc = SWAM.Page.extend(SWAM.Ext.BS).extend({
 
     on_action_busy: function(evt) {
         var kind = $(evt.currentTarget).data("kind");
+        var color = "warning";
+        if (["download", "secure", "payment", "user"].indexOf(kind) >= 0) {
+            color = "success";
+        }
         if (kind) {
-            app.showBusy({icon:kind, timeout:4000, no_timeout_alert:true});
+            app.showBusy({icon:kind, color:color, timeout:4000, no_timeout_alert:true});
         }
     },
 

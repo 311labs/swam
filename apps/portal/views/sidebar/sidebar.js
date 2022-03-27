@@ -6,6 +6,7 @@ PORTAL.Views.SideBar = SWAM.View.extend({
 	},
 
 	on_init: function() {
+		app.me.on("change", this.render, this);
 		app.on("page:change", this.on_page_change, this);
 	},
 
@@ -25,8 +26,8 @@ PORTAL.Views.SideBar = SWAM.View.extend({
 		
 	},
 
-	on_action_logout: function(evt) {
-		app.logout();
+	on_action_about: function() {
+		
 	}
 
 });

@@ -161,6 +161,10 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     on_started: function() {
+        this.on_ready();
+    },
+
+    on_ready: function() {
         this.loadRoute();
         if (!this.active_page) {
             console.warn("failed to load starting page: " + this.getPath());
@@ -168,6 +172,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                 this.setActivePage("not_found", {"path":this.getPath()});
             }
         }
+        this.trigger("ready", this);        
     },
 
     getPath: function() {
@@ -210,8 +215,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     on_busy_timeout: function(opts) {
-        if (!SWAM.active_dialog.options.no_timeout_alert) {
-            SWAM.Dialog.alert("timed out");
+        if (SWAM.active_dialog && !SWAM.active_dialog.options.no_timeout_alert) {
+            SWAM.Dialog.warning("timed out");
         }
         this.cancelBusy();
     },
@@ -238,7 +243,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.cancelBusy();
         if (_.isNumber(options.timeout)) {
             this._busy_info = options;
-            this._busy_dlg = SWAM.Dialog.showLoading(opts);
+            this._busy_dlg = SWAM.Dialog.showLoading(options);
             this._wait_timer = setTimeout(function(evt){
                 this.cancelBusy(false);
                 if (options.callback) {
@@ -266,7 +271,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             //     }
             // }.bind(this), 999);
         } else {
-            this._busy_dlg = SWAM.Dialog.showLoading(opts);
+            this._busy_dlg = SWAM.Dialog.showLoading(options);
         }
     },
 
@@ -280,7 +285,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_uncaught_error: function(message, url, line, col, error, evt) {
         this.hideBusy();
-        SWAM.Dialog.alert({title:"Uncaught App Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
+        SWAM.Dialog.warning({title:"Uncaught App Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
         return false;
     },
 

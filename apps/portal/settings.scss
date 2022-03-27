@@ -1,6 +1,46 @@
-$brand-primary-color: #17a2b8;
-$brand-color: $brand-primary-color;
-$brand-primary-bg: #212222;
+// $blue: #0d6efd;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #d63384;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #198754;
+$teal: #20c997;
+$cyan: #0dcaf0;
+$white: #fff;
+$gray: #6c757d;
+$gray-dark: #343a40;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+
+$page-background: white;
+
+$panel-background: #fff;
+$panel-color: #000;
+$panel-header-bg: $blue;
+$panel-header-color: #fff;
+
+$primary: #0d6efd;
+$brand-primary: $primary;
+$brand-other: #6c757d;
+$brand-secondary: #6c757d;
+$brand-success: #198754;
+$brand-info: #0dcaf0;
+$brand-warning: #ffc107;
+$brand-danger: #dc3545;
+$brand-default: $gray-100;
+$brand-light: #f8f9fa;
+$brand-dark: #212529;
+
 
 $topbar-height: 50px;
 $topbar-background: #2E2B2E;
@@ -22,9 +62,15 @@ $panel-left-active-sub-bg: transparent;
 
 $page-background: #f4f6f9;
 
+$pager-color: $primary;
+$pager-active-bg: $primary;
+$pager-active-color: white;
 
-$dialog-header-background: #17a2b8 linear-gradient(180deg,#3ab0c3,#17a2b8) repeat-x!important;
+
+$dialog-header-background: #17a2b8 linear-gradient(180deg,#3ab0c3,#17a2b8) repeat-x;
 $dialog-header-color: white;
 $dialog-modal-background: rgba(255,255,255,0.51);
 $dialog-color: #212529;
 $dialog-background: #f9f9f9;
+
+

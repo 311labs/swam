@@ -478,5 +478,18 @@ SWAM.Localize = {
         if (value.hasPerm) return value.hasPerm(values);
         return false
     },
+
+    ignore_errors: true,
+    localize: function(value, attr, fmt, context) {
+        try {
+            return SWAM.Localize[attr](value, attr, fmt, context);
+        } catch (error) {
+            console.error(error);
+            if (!SWAM.Localize.ignore_errors) return error;
+        }
+        return value;
+    }
 }
+
+
 

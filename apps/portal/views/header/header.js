@@ -5,16 +5,20 @@ PORTAL.Views.Header = SWAM.View.extend({
 		replaces_el: true
 	},
 
+	on_init: function() {
+		app.me.on("change", this.render, this);
+	},
+
 	on_action_logout: function(evt) {
 		app.logout();
 	},
 
 	on_action_edit_profile: function(evt) {
-		SWAM.Dialog.showForm(SWAM.Models.Me.EDIT_FORM, {model:app.me, title:"Edit Profile", callback:function(dlg){
-		    var data = dlg.getData();
-		    dlg.dismiss();
-		    app.showBusy('<i class="bi bi-cloud-arrow-up-fill"></i>')
-		}.bind(this), model_save:true});
+        SWAM.Dialog.editModel(app.me, {title:"Edit Profile", callback:function(model, resp){
+            if (resp.status) {
+                SWAM.toast("Profile Saved", "Your profile succesfully updated");
+            }
+        }.bind(this)});
 	}
 
 });

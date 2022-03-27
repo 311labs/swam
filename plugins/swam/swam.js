@@ -12,10 +12,12 @@ ext/lists/pagination.js
 ext/forms/base.js
 ext/forms/datasets.js
 ext/forms/forms.js
+ext/dialogs/dialogs.js
 ext/**/*.js
 app/*.js
 app/pages/*.js
 models/model.js
 models/collection.js
 models/*.js
+
 

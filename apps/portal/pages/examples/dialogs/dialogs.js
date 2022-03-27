@@ -9,6 +9,45 @@ PORTAL.Pages.ExampleDialogs = SWAM.Page.extend(SWAM.Ext.BS).extend({
         this.addChild("test_form", new SWAM.Form.View({fields:SWAM.Form.TestFields}));
     },
 
+    on_action_alert_dialog: function(evt) {
+        SWAM.Dialog.show({title:"Alert Dialog", message:"This is a simple alert"});
+    },
+
+    on_action_warning_dialog: function(evt) {
+        SWAM.Dialog.warning({title:"Warning Dialog", message:"This is a warning alert!"});
+    },
+
+    on_action_choices_dialog: function(evt) {
+        SWAM.Dialog.choices({
+            title:"Which do you like the best?",
+            choices: [
+                "Dog",
+                "Cat",
+                "Dolphin",
+                "Monkey",
+                "Panda"
+            ],
+            callback: function(dlg, choice) {
+                dlg.dismiss();
+                SWAM.Dialog.show("Your choice was: " + choice);
+            }
+        });
+    },
+
+    on_action_yesno_dialog: function(evt) {
+        SWAM.Dialog.yesno({
+            title:"Yes/No",
+            message:"Do you want to close this dialog?", 
+            lbl_yes:"I guess so", lbl_no:"Never!",
+            callback: function(dlg, choice) {
+                dlg.dismiss();
+                SWAM.Dialog.show("Your choice was: " + choice);
+            }
+        });
+    },
+
+
+
     on_action_test_form: function(evt) {
         var fields = [
             {
@@ -56,9 +95,10 @@ PORTAL.Pages.ExampleDialogs = SWAM.Page.extend(SWAM.Ext.BS).extend({
     },
 
     on_action_test_edit_model: function(evt) {
-        SWAM.Dialog.showForm(SWAM.Models.Me.EDIT_FORM, {model:app.me, title:"Show Profile", callback:function(dlg){
-            var data = dlg.getData();
-            console.log(data);
+        SWAM.Dialog.editModel(app.me, {title:"Edit Profile", callback:function(model, resp){
+            if (resp.status) {
+                SWAM.toast("Profile Saved", "Your profile succesfully updated");
+            }
         }.bind(this)});
     },
 

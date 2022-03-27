@@ -5,6 +5,7 @@
         "/plugins/bootstrap/bootstrap5.js",
         "/plugins/datepicker.js",
         "/plugins/clipboard.js",
+        "/plugins/swam/swam_all.js",
         "includes.js"
     ],
     "mustache_files": [
@@ -21,5 +22,5 @@
         "/plugins/bootstrap/fonts"
     ],
     "static_paths": true,
-    "version": "0.1.2265"
+    "version": "0.1.2536"
 }

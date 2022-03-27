@@ -516,15 +516,15 @@ SWAM.Dialogs.ImageEditor = SWAM.View.extend({
 
     buttons: [
         {
-            className: "btn btn-primary crop",
+            className: "btn btn-primary ms-3 crop",
             label: "Crop"
         },
         {
-            className: "btn btn-primary save",
+            className: "btn btn-primary ms-3 save",
             label: "Save"
         },
         {
-            className: "btn btn-default close-dialog",
+            className: "btn btn-default ms-3 close-dialog",
             label: "Close"
         },
     ],
@@ -543,8 +543,8 @@ SWAM.Dialogs.ImageEditor = SWAM.View.extend({
         });
         this.$filter = $filters;
 
-        var $footer = $("<div />").addClass("dialog-footer").appendTo(this.$el);
-        var $buttons = $("<div />").addClass('dialog-buttons').appendTo($footer);
+        var $footer = $("<div />").addClass("modal-footer").appendTo(this.$el);
+        var $buttons = $("<div />").addClass('modal-buttons').appendTo($footer);
         _.each(this.buttons, function(btn){
             $buttons.append($("<button />").addClass(btn.className).text(btn.label));
         });
@@ -587,13 +587,7 @@ SWAM.Dialogs.ImageEditor = SWAM.View.extend({
         editor.setImageFile(img);
         var dlg = SWAM.Dialog.showView(editor, {
             stack: true,
-            buttons:[
-                {
-
-                },
-                {
-
-                }],
+            no_buttons: true,
             title:"Edit Image"
         });
         editor.dlg = dlg;

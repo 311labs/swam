@@ -258,7 +258,7 @@ Mustache.Context.prototype.applyFilters = function(context, filters) {
         }
 
         if (SWAM.Localize[name]) {
-            value = SWAM.Localize[name](value, name, params, this);
+            value = SWAM.Localize.localize(value, name, params, this);
         }
     }.bind(this));
     return value;
@@ -275,6 +275,7 @@ Mustache.Context.prototype.findValue = function(name) {
     var view = context.view;
 
     var loc_opts = null;
+    var is_explicit = false;
 
     if (name.indexOf('..') == 0) {
         // walk one layer back?
@@ -285,6 +286,7 @@ Mustache.Context.prototype.findValue = function(name) {
         // context is reference the current object
         // do anything special??
         name = name.slice(1);
+        is_explicit = true;
     } else if (this.parent) {
         // if not dot then we should walk back to the parent?
         // a better method might be to use ".." to walk backwards?
@@ -300,7 +302,7 @@ Mustache.Context.prototype.findValue = function(name) {
     var key = obj_tree.shift();
     while (key) {
         value = this.getValueForContext(key.key, view);
-        if (_.isUndefined(value) && context.parent) {
+        if (!is_explicit && _.isUndefined(value) && context.parent) {
             // try the parent context
             while (context.parent && _.isUndefined(value)) {
                 context = context.parent;

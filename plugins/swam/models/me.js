@@ -129,7 +129,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             columns: 4,
             fields: [
                 {
-                    name:"picture",
+                    name:"avatar",
                     label:"Avatar",
                     type:"image",
                     columns: 12
@@ -141,10 +141,10 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             columns: 8,
             fields: [
                 {
-                    name:"full_name",
-                    label:"Full Name",
+                    name:"display_name",
+                    label:"Display Name",
                     type:"text",
-                    placeholder:"Enter Full Name",
+                    placeholder:"Enter Display Name",
                     columns: 12
                 },
                 {

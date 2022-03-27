@@ -72,11 +72,11 @@ SWAM.Views.Table = SWAM.Views.List.extend({
 
     defaults: {
         ItemView: SWAM.Views.TableItem,
-        sort_down_icon: ' <i class="bi bi-sort-down" data-action="sort"></i>',
-        sort_up_icon: ' <i class="bi bi-sort-up" data-action="sort"></i>',
-        sort_icon: ' <i class="bi bi-arrow-down-up text-muted" data-action="sort"></i>',
-        filter_icon_active: ' <i class="bi bi-filter" data-action="filter"></i>',
-        filter_icon: ' <i class="bi bi-filter text-muted" data-action="filter"></i>'
+        sort_down_icon: ' <i class="bi bi-arrow-down text-success" data-action="sort"></i>',
+        sort_up_icon: ' <i class="bi bi-arrow-up text-success" data-action="sort"></i>',
+        sort_icon: ' <i class="bi bi-arrow-down-up text-muted hover-primary" data-action="sort"></i>',
+        filter_icon_active: ' <i class="bi bi-filter text-success" data-action="filter"></i>',
+        filter_icon: ' <i class="bi bi-filter text-muted hover-primary" data-action="filter"></i>'
     },
 
     on_action_sort: function(evt) {

@@ -28,8 +28,80 @@
 }
 
 
+body.app {
+    --bs-primary: $brand-primary;
+    --bs-secondary: $brand-other;
+    --bs-success: $brand-success;
+    --bs-info: $brand-info;
+    --bs-warning: $brand-warning;
+    --bs-danger: $brand-danger;
+    --bs-light: $brand-line;
+
+    button.btn-primary, a.btn-primary {
+        background-color: $brand-primary;
+        border-color: $brand-primary;
+    }
+
+    button.btn-secondary, a.btn-secondary {
+        background-color: $brand-secondary;
+        border-color: $brand-secondary;
+    }
+
+    button.btn-success, a.btn-success {
+        background-color: $brand-success;
+        border-color: $brand-success;
+    }
+
+    button.btn-info, a.btn-info {
+        background-color: $brand-info;
+        border-color: $brand-info;
+    }
+
+    button.btn-warning, a.btn-warning {
+        background-color: $brand-warning;
+        border-color: $brand-warning;
+    }
+
+    button.btn-danger, a.btn-danger {
+        background-color: $brand-danger;
+        border-color: $brand-danger;
+    }
+
+    button.btn-default, a.btn-default {
+        background-color: $brand-default;
+        border-color: #6c757d;
+    }
+}
 
 
+.hover-success:hover {
+    color: rgba(var(--bs-success-rgb),var(--bs-text-opacity))!important;
+}
 
+.hover-primary:hover {
+    color: rgba(var(--bs-primary-rgb),var(--bs-text-opacity))!important;
+}
 
+.hover-danger:hover {
+    color: rgba(var(--bs-danger-rgb),var(--bs-text-opacity))!important;
+}
 
+.hover-warning:hover {
+    color: rgba(var(--bs-warning-rgb),var(--bs-text-opacity))!important;
+}
+
+.hover-info:hover {
+    color: rgba(var(--bs-info-rgb),var(--bs-text-opacity))!important;
+}
+
+.hover-dark:hover {
+    color: rgba(var(--bs-dark-rgb),var(--bs-text-opacity))!important;
+}
+
+.hover-muted:hover {
+    color: rgba(var(--bs-muted-rgb),var(--bs-text-opacity))!important;
+}
+
+.hover-white:hover {
+    color: rgba(var(--bs-white-rgb),var(--bs-text-opacity))!important;
+}

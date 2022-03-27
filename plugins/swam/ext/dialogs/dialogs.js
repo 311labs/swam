@@ -10,12 +10,6 @@ SWAM.Dialog = SWAM.View.extend({
         show_close: true,
         replaces_el: false,
         size: null, // null=normal, sm, lg, xl
-        buttons: [
-            {
-                action:"close",
-                label:"Ok"
-            }
-        ]
     },
     events: {
         "click": "on_dlg_click"
@@ -84,26 +78,50 @@ SWAM.Dialog = SWAM.View.extend({
         return SWAM.Form.getData(this.$el.find("form"));
     },
 },{
+    globals: {
+        btn_primary: "btn btn-link",
+        btn_secondary: "btn btn-link color-secondary",
+        buttons: [
+            {
+                action:"close",
+                label:"Ok",
+                classes: "btn btn-link"
+            }
+        ],
+    },
+    show: function(opts) {
+        return this.alert(opts);
+    },
     alert: function(opts) {
         if (_.isString(opts)) opts = {"title": "Alert", "message":opts};
+        opts = _.extend({can_dismiss:true}, opts);
+        var dlg = new this(opts);
+        dlg.show();
+        return dlg;
+    },
+    warning: function(opts) {
+        if (_.isString(opts)) opts = {"title": "Alert", "message":opts};
+        opts = _.extend({add_classes: "modal-danger", can_dismiss:true}, opts);
         var dlg = new this(opts);
         dlg.show();
         return dlg;
     },
     yesno: function(opts) {
         opts = _.extend({template:"plugins.swam.ext.dialogs.yesno"}, opts);
-        opts.no_lbl = opts.no_lbl || "no";
-        opts.yes_lbl = opts.yes_lbl || "yes";
+        opts.lbl_no = opts.lbl_no || "no";
+        opts.lbl_yes = opts.lbl_yes || "yes";
         opts.buttons = [
             {
-                id: opts.no_lbl,
+                id: opts.lbl_no,
                 action:"choice",
-                label:opts.no_lbl
+                label:opts.lbl_no,
+                classes: SWAM.Dialog.prototype.defaults.btn_secondary
             },
             {
-                id: opts.yes_lbl,
+                id: opts.lbl_yes,
                 action:"choice",
-                label:opts.yes_lbl
+                label:opts.lbl_yes,
+                classes: SWAM.Dialog.prototype.defaults.btn_primary
             }
         ];
         return this.alert(opts);
@@ -125,7 +143,8 @@ SWAM.Dialog = SWAM.View.extend({
         if (!opts.buttons) opts.buttons = [
             {
                 action:"close",
-                label:"Cancel"
+                label:"Cancel",
+                classes: SWAM.Dialog.prototype.defaults.btn_secondary
             }
         ];
         return this.alert(opts);
@@ -149,7 +168,8 @@ SWAM.Dialog = SWAM.View.extend({
                     action:"close",
                     label:"Cancel"
                 }
-            ]
+            ],
+            view: view
         };
         opts = _.extend(defaults, opts);
         var dlg = new this(opts);
@@ -175,33 +195,6 @@ SWAM.Dialog = SWAM.View.extend({
         };
         opts = _.extend(defaults, opts);
         return this.showView(new SWAM.Form.View({fields:fields, defaults:opts.defaults, model:opts.model}), opts);
-    },
-    showModel: function(model, fields, options) {
-        var $container = $("<div />").addClass("model-fields row");
-
-        _.each(fields, function(obj){
-            if (_.isString(obj)) {
-                obj = {field:obj};
-            }
-            if (!obj.label) obj.label = obj.field;
-            if (!obj.field) obj.field = obj.label;
-            if (!obj.columns) obj.columns = 6;
-            var $fieldbox = $("<div />")
-                .addClass("col-sm-" + obj.columns)
-                .appendTo($container);
-            var $wrapper = $("<div />").addClass("model-field mb-3").appendTo($fieldbox);
-            $wrapper.append($("<div />").addClass("field-label h6 mb-1").text(obj.label));
-            var value = model.get(obj.field, obj.localize);
-            if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
-            $wrapper.append($("<div />").addClass("field-value").text(value));
-        });
-
-        options = _.extend({
-            message: $container.wrap('<p/>').parent().html(),
-        }, options);
-
-        var dlg = new this(options);
-        return dlg.show();
     }
 });
 

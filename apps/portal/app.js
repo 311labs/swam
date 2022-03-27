@@ -10,6 +10,9 @@ PORTAL.App = SWAM.App.extend({
 	},
 
 	on_init_pages: function() {
+		// create me first so views and pages can use
+		this.me = new SWAM.Models.Me();
+
 		this.addChild("title-bar", new PORTAL.Views.Header());
 		this.addChild("panel-left", new PORTAL.Views.SideBar());
 
@@ -24,6 +27,7 @@ PORTAL.App = SWAM.App.extend({
 	},
 
 	on_init_examples: function() {
+		this.addPage("examples_views", new PORTAL.Pages.ExampleViews(), ["examples/views"]);
 		this.addPage("examples_pages", new PORTAL.Pages.ExamplePages(), ["examples/pages"]);
 		this.addPage("examples_dialogs", new PORTAL.Pages.ExampleDialogs(), ["examples/dialogs"]);
 		this.addPage("examples_forms", new PORTAL.Pages.ExampleForms(), ["examples/forms"]);
@@ -55,25 +59,26 @@ PORTAL.App = SWAM.App.extend({
 				app.getChild("panel-left").render();
 			}
 		});
-		// first we get the active user
-		// next we make sure we are authenticated or try and refresh our access or show login
-		this.me = new SWAM.Models.Me();
+
 		if (!this.me.isAuthenticated()) {
 			this.showPage("login");
 		} else {
 			this.me.fetch(function(model, resp) {
 				if (resp.status) {
+					this.trigger("auth_success", this.me);
 					this.on_loggedin();
-					this.loadPageFromURL();
+					this.on_ready();
 				} else {
 					console.warn("user credentials no longer valid");
 					if (this.me.credentials.kind == "JWT") {
 						this.me.refreshJWT(function(model, resp){
 							if (resp.status) {
 								this.on_loggedin();
-								this.loadPageFromURL();
+								this.on_ready();
 							} else {
+								this.trigger("auth_fail", this.me);
 								this.showPage("login");
+								this.trigger("ready");
 							}
 						}.bind(this));
 					}

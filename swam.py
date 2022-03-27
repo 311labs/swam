@@ -241,6 +241,7 @@ class JSFile(SwamFile):
             self.output.write(rjsmin.jsmin(sf.readAll()))
         else:
             self.output.write(sf.readAll())
+        self.output.write("\n\n")
 
 
 class MustacheFile(SwamFile):
