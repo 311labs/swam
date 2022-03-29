@@ -24,12 +24,6 @@
         </a>
       </li>
       <li>
-        <a href="{{app.root}}locks" class="nav-link" data-showpage="locks">
-          <i class="bi bi-key"></i>
-          Locks
-        </a>
-      </li>
-      <li>
         <a href="{{app.root}}reports" class="nav-link" data-showpage="reports">
           <i class="bi bi-journal-richtext"></i>
           Reports
@@ -81,8 +75,8 @@
       </li>
     </ul>
     <hr>
-    <div class="version">
+    <div class="version" data-action="about">
     	<div>Portal Version {{app.version}}</div>
-    	<div>Server Version {{app.api_version}}</div>
+    	<div data-bs-toggle="tooltip" data-bs-placement="top" title="api is set to: {{app.options.api_url}}">Server Version {{app.api_version}}</div>
     </div>
   </div>

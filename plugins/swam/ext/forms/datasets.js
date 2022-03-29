@@ -154,5 +154,116 @@ SWAM.DataSets = {
 		{label: "Thursday", value: 4 },
 		{label: "Friday", value: 5 },
 		{label: "Saturday", value: 6 }
+	],
+
+	timezones_select: [
+		{
+			value: "America/Los_Angeles",
+			label: "(UTC-08:00) Pacific Time"
+		},
+		{
+			value: "US/Arizona",
+			label: "(UTC-07:00) Arizona"
+		},
+		{
+			value: "US/Mountain",
+			label: "(UTC-07:00) Mountain Time"
+		},
+		{
+			value: "US/Central",
+			label: "(UTC-06:00) Central Time"
+		},
+		{
+			value: "US/Eastern",
+			label: "(UTC-05:00) Eastern Time"
+		},
+		{
+			value: "Europe/London",
+			label: "(UTC-0) GMT London"
+		},
+		{
+			value: "Europe/Dublin",
+			label: "(UTC+01:00) Dublin"
+		},
+		{
+			value: "Europe/Amsterdam",
+			label: "(UTC+1:00) Amsterdam"
+		},
+		{
+			value: "Europe/Brussels",
+			label: "(UTC+01:00) Brussels"
+		},
+		{
+			value: "Europe/Belgrade",
+			label: "(UTC+01:00) Belgrade"
+		},
+		{
+			value: "Europe/Kiev",
+			label: "(UTC+02:00) Kiev"
+		},
+		{
+			value: "Africa/Cairo",
+			label: "(UTC+02:00) Cairo"
+		},
+		{
+			value: "Europe/Moscow",
+			label: "(UTC+03:00) Moscow"
+		},
+		{
+			value: "Asia/Calcutta",
+			label: "(UTC+05:30) Kolkata, Mumbai, New Delhi"
+		},
+		{
+			value: "Asia/Almaty",
+			label: "(UTC+06:00) Centrial Asia (Almaty)"
+		},
+		{
+			value: "Asia/Bangkok",
+			label: "(UTC+07:00) Bangkok"
+		},
+		{
+			value: "Asia/Shanghai",
+			label: "(UTC+08:00) Beijing"
+		},
+		{
+			value: "Asia/Singapore",
+			label: "(UTC+08:00) Singapore, Manila"
+		},
+		{
+			value: "Asia/Taipei",
+			label: "(UTC+08:00) Taipei"
+		},
+		{
+			value: "Australia/Perth",
+			label: "(UTC+08:00) Perth"
+		},
+		{
+			value: "Asia/Tokyo",
+			label: "(UTC+09:00) Tokyo"
+		},
+		{
+			value: "Asia/Seoul",
+			label: "(UTC+09:00) Seoul"
+		},
+		{
+			value: "Australia/Sydney",
+			label: "(UTC+10:00) Sydney"
+		},
+		{
+			value: "Pacific/Auckland",
+			label: "(UTC+12:00) Auckland"
+		},
+		{
+			value: "Pacific/Honolulu",
+			label: "(UTC-10:00) Hawaii"
+		},
+		{
+			value: "America/Anchorage",
+			label: "(UTC-09:00) Anchorage"
+		},
+		{
+			value: "US/East-Indiana",
+			label: "(UTC-05:00) Indiana (East)"
+		},
 	]
 };

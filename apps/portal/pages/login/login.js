@@ -11,7 +11,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
             app.me.login(data.signin_username, data.signin_password, function(model, data){
                 app.hideBusy();
                 if (app.me.isAuthenticated()) {
-                    app.on_loggedin();
+                    app.on_logged_in();
                     app.loadRoute(this.starting_url);
                 } else {
                     SWAM.Dialog.alert({"title":"Login Failed", "message": data.error});

@@ -4,6 +4,9 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
     defaults: {
         icon: "group",
         title: "Groups",
+        list_options: {
+            add_classes: "swam-table-clickable",
+        },
         columns: [
             {label:"id", field:"id"},
             {label:"Created", field:"created|date"},
@@ -80,28 +83,7 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
                                         action: "download_pdf"
                                     },
                                 ]
-                            },
-                            {
-                                type: "dropdown",
-                                icon: "bi bi-filter",
-                                items: [
-                                    {
-                                        icon: "bi bi-filetype-csv",
-                                        label: "Download CSV",
-                                        action: "download_csv"
-                                    },
-                                    {
-                                        icon: "bi bi-filetype-json",
-                                        label: "Download JSON",
-                                        action: "download_json"
-                                    },
-                                    {
-                                        icon: "bi bi-file-pdf-fill",
-                                        label: "Download PDF",
-                                        action: "download_pdf"
-                                    },
-                                ]
-                            },
+                            }
 
                         ]
                     },

@@ -1,4 +1,4 @@
-PORTAL.Views.SideBar = SWAM.View.extend({
+PORTAL.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	classes: "main bg-dark",
 	template: ".views.sidebar",
 	defaults: {
@@ -27,7 +27,24 @@ PORTAL.Views.SideBar = SWAM.View.extend({
 	},
 
 	on_action_about: function() {
-		
+		SWAM.Dialog.showForm([
+				{
+					label: "API URL",
+					name: "api_url",
+					type: "select",
+					options: app.options.api_urls,
+					default: app.options.api_url
+				}
+			], {
+				title: "Select API Endpoint",
+				callback: function(dlg) {
+					var data = dlg.getData();
+					dlg.dismiss();
+					if (data.api_url != app.options.api_url) {
+						app.setProperty("api_url", data.api_url);
+					}
+				}
+			});
 	}
 
 });

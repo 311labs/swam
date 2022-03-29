@@ -58,7 +58,9 @@ SWAM.Rest = {
         request.url = url;
         request.complete = function(xhr, status) {
             if (xhr.status == 200) {
-                if (callback) callback(xhr.responseJSON, xhr.status);
+                var j = xhr.responseJSON;
+                if (!j) j = {error:"nothing returned"}; // avoid empty responses
+                if (callback) callback(j, xhr.status);
             } else {
                 if (callback) {
                     var resp = {status:false, error_code: xhr.status, error: status};

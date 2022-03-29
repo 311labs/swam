@@ -13,6 +13,10 @@ PORTAL.Pages.ExampleDialogs = SWAM.Page.extend(SWAM.Ext.BS).extend({
         SWAM.Dialog.show({title:"Alert Dialog", message:"This is a simple alert"});
     },
 
+    on_action_alert_fullscreen: function(evt) {
+        SWAM.Dialog.show({title:"Fullscreen Dialog", message:"This is a fullscreen dialog", fullscreen:true});
+    },
+
     on_action_warning_dialog: function(evt) {
         SWAM.Dialog.warning({title:"Warning Dialog", message:"This is a warning alert!"});
     },

@@ -6,12 +6,18 @@ PORTAL.App = SWAM.App.extend({
 		title: "PORTAL DEMO",
 		root: "/portal/",
 		api_url: "https://api.itf.io",
+		api_urls: [
+			"https://api.itf.io",
+			"http://localhost:8000"
+		],
 		home_page: "examples"
 	},
 
 	on_init_pages: function() {
 		// create me first so views and pages can use
 		this.me = new SWAM.Models.Me();
+		this.me.on("logged_out", this.on_logged_out, this);
+		this.me.on("logged_in", this.on_logged_in, this);
 
 		this.addChild("title-bar", new PORTAL.Views.Header());
 		this.addChild("panel-left", new PORTAL.Views.SideBar());
@@ -45,7 +51,12 @@ PORTAL.App = SWAM.App.extend({
 		}.bind(this)})
 	},
 
-	on_loggedin: function() {
+	on_logged_out: function() {
+		this.getChild("title-bar").render();
+		this.hideLeftPanel();
+	},
+
+	on_logged_in: function() {
 		this.getChild("title-bar").render();
 		this.showLeftPanel();
 	},
@@ -66,14 +77,14 @@ PORTAL.App = SWAM.App.extend({
 			this.me.fetch(function(model, resp) {
 				if (resp.status) {
 					this.trigger("auth_success", this.me);
-					this.on_loggedin();
+					this.on_logged_in();
 					this.on_ready();
 				} else {
 					console.warn("user credentials no longer valid");
 					if (this.me.credentials.kind == "JWT") {
 						this.me.refreshJWT(function(model, resp){
 							if (resp.status) {
-								this.on_loggedin();
+								this.on_logged_in();
 								this.on_ready();
 							} else {
 								this.trigger("auth_fail", this.me);

@@ -2,9 +2,19 @@ SWAM.Views.ListItem = SWAM.View.extend({
     template: "<div>{{model.id}}</div>",
     tagName: "li",
     classes: "list-group-item",
+
+    events: {
+        "click": "on_clicked"
+    },
+
     on_init: function() {
         this.setModel(this.options.model);
     },
+
+    on_clicked: function(evt) {
+        this.options.list.on_item_clicked(this, evt);
+    },
+
     setModel: function(model) {
         this.model = model;
         this.id = model.id;
@@ -112,13 +122,20 @@ SWAM.Views.List = SWAM.View.extend({
         if (!this.options.is_loading) {
             this.$body.empty();
             _.each(this.items, function(item){
+                item.undelegateEvents();
                 this.$body.append(item.$el);
                 item.render();
+                item.delegateEvents();
             }.bind(this))
         } else {
             this.$body.html(this.options.loading_html);
         }
 
+    },
+
+    on_item_clicked: function(item, evt) {
+        // called when the item is clicked
+        this.trigger("item:clicked", item, evt);
     }
 
 });

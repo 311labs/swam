@@ -51,8 +51,9 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
     },
     
     on_init: function() {
-        this.list = new this.options.List(this.options);
-        this.collection = this.list.collection;
+        this.collection = this.options.collection;
+        var list_opts = _.extend({collection:this.collection}, this.options.list_options);
+        this.list = new this.options.List(list_opts);
         this.collection.on("loading:end", this.on_loading_end, this);
         this.addChild("list", this.list);
         this.pager = new SWAM.Views.ListPagination({list:this.list});

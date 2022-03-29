@@ -179,7 +179,14 @@ SWAM.Views.PaginatedTable = SWAM.Views.PaginatedList.extend({
 	defaults: {
 		List: SWAM.Views.Table,
 	},
-    classes: "swam-paginated-table swam-paginated-table-bs"
+    classes: "swam-paginated-table swam-paginated-table-bs",
+
+    on_init: function() {
+        if (!this.options.list_options || !this.options.list_options.columns) {
+            this.options.list_options = _.extend({columns:this.options.columns}, this.options.list_options);
+        }
+        SWAM.Views.PaginatedList.prototype.on_init.apply(this, arguments);
+    }
 
 });
 

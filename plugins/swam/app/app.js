@@ -114,6 +114,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_prop_api_url: function(value) {
         this.options.api_url = value;
+        SWAM.toast("API URL Changed", "You should probably reload!");
     },
 
     showTopBar: function() { this.$el.find("#title-bar").show(); },

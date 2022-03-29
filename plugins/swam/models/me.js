@@ -10,7 +10,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
-        var credentials = this.setJWT(app.getObject("credentials", {}));
+        this.setJWT(app.getObject("credentials", {}));
         this.attributes = app.getObject("me", this.attributes);
         if (!_.isEmpty(this.credentials)) {
             SWAM.Rest.credentials = this.credentials;
@@ -56,23 +56,28 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     stopAutoJwtRefresh: function() {
         if (this._auto_jwt_timer) {
-            stopTimeout(this._auto_jwt_timer);
+            clearTimeout(this._auto_jwt_timer);
             this._auto_jwt_timer = null;
         }
     },
 
     setJWT: function(data) {
-        this.credentials.kind = "JWT";
-        this.credentials.access = data.access;
-        this.credentials.refresh = data.refresh;
-        this.credentials.jwt = parseJWT(data.access);
-        this.credentials.jwt_refresh = parseJWT(data.refresh);
-        if (data.id) this.id = data.id;
-        if (this.credentials.access) {
-            app.setProperty("credentials", this.credentials);
-            SWAM.Rest.credentials = this.credentials;
+        if (!_.isEmpty(data)) {
+            this.credentials.kind = "JWT";
+            this.credentials.access = data.access;
+            this.credentials.refresh = data.refresh;
+            this.credentials.jwt = parseJWT(data.access);
+            this.credentials.jwt_refresh = parseJWT(data.refresh);
+            if (data.id) this.id = data.id;
+            if (this.credentials.access) {
+                app.setProperty("credentials", this.credentials);
+                SWAM.Rest.credentials = this.credentials;
+            }
+            this.startAutoJwtRefresh();
+        } else {
+            this.credentials = {};
         }
-        this.startAutoJwtRefresh();
+
     },
 
     login: function(username, password, callback, opts) {
@@ -80,6 +85,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         	if (response.status) {
         		// credentials get stored in SWAM.Rest
         		this.setJWT(response.data);
+                if (this.isAuthenticated()) this.trigger("logged_in", this);
         	}
             if (callback) callback(this, response);
         }.bind(this), opts);
@@ -90,6 +96,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         this.credentials = {};
         SWAM.Rest.credentials = null;
         app.setProperty("credentials", null);
+        this.trigger("logged_out", this);
     },
 
     authExpiresIn: function() {

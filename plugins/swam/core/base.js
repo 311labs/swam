@@ -65,14 +65,21 @@ SWAM.EventSupport = {
             console.warn("event: " + event + " passed an invalid or undefined handler");
             return;
         }
-        if (context) handler.__context__ = context;
+
         if (!this._event_listeners[event]) this._event_listeners[event] = [];
-        if (this._event_listeners[event].indexOf(handler) < 0) this._event_listeners[event].push(handler);
+        var listeners = this._event_listeners[event];
+        var hc = {handler:handler, context:context};
+        // verify this does not already exist
+        var lhc = _.findWhere(listeners, hc);
+        if (lhc == undefined) this._event_listeners[event].push(hc);
     },
-    off: function(event, handler) {
+    off: function(event, handler, context) {
         if (!_.isObject(this._event_listeners)) this._event_listeners = {};
         if (!this._event_listeners[event]) return;
-        if (this._event_listeners[event].indexOf(handler) >= 0) this._event_listeners[event].remove(handler);
+        var hc = {handler:handler};
+        if (context != undefined) hc.context = context;
+        var lhc = _.findWhere(this._event_listeners[event], hc);
+        if (lhc != undefined) this._event_listeners[event].remove(lhc);
     },
     trigger: function(event, data) {
         if (!_.isObject(this._event_listeners)) this._event_listeners = {};
@@ -81,8 +88,8 @@ SWAM.EventSupport = {
             try {
                 var cb = this._event_listeners[event][i];
                 var context = this;
-                if (cb.__context__) context = cb.__context__;
-                cb.call(context, data);
+                if (cb.context) context = cb.context;
+                cb.handler.call(context, data);
             } catch (err) {
                 console.error(err);
             }
@@ -120,7 +127,7 @@ _.extend(SWAM.Object.prototype, {
         defaults: {},
         initialize: function(opts) { this.init_options(opts); }, 
         init_options: function(opts) {
-            super_defaults = this.constructor.__super__.defaults || {};
+            var super_defaults = this.constructor.__super__.defaults || {};
             super_defaults = _.deepClone(super_defaults);
             if (this.constructor.globals) super_defaults = _.extend({}, super_defaults, this.constructor.globals);
             this.options = _.extend(super_defaults, this.defaults, opts);
