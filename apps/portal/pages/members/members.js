@@ -11,7 +11,7 @@ PORTAL.Pages.Members = SWAM.Pages.TablePage.extend({
             {label:"id", field:"id"},
             {label:"username", field:"username"},
             {label:"email", field:"email"},
-            {label:"full_name", field:"full_name"},
+            {label:"display_name", field:"display_name"},
         ],
         Collection: SWAM.Collections.User,
         collection_params: {

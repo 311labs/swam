@@ -1,5 +1,5 @@
-
-  <li class="page-item {{^collection.pager.can_page}}disabled{{/collection.pager.can_page}}" data-action="pager" data-page-id="{{collection.pager.prev_page}}">
+{{#collection.pager.can_page}}
+  <li class="page-item" data-action="pager" data-page-id="{{collection.pager.prev_page}}">
     <a class="page-link" href="{{app.root}}{{getRoute}}?page={{collection.pager.prev_page}}" aria-label="Previous">
       <span aria-hidden="true">Previous</span>
     </a>
@@ -16,9 +16,9 @@
   <li class="page-item" data-page-id="{{collection.pager.more_page}}" data-action="pager">
     <a class="page-link" href="{{app.root}}{{getRoute}}?page={{collection.pager.more_page}}">...</a></li>
   {{/collection.pager.more_page}}
-  <li class="page-item {{^collection.pager.can_page}}disabled{{/collection.pager.can_page}}" data-action="pager" data-page-id="{{collection.pager.next_page}}">
+  <li class="page-item" data-action="pager" data-page-id="{{collection.pager.next_page}}">
     <a class="page-link" href="{{app.root}}{{getRoute}}?page={{collection.pager.next_page}}" aria-label="Next">
       <span aria-hidden="true">Next</span>
     </a>
   </li>
-
+{{/collection.pager.can_page}}
