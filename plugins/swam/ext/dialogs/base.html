@@ -2,8 +2,8 @@
 <div class="modal-dialog modal-dialog-centered {{options.add_classes}}">
   <div class="modal-content rounded-6 shadow">
     {{#options.title}}
-    <div class="modal-header border-bottom-1">
-      <h5 class="modal-title">{{{options.title}}}</h5>
+    <div class="modal-header border-bottom-1 user-select-none">
+      <h5 class="modal-title">{{#options.icon}}{{{ICON(options.icon)}}} {{/options.icon}}{{{options.title}}}</h5>
       {{#options.show_close}}
       <button type="button" class="btn-close" data-action="close"></button>
       {{/options.show_close}}

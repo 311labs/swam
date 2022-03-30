@@ -10,7 +10,7 @@ PORTAL.Pages.ExampleDialogs = SWAM.Page.extend(SWAM.Ext.BS).extend({
     },
 
     on_action_alert_dialog: function(evt) {
-        SWAM.Dialog.show({title:"Alert Dialog", message:"This is a simple alert"});
+        SWAM.Dialog.show({title:"Alert Dialog", message:"This is a simple alert", icon:"info-circle-fill"});
     },
 
     on_action_alert_fullscreen: function(evt) {

@@ -4,6 +4,7 @@
 settings.scss
 /plugins/swam/themes/base/*.scss
 /plugins/swam/ext/imageeditor/*.css
+/plugins/swam/ext/**/*.scss
 pages/**/*.scss
 pages/examples/**/*.scss
 views/**/*.scss

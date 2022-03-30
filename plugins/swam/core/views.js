@@ -116,11 +116,12 @@ SWAM.View = SWAM.Object.extend({
         this.renderChildren();
         this.on_post_render();
     },
-    renderChildren: function() {
+    renderChildren: function(empty_parent) {
         if (!this.children) return;
         _.each(this.children, function(view, el_sel) {
             var $parent = this.$el.find(this.normalizeElSel(el_sel));
             if ($parent) {
+                if (empty_parent) $parent.empty();
                 view.addToDOM($parent);
             }
         }.bind(this));
@@ -153,12 +154,12 @@ SWAM.View = SWAM.Object.extend({
       return this;
     },
     on_action_click: function(evt) {
-        var action = $(evt.currentTarget).data("action");
+        var $el = $(evt.currentTarget);
+        var action = $el .data("action");
         if (!action) return true;
         var func_name = "on_action_" + action;
         if (_.isFunction(this[func_name])) {
-            return this[func_name](evt);
-            // evt.stopPropagation();
+            return this[func_name](evt, $el.data("id"));
         }
         return true;
     },

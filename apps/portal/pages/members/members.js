@@ -8,10 +8,9 @@ PORTAL.Pages.Members = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
-            {label:"id", field:"id"},
-            {label:"username", field:"username"},
-            {label:"email", field:"email"},
-            {label:"display_name", field:"display_name"},
+            {label:"User Name", field:"username"},
+            {label:"Display Name", field:"display_name"},
+            {label:"Permissions", field:"metadata.permissions|badges"},
         ],
         Collection: SWAM.Collections.User,
         collection_params: {
@@ -19,21 +18,5 @@ PORTAL.Pages.Members = SWAM.Pages.TablePage.extend({
         }
     },
 
-    on_action_add: function(evt) {
-        // SWAM.Dialog.alert({title:"Not Implemented", message:"This form is not yet implemented"})
-        SWAM.toast("Add Group", "Not implemented yet", "warning");
-    },
-
-    on_action_download_csv: function(evt) {
-        SWAM.toast("Add Group", "This is a live change", "warning");
-    },
-
-    on_action_download_json: function(evt) {
-        SWAM.toast("Add Group", "Not implemented yet", "warning");
-    },
-
-    on_action_download_pdf: function(evt) {
-        SWAM.toast("Add Group", "Not implemented yet", "warning");
-    },
 });
 

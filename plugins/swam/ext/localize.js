@@ -403,6 +403,16 @@ SWAM.Localize = {
 
         return value;
     },
+    'badges': function(value, attr, fmt) {
+        if (_.isObject(value)) {
+            var out = [];
+            _.each(value, function(obj, key) {
+                out.push('<span class="badge bg-warning text-dark pr-1">' + key + '</span>');
+            });
+            return out.join(" ");
+        }
+        return value;
+    },
     'icon': function(value, attr, fmt) {
         return SWAM.Icons[value];
     },

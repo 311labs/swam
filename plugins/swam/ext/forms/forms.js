@@ -6,7 +6,6 @@ SWAM.Form.View = SWAM.View.extend({
         "click :checkbox": "on_checkbox_handler",
         "change input": "on_input_handler",
         "change select": "on_input_handler",
-        // "submit": "on_submit",
         "click form.search button": "on_submit"
     },
 
@@ -29,6 +28,7 @@ SWAM.Form.View = SWAM.View.extend({
         this.on_init_image_editor();
         this.on_init_datepicker();
         this.on_init_daterangepicker();
+        this.enablePops();
     },
 
     getData: function() {
@@ -97,9 +97,10 @@ SWAM.Form.View = SWAM.View.extend({
         });
         this._date_pickers = [];
         this.off("submit", this.on_submit, this);
-        // _.each(this._bs_popovers, function(item){
-        //     item.dispose();
-        // });
+
+        _.each(this._bs_popovers, function(item){
+            item.dispose();
+        });
     },
 
     on_checkbox_handler: function(evt) {
@@ -107,9 +108,17 @@ SWAM.Form.View = SWAM.View.extend({
         var name = $el.attr("name");
         if (!name) name = $el.attr("id");
         if (!name) return;
+        var is_checked = $el.is(":checked");
+        var lbl = $el.data("off-label");
+        if (lbl) {
+            if (is_checked) {
+                lbl = $el.data("on-label");
+            }
+            $el.parent().find('label').text(lbl);
+        }
         var func_name = "on_checkbox_" + name;
         if (_.isFunction(this[func_name])) {
-            this[func_name](evt, $el.is(":checked"));
+            this[func_name](evt, is_checked);
         } else if (_.isFunction(this["on_checkbox_change"])) {
             this.on_checkbox_change(name, $el.is(":checked"));
         }
@@ -120,6 +129,7 @@ SWAM.Form.View = SWAM.View.extend({
         var name = $el.attr("name");
         if (!name) name = $el.attr("id");
         if (!name) return;
+
         var func_name = "on_input_" + name;
         if (_.isFunction(this[func_name])) this[func_name](evt, $el.val());
         if (_.isFunction(this[func_name])) {
@@ -127,6 +137,13 @@ SWAM.Form.View = SWAM.View.extend({
         } else if (_.isFunction(this["on_input_change"])) {
             this.on_input_change(name, $el.val(), evt);
         }
+    },
+
+    enablePops: function() {
+        var list = [].slice.call(this.$el[0].querySelectorAll('[data-bs-toggle="popover"]'))
+        this._bs_popovers = list.map(function (sel) {
+          return new bootstrap.Popover(sel, {html:true});
+        });
     },
 
 });

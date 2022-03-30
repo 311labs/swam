@@ -1,5 +1,43 @@
 div.swam-form-input {
 	padding: 0.5rem 0;
+
+    .btn-help {
+        border-radius: 50%;
+        height: 22px;
+        width: 22px;
+        padding: 0;
+        vertical-align: top;
+        margin-left: 5px;
+        font-size: 14px;
+        margin-top: 1px;
+
+        background-color: #f8f9fa;
+        border-color: #ddd;
+        color: #444;
+    }
+
+    input.form-control-date, input.form-control-daterange {
+        cursor: pointer;
+        &[readonly] {
+            background-color: white;
+            opacity: 1;
+        }
+    }
+
+    &.label-input-group {
+        padding-bottom: 0;
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    &.line-input-group {
+        padding-bottom: 0;
+        hr {
+            color: #9a9b9c;
+            margin: 0.5rem 0;
+        }
+    }
 }
 
 

@@ -96,21 +96,6 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
         }
     },
 
-    on_action_add: function(evt) {
-        // SWAM.Dialog.alert({title:"Not Implemented", message:"This form is not yet implemented"})
-        SWAM.toast("Add Group", "Not implemented yet", "warning");
-    },
 
-    on_action_download_csv: function(evt) {
-        SWAM.toast("Add Group", "This is a live change", "warning");
-    },
-
-    on_action_download_json: function(evt) {
-        SWAM.toast("Add Group", "Not implemented yet", "warning");
-    },
-
-    on_action_download_pdf: function(evt) {
-        SWAM.toast("Add Group", "Not implemented yet", "warning");
-    },
 });
 

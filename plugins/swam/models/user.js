@@ -44,7 +44,29 @@ SWAM.Models.User = SWAM.Model.extend({
                     columns: 12
                 },
             ]
-        }
+        },
+        " ",
+        {
+            label:"Permissions",
+            help: "Control system level permissions.",
+            type:"label",
+            columns: 12
+        },
+        {
+            name:"metadata.permissions.manage_members",
+            label:"Manage Members",
+            help: "Allow this user to manage other system users",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_all_groups",
+            label:"View Groups",
+            help: "Allow this user to view all groups",
+            type:"toggle",
+            columns: 6
+        },
+
     ]
 });
 

@@ -6,7 +6,9 @@ PORTAL.Pages.ExampleMisc = SWAM.Page.extend(SWAM.Ext.BS).extend({
     busy_examples: _.keys(SWAM.Icons),
 
     on_init: function() {
-
+        this.groups = new SWAM.Collections.Group();
+        this.addChild("mysearchdown", new SWAM.Views.SearchDown({collection: this.groups, title:"Select Group"}));
+        this.groups.fetch();
     },
 
     on_action_test_uncaught_error: function(evt) {

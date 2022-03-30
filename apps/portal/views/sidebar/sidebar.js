@@ -8,6 +8,28 @@ PORTAL.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	on_init: function() {
 		app.me.on("change", this.render, this);
 		app.on("page:change", this.on_page_change, this);
+
+		this.groups = new SWAM.Collections.Group({size:500});
+		this.addChild("groupselect", new SWAM.Views.SearchDown({
+			collection: this.groups, 
+			title:"Select Merchant",
+			empty_label: "Select Merchant"
+		}));
+		this.groups.fetch();
+	},
+
+	showAdmin: function() {
+		this.template = ".views.sidebar.adminbar";
+		this.$el.removeClass("bg-dark").addClass("bg-light");
+		this.classes = "main bg-light";
+		this.render();
+	},
+
+	hideAdmin: function() {
+		this.template = ".views.sidebar";
+		this.$el.removeClass("bg-light").addClass("bg-dark");
+		this.classes = "main bg-dark";
+		this.render();
 	},
 
 	on_page_change: function(name) {

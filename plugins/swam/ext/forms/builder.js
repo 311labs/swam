@@ -7,7 +7,7 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 	form_info.model = model;
 	form_info.columns = 0;
 	form_info.$row = null;
-	form_info.$form = options.$form || $("<form />");
+	form_info.$form = options.$form || $('<form autocorrect="off" spellcheck="false" autocomplete="off" />');
 
 	_.each(fields, function(field) {
 		if (!field) return;
@@ -49,6 +49,7 @@ SWAM.Form.buildField = function(fc, form_info) {
 		if (fc.name) fc.$input.attr("name", fc.name);
 		if (fc.required) fc.$input.prop("required", true);
 		if (fc.disabled) fc.$input.attr("disabled", "disabled");
+		if (fc.readonly) fc.$input.prop("readonly", true);
 		if (fc.placeholder) fc.$input.attr("placeholder", fc.placeholder);
 		if (fc.action) fc.$input.attr("data-action", fc.action);
 		if (fc.attributes) {
@@ -65,7 +66,14 @@ SWAM.Form.buildField = function(fc, form_info) {
 		if (fc.value) {
 			SWAM.Form.Builder.value(fc, form_info);
 		}
-		
+	}
+
+	if (fc.help) {
+		if (fc.$label) {
+			fc.$label.after(SWAM.Form.Builder.help(fc, form_info));
+		} else if (fc.$input) {
+			fc.$input.before(SWAM.Form.Builder.help(fc, form_info));
+		}
 	}
 } 
 
@@ -150,22 +158,45 @@ SWAM.Form.Builder.label = function(fc, form_info) {
 	if (fc.label) {
 		var lbl =$("<label for='" + fc.name + "' />").addClass("form-label");
 		lbl.text(fc.label);
+		fc.$label = lbl;
+		if (fc.type == "label") {
+			fc.$el.append(fc.$label);
+		}
 		return lbl;
 	}
 	return null;
 }
 
+SWAM.Form.Builder.help = function(fc, form_info) {
+	
+	if (fc.help) {
+		fc.help_title = fc.help_title || "Help";
+		var el =$('<button type="button" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top" data-bs-content="' + fc.help + '" />')
+			.addClass("btn btn-help")
+			.attr("title", fc.help_title)
+			.text("?");
+		return el;
+	}
+	return null;
+}
+
 SWAM.Form.Builder.text = function(fc, form_info) {
-	if (fc.button || fc.icon) return SWAM.Form.Builder.input_group(fc, form_info);
-	fc.$label = SWAM.Form.Builder.label(fc);
+	if (fc.button || fc.icon || fc.left_icon) return SWAM.Form.Builder.input_group(fc, form_info);
+	SWAM.Form.Builder.label(fc);
 	fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
 	fc.$input.prop("type", fc.type);
 	SWAM.Form.Builder.orderLabel(fc, form_info);
 	return fc;
 }
 
+SWAM.Form.Builder.password = function(fc, form_info) {
+	SWAM.Form.Builder.text(fc, form_info);
+	fc.$input.attr("autocomplete", "new-password");
+	return fc;
+}
+
 SWAM.Form.Builder.textarea = function(fc, form_info) {
-	fc.$label = SWAM.Form.Builder.label(fc);
+	SWAM.Form.Builder.label(fc);
 	fc.$input = $("<textarea />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
 	if (!fc.rows) fc.rows = 3;
 	fc.$input.attr("rows", fc.rows);
@@ -191,7 +222,7 @@ SWAM.Form.Builder.button = function(fc, form_info) {
 SWAM.Form.Builder.checkbox = function(fc, form_info) {
 	fc.$wrap = $("<div />").addClass("form-check");
 	fc.$el.append(fc.$wrap);
-	fc.$label = SWAM.Form.Builder.label(fc);
+	SWAM.Form.Builder.label(fc);
 	fc.$label.attr("class", "form-check-label");
 	fc.$input = $("<input />").addClass("form-check-input").addClass("input-" + fc.type);
 	fc.$input.prop("type", "checkbox");
@@ -209,15 +240,33 @@ SWAM.Form.Builder.toggle = function(fc, form_info) {
 	SWAM.Form.Builder.checkbox(fc, form_info);
 	fc.$wrap.addClass("form-switch");
 	fc.$input.attr("role", "switch");
+	if (fc.off_label) {
+		if (!fc.on_label) fc.on_label = fc.label; 
+		fc.$input.data("off-label", fc.off_label);
+		fc.$input.data("on-label", fc.on_label);
+		if (fc.value == undefined) fc.value = 0;
+		if (!_.isBoolean(fc.value) && fc.value.isNumber()) fc.value = fc.value.toInt();
+		if (_.isString(fc.value)) fc.value = 0;
+		if (fc.value) {
+			fc.$label.text(fc.on_label);
+		} else {
+			fc.$label.text(fc.off_label);
+		}
+	}
+
 	return fc;
 }
 
 SWAM.Form.Builder.input_group = function(fc, form_info) {
-	fc.$label = SWAM.Form.Builder.label(fc);
+	SWAM.Form.Builder.label(fc);
 	fc.$el.append(fc.$label);
 	fc.$wrap = $("<div />").addClass("input-group");
 	fc.$el.append(fc.$wrap);
+	if (fc.left_icon) {
+		fc.$wrap.append("<div class='input-group-text'><i class='" + fc.left_icon + "'></i></div>");
+	}
 	fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
+	fc.$input.prop("type", fc.type);
 	fc.$wrap.append(fc.$input);
 	if (fc.button) {
 		var $btn = $("<button class='btn btn-default btn btn-outline-secondary'><i class='" + fc.button.icon + "'></i></button>");
@@ -250,7 +299,7 @@ SWAM.Form.Builder.daterange = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.select = function(fc, form_info) {
-	fc.$label = SWAM.Form.Builder.label(fc);
+	SWAM.Form.Builder.label(fc);
 	fc.$input = $("<select />").addClass("form-select").addClass("input-" + fc.type);
 	if (fc.multiple || fc.multi) {
 		fc.$input.attr("multiple", "multiple");
@@ -410,7 +459,7 @@ SWAM.Form.Builder.buttongroup = function(fc, form_info) {
 
 SWAM.Form.Builder.image = function(fc, form_info) {
 	if (!fc.label) fc.label = "upload";
-	fc.$label = SWAM.Form.Builder.label(fc);
+	SWAM.Form.Builder.label(fc);
 	fc.$input = $("<input />")
 		.addClass("thumbnail-picker thumbnail-picker-md")
 		.addClass("input-" + fc.type);

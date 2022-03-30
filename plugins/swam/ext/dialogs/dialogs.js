@@ -12,16 +12,30 @@ SWAM.Dialog = SWAM.View.extend({
         size: null, // null=normal, sm, lg, xl
     },
     events: {
-        "click": "on_dlg_click"
+        "click": "on_dlg_click",
+        "keypress input": "on_input_keypress",
     },
     dialog_sizes: {
         "medium": "lg",
         "small": "sm",
-        "large": "xl"
+        "large": "xl",
+        "lg": "lg",
+        "sm": "sm",
+        "xl": "xl",
     },
     on_dlg_click: function(evt) {
         if ($(evt.target).hasClass("modal")) {
             this.on_action_bg_close(evt);
+        }
+    },
+    on_input_keypress: function(evt) {
+        // BUG FIX FOR JQUERY NOT HANDLING SUBMISSIONS SOMETIMES ON ENTER PRESS
+        if (evt.which === 13) {
+            this.choice = "save";
+            this.trigger("dialog:choice", this, this.choice);
+            if (this.options.callback) this.options.callback(this, this.choice);
+            evt.stopPropagation();
+            return false;
         }
     },
     show: function() {
@@ -58,7 +72,7 @@ SWAM.Dialog = SWAM.View.extend({
     on_action_choice: function(evt) {
         this.choice = $(evt.currentTarget).data("id");
         if (["no", "cancel"].indexOf(this.choice.lower()) > 0) return this.dismiss();
-        this.trigger("dialog:choice", this);
+        this.trigger("dialog:choice", this, this.choice);
         if (this.options.callback) this.options.callback(this, this.choice);
     },
     on_action_bg_close: function(evt) {
@@ -71,6 +85,7 @@ SWAM.Dialog = SWAM.View.extend({
         if (this.options.size) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_sizes[this.options.size]);
         window.sleep(200).then(function(){
             this.$el.addClass("show");
+            this.$el.find("input:text, textarea").first().focus();
         }.bind(this));
     },
     getData: function(evt) {
@@ -104,7 +119,7 @@ SWAM.Dialog = SWAM.View.extend({
     },
     warning: function(opts) {
         if (_.isString(opts)) opts = {"title": "Alert", "message":opts};
-        opts = _.extend({add_classes: "modal-danger", can_dismiss:true}, opts);
+        opts = _.extend({add_classes: "modal-danger", can_dismiss:true, icon: "exclamation-triangle-fill"}, opts);
         var dlg = new this(opts);
         dlg.show();
         return dlg;
@@ -192,7 +207,7 @@ SWAM.Dialog = SWAM.View.extend({
                 {
                     id: "save",
                     action:"choice",
-                    label: "Save"
+                    label: opts.lbl_save || "Save"
                 }
             ]
         };

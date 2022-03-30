@@ -1,5 +1,5 @@
 SWAM.Views.ListItem = SWAM.View.extend({
-    template: "<div>{{model.id}}</div>",
+    template: "<div>{{display_label}}</div>",
     tagName: "li",
     classes: "list-group-item",
 
@@ -7,12 +7,21 @@ SWAM.Views.ListItem = SWAM.View.extend({
         "click": "on_clicked"
     },
 
+    display_label: function() {
+        return this.model.get(this.options.display_field);
+    },
+
     on_init: function() {
+        if (!this.options.display_field) this.options.display_field = this.options.list.options.display_field || "id";
         this.setModel(this.options.model);
     },
 
     on_clicked: function(evt) {
         this.options.list.on_item_clicked(this, evt);
+    },
+
+    on_model_change: function(model) {
+        this.render();
     },
 
     setModel: function(model) {
@@ -52,7 +61,6 @@ SWAM.Views.List = SWAM.View.extend({
             this.collection.on('add', this.on_add, this);
             this.collection.on('remove', this.on_remove, this);
             this.collection.on('reset', this.on_reset, this);
-            this.collection.on('change', this.on_model_change, this);
             this.collection.on("loading:begin", this.on_loading_begin, this);
             this.collection.on("loading:end", this.on_loading_end, this);
         }
@@ -121,11 +129,14 @@ SWAM.Views.List = SWAM.View.extend({
     on_render: function() {
         if (!this.options.is_loading) {
             this.$body.empty();
+            var index = 0;
             _.each(this.items, function(item){
+                if (index > this.options.max_size) return false;
                 item.undelegateEvents();
                 this.$body.append(item.$el);
                 item.render();
                 item.delegateEvents();
+                index += 1;
             }.bind(this))
         } else {
             this.$body.html(this.options.loading_html);

@@ -34,6 +34,7 @@ PORTAL.App = SWAM.App.extend({
 
 	on_init_examples: function() {
 		this.addPage("examples_views", new PORTAL.Pages.ExampleViews(), ["examples/views"]);
+		this.addPage("examples_tabs", new PORTAL.Pages.ExampleTabs(), ["examples/tabs"]);
 		this.addPage("examples_pages", new PORTAL.Pages.ExamplePages(), ["examples/pages"]);
 		this.addPage("examples_dialogs", new PORTAL.Pages.ExampleDialogs(), ["examples/dialogs"]);
 		this.addPage("examples_forms", new PORTAL.Pages.ExampleForms(), ["examples/forms"]);

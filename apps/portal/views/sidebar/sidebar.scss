@@ -24,6 +24,7 @@ div#panel-left {
 		ul.nav.nav-pills li a {
 			i {
 				padding-right: 0.4rem;
+				font-size: 1.1rem;
 			}
 			&:hover {
 				background: #cccccc;
@@ -34,22 +35,24 @@ div#panel-left {
 		&.bg-dark {
 			background-color: $panel-left-background !important;
 
-			a, button {
-				color: $panel-left-color;
-			}
-
-			ul.nav.nav-pills li a {
-				&:hover {
-					background: $panel-left-hover-bg;
-					color: $panel-left-hover-color;
+			ul.nav.nav-pills li {
+				a, button {
+					color: $panel-left-color;
 				}
 
-				&.active {
-					background-color: $panel-left-active-bg;
-					color: $panel-left-active-color;
-					font-weight: bold;
+				a {
+					&:hover {
+						background: $panel-left-hover-bg;
+						color: $panel-left-hover-color;
+					}
+
+					&.active {
+						background-color: $panel-left-active-bg;
+						color: $panel-left-active-color;
+						font-weight: bold;
+					}
 				}
-			}
+			} 
 		}
 	}
 }

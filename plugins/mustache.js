@@ -61,8 +61,15 @@ Mustache.Context.prototype.ext_include = function(name) {
 Mustache.Context.prototype.ext_icon = function(name) {
     var keys = this.parseValueName(name);
     if (!keys.length) return null;
-    var icon = SWAM.Icons[keys[0].params];
-    if (!icon) icon = '<i class="bi bi-' + keys[0].params + '"></i>'
+    var value = keys[0].params;
+    if (value.startsWith("'") || value.startsWith('"')) {
+        value = value.removeAll('"').removeAll("'");
+    } else {
+        value = this.findValue(value);
+        if (!value) value = keys[0].params;
+    }
+    var icon = SWAM.Icons[value];
+    if (!icon) icon = '<i class="bi bi-' + value + '"></i>'
     return icon;
 };
 

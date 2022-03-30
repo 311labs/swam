@@ -21,10 +21,38 @@ SWAM.Form.Test.Basic = [
         placeholder: "this is a place holder"
     },
     {
+        label: "Email Address",
+        type: "email",
+        help: "this is a nice looking left icon",
+        name: "left_icon1",
+        left_icon: "bi bi-envelope",
+        columns: 4,
+        placeholder: "enter email"
+    },
+    {
+        label: "Secure",
+        type: "password",
+        help: "This is a secure input.  Notice it does not autocomplete!",
+        name: "right_icon1",
+        left_icon: "bi bi-lock",
+        columns: 4,
+        placeholder: "enter secure input"
+    },
+    {
+        label: "right icon",
+        help: "this is a nice looking right_icon1 icon",
+        name: "left_icon2",
+        icon: "bi bi-person",
+        columns: 4,
+        placeholder: "this is a place holder"
+    },
+    {
         label: "tags",
         name: "tags1",
         columns: 6,
         type:"tags",
+        help_title: "Tag Help",
+        help:"<strong>Tags</strong> can be really fun and simple.",
         placeholder: "input your tags"
     },
     {
@@ -254,14 +282,16 @@ SWAM.Form.Test.Misc = [
         name: "toggle1",
         columns: 4,
         type: "toggle",
-        help: "this is a simple toggle"
+        on_label: "ON",
+        off_label: "OFF",
+        help: "You can set the on/off labels!"
     },
     {
         label: "a toggle",
         name: "toggle2",
         columns: 4,
         type: "toggle",
-        help: "this is a simple toggle",
+        help: "Toggle with a static label!",
         default: 1
     },
     {

@@ -101,11 +101,38 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		SWAM.Dialog.editModel(item.model, 
 			{
 				title:"Edit",
+				size: "lg",
 				callback:function(model, resp) {
 					if (resp.status) {
 					// auto saved nothing to do
 					}
 				}.bind(this)
 			});
-	}
+	},
+
+	on_action_add: function(evt) {
+	    // SWAM.Dialog.alert({title:"Not Implemented", message:"This form is not yet implemented"})
+		SWAM.Dialog.editModel(new this.collection.options.Model(), 
+			{
+				title:"Add",
+				size: "lg",
+				callback:function(model, resp) {
+					if (resp.status) {
+					// auto saved nothing to do
+					}
+				}.bind(this)
+			});
+	},
+
+	on_action_download_csv: function(evt) {
+	    SWAM.toast("Add Group", "This is a live change", "warning");
+	},
+
+	on_action_download_json: function(evt) {
+	    SWAM.toast("Add Group", "Not implemented yet", "warning");
+	},
+
+	on_action_download_pdf: function(evt) {
+	    SWAM.toast("Add Group", "Not implemented yet", "warning");
+	},
 });

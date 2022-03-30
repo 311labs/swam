@@ -23,6 +23,21 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         }
     },
 
+    hasPerm: function(perm) {
+        if (_.isArray(perm)) {
+            var i=0;
+            for (; i < perm.length; i++) {
+                if (this.hasPerm(perm[i])) return true;
+            }
+            return false;
+        }
+        if ((perm == "staff")&&(this.isStaff())) return true;
+        if (this.get("metadata.permissions." + perm)) return true;
+        if (this.membership) return this.membership.hasPerm(perm);
+        return false;
+    },
+
+
     isOrCanAuth: function() {
         return this.isAuthenticated() || (this.authExpiresIn() > 60);
     },

@@ -10,15 +10,14 @@ SWAM.Collection = SWAM.Object.extend({
         fetch_debounced: true  // by default debounce fetch requests (ie avoid double clicks, etc)
     },
 
-    params: {},
-    models: [],
-
     initialize: function(models, opts) {
         if (_.isObject(models) && !_.isArray(models)){
             opts = models;
             models = [];
         } 
-        this.id = _.uniqueId("collection");;
+        this.id = _.uniqueId("col");
+        this.models = [];
+        this.shadow_models = null;
         this.is_loading = false;
         this.set(models);
         this.init_options(opts);
@@ -29,6 +28,98 @@ SWAM.Collection = SWAM.Object.extend({
 
     getUrl: function() {
         if (this.options.url) return url;
+    },
+
+    sortBy: function(field, decending, models) {
+        var comparator = null;
+        if (!decending) {
+            comparator = function(model) {
+                var val = model.get(field);
+                if (_.isString(val)) {
+                    if (val.length) return val.lower();
+                } else if (isNaN(val)) {
+                    return 0;
+                }
+                return val;
+            }
+        } else {
+            comparator = function(model) {
+                var val = model.get(field);
+                if (_.isString(val)) {
+                    if (val.length) {
+                        val = val.lower().split("");
+                        return _.map(val, function(letter) { return String.fromCharCode(-(letter.charCodeAt(0))) });
+                    }
+                } else if (isNaN(val)) {
+                    return 0;
+                }
+                return -val;
+            }
+        }
+
+        if (this.shadow_models == null) this.shadow_models = this.models;
+        if (!models) {
+            models = this.shadow_models;
+        }
+        models = _.sortBy(models, comparator);
+        this.trigger("reset", this);
+        this.setModels(models);
+        return models;
+    },
+
+    clearFilter: function() {
+        // reverts back to shadow models before filtering
+        if (this.shadow_models) {
+            this.setModels(this.shadow_models);
+            this.shadow_models = null;
+        }
+    },
+
+    filter: function(params) {
+        // this will do local filtering and create a copy of the shadow array
+        if (this.shadow_models == null) this.shadow_models = this.models;
+        // now this.models will be a new array of filtered models
+        var matcher = _.matcher(params);
+        this.models = _.filter(this.shadow_models, function(obj){
+            return matcher(obj.attributes);
+        });
+    },
+
+    search: function(field, value, inplace) {
+        // this will do local filtering and create a copy of the shadow array
+        // can only search string fields
+        if (this.shadow_models == null) this.shadow_models = this.models;
+        // now this.models will be a new array of filtered models
+        var models = _.filter(this.shadow_models, function(obj){
+            var val = obj.attributes[field];
+            return (val && val.contains(value, false));
+        }.bind(this));
+        if (inplace) {
+            this.trigger("reset", this);
+            this.setModels(models);
+        }
+        return models;
+    },
+
+    remoteFilter: function(params) {
+        // this will do a remove filter
+    },
+
+    remoteSearch: function(params) {
+        // this will do a remove filter
+    },
+
+    setModels: function(models) {
+        // this assumes they are already models
+        this.models = [];
+        _.each(models, function(m){
+            this.models.push(m);
+            this.trigger("add", m);
+        }.bind(this));
+
+        this.size = this.models.length;
+        this.length = this.models.length;
+        this.trigger("loading:end", this);
     },
 
     set: function(models, append) {
@@ -59,6 +150,7 @@ SWAM.Collection = SWAM.Object.extend({
 
     reset: function(silent) {
         this.models = [];
+        this.shadow_models = null;
         this.count = 0;
         this.start = 0;
         this.size = 0;

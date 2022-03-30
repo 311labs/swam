@@ -1,0 +1,34 @@
+
+<div class="tabsview-wrapper">
+	<div id="tabsview_header">
+	</div>
+	<div class="tabs-container">
+		<div class="tab-dropdown">
+			<div id="tab_dropdown">
+				<div class="dropdown">
+				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="tabs_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+				    Dropdown link
+				  </a>
+				  <ul class="dropdown-menu">
+			  		{{#get_tabs}}
+				  		<li>
+				  			<a href="#"  data-action="tab" data-id="{{.id}}" class="dropdown-item">
+				  				{{{.label}}}
+				  			</a>
+				  		</li>
+			  		{{/get_tabs}}
+				  </ul>
+				</div>
+			</div>
+		</div>
+		<div class="tabs">
+			<ul>
+				{{#get_tabs}}
+				<li data-action="tab" data-id="{{.id}}" class="{{.classes}}">{{{.label}}}</li>
+				{{/get_tabs}}
+			</ul>
+		</div>
+		<div id="active_tab_view"></div>
+	</div>
+</div>
+

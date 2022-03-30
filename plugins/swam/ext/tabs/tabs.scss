@@ -1,0 +1,73 @@
+body.app {
+	div.swam-tabs-view {
+        background-color: white;
+        border-radius:0.3rem;
+        box-shadow: 0 0 1px rgba(0,0,0,0.1),  0 1px 3px rgba(0,0,0,0.2);
+        padding: 1rem;
+	}
+
+	div.tabs-container {
+	    #tab_dropdown {
+	        display: none;
+	        .btn-dropdown {
+	            text-align: left;
+	            font-size: 18px;
+	            border-bottom: 2px solid $blue;
+	            width: 100%;
+	        }
+	    }
+
+	    &.wrapped {
+	        #tab_dropdown {
+	            display: block;
+	        }
+
+	        div.tabs {
+	            display: none;
+	        }
+	    }
+	}
+
+	div.tabs {
+	    border-bottom: 1px solid #ececec;
+	    margin-top: 0;
+	    > ul {
+	        position: relative;
+	        list-style-type: none;
+	        margin: 0;
+	        padding: 0;
+	        > li {
+	        	display: inline-block;
+	        	padding: 6px 14px 4px 14px;
+	        	background: transparent;
+	        	cursor: pointer;
+	        	border-bottom: none;
+	        	margin-bottom: -1px;
+	        	margin-right: 0;
+	        	color: gray;
+    	        border-top-left-radius:0.3rem;
+    	        border-top-right-radius:0.3rem;
+
+	            &:hover {
+	                background: rgba(0,0,0, 0.1);
+	            }
+
+	            &.active {
+	                color: $brand-primary;
+	                border-bottom: 2px solid $brand-primary;
+	            }
+	        }
+	    }
+
+	    div.tab {
+	        padding: 30px 15px;
+	    }
+
+	    div.tab-content {
+	    	display: none;
+	    	&.active {
+	    		display: block;
+	    	}
+	    }
+	}
+}
