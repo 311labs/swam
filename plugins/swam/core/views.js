@@ -43,7 +43,7 @@ SWAM.View = SWAM.Object.extend({
 
     },
     setParams: function(params) {
-        this.params = params;
+        this.params = params || {};
     },
     normalizeElSel: function(el_sel) {
         if (!el_sel.startsWith("#") && !el_sel.startsWith(".")) el_sel = "#" + el_sel;
@@ -53,7 +53,7 @@ SWAM.View = SWAM.Object.extend({
         this.children[el_sel] = view;
         if (!el_sel.startsWith("#") && !el_sel.startsWith(".")) el_sel = "#" + el_sel;
         var $parent = this.$el.find(this.normalizeElSel(el_sel));
-        if ($parent) {
+        if (this.isInDOM() && $parent) {
             view.addToDOM($parent);
         }
     },
@@ -115,6 +115,7 @@ SWAM.View = SWAM.Object.extend({
         this.on_render();
         this.renderChildren();
         this.on_post_render();
+        this.trigger("rendered", this);
     },
     renderChildren: function(empty_parent) {
         if (!this.children) return;
@@ -164,17 +165,53 @@ SWAM.View = SWAM.Object.extend({
         return true;
     },
 
+    setModel: function(model) {
+        if (this.model) {
+            if (this.model == model) return;
+            this.model.off("change", this.on_model_change, this);
+        }
+        this.model = model;
+        this.options.model = model;
+        this.model.on("change", this.on_model_change, this);
+        _.each(this.children, function(child){
+            child.setModel(model);
+        });
+    },
+
+    on_model_change: function(model) {
+        this.render();
+    },
+
     on_showpage_click: function(evt) {
         evt.stopPropagation();
-        var page_name = $(evt.currentTarget).data("showpage");
+        var $el = $(evt.currentTarget);
+        var page_name = $el.data("showpage");
+        var params = $el.data("params");
+        if (params && params.startsWith("?")) params = {url_params:window.decodeSearchParams(params)};
         if (!page_name) return;
         var func_name = "on_showpage_" + page_name;
         if (_.isFunction(this[func_name])) {
-            this[func_name](evt);
+            this[func_name](evt, params);
         } else {
-            app.setActivePage(page_name);
+            app.setActivePage(page_name, params);
         }
         return false;
+    },
+
+    isVisible: function() {
+        return this.$el.is(':visible');
+    },
+
+    isInViewport: function() {
+        if (!this.isVisible()) return false;
+
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+
+        var elemTop = this.$el.offset().top;
+        var elemBottom = elemTop + this.$el.height();
+
+        return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) &&  (elemTop >= docViewTop) );
     },
 
     on_dom_adding: function() {},

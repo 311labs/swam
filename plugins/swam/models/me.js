@@ -39,7 +39,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
 
     isOrCanAuth: function() {
-        return this.isAuthenticated() || (this.authExpiresIn() > 60);
+        return this.isAuthenticated() || (this.refreshExpiresIn() > 60);
     },
 
     isAuthed: function() {

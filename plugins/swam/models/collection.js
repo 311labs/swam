@@ -5,6 +5,7 @@ SWAM.Collection = SWAM.Object.extend({
     defaults: {
         Model: SWAM.Model,
         size: 50,
+        stale_after_ms: 15000,
         max_visible_pages: 4,
         reset_after_fetch: true,
         fetch_debounced: true  // by default debounce fetch requests (ie avoid double clicks, etc)
@@ -24,10 +25,6 @@ SWAM.Collection = SWAM.Object.extend({
         this.params = _.extend({size:this.options.size}, this.params, this.options.params);
         this.resetPager();
         if (!this.options.url) this.options.url = this.options.Model.prototype.defaults.url;
-    },
-
-    getUrl: function() {
-        if (this.options.url) return url;
     },
 
     sortBy: function(field, decending, models) {
@@ -232,10 +229,23 @@ SWAM.Collection = SWAM.Object.extend({
         }
     },
 
+    abort: function() {
+        if (this._request) {
+            this._request.abort();
+            this._request = null;
+        }
+    },
+
+    isStale: function() {
+        if (!this.last_fetched_at) return true;
+        return (Date.now() - this.last_fetched_at) > this.options.stale_after_ms;
+    },
+
     _on_fetched: function(resp, status) {
         this.is_loading = false;
         if (resp.status) {
             if (resp && _.isArray(resp.data)) {
+                this.last_fetched_at = Date.now();
                 if (this.options.reset_after_fetch) this.reset();
                 this.parseResponse(resp);
                 this.trigger("fetched", this);
@@ -244,6 +254,16 @@ SWAM.Collection = SWAM.Object.extend({
             this.trigger("error", this. resp);
         }
         this.trigger('loading:end', this);
+    },
+
+    fetchIfStale: function(callback, opts) {
+        if ((opts == undefined) && (window.isDict(callback))) {
+            opts = callback;
+            callback = undefined;
+        }
+        opts = opts || {};
+        opts.if_stale = true;
+        return this.fetch(callback, opts);
     },
 
     fetch: function(callback, opts) {
@@ -256,8 +276,18 @@ SWAM.Collection = SWAM.Object.extend({
 
     _fetch: function(callback, opts) {
         this.is_loading = true;
+        this.abort();
+        if (opts && opts.if_stale) {
+            if (!this.isStale()) {
+                if (callback) callback(this, 200);
+                this.trigger("fetched", this);
+                this.trigger('loading:end', this);
+                return;
+            }
+        }
         this.trigger('loading:begin', this);
-        SWAM.Rest.GET(this.options.url, this.params, function(data, status) {
+        this._request = SWAM.Rest.GET(this.getUrl(), this.params, function(data, status) {
+            this._request = null;
             this._on_fetched(data, status);
             if (callback) callback(this, status, data);
         }.bind(this), opts);
@@ -299,5 +329,31 @@ SWAM.Collection = SWAM.Object.extend({
             this.params.start = this.count - this.params.size;
         }
         this.fetch(callback, opts);
+    },
+
+    getUrl: function() {
+        if (_.isFunction(this.options.url)) {
+            return this.options.url();
+        }
+        return this.options.url;
+    },
+
+    getRawUrl: function(params) {
+        var obj = _.extend({}, this.params, params);
+        var str = [];
+        for(var p in obj)
+          if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          }
+
+        var url = this.getUrl();
+
+        // only override if it doesn't have hose
+        if (!url.startsWith("http")) {
+            if (window.app && window.app.options.api_url) {
+                url = window.app.options.api_url + url;
+            }
+        }
+        return url + "?" + str.join("&");
     }
 });

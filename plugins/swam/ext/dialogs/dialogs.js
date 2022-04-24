@@ -57,8 +57,8 @@ SWAM.Dialog = SWAM.View.extend({
         this.$el.show();
     },
     dismiss: function() {
-        this.$el.removeClass("show");
-        window.sleep(200).then(function(){
+        this.$el.removeClass("show").find(".show").removeClass("show");
+        window.sleep(300).then(function(){
             SWAM.active_dialog = SWAM.prev_dialog;
             SWAM.prev_dialog = null;
             this.removeFromDOM();
@@ -83,8 +83,12 @@ SWAM.Dialog = SWAM.View.extend({
     },
     on_post_render: function() {
         if (this.options.size) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_sizes[this.options.size]);
-        window.sleep(200).then(function(){
+        window.sleep(500).then(function(){
+            if (this.$el.find(".offcanvas").length) {
+                this.$el.find(".offcanvas").addClass("show");
+            }
             this.$el.addClass("show");
+            
             this.$el.find("input:text, textarea").first().focus();
         }.bind(this));
     },
@@ -173,7 +177,7 @@ SWAM.Dialog = SWAM.View.extend({
                 opts.icon = SWAM.Icons[opts.icon];
             }
         }
-        opts = _.extend({template:"plugins.swam.ext.dialogs.loader", color:"warning"}, opts);
+        opts = _.extend({template:"plugins.swam.ext.dialogs.loader", color:"warning", stack:true}, opts);
         var dlg = new this(opts);
         dlg.show();
         return dlg;
@@ -196,6 +200,10 @@ SWAM.Dialog = SWAM.View.extend({
         return dlg;
     },
     showForm: function(fields, opts) {
+        if ((opts == undefined) && (!_.isArray(fields))) {
+            opts = fields;
+            fields = opts.fields;
+        }
         var defaults = {
             title: "Edit",
             buttons: [
@@ -211,9 +219,41 @@ SWAM.Dialog = SWAM.View.extend({
                 }
             ]
         };
+        if (fields) opts.fields = fields;
         opts = _.extend(defaults, opts);
-        return this.showView(new SWAM.Form.View({fields:fields, defaults:opts.defaults, model:opts.model}), opts);
-    }
+        var view = new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model});
+        var dlg = new this(opts);
+        dlg.addChild(".modal-body", view);
+        dlg.show();
+        return dlg;
+    },
+    offcanvas: function(opts) {
+        var defaults = {
+            can_dismiss: true,
+            stack: true,
+            template: "plugins.swam.ext.dialogs.offcanvas",
+            direction: "start",
+            buttons: [
+                {
+                    action:"close",
+                    label:"Cancel"
+                }
+            ]
+        };
+        opts = _.extend({}, defaults, opts);
+        if (opts.direction == "right") opts.direction = "end";
+        if (opts.direction == "left") opts.direction = "start";
+        if (opts.form) {
+            opts.view = new SWAM.Form.View({fields:fields, defaults:opts.defaults, model:opts.model});
+        }
+        var dlg = new this(opts);
+        if (opts.view) {
+            dlg.addChild(".offcanvas-body", opts.view);
+        }
+        dlg.show();
+        return dlg;
+    },
+
 });
 
 

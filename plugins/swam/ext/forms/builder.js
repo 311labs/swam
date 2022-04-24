@@ -12,6 +12,7 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 	_.each(fields, function(field) {
 		if (!field) return;
 		if ((field == "")|| (field == " ")) field = {type:"line", columns:12};
+		if (_.isString(field)) field = {label:field, type:"label"};
 		var fc = _.extend({type:"text", columns:12, column_size:"sm"}, _.deepClone(field)); // copy the field so we can manipulate its info
 
 
@@ -40,12 +41,13 @@ SWAM.Form.buildField = function(fc, form_info) {
 		SWAM.Form.Builder.getValue(fc, form_info);
 	}
 	if (_.isFunction(SWAM.Form.Builder[func_name])) {
-		SWAM.Form.Builder[func_name](fc);
+		SWAM.Form.Builder[func_name](fc, form_info);
 	} else {
 		SWAM.Form.Builder.text(fc);
 	}
 	
 	if (fc.$input) {
+		if (fc.field && !fc.name) fc.name = fc.field;
 		if (fc.name) fc.$input.attr("name", fc.name);
 		if (fc.required) fc.$input.prop("required", true);
 		if (fc.disabled) fc.$input.attr("disabled", "disabled");
@@ -171,7 +173,7 @@ SWAM.Form.Builder.help = function(fc, form_info) {
 	
 	if (fc.help) {
 		fc.help_title = fc.help_title || "Help";
-		var el =$('<button type="button" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top" data-bs-content="' + fc.help + '" />')
+		var el =$('<button tabindex="-1" type="button" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top" data-bs-content="' + fc.help + '" />')
 			.addClass("btn btn-help")
 			.attr("title", fc.help_title)
 			.text("?");
@@ -326,8 +328,12 @@ SWAM.Form.Builder.options = function(fc, form_info) {
 		}
 	}
 
-	if (_.isArray(fc.options)) {
+	if (fc.options == undefined) {
+		return fc;
+	} else if (_.isArray(fc.options)) {
 		SWAM.Form.Builder.options_array(fc, form_info);
+	} else if (_.isArray(fc.options.models)) {
+		SWAM.Form.Builder.options_collection(fc, form_info);
 	} else if (window.isDict(fc.options)) {
 		SWAM.Form.Builder.options_dict(fc, form_info);
 	} else if ((fc.start != undefined) && (fc.start.isNumber())) {
@@ -349,6 +355,19 @@ SWAM.Form.Builder.options_array = function(fc, form_info) {
 		} else {
 			fc.$input.append($("<option />").text(value).val(value));
 		}
+	});
+}
+
+
+SWAM.Form.Builder.options_collection = function(fc, form_info) {
+	if (fc.placeholder) {
+		fc.$input.append($("<option />").text(fc.placeholder).val(""));
+	}
+
+	if (!fc.value_field) fc.value_field = "id";
+	if (!fc.display_field) fc.display_field = fc.value_field;
+	_.each(fc.options.models, function(model){
+		fc.$input.append($("<option />").text(model.get(fc.display_field)).val(model.get(fc.value_field)));
 	});
 }
 
@@ -422,13 +441,18 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 	}
 	fc.$child.append($button);
 	
-	SWAM.Form.Builder._dropdownmenu(fc, form_info);
+	if (fc.items) {
+		SWAM.Form.Builder._dropdownmenu(fc, form_info);
+	} else if (fc.fields) {
+		SWAM.Form.Builder._dropdownview(fc, form_info);
+	}
+	
 
 	fc.$el.append(fc.$child);
 }
 
 SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
-	var $menu = $("<ul />").addClass("dropdown-menu dropdown-menu-end")
+	var $menu = $("<ul />").addClass("dropdown-menu dropdown-menu-end shadow")
 		.attr("aria-labelledby", fc.did)
 		.appendTo(fc.$child);
 
@@ -441,6 +465,16 @@ SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
 		if (item.label) ilbl = ilbl + item.label;
 		$item.html(ilbl);
 	});
+}
+
+SWAM.Form.Builder._dropdownview = function(fc, form_info) {
+	var $menu = $("<div />").addClass("dropdown-menu dropdown-menu-end shadow p-3")
+		.attr("aria-labelledby", fc.did)
+		.appendTo(fc.$child);
+
+	var $form = $("<form style='min-width: 300px;' />").appendTo($menu);
+
+	SWAM.Form.build(fc.fields, form_info.defaults, form_info.model, {"$form":$form});
 }
 
 SWAM.Form.Builder.buttongroup = function(fc, form_info) {
@@ -472,5 +506,7 @@ SWAM.Form.Builder.image = function(fc, form_info) {
 	fc.$el.append(fc.$input);
 	fc.value = null;
 	return fc;
-}
+};
+
+
 

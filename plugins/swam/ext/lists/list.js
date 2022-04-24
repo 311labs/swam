@@ -17,6 +17,7 @@ SWAM.Views.ListItem = SWAM.View.extend({
     },
 
     on_clicked: function(evt) {
+        evt.preventDefault();
         this.options.list.on_item_clicked(this, evt);
     },
 
@@ -38,7 +39,8 @@ SWAM.Views.List = SWAM.View.extend({
 
     defaults: {
         ItemView: SWAM.Views.ListItem,
-        loading_html: "loading..."
+        loading_html: "loading...",
+        empty_html: "No items returned"
     },
 
     on_init: function() {
@@ -137,7 +139,11 @@ SWAM.Views.List = SWAM.View.extend({
                 item.render();
                 item.delegateEvents();
                 index += 1;
-            }.bind(this))
+            }.bind(this));
+
+            if (this.items.length == 0) {
+                this.$body.html(this.options.empty_html);
+            }
         } else {
             this.$body.html(this.options.loading_html);
         }

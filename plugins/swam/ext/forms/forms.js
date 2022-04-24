@@ -3,7 +3,7 @@ SWAM.Form.View = SWAM.View.extend({
     files: {},
 
     events: {
-        "click :checkbox": "on_checkbox_handler",
+        // "click :checkbox": "on_checkbox_handler",
         "change input": "on_input_handler",
         "change select": "on_input_handler",
         "click form.search button": "on_submit"
@@ -67,12 +67,18 @@ SWAM.Form.View = SWAM.View.extend({
 
         var list = [].slice.call(this.$el[0].querySelectorAll('input.input-date '))
         this._date_pickers = list.map(function (sel) {
-          return new easepick.create({element:sel,
+          var picker = new easepick.create({element:sel,
                 css: [
                   '/plugins/datepicker.css',
                 ],
           });
-        });
+          picker.on("select", function(evt) { 
+                evt.picker= picker;
+                evt.inputElement = sel;
+                this.on_handle_date_picker(evt); 
+            }.bind(this), this);
+          return picker;
+        }.bind(this));
     },
 
     on_init_daterangepicker: function($root) {
@@ -80,13 +86,19 @@ SWAM.Form.View = SWAM.View.extend({
 
         var list = [].slice.call(this.$el[0].querySelectorAll('input.input-daterange'))
         this._daterange_pickers = list.map(function (sel) {
-          return new easepick.create({element:sel,
+          var picker = new easepick.create({element:sel,
                 plugins: ['RangePlugin'],
                 css: [
                   '/plugins/datepicker.css',
                 ],
           });
-        });
+          picker.on("select", function(evt) { 
+                evt.picker= picker;
+                evt.inputElement = sel;
+                this.on_handle_date_picker(evt); 
+            }.bind(this), this);
+          return picker;
+        }.bind(this));
     },
 
     on_dom_removed: function() { 
@@ -124,18 +136,62 @@ SWAM.Form.View = SWAM.View.extend({
         }
     },
 
+    on_daterange_picker: function(evt) {
+        this._handle_input_change(evt);
+    },
+
+    on_datepicker: function(evt) {
+        this._handle_input_change(evt);
+    },
+
+    on_handle_date_picker: function(evt) {
+        var $el = $(evt.inputElement);
+        var ievt = {name:$el.attr("name"), value:$el.val(), event:evt};
+        ievt.currentTarget = $el[0];
+        if (evt.detail) {
+            if (evt.detail.date) {
+                ievt.date = evt.detail.date;
+                this.on_date_picker(ievt);
+            } else if (evt.detail.start) {
+                ievt.start = evt.detail.start;
+                ievt.end = evt.detail.end;
+                this.on_daterange_picker(ievt);
+            }
+        } else {
+            this._handle_input_change(ievt);
+        }
+    },
+
     on_input_handler: function(evt) {
         var $el = $(evt.currentTarget);
-        var name = $el.attr("name");
-        if (!name) name = $el.attr("id");
-        if (!name) return;
+        var ievt = {name:$el.attr("name"), value:$el.val(), event:evt};
+        ievt.currentTarget = $el[0];
+        if (!ievt.name) ievt.name = $el.attr("id");
+        if (!ievt.name) return;
+        if (ievt.currentTarget && ievt.currentTarget.type == "checkbox") {
+            ievt.value = ievt.value == "on";
+        }
+        this._handle_input_change(ievt);
+    },
 
-        var func_name = "on_input_" + name;
-        if (_.isFunction(this[func_name])) this[func_name](evt, $el.val());
+    _handle_input_change(ievt) {
+        var func_name = "on_input_" + ievt.name;
+        ievt.stopPropagation = function() {
+            if (ievt.event) {
+                if (_.isFunction(ievt.event.stopPropagation)) {
+                    ievt.event.stopPropagation();
+                } else if (ievt.event.bubbles != undefined) {
+                    ievt.event.bubbles = false;
+                    ievt.event.cancelBubble = true;
+                    ievt.event.cancelable = true;
+                }
+            }
+        }.bind(ievt);
+        this.trigger("input:change", ievt);
         if (_.isFunction(this[func_name])) {
-            this[func_name](evt, $el.val());
+            this[func_name](evt, ievt.value, ievt);
         } else if (_.isFunction(this["on_input_change"])) {
-            this.on_input_change(name, $el.val(), evt);
+            this.on_input_change(ievt.name, ievt.value, ievt);
         }
     },
 

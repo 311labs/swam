@@ -17,6 +17,18 @@ SWAM.Localize = {
         }
         return value;
     },
+    'img' :function(value, attr, fmt) {
+        var d = fmt;
+        var classes = "lightbox-clickable";
+        if (_.isArray(fmt)) {
+            d = fmt[0];
+            classes = fmt[1];
+        };
+
+        if (!value) value = d;
+        if (!value) return "";
+        return "<img class='" + classes + "' src='" + value + "' >";
+    },
     'sectoms': function(value) {
         // to support legacy calls we change this into a date
         return new Date(value * 1000);
@@ -42,13 +54,16 @@ SWAM.Localize = {
         }
         return value;
     },
+    'ifempty': function(value, attr, fmt) {
+        return SWAM.Localize.ifemptyornull(value, attr, fmt);
+    },
     'ifemptyornull': function(value, attr, fmt) {
         var arg1, arg2 = null;
         if (_.isArray(fmt)) {
             arg1 = fmt[0];
             arg2 = fmt[1];
         } else {
-            arg1 = fmt;
+            arg1 = fmt || "not set";
             arg2 = value;
         }
         if (_.isUndefined(value) || _.isNull(value)|| _.isEmpty(value)) {
@@ -66,12 +81,12 @@ SWAM.Localize = {
 
     'yesno_color': function(value, attr, fmt) {
         var v = this.bool(value);
-        var color = 'color-green';
-        if (!v) color = 'color-red';
+        var color = 'text-success';
+        if (!v) color = 'text-danger';
 
         if (fmt == "invert_color") {
-            if (!v) color = 'color-green';
-            if (v) color = 'color-red';
+            if (!v) color = 'text-success';
+            if (v) color = 'text-danger';
         }
         return "<div class='"+color+"'>"+(v?"YES":"NO")+"</div>";
     },
@@ -83,18 +98,19 @@ SWAM.Localize = {
         var action = null;
         if (_.isArray(fmt)) {
             yes_icon = fmt[0];
-            no_icon = fmt[0];
+            no_icon = fmt[1];
+            action = fmt[2];
         } else {
             action = fmt;
         }
         if (action == "invert_color") {
-            yes_icon = yes_icon + " color-red";
-            no_icon = no_icon + " color-green";
+            yes_icon = yes_icon + " text-danger";
+            no_icon = no_icon + " text-success";
         } else if (action == "no_color") {
 
         } else {
-            yes_icon = yes_icon + " color-green";
-            no_icon = no_icon + " color-red";
+            yes_icon = yes_icon + " text-success";
+            no_icon = no_icon + " text-danger";
         }
         if (v) {
             return '<i class="' + yes_icon + '"></i>';
@@ -103,13 +119,7 @@ SWAM.Localize = {
     },
 
     'iftruefalse': function(value, attr, fmt) {
-        var values;
-        if (_.isString(fmt)) {
-            fmt = fmt.removeAll("'");
-            values = fmt.split(',');
-        } else {
-            values = fmt;
-        }
+        var values = fmt;
         if (this.bool(value)) {
             return values[0].trim();
         }
@@ -259,30 +269,30 @@ SWAM.Localize = {
         });
         return ret;
     },
-    'datetime': function(value, attr, fmt) {
-        if((value === null)||(value == 0)) {
-            return '';
-        }
-        var d = this.dateobj(this.safe_datetime(value));
-        if (!fmt) fmt = "yyyy-MM-dd HH:mm:ss t";
-        return this.formatDate(d, attr, fmt);
-    },
-    'date': function(value, attr, fmt) {
-        if(value === null) {
-            return '';
-        }
-        if(!fmt) fmt = "yyyy-MM-dd";
-        var d = this.dateobj(this.safe_datetime(value));
-        return this.formatDate(d, attr, fmt);
-    },
-    'time': function(value, attr, fmt) {
-        if(value === null) {
-            return '';
-        }
-        if(!fmt) fmt = "HH:mm:ss t";
-        var d = this.dateobj(this.safe_datetime(value));
-        return this.formatDate(d, attr, fmt);
-    },
+    // 'datetime': function(value, attr, fmt) {
+    //     if((value === null)||(value == 0)) {
+    //         return '';
+    //     }
+    //     var d = this.dateobj(this.safe_datetime(value));
+    //     if (!fmt) fmt = "yyyy-MM-dd HH:mm:ss t";
+    //     return this.formatDate(d, attr, fmt);
+    // },
+    // 'date': function(value, attr, fmt) {
+    //     if(value === null) {
+    //         return '';
+    //     }
+    //     if(!fmt) fmt = "yyyy-MM-dd";
+    //     var d = this.dateobj(this.safe_datetime(value));
+    //     return this.formatDate(d, attr, fmt);
+    // },
+    // 'time': function(value, attr, fmt) {
+    //     if(value === null) {
+    //         return '';
+    //     }
+    //     if(!fmt) fmt = "HH:mm:ss t";
+    //     var d = this.dateobj(this.safe_datetime(value));
+    //     return this.formatDate(d, attr, fmt);
+    // },
     "formatDate": function(obj, attr, fmt) {
         var tok = '';
         var ret = '';
@@ -407,7 +417,7 @@ SWAM.Localize = {
         if (_.isObject(value)) {
             var out = [];
             _.each(value, function(obj, key) {
-                out.push('<span class="badge bg-warning text-dark pr-1">' + key + '</span>');
+                if (obj) out.push('<span class="badge bg-warning text-dark pr-1">' + key + '</span>');
             });
             return out.join(" ");
         }
@@ -487,6 +497,117 @@ SWAM.Localize = {
         }
         if (value.hasPerm) return value.hasPerm(values);
         return false
+    },
+
+    'tz': function(value, attr, fmt) {
+        if (!fmt) return moment(value);
+        var tz = fmt;
+        if (_.isArray(fmt)) {
+            fmt = fmt.pop();
+            tz = fmt.pop();
+            fmt = fmt.replaceAll("yy", "YY");
+            if (fmt) return moment(value).tz(tz).format(fmt);
+        }
+        return moment(value).tz(tz);
+    },
+    'moment': function(value, attr, fmt, default_fmt) {
+        value = this.safe_datetime(value, attr, fmt);
+        if (value == 0) return "none";
+        var tz = moment.tz.guess();
+        if (this.force_timezone) tz = this.force_timezone;
+        if (_.isArray(fmt)) {
+            tz = fmt.pop();
+            fmt = fmt.pop();
+            if (!fmt) fmt = default_fmt;
+            fmt = fmt.replaceAll("yy", "YY");
+            return moment(value).tz(tz).format(fmt);
+        }
+        if (!fmt) fmt = default_fmt;
+        fmt = fmt.replaceAll("yy", "YY");
+        return moment(value).tz(tz).format(fmt);
+    },
+    'time': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "h:mm:ss A");
+    },
+    'date': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "M/DD/YYYY");
+    },
+    'datetime': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "M/DD/YYYY h:mm:ss A");
+    },
+    'datetime24': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "M/DD/YYYY H:mm:ss");
+    },
+    'time_tz': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "h:mm:ss A z");
+    },
+    'date_tz': function(value, attr, fmt) {
+        return this.date(value, attr, fmt);
+    },
+    'datetime_tz': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "M/DD/YYYY h:mm:ss A z");
+    },
+    'datetime_utc': function(value, attr, fmt) {
+        return moment.unix(value).utc().format("M/DD/YYYY h:mm:ss A z");
+    },
+    'date_utc': function(value, attr, fmt) {
+        return moment.unix(value).utc().format("M/DD/YYYY");
+    },
+
+    'years': function(value, attr, fmt) {
+        value = this.safe_datetime(value, attr, fmt);
+        if (value == 0) {
+            return '';
+        }
+        return moment().diff(value, "years");
+    },
+
+    'days': function(value, attr, fmt) {
+        value = this.safe_datetime(value, attr, fmt);
+        if (value == 0) {
+            return '';
+        }
+        return moment().diff(value, "days");
+    },
+
+    'until': function(value, attr, fmt) {
+        value = this.safe_datetime(value, attr, fmt);
+        if (window.moment) {
+            return moment(value).fromNow();
+        }
+        return value;
+    },
+
+    'fromnow': function(value, attr, fmt) {
+        if (!value) return "";
+        value = this.safe_datetime(value, attr, fmt);
+        if (value == 0) {
+            return '';
+        }
+        if ((fmt == null) && window.moment) {
+            return moment(value).fromNow();
+        }
+        return value;
+    },
+
+    'ago': function(value, attr, fmt) {
+        return this.fromnow(value, attr, fmt);
+    },
+
+    'wrap': function(value, attr, fmt) {
+        fmt = fmt || "div";
+        return "<" + fmt + "/>" + value + "</" + fmt + ">";
+    },
+
+    'truncate': function(value, attr, fmt) {
+        fmt = fmt || 0;
+        fmt = parseInt(fmt, 10);
+        if (!value) return value;
+
+        if (value.length > fmt) {
+            return value.slice(0, fmt) + "...";
+        }
+        return value;
     },
 
     ignore_errors: true,

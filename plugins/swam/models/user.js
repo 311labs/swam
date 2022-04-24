@@ -4,6 +4,53 @@ SWAM.Models.User = SWAM.Model.extend({
     defaults: {
     	url:"/rpc/account/member"
     },
+
+
+    disable: function(callback) {
+        this.save({action:"disable"}, callback);
+    },
+    enable: function(callback) {
+        this.save({action:"enable"}, callback);
+    },
+
+    isMemberOf: function(group) {
+        var gid = group;
+        if (gid.id) gid = gid.id;
+        return (_.find(this.get("groups"), function(grp){ return (gid == grp.id) }) != undefined);
+    },
+
+    canNotify: function() {
+        return this.get("metadata.notify_via", "all") == "off";
+    },
+
+    is_disabled: function() {
+        return !this.attributes.is_active;
+    },
+
+
+    isSuperUser: function() {
+        return this.attributes.is_superuser;
+    },
+
+    isStaff: function() {
+        return this.attributes.is_staff;
+    },
+
+    hasPerm: function(perm) {
+        if (_.isArray(perm)) {
+            var i=0;
+            for (; i < perm.length; i++) {
+                if (this.hasPerm(perm[i])) return true;
+            }
+            return false;
+        }
+        if (this.isSuperUser()) return true;
+        if ((perm == "staff")&&(this.isStaff())) return true;
+        if (this.get("metadata.permissions." + perm)) return true;
+        if (this.membership) return this.membership.hasPerm(perm);
+        return false;
+    },
+
 }, {
     EDIT_FORM: [
         {
@@ -45,28 +92,6 @@ SWAM.Models.User = SWAM.Model.extend({
                 },
             ]
         },
-        " ",
-        {
-            label:"Permissions",
-            help: "Control system level permissions.",
-            type:"label",
-            columns: 12
-        },
-        {
-            name:"metadata.permissions.manage_members",
-            label:"Manage Members",
-            help: "Allow this user to manage other system users",
-            type:"toggle",
-            columns: 6
-        },
-        {
-            name:"metadata.permissions.view_all_groups",
-            label:"View Groups",
-            help: "Allow this user to view all groups",
-            type:"toggle",
-            columns: 6
-        },
-
     ]
 });
 

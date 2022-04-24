@@ -23,6 +23,14 @@ SWAM.Rest = {
         return SWAM.Rest.makeRequest("POST", url, data, callback, opts);
     },
 
+    DELETE: function(url, data, callback, opts) {
+        return SWAM.Rest.makeRequest("DELETE", url, data, callback, opts);
+    },
+
+    PUT: function(url, data, callback, opts) {
+        return SWAM.Rest.makeRequest("PUT", url, data, callback, opts);
+    },
+
     makeRequest: function(method, url, data, callback, opts) {
         opts = opts || {};
         var request = _.extend({"method":method}, SWAM.Rest.defaults, opts.request_options);

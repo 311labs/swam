@@ -1,0 +1,19 @@
+<div class="offcanvas offcanvas-{{options.direction}}" tabindex="-1">
+  {{#options.title}}
+    <div class="offcanvas-header">
+      <h5>{{#options.icon}}{{{ICON(options.icon)}}} {{/options.icon}}{{{options.title}}}</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" data-action="close"></button>
+    </div>
+  {{/options.title}}
+    <div class="offcanvas-body">
+
+    </div>
+
+    {{^options.no_buttons}}
+    <div class="offcanvas-footer flex-nowrap p-0">
+      {{#options.buttons}}
+      <button type="button" class="btn-lg text-decoration-none ms-3 {{.classes|default(options.btn_primary)}}" data-action="{{.action}}" data-id="{{.id}}">{{.label}}</button>
+      {{/options.buttons}}
+    </div>
+    {{/options.no_buttons}}
+</div>

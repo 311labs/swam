@@ -3,11 +3,12 @@ SWAM.Views.Tabs = SWAM.View.extend({
     template: "plugins.swam.ext.tabs",
     classes: "swam-tabs-view",
     defaults: {
-        tabs: []
+
     },
 
     on_init: function(evt) {
         this.tab_views = {};
+        this.options.tabs = [];
     },
 
     on_action_tab: function(evt, tab_id) {
@@ -32,6 +33,14 @@ SWAM.Views.Tabs = SWAM.View.extend({
         this.$el.find('li[data-id="' + tab_id + '"]').addClass("active");
         this.$el.find("#tabs_dropdown").html(this.getTabLabel(tab_id));
         this.renderChildren(true);
+        if (_.isFunction(view.on_tab_focus)) view.on_tab_focus();
+    },
+
+    setModel: function(model) {
+        SWAM.View.prototype.setModel.call(this, model);
+        _.each(this.tab_views, function(child){
+            child.setModel(model);
+        });
     },
 
     addTab: function(label, tab_id, view, opts) {

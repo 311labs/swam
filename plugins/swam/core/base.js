@@ -1,11 +1,14 @@
 window.SWAM = {
     renderTemplate: function(template, context) {
+        return this.renderString(SWAM.getTemplate(template, true), context);
+    },
+    renderString: function(text, context) {
         var defaults = {};
         if (window.app) defaults.app = window.app;
         if (window.app) defaults.APP = window.app;
         if (SWAM.HAL) defaults.HAL = SWAM.HAL;
         context = _.extend({}, context, defaults);
-        return Mustache.render(SWAM.getTemplate(template, true), context);
+        return Mustache.render(text, context);
     },
     getTemplate: function(tpath, strip_comments) {
         var t;
@@ -130,7 +133,7 @@ _.extend(SWAM.Object.prototype, {
             var super_defaults = this.constructor.__super__.defaults || {};
             super_defaults = _.deepClone(super_defaults);
             if (this.constructor.globals) super_defaults = _.extend({}, super_defaults, this.constructor.globals);
-            this.options = _.extend(super_defaults, this.defaults, opts);
+            this.options = _.extend({}, super_defaults, _.deepClone(this.defaults), opts);
         }
     },
     SWAM.EventSupport);

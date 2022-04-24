@@ -21,29 +21,35 @@ SWAM.Ext.BS = {
 	},
 
 	enableClipboard: function() {
-		this._bs_clipboard = new ClipboardJS("#" + this.id + " .btn-clipboard", {
-		    target: function(trigger) {
-		        // get first element with text?
-		        var el = trigger.nextElementSibling;
-		        while (el) {
-		            if (el.textContent) return el;
-		            el = el.nextElementSibling;
-		        }
-		        return trigger;
-		    }
-		});
-		this._bs_clipboard.on("success", function(evt){
-	    	console.log("success");
-	    	console.log(evt);
-	    	evt.trigger.setAttribute("data-bs-original-title", "Copied!");
-	    	var tooltip = bootstrap.Tooltip.getInstance(evt.trigger);
-	    	if (tooltip) tooltip.show();
-	    	$(evt.trigger).one("mouseout", function(){
-	    		evt.trigger.setAttribute("data-bs-original-title", "Copy to clipboard");
-	    	});
-	    	setTimeout(function(){ tooltip.hide(); }, 2000);
-
+		var list = [].slice.call(this.$el[0].querySelectorAll('button.btn-clipboard'))
+		this._bs_popovers = list.map(function (sel) {
+			var clipb = new ClipboardJS(sel, {
+			    target: function(trigger) {
+			        // get first element with text?
+			        var el = trigger.nextElementSibling;
+			        while (el) {
+			            if (el.textContent) return el;
+			            el = el.nextElementSibling;
+			        }
+			        return trigger;
+			    }
+			});
+			clipb.on("success", this.on_clipboard_success.bind(this));
+		  return clipb;
 		}.bind(this));
+
+	},
+
+	on_clipboard_success: function(evt) {
+		console.log("success");
+		console.log(evt);
+		evt.trigger.setAttribute("data-bs-original-title", "Copied!");
+		var tooltip = bootstrap.Tooltip.getInstance(evt.trigger);
+		if (tooltip) tooltip.show();
+		$(evt.trigger).one("mouseout", function(){
+			evt.trigger.setAttribute("data-bs-original-title", "Copy to clipboard");
+		});
+		setTimeout(function(){ tooltip.hide(); }, 2000);
 	},
 
 	enablePops: function() {
@@ -54,8 +60,10 @@ SWAM.Ext.BS = {
 	},
 
 	destroyBS: function() {
-		this._bs_clipboard.destroy();
-
+		if (this._bs_clipboard) {
+			this._bs_clipboard.destroy();
+			this._bs_clipboard = null;
+		}
 		_.each(this._bs_tips, function(tip){
 			tip.dispose();
 		});

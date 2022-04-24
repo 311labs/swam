@@ -188,6 +188,11 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
       return match ? match[0] : '';
     },
 
+    getSearchParams: function() {
+        var url = document.location.href;
+        return window.decodeSearchParams(url);
+    },
+
     decodeFragment: function(fragment) {
       return decodeURI(fragment.replace(/%25/g, '%2525'));
     },
@@ -312,10 +317,12 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     loadRoute: function(path) {
         if (!path) path = this.getPath();
-        if (path.startsWith(this.options.root)) path = path.substr(this.options.root.length);
+        var parts = path.split("?");
+        var route = parts[0];
+        if (route.startsWith(this.options.root)) route = route.substr(this.options.root.length);
         return _.some(this._routes, function(handler) {
-            if (handler.route.test(path)) {
-                console.log("loadRoute: " + path);
+            if (handler.route.test(route)) {
+                console.log("loadRoute: " + route);
                 handler.callback(path);
                 return;
             }

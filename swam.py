@@ -373,7 +373,7 @@ class StaticFile(SwamFile):
 
 
 class IndexFile(SwamFile):
-    INDEX_VARS = ["version", "js_includes", "css_includes", "title"]
+    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root"]
     JS_INCLUDE_TEMP = """<script type="text/javascript" src="{{path}}?version={{version}}"></script>"""
     CSS_INCLUDE_TEMP = """<link rel="stylesheet" href="{{path}}?version={{version}}">"""
 
@@ -454,10 +454,12 @@ def buildApp(app_path, config, opts):
         # bump local version
         if config.version is None:
             config.version = "1.0.0"
-        major, minor, rev = config.version.split('.')
-        rev = int(rev) + 1
-        config.version = "{}.{}.{}".format(major, minor, rev)
-        config.save(os.path.join(app_path, "app.json"))
+        if opts.bump_rev:
+            major, minor, rev = config.version.split('.')
+            rev = int(rev) + 1
+            config.version = "{}.{}.{}".format(major, minor, rev)
+            config.save(os.path.join(app_path, "app.json"))
+        config.root = app_path
         index.compile(js_includes=js_includes, css_includes=css_includes, **config)
 
 
@@ -484,7 +486,7 @@ def copyStatic(app_path, path, opts):
         path = path[1:]  # remove the leading path
 
     if os.path.isdir(path):
-        files = [os.path.join(opath, f) for f in os.listdir(path) if not f.startswith(".") and os.path.isfile(os.path.join(path, f))]
+        files = [os.path.join(opath, f) for f in os.listdir(path) if not f.startswith(".") and os.path.join(path, f)]
         for p in files:
             copyStatic(app_path, p, opts)
         return
@@ -525,6 +527,7 @@ def buildApps(opts):
 class FileWatcher():
     def __init__(self, opts, freq=1.0):
         self.opts = opts
+        self.opts.bump_rev = True
         self._thread = None
         self._watch_freq = freq
 
@@ -582,7 +585,7 @@ def runHTTP(opts):
 
 def main(opts, args):
     print("== SWAM COMPILER {} ==".format(version))
-    if opts.bump_rev or opts.bump_major or opts.bump_minor:
+    if not opts.force and (opts.bump_rev or opts.bump_major or opts.bump_minor):
         return bumpVersion(opts.bump_major, opts.bump_minor, opts.bump_rev)
     FILE_CACHE.removeOld()
     buildApps(opts)

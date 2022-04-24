@@ -2,7 +2,7 @@
 SWAM.Views.SearchDownItem = SWAM.Views.ListItem.extend({
     tagName: "div",
     classes: "hover-primary",
-    template: "<a href='#' class='dropdown-item'>{{display_label}}</a>",
+    template: "<a href='#' class='dropdown-item' data-action='{{options.list.options.action}}' data-id='{{model.id}}'>{{display_label}}</a>",
 
 });
 
@@ -19,6 +19,8 @@ SWAM.Views.SearchDown = SWAM.View.extend({
         display_field: "name",
         empty_label: "Select Item",
         placeholder: "Search...",
+        action: "searchdown",
+        auto_fetch: true,
         max_size: 10
     },
 
@@ -35,6 +37,11 @@ SWAM.Views.SearchDown = SWAM.View.extend({
         ;
     },
 
+    setActive: function(model) {
+        this.active_model = model;
+        this.$button.text(model.get(this.options.display_field));
+    },
+
     active_label: function() {
         if (this.active_model) return this.active_model.get(this.options.display_field);
         return this.options.empty_label;
@@ -47,8 +54,7 @@ SWAM.Views.SearchDown = SWAM.View.extend({
     },
 
     on_item_clicked: function(item) {
-        this.active_model = item.model;
-        this.$button.text(item.model.get(this.options.display_field));
+        this.setActive(item.model);
     },
 
     on_filter: function(keyword) {

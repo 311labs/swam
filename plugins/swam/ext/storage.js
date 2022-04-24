@@ -9,11 +9,25 @@ SWAM.StorageExtension = {
         if (value === null || value == undefined) {
             window.localStorage.removeItem(key);
         } else if (_.isObject(value) || _.isArray(value)) {
-            window.localStorage.setObject(key, value);
+            if (value.toJSON) {
+                window.localStorage.setItem(key, value.toJSON());
+            } else if (value.attributes) {
+                window.localStorage.setObject(key, value.attributes);
+            } else {
+                window.localStorage.setObject(key, value);
+            }
         } else {
             window.localStorage.setItem(key, value);
         }
         this.trigger("property:change", {key:key, value:value});
+    },
+
+    getPropertyModel: function(Model, key) {
+        var value = this.getObject(key);
+        if (value) {
+            return new Model(value);
+        }
+        return null;
     },
 
     getProperty: function(key, dvalue) {
@@ -25,6 +39,9 @@ SWAM.StorageExtension = {
     getObject: function(key, dvalue) {
         value = window.localStorage.getObject(key);
         if (value === null || value == undefined) return dvalue;
+        if (value.Model) {
+
+        }
         return value;
     },
 

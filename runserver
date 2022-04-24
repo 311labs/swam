@@ -1,3 +1,10 @@
 #!/bin/bash
 
+if [ -z "$POETRY_ACTIVE" ]
+then
+	echo "entering project virtual enviroment"
+	source $(poetry env info --path)/bin/activate
+fi
+
+
 ./swam.py -w -s

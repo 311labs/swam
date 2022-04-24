@@ -18,6 +18,8 @@ app/*.js
 app/pages/*.js
 models/model.js
 models/collection.js
+models/user.js
+models/member.js
 models/*.js
 
 

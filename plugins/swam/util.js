@@ -73,6 +73,7 @@ if (window._) {
 
         return clone;
   };
+
 }
 
 window.browser_guid = function() {
@@ -183,8 +184,18 @@ window.getNestedValue = function(obj, key, default_valued) {
 };
 
 window.isDict = function(obj) {
-    if (_.isArray(obj)) return false;
+    if (_.isArray(obj) || _.isFunction(obj)) return false;
     return (_.isObject(obj) && obj && (obj["__super__"] == undefined));
 };
 
+window.decodeSearchParams = function(url) {
+    var qs = url.substring(url.indexOf('?') + 1).split('&');
+    for(var i = 0, result = {}; i < qs.length; i++){
+        qs[i] = qs[i].split('=');
+        var dv = decodeURIComponent(qs[i][1]);
+        if (dv[dv.length-1] == "#") dv = dv.substring(0, dv.length-1);
+        result[qs[i][0]] = dv;
+    }
+    return result;
+}
 

@@ -24,11 +24,6 @@ SWAM.Model = SWAM.Object.extend({
         
     },
 
-    getUrl: function() {
-        if (this.options.no_url_id || !this.id) return this.options.url;
-        return this.options.url + "/" + this.id;
-    },
-
     set: function(key, value) {
         if (_.isObject(key)) {
             this._prev_attributes = _.deepClone(this.attributes);
@@ -50,6 +45,8 @@ SWAM.Model = SWAM.Object.extend({
     get: function(key, defaultValue, localize) {
         if (localize) {
             return this.lookup(key  + "|" + localize);
+        } else if (key.contains("|")) {
+            return this.lookup(key);
         }
 
         var sub = key.split('.');
@@ -128,6 +125,10 @@ SWAM.Model = SWAM.Object.extend({
     },
 
     fetch: function(callback, opts) {
+        if ((opts == undefined) && (window.isDict(callback))) {
+            opts = callback;
+            callback = undefined;
+        }
         this.abort();
         if (opts && opts.if_stale) {
             if (!this.isStale()) {
@@ -153,8 +154,18 @@ SWAM.Model = SWAM.Object.extend({
         this._debounce_fetch(callback, opts);
     },
 
+    fetchIfStale: function(callback, opts) {
+        if ((opts == undefined) && (window.isDict(callback))) {
+            opts = callback;
+            callback = undefined;
+        }
+        opts = opts || {};
+        opts.if_stale = true;
+        return this.fetch(callback, opts);
+    },
+
     save: function(data, callback, opts) {
-        this.abort();
+        if (opts && opts.abort_previous) this.abort();
         this.set(data);
         this._request = SWAM.Rest.POST(this.getUrl(), data, function(response, status) {
             this._request = null;
@@ -163,7 +174,44 @@ SWAM.Model = SWAM.Object.extend({
         }.bind(this), opts);
     },
 
+    destroy: function(callback, opts) {
+        this.abort();
+        this._request = SWAM.Rest.DELETE(this.getUrl(), null, function(response, status) {
+            this._request = null;
+            this.trigger("destroyed", this);
+            if (callback) callback(this, response);
+        }.bind(this), opts);
+    },
+
     deleteModel: function(callback, opts) {
-        throw Exception("not implemented");
+        return this.destroy(callback, opts);
+    },
+
+    getUrl: function() {
+        var url = this.options.url;
+        if (_.isFunction(this.options.url)) {
+            url = this.options.url();
+        }
+        if (this.options.no_url_id || !this.id) return url;
+        return url + "/" + this.id;
+    },
+
+    getRawUrl: function(params) {
+        var obj = _.extend({}, this.params, params);
+        var str = [];
+        for(var p in obj)
+          if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          }
+
+        var url = this.getUrl();
+
+        // only override if it doesn't have hose
+        if (!url.startsWith("http")) {
+            if (window.app && window.app.options.api_url) {
+                url = window.app.options.api_url + url;
+            }
+        }
+        return url + "?" + str.join("&");
     }
 });

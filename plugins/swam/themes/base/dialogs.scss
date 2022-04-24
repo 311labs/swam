@@ -55,5 +55,23 @@ body.app {
 			}
 		}
 	}
+
+	div.modal {
+		div.offcanvas {
+			background-color: $page-background;
+		}
+		div.offcanvas.show {
+			visibility: visible;
+		}
+	}
 }
 
+
+div.swam-search-down {
+	div.dropdown-header {
+		margin-top: -0.5rem;
+		min-width: 245px;
+		border-top-left-radius: 0.2rem;
+		border-top-right-radius: 0.2rem;
+	}
+}
