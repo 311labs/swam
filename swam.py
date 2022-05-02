@@ -16,24 +16,23 @@ import time
 import threading
 import shutil
 import configparser
-config = configparser.ConfigParser()
-config.read("swam.conf")
-defaults = config["default"]
+
+config = objict.fromFile("swam.conf")
 
 parser = OptionParser()
-parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=defaults.getboolean("verbose", False))
+parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=config.get("verbose", False))
 parser.add_option("-f", "--force", action="store_true", dest="force", default=False, help="force the revision")
 parser.add_option("-m", "--minify", action="store_true", dest="minify", default=False, help="minify the revision")
 parser.add_option("-w", "--watch", action="store_true", dest="watch", default=False, help="watch for changes and auto refresh")
 parser.add_option("-s", "--serve", action="store_true", dest="serve", default=False, help="serve for changes and auto refresh")
-parser.add_option("-o", "--output", type="str", dest="output", default=defaults.get("output_path", "output"), help="static output path")
-parser.add_option("-p", "--port", type="int", dest="port", default=defaults.get("port", 8081), help="http port")
+parser.add_option("-o", "--output", type="str", dest="output", default=config.get("output_path", "output"), help="static output path")
+parser.add_option("-p", "--port", type="int", dest="port", default=config.get("port", 8081), help="http port")
 parser.add_option("-b", "--bump_rev", action="store_true", dest="bump_rev", default=False, help="bump version revision")
 parser.add_option("--bump_minor", action="store_true", dest="bump_minor", default=False, help="bump version minor")
 parser.add_option("--bump_major", action="store_true", dest="bump_major", default=False, help="bump version major")
 parser.add_option("--app_path", type="str", dest="app_path", default="apps", help="app path to compile from")
 
-version = "0.1.1"
+version = "0.1.2"
 compile_info = nobjict(is_compiling=False)
 
 
@@ -428,6 +427,7 @@ def buildApp(app_path, config, opts):
     js_includes = []
     css_includes = []
 
+    print(app_path)
     if config.js_files:
         if buildIncludes(JSFile, app_path, config.js_files, js_includes, config.static_paths, opts):
             is_dirty = True
@@ -502,11 +502,16 @@ def copyStatic(app_path, path, opts):
 
 def buildApps(opts):
     started_at = time.time()
-    copyCore(os.path.join("plugins", "jquery.js"), opts)
+    for path in opts.plugins:
+        jqfile = os.path.join(path, "jquery.js")
+        if os.path.exists(jqfile):
+            copyCore(jqfile, opts)
+            break
     compile_info.is_compiling = True
     loadAppsFromPath(opts, opts.app_path)
     compile_info.is_compiling = False
     print("total compile time: {:.3f}".format(time.time() - started_at))
+
 
 def loadAppsFromPath(opts, app_path, parent_folder=None):
     for name in os.listdir(app_path):
@@ -599,6 +604,7 @@ def main(opts, args):
     print("== SWAM COMPILER {} ==".format(version))
     print(F"\tOutput: {opts.output}")
     opts.output = os.path.abspath(opts.output)
+    opts.plugins = config.get("plugins", ["plugins"])
     print(F"\tAbsolute Output: {opts.output}")
     if not opts.force and (opts.bump_rev or opts.bump_major or opts.bump_minor):
         return bumpVersion(opts.bump_major, opts.bump_minor, opts.bump_rev)

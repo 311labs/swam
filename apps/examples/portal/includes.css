@@ -1,10 +1,10 @@
 #!#MERGE
 
-/plugins/swam/themes/defaults.scss
+/swamcore/plugins/swam/themes/defaults.scss
 settings.scss
-/plugins/swam/themes/base/*.scss
-/plugins/swam/ext/imageeditor/*.css
-/plugins/swam/ext/**/*.scss
+/swamcore/plugins/swam/themes/base/*.scss
+/swamcore/plugins/swam/ext/imageeditor/*.css
+/swamcore/plugins/swam/ext/**/*.scss
 pages/**/*.scss
 pages/admin/**/*.scss
 pages/merchant/**/*.scss

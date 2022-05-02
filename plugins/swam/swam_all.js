@@ -1,6 +1,6 @@
 #!#MERGE
 
-/plugins/moment.js
-/plugins/mustache.js
-/plugins/underscore.js
+/swamcore/plugins/moment.js
+/swamcore/plugins/mustache.js
+/swamcore/plugins/underscore.js
 swam.js

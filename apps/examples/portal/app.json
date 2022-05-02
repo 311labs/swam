@@ -1,27 +1,27 @@
 {
     "title": "Examples",
-    "index_file": "/plugins/swam/templates/basic.html",
+    "index_file": "/swamcore/plugins/swam/templates/basic.html",
     "js_files": [
-        "/plugins/bootstrap/bootstrap5.js",
-        "/plugins/datepicker.js",
-        "/plugins/clipboard.js",
-        "/plugins/swam/swam_all.js",
+        "/swamcore/plugins/bootstrap/bootstrap5.js",
+        "/swamcore/plugins/datepicker.js",
+        "/swamcore/plugins/clipboard.js",
+        "/swamcore/plugins/swam/swam_all.js",
         "includes.js"
     ],
     "mustache_files": [
         "templates.js"
     ],
     "css_files": [
-        "/plugins/bootstrap/bootstrap5.css",
-        "/plugins/bootstrap/bootstrap5-icons.css",
-        "/plugins/datepicker.css",
+        "/swamcore/plugins/bootstrap/bootstrap5.css",
+        "/swamcore/plugins/bootstrap/bootstrap5-icons.css",
+        "/swamcore/plugins/datepicker.css",
         "includes.css"
     ],
     "static_files": [
         "imgs",
-        "/plugins/bootstrap/fonts"
+        "/swamcore/plugins/bootstrap/fonts"
     ],
     "static_paths": true,
-    "version": "0.1.8",
+    "version": "0.1.12",
     "template_root": "apps.examples.portal"
 }
