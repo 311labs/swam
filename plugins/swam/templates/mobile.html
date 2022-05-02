@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="with-statusbar-overlay">
+<!-- app/base.html -->
+<head>
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-store" />
+    <meta http-equiv="expires" content="-1" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>{{title}}</title>
+    {{css_includes}}
+
+</head>
+<body>
+<div id="app_body">
+
+</div>
+  <script type="text/javascript">
+    window.app_version = "{{version}}";
+    window.isDevToolsOpen = function() {
+      var r = /./
+      window.devtools_open = false;
+      r.toString = function () {
+          window.devtools_open = true;
+      }
+      return window.devtools_open;
+    }
+    window.preapp_error_handler = function(evt){
+      // e.message, e.filename, e.lineno, e.colno, e.error, e
+      window.last_error = evt;
+      $("#pre-loader-frame").hide();
+      $("#pre-loader-errors").show().append("<div>ERROR..." + evt.error.message + "</div>");
+      if (window.isDevToolsOpen()) return;
+      console.log(evt);
+      return false;
+    }
+    window.addEventListener("error", window.preapp_error_handler);
+  </script>
+
+
+  <script type="text/javascript" src="/plugins/jquery.js"></script>
+
+  {{js_includes}}
+
+
+</body>
+</html>

@@ -30,10 +30,29 @@ SWAM.Models.Group = SWAM.Model.extend({
                     columns: 12
                 },
                 {
-                    name:"kind",
-                    label:"Kind",
-                    type:"kind",
-                    placeholder:"Enter Group Kind",
+                    label: "Group Kind",
+                    field: "kind",
+                    type: "select",
+                    help: "Orgnazations are top level groups that hold merchants.  Merchants typically hold internal groups.",
+                    options: [
+                        {
+                            label: "Organization",
+                            value: "org",
+                        },
+                        {
+                            label: "Merchant",
+                            value: "merchant",
+                        },
+                        {
+                            label: "Internal Group",
+                            value: "internal_group",
+                        },
+                        {
+                            label: "Test Group",
+                            value: "test_group",
+                        },
+                    ],
+                    default:"merchant",
                     columns: 12
                 },
                 {

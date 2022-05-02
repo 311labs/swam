@@ -180,6 +180,10 @@ SWAM.Collection = SWAM.Object.extend({
         return _.findWhere(this.models, {id:id});
     },
 
+    find: function(predicate) {
+        return _.find(this.models, predicate);
+    },
+
     parseResponse: function(resp) {
         this.set(resp.data, this.options.append);
         this.count = resp.count;

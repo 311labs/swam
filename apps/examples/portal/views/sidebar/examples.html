@@ -1,0 +1,49 @@
+<div class="sidebar-container d-flex flex-column flex-shrink-0 p-3">
+  <div class="text-left text-dark ms-3">
+    
+    {{{ICON(tools)}}} <span class="ms-2 fs-4">EXAMPLES</span>
+  </div>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_views">
+              {{{ICON(layout-sidebar)}}} Views
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_tabs">
+              {{{ICON(layout-sidebar)}}} Tabs
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_pages">
+              {{{ICON(layout-sidebar)}}} Pages
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_dialogs">
+              {{{ICON(menu-up)}}} Dialog
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_forms">
+              {{{ICON(window)}}} Forms
+            </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_tables">
+              {{{ICON(table)}}} Tables
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{app.root}}examples" class="nav-link" data-showpage="examples_misc">
+              {{{ICON(wrench)}}} Misc
+              </a>
+            </li>
+    </ul>
+    <hr>
+    <div class="version" data-action="about" style="cursor: pointer;">
+    	<div>App Version {{app.version}}</div>
+    	<div>Server Version {{app.api_version}}</div>
+    </div>
+  </div>

@@ -1,0 +1,44 @@
+<main class="form-signin">
+  <form>
+    <div class="signin-brand text-center mb-3">
+      <h2 class="mb-3">Example Portal</h2>
+    </div>
+    
+    <div class="card card-login">
+      <div class="card-body">
+        <h1 class="h3 mb-3 fw-normal text-left text-white">Log in</h1>
+        <div class="form-floating">
+          <input type="username" class="form-control" name="signin_username" placeholder="name@example.com">
+          <label for="signin_username">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" name="signin_password" placeholder="Password">
+          <label for="signin_password">Password</label>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="checkbox mt-3 mb-3 text-white">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+          </div>
+          <div class="col text-end">
+            <a data-action="forgot" class="btn btn-link text-decoration-none pt-3 pr-0" href="#">Forgot Password?</a>
+          </div>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary" data-action="login">Sign in</button>
+      </div>
+    </div>
+
+    <div class="login-footer text-center">
+          <p class="mt-5 text-muted text-center">© 2022</p>
+    {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
+    </div>
+
+  </form>
+</main>
+
+

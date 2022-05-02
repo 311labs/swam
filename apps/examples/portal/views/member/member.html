@@ -1,0 +1,33 @@
+<div class="card shadow-sm mb-1">
+  <div class="row g-0">
+    <div class="col-md-4">
+      {{#model.member.avatar}}
+      <img src="{{model.member.avatar}}" class="img-fluid rounded-start" alt="...">
+      {{/model.member.avatar}}
+      {{^model.member.avatar}}
+      <img src="/portal/imgs/empty_avatar.jpg" class="img-fluid rounded-start" alt="...">
+      {{/model.member.avatar}}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{model.member.display_name|ifempty(model.member.username)}}
+        </h5>
+          <div class="text-muted">role</div>
+          <div class="h5 text-muted">
+            {{model.role}}
+          </div>
+        <div class="dropdown position-absolute top-0 end-0">
+          <button class="btn btn-link text-muted" data-bs-toggle="dropdown" role="button">{{{ICON("bi bi-three-dots-vertical")}}}</button>
+          <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" href="#" data-action="edit">{{{ICON("pencil-fill")}}} Edit Member</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="example_tabs">
+	
+</div>

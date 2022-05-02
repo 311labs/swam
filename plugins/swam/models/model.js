@@ -32,8 +32,24 @@ SWAM.Model = SWAM.Object.extend({
                 console.log("model changed");
                 this.trigger("change", this);
             }
-        } else {
-            if (this.attributes[key] != value) {
+        } else if (key) {
+            if (key.contains('.')) {
+                var sub = key.split('.');
+                var a = sub.shift();
+                var attrs = this.attributes;
+                while (a) {
+                    if (sub.length) {
+                        if (!attrs[a]) attrs[a] = {};
+                        attrs = attrs[a];
+                    } else {
+                        if (attrs[a] != value) {
+                            attrs[a] = value;
+                            this.trigger("change", this);
+                        }
+                    }
+                    a = sub.shift();
+                }
+            } else if (this.attributes[key] != value) {
                 this.attributes[key] = value;
                 this.trigger("change", this);
             }

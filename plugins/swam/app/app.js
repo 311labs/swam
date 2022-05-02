@@ -10,12 +10,14 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         title: "Put Title in app.defaults",
         root: "/",
         page_el_id: "#pages",
+        enable_swipe: false,
+        navigation: true, // set this to false to not using an url based navigation (ie mobile apps)
         catch_errors: true, // catch and show popup for uncaught errors
     },
     on_init: function() {
         // turn on smart parameter parsing ('sss', 22, model.name) where model.name value is passed into localize
         if (window.Mustache) window.Mustache.smart_params = 1;
-        
+        if (this.options.enable_swipe) this.enableTouch();
         this.on("property:change", this.on_prop_change, this);
     },
     on_prop_change: function(evt) {
@@ -55,7 +57,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                     $parent.empty();
                     page.addToDOM($parent);
                 } else {
+                    page.setParams(params);
                     page.render();
+                    page.updateURL();
                 }
                 return;
             }
@@ -96,7 +100,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         if (this.options.catch_errors) this.enableErrorCatcher();
         this.loadSettings();
         this.version = window.app_version;
-        this.$el = $("#app_body");
+        this.$el = $("#app_body").attr("class", this.classes);
         this.started = true;
         this.location = window.location;
         this.history = window.history;
@@ -109,6 +113,12 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     loadSettings: function() {
+        this.app_uuid = this.getProperty("app_uuid");
+        if (!this.app_uuid) {
+            // generate a unique app uuid to track this app
+            this.app_uuid = String.Random(32);
+            this.setProperty("app_uuid", this.app_uuid);
+        }
         this.options.api_url = this.getProperty("api_url", this.options.api_url);
     },
 
@@ -121,16 +131,25 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     hideTopBar: function() { this.$el.find("#title-bar").hide(); },
 
     showLeftPanel: function(partial) {
+        // to make it slide over vs shrink add class slide to body
         if (partial) {
             this.$el.addClass("panel-animate").removeClass("panel-left-reveal").addClass("panel-left-reveal-partial");
         } else {
             this.$el.addClass("panel-animate").removeClass("panel-left-reveal-partial").addClass("panel-left-reveal");
         }
-
     },
 
     hideLeftPanel: function() {
         this.$el.addClass("panel-animate").removeClass("panel-left-reveal");
+    },
+
+    toggleLeftPanel: function() {
+        if (this.isLeftPanelOpen()) {
+            this.hideLeftPanel();
+        } else {
+            this.showLeftPanel();
+        }
+
     },
 
     isLeftPanelOpen: function() {
@@ -147,13 +166,13 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     // called when touchend and swipe left criteria met
     on_swipe_left: function(evt) {
-        // console.log("app| swipe left");
+        console.log("app| swipe left");
         this.hideLeftPanel();
     },
 
     // called when touchend and swipe right criteria met
     on_swipe_right: function(evt) {
-        // console.log("app| swipe right");
+        console.log("app| swipe right");
         this.showLeftPanel();
     },
 
@@ -316,6 +335,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     loadRoute: function(path) {
+        if (!this.options.navigation) return;
         if (!path) path = this.getPath();
         var parts = path.split("?");
         var route = parts[0];
@@ -347,6 +367,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     navigate: function(path, trigger, title) {
+        if (!this.options.navigation) return;
         if (this._nav_path == path) return; 
         this._nav_path = path;
         if (title) document.title = title;

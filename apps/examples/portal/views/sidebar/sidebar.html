@@ -1,0 +1,66 @@
+<div class="sidebar-container d-flex flex-column flex-shrink-0 p-3">
+    <div class="text-center">
+      <label>Merchant</label>
+      <div id="groupselect"></div>
+    </div>
+    <hr>
+    {{#app.group}}
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li>
+        <a href="{{app.root}}{{app.group.id}}/dashboard" class="nav-link" data-showpage="dashboard" data-params="?group={{app.group.id}}">
+          <i class="bi bi-speedometer2"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <label class="mt-4">Locks</label>
+      </li>
+      <li>
+        <a href="{{app.root}}{{app.group.id}}/lock" class="nav-link" data-showpage="merchant_locks" data-params="?group={{app.group.id}}">
+          <i class="bi bi-people-fill"></i>
+          Locks
+        </a>
+      </li>
+<!--       <li>
+        <a href="{{app.root}}reports" class="nav-link" data-showpage="reports" data-params="?group={{app.group.id}}">
+          <i class="bi bi-journal-richtext"></i>
+          Reports
+        </a>
+      </li> -->
+      <li>
+        <label class="mt-4">Settings</label>
+      </li>
+      <li>
+        <a href="{{app.root}}{{app.group.id}}/members" class="nav-link" data-showpage="members" data-params="?group={{app.group.id}}">
+          <i class="bi bi-people-fill"></i>
+          Members
+        </a>
+      </li>
+      <li>
+        <a href="{{app.root}}{{app.group.id}}/settings" class="nav-link" data-showpage="merchant_settings" data-params="?group={{app.group.id}}">
+          <i class="bi bi-wrench"></i>
+          Settings
+        </a>
+      </li>
+    </ul>
+    {{/app.group}}
+    {{^app.group}}
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li>
+        <div class="text-danger text-center m-5">
+          No Merchant Selected
+        </div>
+      </li>
+    </ul>
+
+    {{/app.group}}
+    <hr>
+    <div class="text-center">
+          <img src="/apps/portal/imgs/logo.svg" alt="" class="text-center" width="140">
+    </div>
+    <hr>
+    <div class="version" data-action="about" style="cursor: pointer;">
+    	<div>App Version {{app.version}}</div>
+    	<div>Server Version {{app.api_version}}</div>
+    </div>
+  </div>

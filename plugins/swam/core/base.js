@@ -98,6 +98,12 @@ SWAM.EventSupport = {
             }
         }
     },
+
+    triggerAsync: function(event, data) {
+        setTimeout(function(){
+            this.trigger(event, data);
+        }.bind(this), 100);
+    }
 }
 
 

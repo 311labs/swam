@@ -76,7 +76,17 @@ if (window._) {
 
 }
 
-window.browser_guid = function() {
+window.getBrowserUID = function() {
+    var data = window.getBrowserHash();
+    return data.toString().toHex();
+};
+
+window.getBrowserHash = function() {
+    var data = window.getBrowserFingerData();
+    return data.hash();
+};
+
+window.getBrowserFingerData = function() {
 
     // var nav = window.navigator;
     // var screen = window.screen;
@@ -103,7 +113,7 @@ window.browser_guid = function() {
           }).join(",")
         ].join("::");
       }).join(";")
-    ].join("###").hash();
+    ].join("###");
 };
 
 window.syntaxHighlight = function(json) {

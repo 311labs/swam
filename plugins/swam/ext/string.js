@@ -70,6 +70,18 @@ String.prototype.urlify = function(text) {
     });
 };
 
+String.prototype.hash = function(){
+    var hash = 0;
+    if (this.length == 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        var char = this.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+};
+
+
 String.prototype.format = function() {
   // "This is {0} {1} {0}".format("another", "test")
   var arg1 = arguments[0];

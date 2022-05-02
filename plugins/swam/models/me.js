@@ -85,7 +85,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             this.credentials.jwt_refresh = parseJWT(data.refresh);
             if (data.id) this.id = data.id;
             if (this.credentials.access) {
-                app.setProperty("credentials", this.credentials);
+                if (window.app) app.setProperty("credentials", this.credentials);
                 SWAM.Rest.credentials = this.credentials;
             }
             this.startAutoJwtRefresh();
@@ -96,7 +96,9 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     login: function(username, password, callback, opts) {
-        SWAM.Rest.POST("/rpc/account/jwt/login", {username:username, password:password}, function(response, status) {
+        var data = {username:username, password:password};
+        if (window.app && window.app.app_uuid) data.device_id = app.app_uuid;
+        SWAM.Rest.POST("/rpc/account/jwt/login", data, function(response, status) {
         	if (response.status) {
         		// credentials get stored in SWAM.Rest
         		this.setJWT(response.data);

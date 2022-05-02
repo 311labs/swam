@@ -73,6 +73,21 @@ SWAM.View = SWAM.Object.extend({
         this.updateAttributes();
         this.delegateEvents();
     },
+    addClass: function(name) {
+        var lst = this.classes.split(' ');
+        if (lst.has(name)) return;
+        lst.push(name);
+        this.classes = lst.join(" ");
+        if (this.$el) this.$el.attr("class", this.classes);
+    },
+    removeClass: function(name) {
+        var lst = this.classes.split(' ');
+        if (lst.has(name)) {
+            lst.remove(name);
+            this.classes = lst.join(" ");
+        }
+        if (this.$el) this.$el.attr("class", this.classes);
+    },
     updateAttributes: function() {
         if (this.options.classes) this.classes = this.options.classes;
         var attrs = {};
@@ -128,7 +143,7 @@ SWAM.View = SWAM.Object.extend({
         }.bind(this));
     },
     delegateEvents: function(events) {
-      if (this.el && !$.contains(document.documentElement, this.el)) return;
+      if (!this.isInDOM()) return;
       events || (events = _.result(this, 'events'));
       if (!events) return this;
       this.undelegateEvents();
@@ -196,6 +211,10 @@ SWAM.View = SWAM.Object.extend({
             app.setActivePage(page_name, params);
         }
         return false;
+    },
+
+    isInDOM: function() {
+        return $.contains(document.documentElement, this.$el[0]);
     },
 
     isVisible: function() {

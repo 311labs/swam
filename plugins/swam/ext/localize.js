@@ -143,6 +143,14 @@ SWAM.Localize = {
         return value;
     },
 
+    'gt_zero': function(value, attr, fmt) {
+        return value > 0;
+    },
+
+    'lt_zero': function(value, attr, fmt) {
+        return value < 0;
+    },
+
     'timerSince': function(value, attr, fmt) {
         return SWAM.Localize.timer((Date.now() - value)/1000);
     },

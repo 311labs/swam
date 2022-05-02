@@ -1,0 +1,112 @@
+<h1>{{options.title}}</h1>
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    SWAM.View
+  </div>
+  <div class="card-body">
+    <p class="card-text">This is the core class for any rendered component.  This is what a view looks like with add</p>
+    <div class="highlight">
+          <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+<pre>
+<code>
+EXAMPLES.Views.MyView = SWAM.View.extend({
+    template: ".views.myview",  // the html to render with this element
+    classes: "page-view page-padded has-topbar",
+
+    on_init: function() {
+        this.addChild("test_form_basic", new SWAM.Form.View({fields:SWAM.Form.Test.Basic}));
+        this.addChild("test_form_datetime", new SWAM.Form.View({fields:SWAM.Form.Test.Datetime}));
+        this.addChild("test_form_misc", new SWAM.Form.View({fields:SWAM.Form.Test.Misc}));
+        this.addChild("test_form_buttons", new SWAM.Form.View({fields:SWAM.Form.Test.Buttons}));
+    },
+
+    on_action_form_json_basic: function(evt) {
+        SWAM.Dialog.alert({title:"Form Data", json:SWAM.Form.Test.Basic});
+    },
+
+    on_action_form_json_datetime: function(evt) {
+        SWAM.Dialog.alert({title:"Form Data", json:SWAM.Form.Test.Datetime});
+    },
+
+    on_action_form_json_misc: function(evt) {
+        SWAM.Dialog.alert({title:"Form Data", json:SWAM.Form.Test.Misc});
+    },
+
+    on_action_form_json_buttons: function(evt) {
+        SWAM.Dialog.alert({title:"Form Data", json:SWAM.Form.Test.Buttons});
+    },
+
+});
+
+</code></pre>
+
+  </div>
+  </div>
+</div>
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    SWAM.View
+  </div>
+  <div class="card-body">
+    <p class="card-text">This is the core class for any rendered component.</p>
+    <div class="highlight">
+          <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+<pre>
+<code>
+&lt;h1&gt;Examples: Forms&lt;/h1&gt;
+
+
+&lt;div class=&quot;card mt-5&quot;&gt;
+  &lt;div class=&quot;card-header&quot;&gt;
+    Basic Inputs
+  &lt;/div&gt;
+  &lt;div class=&quot;card-body&quot;&gt;
+    &lt;div id=&quot;test_form_basic&quot;&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary m-2&quot; data-action=&quot;form_json_basic&quot;&gt;Show JSON&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;card mt-5&quot;&gt;
+  &lt;div class=&quot;card-header&quot;&gt;
+    Date/Time Inputs
+  &lt;/div&gt;
+  &lt;div class=&quot;card-body&quot;&gt;
+    &lt;div id=&quot;test_form_datetime&quot;&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary m-2&quot; data-action=&quot;form_json_datetime&quot;&gt;Show JSON&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card mt-5&quot;&gt;
+  &lt;div class=&quot;card-header&quot;&gt;
+    Buttons and Button Groups
+  &lt;/div&gt;
+  &lt;div class=&quot;card-body&quot;&gt;
+    &lt;div id=&quot;test_form_buttons&quot;&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary m-2&quot; data-action=&quot;form_json_buttons&quot;&gt;Show JSON&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card mt-5&quot;&gt;
+  &lt;div class=&quot;card-header&quot;&gt;
+    Misc Inputs
+  &lt;/div&gt;
+  &lt;div class=&quot;card-body&quot;&gt;
+    &lt;div id=&quot;test_form_misc&quot;&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary m-2&quot; data-action=&quot;form_json_misc&quot;&gt;Show JSON&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+</code></pre>
+
+  </div>
+  </div>
+</div>
+

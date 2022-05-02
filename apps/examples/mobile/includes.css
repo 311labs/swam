@@ -1,0 +1,16 @@
+#!#MERGE
+
+/plugins/swam/themes/defaults.scss
+settings.scss
+/plugins/swam/themes/base/*.scss
+/plugins/swam/ext/imageeditor/*.css
+/plugins/swam/ext/**/*.scss
+pages/**/*.scss
+pages/admin/**/*.scss
+pages/merchant/**/*.scss
+pages/misc/**/*.scss
+pages/examples/**/*.scss
+views/**/*.scss
+
+override.scss
+

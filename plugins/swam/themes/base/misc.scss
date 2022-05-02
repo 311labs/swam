@@ -27,8 +27,15 @@
     }
 }
 
+ul.nolist {
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    padding: 0;
+}
 
-body.app {
+
+#app_body {
     --bs-primary: $brand-primary;
     --bs-secondary: $brand-other;
     --bs-success: $brand-success;
@@ -154,6 +161,22 @@ body.app {
         background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
     }
 
+    .fs-7 {
+        font-size: 0.9rem;
+    }
+
+    .fs-8 {
+        font-size: 0.8rem;
+    }
+
+    .fs-8 {
+        font-size: 0.7rem;
+    }
+
+    .fs-9 {
+        font-size: 0.6rem;
+    }
+
     img.avatar {
         border: 1px solid white;
         box-shadow: 0 0 3px rgba(0,0,0,0.3);
@@ -196,7 +219,6 @@ body.app {
             }
         }
     }
-
 
 }
 

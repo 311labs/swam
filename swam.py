@@ -15,16 +15,19 @@ from datetime import datetime
 import time
 import threading
 import shutil
-
+import configparser
+config = configparser.ConfigParser()
+config.read("swam.conf")
+defaults = config["default"]
 
 parser = OptionParser()
-parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False)
+parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=defaults.getboolean("verbose", False))
 parser.add_option("-f", "--force", action="store_true", dest="force", default=False, help="force the revision")
 parser.add_option("-m", "--minify", action="store_true", dest="minify", default=False, help="minify the revision")
 parser.add_option("-w", "--watch", action="store_true", dest="watch", default=False, help="watch for changes and auto refresh")
 parser.add_option("-s", "--serve", action="store_true", dest="serve", default=False, help="serve for changes and auto refresh")
-parser.add_option("-o", "--output", type="str", dest="output", default="output", help="static output path")
-parser.add_option("-p", "--port", type="int", dest="port", default="8081", help="http port")
+parser.add_option("-o", "--output", type="str", dest="output", default=defaults.get("output_path", "output"), help="static output path")
+parser.add_option("-p", "--port", type="int", dest="port", default=defaults.get("port", 8081), help="http port")
 parser.add_option("-b", "--bump_rev", action="store_true", dest="bump_rev", default=False, help="bump version revision")
 parser.add_option("--bump_minor", action="store_true", dest="bump_minor", default=False, help="bump version minor")
 parser.add_option("--bump_major", action="store_true", dest="bump_major", default=False, help="bump version major")
@@ -373,7 +376,7 @@ class StaticFile(SwamFile):
 
 
 class IndexFile(SwamFile):
-    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root"]
+    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root", "template_root", "app_root"]
     JS_INCLUDE_TEMP = """<script type="text/javascript" src="{{path}}?version={{version}}"></script>"""
     CSS_INCLUDE_TEMP = """<link rel="stylesheet" href="{{path}}?version={{version}}">"""
 
@@ -451,6 +454,7 @@ def buildApp(app_path, config, opts):
     if is_dirty or index.hasChanged():
         # load to check for any changes
         config = objict.fromFile(os.path.join(app_path, "app.json"))
+        config.template_root = "{}".format(app_path.replace("/", "."))
         # bump local version
         if config.version is None:
             config.version = "1.0.0"
@@ -460,7 +464,7 @@ def buildApp(app_path, config, opts):
             config.version = "{}.{}.{}".format(major, minor, rev)
             config.save(os.path.join(app_path, "app.json"))
         config.root = app_path
-        index.compile(js_includes=js_includes, css_includes=css_includes, **config)
+        index.compile(js_includes=js_includes, css_includes=css_includes, app_root=app_path[len("apps"):], **config)
 
 
 APPS = objict()
@@ -500,9 +504,16 @@ def buildApps(opts):
     started_at = time.time()
     copyCore(os.path.join("plugins", "jquery.js"), opts)
     compile_info.is_compiling = True
-    for name in os.listdir(opts.app_path):
-        path = os.path.join(opts.app_path, name)
+    loadAppsFromPath(opts, opts.app_path)
+    compile_info.is_compiling = False
+    print("total compile time: {:.3f}".format(time.time() - started_at))
+
+def loadAppsFromPath(opts, app_path, parent_folder=None):
+    for name in os.listdir(app_path):
+        path = os.path.join(app_path, name)
         if os.path.isdir(path):
+            if parent_folder:
+                name = F"{parent_folder}__{name}"
             if name not in APPS:
                 config_file = os.path.join(path, "app.json")
                 if os.path.exists(config_file):
@@ -514,14 +525,14 @@ def buildApps(opts):
                         print("failed to parse {}".format(config_file))
                         print(str(err))
                         print("-----")
-
+                else:
+                    loadAppsFromPath(opts, path, name)
+                    continue
             config = APPS.get(name, None)
             if config and not config.disable:
                 app_started_at = time.time()
                 buildApp(path, config, opts)
                 print("\t{} compile time: {}".format(name, time.time() - app_started_at))
-    compile_info.is_compiling = False
-    print("total compile time: {:.3f}".format(time.time() - started_at))
 
 
 class FileWatcher():
@@ -564,11 +575,12 @@ def runHTTP(opts):
             while compile_info.is_compiling:
                 time.sleep(0.5)
             for name in APP_PATHS:
-                # print(self.path)
+                app_path = name.replace("__", "/")
+                print(app_path)
                 path = urlparse(self.path).path
                 ext = os.path.splitext(path)[1]
                 # print(ext)
-                if path[1:].startswith(name):
+                if path[1:].startswith(app_path):
                     print(self.path)
                     if not ext:
                         self.path = os.path.join(APP_PATHS[name], 'index.html')
@@ -585,6 +597,9 @@ def runHTTP(opts):
 
 def main(opts, args):
     print("== SWAM COMPILER {} ==".format(version))
+    print(F"\tOutput: {opts.output}")
+    opts.output = os.path.abspath(opts.output)
+    print(F"\tAbsolute Output: {opts.output}")
     if not opts.force and (opts.bump_rev or opts.bump_major or opts.bump_minor):
         return bumpVersion(opts.bump_major, opts.bump_minor, opts.bump_rev)
     FILE_CACHE.removeOld()
