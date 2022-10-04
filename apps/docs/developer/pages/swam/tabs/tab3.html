@@ -1,0 +1,18 @@
+<div class="m-3">
+
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px"><span class="hljs-keyword">var</span> tabs = <span class="hljs-keyword">new</span> SWAM.Views.Tabs();
+
+tabs.addTab(<span class="hljs-string">"Tab 1"</span>, <span class="hljs-string">"tab_1"</span>, <span class="hljs-keyword">new</span> SWAM.View({<span class="hljs-attr">template</span>:<span class="hljs-string">".pages.examples.tabs.tab1"</span>}));
+tabs.addTab(<span class="hljs-string">"Tab 2"</span>, <span class="hljs-string">"tab_2"</span>, <span class="hljs-keyword">new</span> SWAM.View({<span class="hljs-attr">template</span>:<span class="hljs-string">".pages.examples.tabs.tab2"</span>}));
+tabs.addTab(<span class="hljs-string">"How"</span>, <span class="hljs-string">"tab_3"</span>, <span class="hljs-keyword">new</span> SWAM.View({<span class="hljs-attr">template</span>:<span class="hljs-string">".pages.examples.tabs.tab3"</span>}));
+<span class="hljs-comment">// restrict tabs even being shown by adding addional options</span>
+<span class="hljs-comment">//  - requires_perms: ["list of perms required to see tab"]</span>
+<span class="hljs-comment">//  - requires_group_setting: ["list of group metadata required to view tab"]</span>
+tabs.addTab(<span class="hljs-string">"Denied"</span>, <span class="hljs-string">"denied"</span>, <span class="hljs-keyword">new</span> SWAM.View({<span class="hljs-attr">template</span>:<span class="hljs-string">".pages.examples.tabs.tab1"</span>}), {<span class="hljs-attr">requires_perm</span>:[<span class="hljs-string">"superuser"</span>]});
+
+tabs.setActiveTab(<span class="hljs-string">"tab_3"</span>);
+
+<span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"example_tabs"</span>, tabs);</code></pre>
+
+
+</div>

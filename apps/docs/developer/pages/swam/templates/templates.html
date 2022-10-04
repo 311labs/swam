@@ -1,0 +1,71 @@
+<h1>Templates</h1>
+
+<p class="lead">
+    SWAM templates are powered by <a href="https://github.com/janl/mustache.js/" target="_blank">mustache.js</a> with some extensions to improve the functionality.  Templates provide an easy way to render your data into HTML.
+</p>
+
+<p>
+  Templates can be attached to a SWAM.View or rendered in javascript.
+</p>
+
+<p>Templates are compiled and stored into window.template_cache based on the project folder path.  For example if a template is stored in myproj/views/userinfo/userinfo.html it would be cached in window.template_cache.myproj.views.userinfo.userinfo.</p>
+
+<p>See <span data-showpage="swam_localize">Localization</span> for details on rendering data into different formats!</p>
+
+<h4>Functions</h4>
+<ul>
+  <li><span class="fw-bold">SWAM.renderTemplate(<span class='fw-normal'>template, context</span>)</span> - <span class="text-muted">render the template path using the context</span></li>
+  <li><span class="fw-bold">SWAM.renderString(<span class='fw-normal'>text, context</span>)</span> - <span class="text-muted"> render the text using the context</span></li>
+  <li><span class="fw-bold">SWAM.getTemplate(<span class='fw-normal'>path</span>)</span> - <span class="text-muted"> return the raw text for a template at the given path</span></li>
+</ul>
+
+
+<div class="card mt-5">
+  <div class="border-bottom">
+   <h3 class="p-2">Basic Syntax</h3>
+  </div>
+
+  <div class="highlight">
+    <div class="p-2">
+
+{{=||| |||=}}
+
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span></span><span class="hljs-template-variable">{{title}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+
+</span><span class="hljs-template-tag">{{#<span class="hljs-name">myflag</span>}}</span><span class="xml">
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This will only show if myflag is true<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</span><span class="hljs-template-tag">{{/<span class="hljs-name">myflag</span>}}</span><span class="xml">
+{{^myflag}}
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This will only show if myflag is false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</span><span class="hljs-template-tag">{{/<span class="hljs-name">myflag</span>}}</span><span class="xml">
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This will iterate through all the models in the collection<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+</span><span class="hljs-template-tag">{{#<span class="hljs-name"><span class="hljs-builtin-name">collection</span>.models</span>}}</span><span class="xml">
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{{.name}} - using . will force the local context (in this case the model)<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+</span><span class="hljs-template-tag">{{/<span class="hljs-name"><span class="hljs-builtin-name">collection</span>.models</span>}}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>By using 3x{ we can return raw html<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  {</span><span class="hljs-template-variable">{{getIcon}}</span><span class="xml">}
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>INCLUDE Extension allows for you to include other templates with currenct context<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+{</span><span class="hljs-template-variable">{{INCLUDE('myapp.views.panel.example')}}</span><span class="xml">}
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ICON Extension makes it easy to add icons<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+{</span><span class="hljs-template-variable">{{ICON('lock')}}</span><span class="xml">}
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Localization Extension makes it easy to render values into different formats<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</span><span class="hljs-template-variable">{{app.me.created|datetime}}</span><span class="xml">
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>You can always reference your app<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</span><span class="hljs-template-variable">{{app.version}}</span></code></pre>
+
+|||={{ }}=|||
+
+    </div>
+  </div>
+
+</div>

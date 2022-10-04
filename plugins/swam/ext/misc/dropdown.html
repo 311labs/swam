@@ -1,0 +1,15 @@
+<button class="{{options.btn_classes}} dropdown-toggle" type="button" data-bs-auto-close="true" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+  {{{active_label}}}
+</button>
+<ul class="dropdown-menu shadow">
+   {{#options.menu_items}}
+      <li>
+      <a href="#" class="dropdown-item" data-action="{{options.action}}" data-id="{{.id}}">
+         {{#.icon}}{{{ICON(.icon)}}}{{/.icon}} {{.label}}
+      </a>
+      </li>
+   {{/options.menu_items}}
+</ul>
+
+
+

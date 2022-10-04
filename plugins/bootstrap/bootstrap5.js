@@ -8,6 +8,8 @@
 /**
  * Copyright (c) 2021 Peyton Gasink
  * Distributed under MIT License.
+ * 
+ * https://bootstraptoaster.peytongasink.dev/
  *
  * This file contains all the necessary scripting to programmatically
  * generate Bootstrap toasts. It first inserts a container at the bottom
@@ -63,6 +65,7 @@ var TOAST_THEME;
 (function (TOAST_THEME) {
     TOAST_THEME[TOAST_THEME["LIGHT"] = 1] = "LIGHT";
     TOAST_THEME[TOAST_THEME["DARK"] = 2] = "DARK";
+    TOAST_THEME[TOAST_THEME["SOLID"] = 3] = "SOLID";
 })(TOAST_THEME || (TOAST_THEME = {}));
 /** Defines the valid options for toast header timers. */
 var TOAST_TIMERS;
@@ -105,13 +108,13 @@ class Toast {
         TOAST_CONTAINER.className = "toast-container position-fixed";
         switch (placement) {
             case TOAST_PLACEMENT.TOP_LEFT:
-                TOAST_CONTAINER.classList.add("top-0", "start-0");
+                TOAST_CONTAINER.classList.add("top-1", "start-0");
                 break;
             case TOAST_PLACEMENT.TOP_CENTER:
-                TOAST_CONTAINER.classList.add("top-0", "start-50", "translate-middle-x");
+                TOAST_CONTAINER.classList.add("top-1", "start-50", "translate-middle-x");
                 break;
             case TOAST_PLACEMENT.TOP_RIGHT:
-                TOAST_CONTAINER.classList.add("top-0", "end-0");
+                TOAST_CONTAINER.classList.add("top-1", "end-0");
                 break;
             case TOAST_PLACEMENT.MIDDLE_LEFT:
                 TOAST_CONTAINER.classList.add("top-50", "start-0", "translate-middle-y");
@@ -158,6 +161,13 @@ class Toast {
                 header.style.color = "var(--header-color-dark)";
                 close.style.filter = "invert(1) grayscale(100%) brightness(200%)";
                 break;
+            case TOAST_THEME.SOLID:
+                TOAST_TEMPLATE.style.backgroundColor = "#0d6efd";
+                TOAST_TEMPLATE.style.color = "white";
+                header.style.backgroundColor = "#0d6efd";
+                header.style.color = "white";
+                close.style.filter = "unset";
+                break;        
             default:
                 TOAST_TEMPLATE.removeAttribute("style");
                 header.removeAttribute("style");

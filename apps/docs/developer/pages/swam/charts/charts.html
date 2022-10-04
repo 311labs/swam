@@ -1,0 +1,152 @@
+
+<div class="row">
+	<div class="col-6">
+		<div class="card mt-5">
+		  <div class="card-header">
+		    <h3>Bar Chart</h3>
+		  </div>
+		  <div class="card-body">
+		    <p class="card-text">Bar Charts made easy via <a href="https://www.chartjs.org/">Chart.js</a></p>
+
+		    <div id="barchart"></div>
+
+		    <button class="btn btn-primary mt-3" type="button" data-action="add_to_barchart">ADD DATA</button>
+		  </div>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="card mt-5">
+		  <div class="card-header">
+		    <h3>Line Chart</h3>
+		  </div>
+		  <div class="card-body">
+		    <p class="card-text">Line Charts made easy via <a href="https://www.chartjs.org/">Chart.js</a></p>
+
+		    <div id="linechart"></div>
+
+		    <button class="btn btn-primary mt-3" type="button" data-action="add_to_linechart">ADD DATA</button>
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-6">
+		<div class="card mt-5">
+		  <div class="card-header">
+		    <h3>Pie Chart</h3>
+		  </div>
+		  <div class="card-body">
+		    <p class="card-text">Pie Charts made easy via <a href="https://www.chartjs.org/">Chart.js</a></p>
+
+		    <div id="piechart"></div>
+
+		    <button class="btn btn-primary mt-3" type="button" data-action="add_to_piechart">ADD DATA</button>
+		  </div>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="card mt-5">
+		  <div class="card-header">
+		    <h3>Doughnut Chart</h3>
+		  </div>
+		  <div class="card-body">
+		    <p class="card-text">Doughnut Charts made easy via <a href="https://www.chartjs.org/">Chart.js</a></p>
+
+		    <div id="doughnutchart"></div>
+
+		    <button class="btn btn-primary mt-3" type="button" data-action="add_to_doughnutchart">ADD DATA</button>
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="card mt-5">
+	<div class="card-header">
+		<h3>Example Code</h3>
+	</div>
+	<div class="card-body">
+		<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+PORTAL.Pages.ExampleCharts = SWAM.Page.extend({
+    <span class="hljs-attr">template</span>: <span class="hljs-string">".pages.swam.charts"</span>,
+    <span class="hljs-attr">classes</span>: <span class="hljs-string">"page-view page-padded has-topbar"</span>,
+    <span class="hljs-attr">tagName</span>: <span class="hljs-string">"div"</span>,
+
+    <span class="hljs-attr">defaults</span>: {
+        <span class="hljs-attr">title</span>: <span class="hljs-string">"Examples: Charts"</span>
+    },
+
+    <span class="hljs-attr">on_init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.id) {
+            <span class="hljs-built_in">this</span>.id = PORTAL.Pages.ExampleCharts.LAST_ID;
+        }
+        <span class="hljs-built_in">this</span>.on_init_bar();
+        <span class="hljs-built_in">this</span>.on_init_line();
+        <span class="hljs-built_in">this</span>.on_init_pie();
+        <span class="hljs-built_in">this</span>.on_init_doughnut();
+    },
+
+    <span class="hljs-attr">on_init_bar</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"barchart"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Chart({<span class="hljs-attr">type</span>:<span class="hljs-string">"bar"</span>, <span class="hljs-attr">max_length</span>:<span class="hljs-number">12</span>}));
+        <span class="hljs-built_in">this</span>.children.barchart.setLabels(SWAM.DataSets.months.slice(<span class="hljs-number">0</span>,<span class="hljs-number">6</span>));
+        <span class="hljs-built_in">this</span>.children.barchart.addDataSet(<span class="hljs-string">"beers"</span>, [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>, <span class="hljs-number">60</span>], {<span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">'rgba(255, 99, 132, 0.5)'</span>});
+        <span class="hljs-built_in">this</span>.children.barchart.addDataSet(<span class="hljs-string">"shots"</span>, [<span class="hljs-number">2</span>, <span class="hljs-number">80</span>, <span class="hljs-number">20</span>, <span class="hljs-number">15</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>], {<span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">'rgba(153, 102, 255, 0.5)'</span>});
+    },
+
+    <span class="hljs-attr">on_action_add_to_barchart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        <span class="hljs-built_in">this</span>.children.barchart.pushData(
+            <span class="hljs-built_in">this</span>.getNextMonth(<span class="hljs-built_in">this</span>.children.barchart.options.labels.last()), <span class="hljs-comment">// the next label for the column</span>
+            [<span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>), <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>)]); <span class="hljs-comment">// the next data for both beers and shots</span>
+    },
+
+    <span class="hljs-attr">on_init_line</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"linechart"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Chart({<span class="hljs-attr">type</span>:<span class="hljs-string">"line"</span>, <span class="hljs-attr">max_length</span>:<span class="hljs-number">12</span>}));
+        <span class="hljs-built_in">this</span>.children.linechart.setLabels(SWAM.DataSets.months.slice(<span class="hljs-number">0</span>,<span class="hljs-number">6</span>));
+        <span class="hljs-built_in">this</span>.children.linechart.addDataSet(<span class="hljs-string">"beers"</span>, [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>, <span class="hljs-number">60</span>], {<span class="hljs-attr">borderColor</span>: <span class="hljs-string">'rgba(255, 99, 132, 0.5)'</span>});
+        <span class="hljs-built_in">this</span>.children.linechart.addDataSet(<span class="hljs-string">"shots"</span>, [<span class="hljs-number">2</span>, <span class="hljs-number">80</span>, <span class="hljs-number">20</span>, <span class="hljs-number">15</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>], {<span class="hljs-attr">borderColor</span>: <span class="hljs-string">'rgba(153, 102, 255, 0.5)'</span>});
+    },
+
+    <span class="hljs-attr">getNextMonth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">month</span>) </span>{
+        <span class="hljs-keyword">var</span> i = SWAM.DataSets.months.indexOf(month) + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">12</span>) i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> SWAM.DataSets.months[i];
+    },
+
+    <span class="hljs-attr">on_action_add_to_linechart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        <span class="hljs-built_in">this</span>.children.linechart.pushData(
+            <span class="hljs-built_in">this</span>.getNextMonth(<span class="hljs-built_in">this</span>.children.linechart.options.labels.last()), <span class="hljs-comment">// the next label for the column</span>
+            [<span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>), <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>)]); <span class="hljs-comment">// the next data for both beers and shots</span>
+    },
+
+    <span class="hljs-attr">on_init_pie</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"piechart"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Chart({<span class="hljs-attr">type</span>:<span class="hljs-string">"pie"</span>}));
+        <span class="hljs-built_in">this</span>.children.piechart.pushData(<span class="hljs-string">"beers"</span>, <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>), {<span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">'rgba(255, 99, 132, 0.5)'</span>});
+        <span class="hljs-built_in">this</span>.children.piechart.pushData(<span class="hljs-string">"shots"</span>, <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>));
+        <span class="hljs-built_in">this</span>.children.piechart.pushData(<span class="hljs-string">"water"</span>, <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>));
+    },
+
+    <span class="hljs-attr">on_action_add_to_piechart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        <span class="hljs-built_in">this</span>.children.piechart.pushData(<span class="hljs-built_in">String</span>.Random(<span class="hljs-number">6</span>), <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>));
+    },
+
+    <span class="hljs-attr">on_init_doughnut</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"doughnutchart"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Chart({<span class="hljs-attr">type</span>:<span class="hljs-string">"doughnut"</span>}));
+        <span class="hljs-built_in">this</span>.children.doughnutchart.pushData(<span class="hljs-string">"beers"</span>, <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>), {<span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">'rgba(255, 99, 132, 0.5)'</span>});
+        <span class="hljs-built_in">this</span>.children.doughnutchart.pushData(<span class="hljs-string">"shots"</span>, <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>));
+        <span class="hljs-built_in">this</span>.children.doughnutchart.pushData(<span class="hljs-string">"water"</span>, <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>));
+    },
+
+    <span class="hljs-attr">on_action_add_to_doughnutchart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        <span class="hljs-built_in">this</span>.children.doughnutchart.pushData(<span class="hljs-built_in">String</span>.Random(<span class="hljs-number">6</span>), <span class="hljs-built_in">Number</span>.randomInt(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>));
+    },
+
+});
+
+
+		</code></pre>
+	</div>
+</div>
+
+
+
+

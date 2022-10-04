@@ -20,7 +20,7 @@ fi
 
 ln -snf "$SWAMCORE/runserver" "runserver"
 ln -snf "$SWAMCORE/swam.py" "swam.py"
-ln -snf "$SWAMCORE/swam.conf" "swam.conf"
+cp "$SWAMCORE/swam.conf" "swam.conf"
 mkdir -p "apps"
 cd apps
 ln -snf "../$SWAMCORE/apps/examples" "examples"

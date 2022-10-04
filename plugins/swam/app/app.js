@@ -13,12 +13,20 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         enable_swipe: false,
         navigation: true, // set this to false to not using an url based navigation (ie mobile apps)
         catch_errors: true, // catch and show popup for uncaught errors
+        sync_debounce_ms: 5000,
+        toast_placement: "top_right",
+        toast_theme: "dark"
     },
     on_init: function() {
         // turn on smart parameter parsing ('sss', 22, model.name) where model.name value is passed into localize
-        if (window.Mustache) window.Mustache.smart_params = 1;
+        if (window.Mustache) {
+            window.Mustache.smart_params = 1;
+            window.Mustache.smart_params_require_quotes = 0;
+        }
         if (this.options.enable_swipe) this.enableTouch();
         this.on("property:change", this.on_prop_change, this);
+        this.initWindowEvents();
+        this.setToastGlobals({placement: this.options.toast_placement, theme: this.options.toast_theme});
     },
     on_prop_change: function(evt) {
         console.log("on_prop_change");
@@ -41,16 +49,25 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             view.on_route.apply(view, arguments);
         }.bind(this));
     },
+    hasPage: function(name) {
+        return this._pages[name] != undefined;
+    },
     getPage: function(name) {
         return this._pages[name];
     },
-    showPage: function(name, params) {
-        this.setActivePage(name, params);
+    showPage: function(name, params, anchor) {
+        this.setActivePage(name, params, anchor);
     },
-    setActivePage: function(name, params) {
+    setActivePage: function(name, params, anchor) {
         var page = this._pages[name];
         var $parent = this.$el.find(this.options.page_el_id);
-        if (page && $parent) {
+        if ($parent.length == 0) {
+            // the page container could not be found
+            console.log("page container could not be found!");
+            return;
+        }
+
+        if (page) {
             if (page == this.active_page) {
                 page.setParams(params);
                 if (!page.isInDOM()) {
@@ -58,7 +75,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                     page.addToDOM($parent);
                 } else {
                     page.setParams(params);
-                    page.render();
+                    // page.render();
+                    if (anchor) page.scrollToAnchor(anchor);
                     page.updateURL();
                 }
                 return;
@@ -66,6 +84,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             if (this.active_page) {
                 page._prev_page = this.active_page;
                 this.active_page.removeFromDOM();
+                this.active_page.on_page_exit();
             }
             // check for topbar
             if (page.classes && (page.classes.indexOf("has-topbar") >= 0)) {
@@ -79,17 +98,29 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             page.setParams(params);
             page.addToDOM($parent);
             page.updateURL();
+            $parent[0].scrollTop = 0; // force the new page to show from top scroll
+            page.on_page_enter();
+            if (anchor) page.scrollToAnchor(anchor);
             this.trigger("page:change", name);
             if (!this.started) {
                 this.start();
             }
         } else {
             console.warn("invalid page: " + name);
-            this.setActivePage("not_found", {invalid_page: name});
+            if (this.hasPage("not_found")) {
+                this.setActivePage("not_found", {invalid_page: name}); 
+            } else {
+                SWAM.Dialog.show({title:"Page Not Found", message:"Oops, the page " + name + " could not be found!"});
+            }
+            
         }
 
     },
     isActivePage: function(name) {
+        if (_.isArray(name)) {
+            if (!this.active_page) return false;
+            return name.has(this.active_page.page_name);
+        }
         return this._pages[name] == this.active_page;
     },
     goBack: function() {
@@ -106,7 +137,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.history = window.history;
         this.root = this.options.root;
         window.addEventListener("popstate", this.on_pop_state);
-        this.on_init_pages();
+        this.on_init_views();
         this.render();
         this.starting_url = this.getPath();
         this.on_started();
@@ -125,6 +156,17 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     on_prop_api_url: function(value) {
         this.options.api_url = value;
         SWAM.toast("API URL Changed", "You should probably reload!");
+    },
+
+    setToastGlobals: function(globals) {
+        if (globals.placement) {
+            this.options.toast_placement = globals.placement;
+            Toast.setPlacement(TOAST_PLACEMENT[globals.placement.upper()]);
+        }
+        if (globals.theme) {
+            this.options.toast_theme = globals.theme;
+            Toast.setTheme(TOAST_THEME[globals.theme.upper()]);
+        }
     },
 
     showTopBar: function() { this.$el.find("#title-bar").show(); },
@@ -174,6 +216,10 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     on_swipe_right: function(evt) {
         console.log("app| swipe right");
         this.showLeftPanel();
+    },
+
+    on_init_views: function() {
+        this.on_init_pages();
     },
 
     on_init_pages: function() {
@@ -310,6 +356,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_uncaught_error: function(message, url, line, col, error, evt) {
         this.hideBusy();
+        if (window.isDevToolsOpen()) {
+            if ((evt.lineno == 1) || (evt.lineno == 0)) return; // chrome dev console bugs?
+        }
         SWAM.Dialog.warning({title:"Uncaught App Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
         return false;
     },
@@ -372,6 +421,43 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this._nav_path = path;
         if (title) document.title = title;
         window.history.pushState({"path":path}, "", path);
+    },
+
+    on_window_focus: function(evt) {
+        this.has_focus = true;
+        this.trigger("foreground");
+        this.syncNow();
+    },
+
+    on_window_blur: function(evt) {
+        this.has_focus = false;
+        this.trigger("background");
+    },
+
+    syncNow: function() {
+        if (!this.options.last_sync) this.options.last_sync = Date.now() - (this.options.sync_debounce_ms+1000);
+        var delta = Date.now() - this.options.last_sync;
+        if (delta > this.options.sync_debounce_ms) {
+            this.options.last_sync = Date.now();
+            var evt = {age: delta};
+            this.on_sync(evt);
+            this.trigger("sync", evt);
+        }
+    },
+
+    on_sync: function(evt) {
+        
+    },
+
+    initWindowEvents: function() {
+        this.has_focus = document.hasFocus();
+        if (_.isUndefined(document.onfocusin)) {
+            window.onfocus = _.bind(this.on_window_focus, this);
+            window.onblur = _.bind(this.on_window_blur, this);
+        } else {
+            window.onfocusin = _.bind(this.on_window_focus, this);
+            window.onfocusout = _.bind(this.on_window_blur, this);
+        }
     }
 });
 

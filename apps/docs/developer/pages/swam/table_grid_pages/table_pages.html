@@ -1,0 +1,79 @@
+
+<div class="card mt-5">
+  <div class="card-header">
+    <h3>Example Code</h3>
+  </div>
+  <div class="card-body">
+    
+    <pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+    PORTAL.Pages.ExampleTableGridPages = SWAM.Pages.TablePage.extend({
+        <span class="hljs-attr">classes</span>: <span class="hljs-string">"page-view page-padded has-topbar"</span>,
+
+        <span class="hljs-attr">defaults</span>: {
+            <span class="hljs-attr">icon</span>: <span class="hljs-string">"user"</span>,
+            <span class="hljs-attr">title</span>: <span class="hljs-string">"Table Page Example"</span>,
+            <span class="hljs-attr">table_options</span>: {
+                <span class="hljs-attr">add_classes</span>: <span class="hljs-string">"swam-table-clickable small table-sm"</span>,
+                <span class="hljs-attr">batch_select</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">view_only</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// don't show edit for on click</span>
+            },
+            <span class="hljs-attr">add_button</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">columns</span>: [
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"Modified"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"modified|date"</span>, <span class="hljs-attr">classes</span>:<span class="hljs-string">"d-none d-md-table-cell"</span>},
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"IP"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"ip"</span>},
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"ISP"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"isp"</span>, <span class="hljs-attr">classes</span>:<span class="hljs-string">"d-none d-md-table-cell"</span>},
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"Country"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"country"</span>},
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"State"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"state"</span>},
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"City"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"city"</span>, <span class="hljs-attr">classes</span>:<span class="hljs-string">"d-none d-lg-table-cell"</span>},
+               {<span class="hljs-attr">label</span>:<span class="hljs-string">"lat/lng"</span>, <span class="hljs-attr">template</span>:<span class="hljs-string">"{{model.lat}}/{{model.lng}}"</span>, <span class="hljs-attr">classes</span>:<span class="hljs-string">"d-none d-xl-table-cell"</span>},
+            ],
+            <span class="hljs-attr">collection_params</span>: {
+                <span class="hljs-attr">size</span>: <span class="hljs-number">10</span>,
+                <span class="hljs-attr">sort</span>: <span class="hljs-string">"-modified"</span>
+            },
+            <span class="hljs-attr">group_filtering</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">filters</span>: [
+                {
+                    <span class="hljs-attr">label</span>: <span class="hljs-string">"Date Range"</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">"created"</span>,
+                    <span class="hljs-attr">type</span>: <span class="hljs-string">"daterange"</span>,
+                    <span class="hljs-attr">operator</span>: <span class="hljs-string">"is"</span>
+                },
+                {
+                    <span class="hljs-attr">label</span>: <span class="hljs-string">"Country"</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">"country"</span>,
+                    <span class="hljs-attr">type</span>: <span class="hljs-string">"select"</span>,
+                    <span class="hljs-attr">editable</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">options</span>: <span class="hljs-string">"countries"</span>
+                },
+                {
+                    <span class="hljs-attr">label</span>: <span class="hljs-string">"State"</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">"state"</span>,
+                    <span class="hljs-attr">type</span>: <span class="hljs-string">"select"</span>,
+                    <span class="hljs-attr">editable</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">options</span>: <span class="hljs-string">"us_states"</span>
+                },
+                {
+                    <span class="hljs-attr">label</span>: <span class="hljs-string">"IP"</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">"ip"</span>,
+                    <span class="hljs-attr">type</span>: <span class="hljs-string">"text"</span>,
+                },
+                {
+                    <span class="hljs-attr">label</span>: <span class="hljs-string">"City"</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">"city"</span>,
+                    <span class="hljs-attr">type</span>: <span class="hljs-string">"text"</span>,
+                },
+            ]
+        },
+
+        <span class="hljs-attr">on_init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-built_in">this</span>.options.collection = <span class="hljs-keyword">new</span> SWAM.Collection({<span class="hljs-attr">url</span>:<span class="hljs-string">"https://test.payauth.io/rpc/location/ips"</span>});
+            <span class="hljs-built_in">this</span>.appendChild(<span class="hljs-string">"code"</span>, <span class="hljs-keyword">new</span> SWAM.View({<span class="hljs-attr">template</span>:<span class="hljs-string">".pages.swam.table_grid_pages.table_pages"</span>}));
+            SWAM.Pages.TablePage.prototype.on_init.call(<span class="hljs-built_in">this</span>);
+        },
+        
+    });
+    </code></pre>
+    
+  </div>
+</div>

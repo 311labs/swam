@@ -1,0 +1,51 @@
+<h1>SWAM.Page</h1>
+
+<p class="lead">
+    Pages are how we defined routed views.  A page is just a view that controls the URL in the navigation window and they can be routed directly via a URL.  Pages just make organizing your web application a little easier.
+</p>
+
+<ul>
+  <li>A SWAM.Page is extended from a SWAM.View.</li>
+  <li>Pages have all the same properties, functions, events, as a SWAM.View with a few more added on.</li>
+  <li>Pages can contain many views, just like views can contain views, that contain views, and so on.</li>
+  <li>Pages cannot contain other pages.</li>
+  <li>When a model is assigned to a view it will automatically render when any changes occur.</li>
+</ul>
+
+<img class="img-fluid" src="/apps/docs/developer/imgs/app_pages.png" alt="">
+
+
+<h4 class="mt-2">Functions</h4>
+<ul>
+  <li><span class="fw-bold">updateURL(url_params)</span> - <span class="text-muted">this can be called to update the browsers url parameters</span></li>
+  <li><span class="fw-bold">getRoute(<span class='fw-normal'>params, url_params</span>)</span> - <span class="text-muted">returns the best route for the given params for this page</span></li>
+  <li><span class="fw-bold">isActivePage(<span class='fw-normal'></span>)</span> - <span class="text-muted"> true if the page is the current active page</span></li>
+</ul>
+
+
+<h4>Callbacks</h4>
+<ul>
+  <li><span class="fw-bold">on_page_enter</span>() - <span class="text-muted">called when the page becomes active</span></li>
+  <li><span class="fw-bold">on_page_exit</span>() - <span class="text-muted">called when the page is no longer active</span></li>
+</ul>
+
+<h4>Event and Actions</h4>
+<p>
+  Pages can also handle data-action, data-showpage, data-show-url.
+</p>
+
+
+
+<div class="card mt-5">
+  <div class="border-bottom">
+   <h3 class="p-2">Examples</h3>
+  </div>
+  <div id="tabs">
+
+  </div>
+</div>
+
+
+
+
+

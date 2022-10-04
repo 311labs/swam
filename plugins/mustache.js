@@ -68,8 +68,9 @@ Mustache.Context.prototype.ext_icon = function(name) {
         value = this.findValue(value);
         if (!value) value = keys[0].params;
     }
-    var icon = SWAM.Icons[value];
-    if (!icon) icon = '<i class="bi bi-' + value + '"></i>'
+    if (!value) return null;
+    var icon = SWAM.Icons.getIcon(value);
+    // if (!icon) icon = '<i class="bi bi-' + value + '"></i>'
     return icon;
 };
 
@@ -240,7 +241,9 @@ Mustache.Context.prototype.parseFilterParams = function(params) {
         cv = this.findValue(p);
         // this is where we need to force not quoted to context lookup
         // but for legacy support we will fallback
-        if (cv) {
+        if (Mustache.smart_params_require_quotes) {
+            output.push(cv);
+        } else if (cv) {
             output.push(cv);
         } else {
             output.push(p);

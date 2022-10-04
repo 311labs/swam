@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import time
 import glob
 from optparse import OptionParser
@@ -30,11 +31,41 @@ parser.add_option("-p", "--port", type="int", dest="port", default=config.get("p
 parser.add_option("-b", "--bump_rev", action="store_true", dest="bump_rev", default=False, help="bump version revision")
 parser.add_option("--bump_minor", action="store_true", dest="bump_minor", default=False, help="bump version minor")
 parser.add_option("--bump_major", action="store_true", dest="bump_major", default=False, help="bump version major")
-parser.add_option("--app_path", type="str", dest="app_path", default="apps", help="app path to compile from")
+parser.add_option("--clear", action="store_true", dest="clear", default=False, help="clear all cache")
+parser.add_option("--app_path", type="str", dest="app_path", default=config.get("app_path", "apps"), help="app path to compile from")
 
-version = "0.1.2"
+version = "0.1.3"
 compile_info = nobjict(is_compiling=False)
 
+
+
+class Colors:
+    BLACK = "\033[30m"
+    RED = "\033[31m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    PINK = "\033[35m"
+    BLUE = "\033[34m"
+    WHITE = "\033[37m"
+
+    HBLACK = "\033[90m"
+    HRED = "\033[91m"
+    HGREEN = "\033[92m"
+    HYELLOW = "\033[93m"
+    HBLUE = "\033[94m"
+    HPINK = "\033[95m"
+    HWHITE = "\033[97m"
+
+    HEADER = "\033[95m"
+    FAIL = "\033[91m"
+    OFF = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
+
+def pp(color, msg):
+    sys.stdout.write("{}{}{}\n".format(color, msg, Colors.OFF))
+    sys.stdout.flush()
 
 def readVersion():
     with open("pyproject.toml", "r") as f:
@@ -58,7 +89,6 @@ def bumpVersion(bump_major=False, bump_minor=False, bump_rev=True):
                 if bump_rev:
                     rev = int(rev) + 1
                 line = 'version = "{}.{}.{}"\n'.format(major, minor, rev)
-                print(line)
             output.append(line)
     with open("pyproject.toml", "w") as wf:
         for line in output:
@@ -74,6 +104,10 @@ class FileCache():
         self.filename = filename
         self.cache = nobjict.fromFile(self.filename, True)
 
+    def clear(self):
+        self.cache.clear()
+        self.save()
+
     def save(self):
         self.cache.save(self.filename)
 
@@ -83,8 +117,7 @@ class FileCache():
                 self.removeOld()
                 return True
             if self.cache[path].mtime != os.path.getmtime(path):
-                print(path)
-                print(self.cache[path].mtime)
+                pp(Colors.YELLOW, F"CHANGED: {path} - {self.cache[path].mtime}")
                 return True
         return False
 
@@ -96,10 +129,21 @@ class FileCache():
             return self.cache[path]
         is_merge_file = False
         ext = os.path.splitext(path)[1]
+        options = nobjict()
         if ext in [".css", ".js", ".scss", ".html"]:
+            if not os.path.exists(path):
+                pp(Colors.RED, F"CRITICAL ERROR FILE NOT FOUND: {path}")
+                sys.exit(1)
+                # return nobjict(mtime=0, is_merge_file=False, outpath=outpath, options=options)
             with open(path, 'r') as f:
-                is_merge_file = f.readline().startswith("#!#MERGE")
-        self.cache[path] = nobjict(mtime=os.path.getmtime(path), is_merge_file=is_merge_file, outpath=outpath)
+                line = f.readline().strip()
+                is_merge_file = line.startswith("#!#MERGE")
+                if is_merge_file and " " in line:
+                    for item in line.split(' ')[1:]:
+                        if ":" in item:
+                            k, v = item.split(':')
+                            options[k] = v
+        self.cache[path] = nobjict(mtime=os.path.getmtime(path), is_merge_file=is_merge_file, outpath=outpath, options=options)
         self.save()
         return self.cache[path]
 
@@ -107,7 +151,7 @@ class FileCache():
         remove = []
         for path in self.cache:
             if not os.path.exists(path):
-                print("removing: {}".format(path))
+                pp(Colors.RED, "- removing: {}".format(path))
                 remove.append((path, self.cache[path]))
         for path, info in remove:
             self.cache.pop(path)
@@ -154,7 +198,7 @@ class SwamFile():
         for path in self.children:
             child = SwamFile(path, self.static_folder, force=self.force)
             if child.hasChanged():
-                print("\t\t{}\t\thas changes".format(child.path))
+                pp(Colors.YELLOW, "\t\t{}\t\thas changes".format(child.path))
                 return True
         return False
 
@@ -180,7 +224,7 @@ class SwamFile():
         else:
             self.merge()
         self.on_close()
-        print("\t{}\tregenerated".format(self.output_path))
+        pp(Colors.BLUE, "\t{}\tregenerated".format(self.output_path))
         self.info = FILE_CACHE.getPath(self.path, self.output_path, update=True)
 
     def on_open(self):
@@ -215,20 +259,24 @@ class SwamFile():
 
     def mergeFile(self, path):
         sf = SwamFile(path, self.static_folder, force=self.force)
-        print("\tadding: {}".format(path))
+        pp(Colors.GREEN, "\tadding: {}".format(path))
         self.output.write(sf.readAll())
 
     def _addPath(self, path, f):
         if path in self.children:
             return
         
+        if path == self.path:
+            pp(Colors.RED, F"attempting to include parent path as child! {path}")
+            return
+          
         if "*" in path:
-            for spath in glob.glob(path):
+            for spath in glob.glob(path, recursive=True):
                 self._addPath(spath, f)
         elif os.path.exists(path):
             self.children.append(path)
         else:
-            print("not found: {}".format(path))
+            pp(Colors.RED, "not found: {}".format(path))
 
 
 class JSFile(SwamFile):
@@ -249,11 +297,24 @@ class JSFile(SwamFile):
 class MustacheFile(SwamFile):
     data = dict()
 
+    def on_open(self):
+        self.data = dict()
+        self.output = open(self.output_path, "w")
+
     def on_close(self):
+        self.output.write("window.template_cache = window.template_cache || {};\n")
+        # here we allow independent top level includes
+        if self.info.options:
+            if self.info.options.ignore_prefix:
+                prefix = self.info.options.ignore_prefix.split('.')
+                for key in prefix:
+                    if key in self.data:
+                        self.data = self.data[key]
         self.data["version"] = version
-        self.output.write("window.template_cache = ")
-        self.output.write(json.dumps(self.data, indent=2))
-        self.output.write(";")
+        for key in self.data:
+            self.output.write(F"window.template_cache['{key}'] = ")
+            self.output.write(json.dumps(self.data[key], indent=2))
+            self.output.write(";\n")
         self.output.close()
 
     def minify(self, value):
@@ -278,7 +339,6 @@ class MustacheFile(SwamFile):
 class SCSSFile(SwamFile):
     def mergeFile(self, path):
         sf = SCSSFile(path, self.static_folder, force=self.force)
-        print(path)
         self.raw_scss.write("/** {} */\n".format(path))
         lines = sf.readAll().split("\n")
         for line in lines:
@@ -301,9 +361,9 @@ class SCSSFile(SwamFile):
         except Exception as err:
             reason = str(err)
             if "Undefined variable" in reason:
-                print(reason)
+                pp(Colors.RED, reason)
             else:
-                print(reason)
+                pp(Colors.RED, reason)
                 key = "on line "
                 if key in reason:
                     pos = reason.find(key) + len(key)
@@ -312,7 +372,7 @@ class SCSSFile(SwamFile):
                     lno = int(lno)
                 lines = raw.split('\n')
                 subview = lines[max(lno-8, 0):lno+8]
-                print("\n".join(subview))
+                pp(Colors.RED, "\n".join(subview))
         self.output.close()
 
     @staticmethod
@@ -350,17 +410,17 @@ class SCSSFile(SwamFile):
                 elif i == '}':
                     open_brackets -= 1
                 if open_brackets < 0:
-                    print("="*80)
-                    print(name)
-                    print(lineno)
-                    print("ERROR unexpected closing bracket")
-                    print("="*80)
+                    pp(Colors.RED, "="*80)
+                    pp(Colors.RED, name)
+                    pp(Colors.RED, lineno)
+                    pp(Colors.RED, "ERROR unexpected closing bracket")
+                    pp(Colors.RED, "="*80)
         if open_brackets > 0:
-            print("="*80)
-            print(name)
-            print(lineno)
-            print("ERROR unexpected open brackets {} starting on {}".format(open_brackets, open_line))
-            print("="*80)
+            pp(Colors.RED, "="*80)
+            pp(Colors.RED, name)
+            pp(Colors.RED, lineno)
+            pp(Colors.RED, "ERROR unexpected open brackets {} starting on {}".format(open_brackets, open_line))
+            pp(Colors.RED, "="*80)
 
 
 class StaticFile(SwamFile):
@@ -409,15 +469,17 @@ def buildIncludes(FileClass, app_path, includes, output, static_paths, opts):
             fpath = os.path.join(app_path, ipath)
         else:
             fpath = fpath[1:]  # remove the leading path
+        if not os.path.exists(fpath):
+            pp(Colors.RED, F"WARNING...MISSING FILE: {fpath}")
+            continue
         js = FileClass(fpath, opts.output, force=opts.force, minify_flag=opts.minify)
         if opts.force or js.hasChanged():
             is_dirty = True
             js.compile()
-        print(static_paths)
-        print(ipath)
+        # print(static_paths)
         if static_paths and not ipath.startswith("/"):
             ipath = "/" + os.path.join(app_path, ipath)
-            print(ipath)
+            # print(ipath)
         output.append(ipath)
     return is_dirty
 
@@ -427,7 +489,7 @@ def buildApp(app_path, config, opts):
     js_includes = []
     css_includes = []
 
-    print(app_path)
+    pp(Colors.PINK, app_path)
     if config.js_files:
         if buildIncludes(JSFile, app_path, config.js_files, js_includes, config.static_paths, opts):
             is_dirty = True
@@ -566,6 +628,65 @@ class FileWatcher():
                 buildApps(self.opts)
                 time.sleep(1.0)
 
+DEFAULT_HTML = """
+<!doctype html>
+<html class="with-statusbar-overlay">
+
+<head>
+    <style>
+    body {
+        background-color: #424242;
+        color: white;
+        font-family: sans-serif;
+    }
+
+    li.swam-path {
+        color: #ff9800;
+        margin-top: 16px;
+    }
+
+    li.swam-app {
+        margin-top: 8px;
+    }
+
+    li.swam-app a {
+        color: #007aff;
+        text-decoration: none;
+        transition: font-size 500ms ease-in-out;
+    }
+
+    li.swam-app a:hover {
+        font-size: 25px;
+        
+    }
+
+    li {
+        font-size: 18px;
+    }
+
+    div.card {
+        width: 500px;
+        min-height: 60vh;
+        margin: 50px auto;
+        background: white;
+        color: black;
+        padding: 15px;
+        border-radius: 4px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1 style="margin: 0;">Web Apps:</h1>
+        <ul>
+            {{apps}}
+        </ul>
+    </div>
+</body>
+
+</html>
+"""
 
 def runHTTP(opts):
     import http.server
@@ -581,23 +702,57 @@ def runHTTP(opts):
                 time.sleep(0.5)
             for name in APP_PATHS:
                 app_path = name.replace("__", "/")
-                print(app_path)
                 path = urlparse(self.path).path
                 ext = os.path.splitext(path)[1]
                 # print(ext)
                 if path[1:].startswith(app_path):
-                    print(self.path)
                     if not ext:
                         self.path = os.path.join(APP_PATHS[name], 'index.html')
                     else:
                         self.path = "/apps" + self.path
                         # print(self.path)
+            full_path = os.path.join(opts.output, self.path)
+            if not os.path.exists(full_path) and not ext:
+                app_list = []
+                apps = {}
+                for name in APP_PATHS:
+                    names = name.split("__")
+                    a = apps
+                    for n in names:
+                        if n not in a:
+                            a[n] = dict()
+                        la = a
+                        a = a[n]
+                    la[n] = APP_PATHS[name][4:]
+
+                def _buildList(data):
+                    for k, v in data.items():
+                        if isinstance(v, dict):
+                            app_list.append(F"<li class='swam-path'>{k}</li>")
+                            app_list.append("<ul>")
+                            _buildList(v)
+                            app_list.append("</ul>")
+                        else:
+                            app_list.append("<li class='swam-app'><a href='")
+                            app_list.append(v)
+                            app_list.append("'>" + k.title() + "</a></li>\n")
+                _buildList(apps)
+                self.path = "index.html"
+                default_html = DEFAULT_HTML.replace("{{apps}}", "".join(app_list))
+                with open(os.path.join(opts.output, self.path), "w") as f:
+                    f.write(default_html)
             return super().do_GET()
 
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", opts.port), Handler) as httpd:
         print("serving at port", opts.port)
         httpd.serve_forever()
+
+
+def clearCache(opts):
+    import shutil
+    shutil.rmtree(opts.output)
+    FILE_CACHE.clear()
 
 
 def main(opts, args):
@@ -608,6 +763,9 @@ def main(opts, args):
     print(F"\tAbsolute Output: {opts.output}")
     if not opts.force and (opts.bump_rev or opts.bump_major or opts.bump_minor):
         return bumpVersion(opts.bump_major, opts.bump_minor, opts.bump_rev)
+    if opts.clear:
+        clearCache(opts)
+        sys.exit(1)
     FILE_CACHE.removeOld()
     buildApps(opts)
     watcher = FileWatcher(opts)

@@ -206,6 +206,13 @@ div.swam-form-input {
     }
 }
 
+div.swam-editselect {
+    ul.dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+}
+
 
 #image-editor {
 	.row {

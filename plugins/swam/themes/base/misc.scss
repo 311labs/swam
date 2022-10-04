@@ -1,5 +1,5 @@
+
 .highlight {
-    padding: 1rem;
     margin-bottom: 1rem;
     background-color: #f8f9fa;
     position: relative;
@@ -8,24 +8,6 @@
     }
 }
 
-.btn-clipboard {
-    position: absolute;
-    top: 0.65rem;
-    right: 0.65rem;
-    z-index: 10;
-    display: block;
-    padding: 0.25rem 0.5rem;
-    font-size: .65em;
-    color: #0d6efd;
-    background-color: #fff;
-    border: 1px solid;
-    border-radius: 0.25rem;
-
-    &:hover, &:focus {
-        color: #fff;
-        background-color: #0d6efd;
-    }
-}
 
 ul.nolist {
     list-style: none;
@@ -34,24 +16,7 @@ ul.nolist {
     padding: 0;
 }
 
-
-#app_body {
-    --bs-primary: $brand-primary;
-    --bs-secondary: $brand-other;
-    --bs-success: $brand-success;
-    --bs-info: $brand-info;
-    --bs-warning: $brand-warning;
-    --bs-danger: $brand-danger;
-    --bs-light: $brand-line;
-    --bs-success-rgb: 66,210,157;
-    --bs-info-rgb: 68,186,220;
-    --bs-warning-rgb: 249,188,13;
-    --bs-danger-rgb: 250,103,103;
-    --bs-light-rgb: 238,242,247;
-    --bs-dark-rgb: 71,77,86;
-    --bs-white-rgb: 255,255,255;
-    --bs-black-rgb: 0,0,0;
-
+body.app {
     button.btn-primary, a.btn-primary {
         background-color: $brand-primary;
         border-color: $brand-primary;
@@ -84,7 +49,31 @@ ul.nolist {
 
     button.btn-default, a.btn-default {
         background-color: $brand-default;
-        border-color: #6c757d;
+        border-color: $gray-100;
+        &:hover {
+            background-color: $gray-300;
+            color: $brand-primary;
+        }
+    }
+
+    button.btn-link, a.btn-link {
+        text-decoration: none;
+        &:focus, &:hover {
+            box-shadow: none;
+            // border-radius: 50%;
+            border-radius: 5px;
+            background-color: rgba(92, 152, 253, 0.14);
+        }
+    }
+
+    button {
+        &.btn-xs {
+            font-size: 0.775rem
+        }
+    }
+
+    button.btn-outline-secondary {
+        border-color: #ced4da;
     }
 
     
@@ -220,6 +209,173 @@ ul.nolist {
         }
     }
 
+}
+
+
+header.swam-topbar {
+
+    .navbar { 
+        padding: 0;
+    }
+
+    .navbar-brand {
+        padding: 0;
+    }
+
+    .avatar img {
+        border-radius: inherit;
+        width: 2.0rem
+    }
+
+    .avatar {
+        align-items: center;
+        border-radius: 0.375rem;
+        display: inline-flex;
+        font-size: 1rem;
+        font-weight: 600;
+        height: 2.875rem;
+        justify-content: center;
+        position: relative;
+        vertical-align: middle;
+        width: 2.875rem;
+        background: white;
+
+        p {
+            margin: 0;
+            padding: 5px;
+        }
+    }
+
+    .avatar-sm {
+        border-radius: 0.25rem;
+        font-size: .75rem;
+        height: 2.25rem;
+        width: 2.25rem;
+    }
+
+    .avatar-initials {
+        padding: 5px;
+    }
+}
+
+div#panel-left {
+    .text-color-brand {
+        color: $brand-primary;
+    }
+
+    hr {
+        margin: 0.6rem 0;
+    }
+
+    div#main_nav {
+        overflow-y: auto;
+    }
+    
+    div.main {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100vh;
+        height: -webkit-fill-available;
+        max-height: 100vh;
+        // overflow-x: auto;
+        // overflow-y: hidden;
+
+        div.sidebar-container {
+            width: 100%;
+        }
+
+        div.version {
+            font-size: 0.8rem;
+            text-align: center;
+            color: #858585;
+        }
+
+        ul.nav.nav-pills li a {
+            i {
+                padding-right: 0.4rem;
+                font-size: 1.1rem;
+            }
+            &:hover {
+                background: #cccccc;
+                color: #0d6efd;
+            }
+        }
+
+        ul.nav-submenu {
+            li a {
+                margin-left: 1rem;
+                font-size: 0.8rem;
+                i {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+
+        &.bg-dark {
+            background-color: $panel-left-background !important;
+
+            ul.nav.nav-pills li {
+                a, button {
+                    color: $panel-left-color;
+                }
+
+                a {
+                    &:hover {
+                        background: $panel-left-hover-bg;
+                        color: $panel-left-hover-color;
+                    }
+
+                    &:active {
+                        background-color: $panel-left-active-bg;
+                        color: $panel-left-active-color;
+                        font-weight: bold;
+                    }
+                }
+            } 
+        }
+    }
+}
+
+#app_body.panel-left-reveal {
+    div#panel-left {
+        z-index: 400;
+        box-shadow: 0 14px 28px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22)!important;
+    }
+}
+
+
+
+div.sidebar-container {
+    .nav-link-toggle {
+        position: relative;
+        &::after {
+          font-family: bootstrap-icons !important;
+          position: absolute;
+          right: 0.125rem;
+          top: 1.25rem;
+          width: 1.25em;
+          line-height: 0;
+          content: "\F284";
+          transition: transform .35s ease;
+          transform-origin: .5em 50%;
+        }
+
+        &[aria-expanded="true"] {
+          color: rgba(0, 0, 0, .85);
+        }
+        &[aria-expanded="true"]::after {
+          transform: rotate(-90deg);
+        }
+    }
+
+
+}
+
+div.sidebar-collapse {
+    .nav-link {
+        padding-left: 1.8rem;
+        font-size: 0.9rem;
+    }
 }
 
 

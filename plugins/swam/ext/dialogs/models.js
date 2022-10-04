@@ -1,28 +1,9 @@
 
 
-
 SWAM.Dialog.showModel = function(model, fields, options) {
-    var $container = $("<div />").addClass("model-fields row");
-
-    _.each(fields, function(obj){
-        if (_.isString(obj)) {
-            obj = {field:obj};
-        }
-        if (!obj.label) obj.label = obj.field;
-        if (!obj.field) obj.field = obj.label;
-        if (!obj.columns) obj.columns = 6;
-        var $fieldbox = $("<div />")
-            .addClass("col-sm-" + obj.columns)
-            .appendTo($container);
-        var $wrapper = $("<div />").addClass("model-field mb-3").appendTo($fieldbox);
-        $wrapper.append($("<div />").addClass("field-label h6 mb-1").text(obj.label));
-        var value = model.get(obj.field, obj.localize);
-        if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
-        $wrapper.append($("<div />").addClass("field-value").text(value));
-    });
 
     options = _.extend({
-        message: $container.wrap('<p/>').parent().html(),
+        view: SWAM.Views.ModelView.buildTable(model)
     }, options);
 
     var dlg = new this(options);
@@ -55,20 +36,27 @@ SWAM.Dialog.editModel = function(model, opts) {
 		var error = "editModel requires fields or model.EDIT_FORM";
 		SWAM.Dialog.warning(error);
 		opts.callback(model, {error:error});
+		return;
+	}
+
+	if (opts.extra_fields) {
+		opts.fields = _.clone(opts.fields).concat(opts.extra_fields);
 	}
 
 	var callback = opts.callback;
 	opts.callback = function(dlg, choice) {
 		if (choice == "save") {
 			app.showBusy({icon:"upload", timeout:4000, color:"warning", no_timeout_alert:false});
-			model.save(dlg.getData(), function(model, resp) {
+			var data = _.extend({}, opts.defaults, dlg.getData());
+			if (app.group && (data.group == undefined)) data.group = app.group.id;
+			model.save(data, function(model, resp) {
 				app.hideBusy();
 				if (resp.error) {
 					SWAM.Dialog.warning(resp.error);
 				} else {
 					dlg.dismiss();
 				}
-				callback(model, resp);
+				if (callback) callback(model, resp);
 			});
 		}
 	};

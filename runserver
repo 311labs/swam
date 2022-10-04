@@ -7,4 +7,10 @@ then
 fi
 
 
+if [ ! -e "./swam.py" ]; then
+    echo "initializing swamcore"
+    git submodule init
+    git submodule update
+fi
+
 ./swam.py -w -s

@@ -1,0 +1,55 @@
+<h1>SearchDown Component</h1>
+
+<div class="m-3" id="mysearchdown"></div>
+
+<p class="lead">
+    This component is used in replacement of a select/dropdown when trying to select an item from a large collection.  It make it easy to search for remote data. You can either search locally or remotely. In your parent just implement <span class="fw-bold">on_action_searchdown</span> to capture the change event!
+</p>
+
+
+<h4>Constructor Properties</h4>
+<ul>
+  <li><span class="fw-bold">all view properties</span> - <span class="text-muted">see view docs</span></li>
+  <li><span class="fw-bold">collection</span> - <span class="text-muted">the SWAM.Collection instance to use</span></li>
+  <li><span class="fw-bold">btn_classes</span> - <span class="text-muted">defines the look of the dropdown button</span></li>
+  <li><span class="fw-bold">search_field</span> - <span class="text-muted">the name of the field to search on (default: search)</span></li>
+  <li><span class="fw-bold">display_field</span> - <span class="text-muted">the name of the field to show in the list (default: name)</span></li>
+  <li><span class="fw-bold">empty_label</span> - <span class="text-muted">what to show when nothing is selected</span></li>
+  <li><span class="fw-bold">remote_search</span> - <span class="text-muted">enable remote queries for searching (default: false)</span></li>
+  <li><span class="fw-bold">auth_fetch</span> - <span class="text-muted">auto fetch the collection on first click (default: false)</span></li>
+  <li><span class="fw-bold">inline</span> - <span class="text-muted">an inline style for the dropdown</span></li>
+  <li><span class="fw-bold">on_top</span> - <span class="text-muted">a popover style for the dropdown</span></li>
+  <li><span class="fw-bold">List</span> - <span class="text-muted">optional List View Class</span></li>
+  <li><span class="fw-bold">ItemView</span> - <span class="text-muted">optional Item View Class</span></li>
+</ul>
+
+<h4>Functions</h4>
+<ul>
+  <li><span class="fw-bold">setActive(<span class='fw-normal'>model</span>)</span> - <span class="text-muted">set the selected model</span></li>
+  <li><span class="fw-bold">addChild(<span class='fw-normal'>el_sel, view</span>)</span> - <span class="text-muted"> adds a child view</span></li>
+</ul>
+
+
+<h4>Events/Actions</h4>
+<p>This component will fire "searchdown" action.  Thus it can be caught by implementing <span class="fw-bold">on_action_searchdown</span> in any parent class.</p>
+
+
+
+<div class="card mt-5">
+  <div class="border-bottom">
+   <h3 class="p-2">Examples</h3>
+  </div>
+  <div id="tabs">
+            <pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+        <span class="hljs-built_in">this</span>.collection = <span class="hljs-keyword">new</span> SWAM.Collection({
+              <span class="hljs-attr">debounce_time</span>: <span class="hljs-number">1000</span>,
+              <span class="hljs-attr">url</span>:<span class="hljs-string">"https://test.payauth.io/rpc/location/ips"</span>,
+              <span class="hljs-attr">size</span>:<span class="hljs-number">20</span>}),
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"mysearchdown"</span>, <span class="hljs-keyword">new</span> SWAM.Views.SearchDown({
+              <span class="hljs-attr">display_field</span>: <span class="hljs-string">"ip"</span>,
+              <span class="hljs-attr">search_field</span>: <span class="hljs-string">"search"</span>,
+              <span class="hljs-attr">remote_search</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">collection</span>: <span class="hljs-built_in">this</span>.collection, 
+              <span class="hljs-attr">title</span>:<span class="hljs-string">"Select Item"</span>}));</code></pre>
+  </div>
+</div>

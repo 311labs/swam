@@ -5,12 +5,13 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     defaults: {
+        auth_method: "jwt",
         auto_refresh_jwt: true
     },
 
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
-        this.setJWT(app.getObject("credentials", {}));
+        if (this.options.auth_method == "jwt") this.setJWT(app.getObject("credentials", {}));
         this.attributes = app.getObject("me", this.attributes);
         if (!_.isEmpty(this.credentials)) {
             SWAM.Rest.credentials = this.credentials;
@@ -31,10 +32,24 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             }
             return false;
         }
+        if (this.get("is_superuser")) return true;
         if ((perm == "staff")&&(this.isStaff())) return true;
         if (this.get("metadata.permissions." + perm)) return true;
         if (this.membership) return this.membership.hasPerm(perm);
         return false;
+    },
+
+    checkAuth: function(callback) {
+        // this method is safer when supporting multiple auth types
+        var auth_method = this.options.auth_method.upper();
+        if (auth_method == "JWT") {
+            return callback(this.isAuthenticated());
+        }
+
+        // all other types we just hit the server for now
+        this.fetch(function(model, resp) {
+            callback(resp.status);
+        });
     },
 
 
@@ -47,11 +62,19 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     isAuthenticated: function() {
+        return this["isAuthenticated" + this.options.auth_method.upper()]();
+    },
+
+    isAuthenticatedJWT: function() {
         if (_.isEmpty(this.credentials)) return false;
         if (this.credentials.kind == "JWT") {
             return this.authExpiresIn() > 0;
         }
     	return !_.isEmpty(this.credentials.token);
+    },
+
+    isAuthenticatedBASIC: function() {
+        return !this.isStale();
     },
 
     startAutoJwtRefresh: function() {
@@ -76,6 +99,21 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         }
     },
 
+    setBASIC: function(data) {
+        if (!_.isEmpty(data)) {
+            this.credentials.kind = "BASIC";
+            this.set(data);
+            if (data.id) this.id = data.id;
+            if (this.credentials.access) {
+                if (window.app) app.setProperty("credentials", this.credentials);
+                SWAM.Rest.credentials = this.credentials;
+            }
+            this.startAutoJwtRefresh();
+        } else {
+            this.credentials = {};
+        }   
+    },
+
     setJWT: function(data) {
         if (!_.isEmpty(data)) {
             this.credentials.kind = "JWT";
@@ -96,6 +134,14 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     login: function(username, password, callback, opts) {
+        this["login" + this.options.auth_method.upper()](username, password, callback, opts);
+    },  
+
+    logout: function() {
+        this["logout" + this.options.auth_method.upper()]();
+    },
+
+    loginJWT: function(username, password, callback, opts) {
         var data = {username:username, password:password};
         if (window.app && window.app.app_uuid) data.device_id = app.app_uuid;
         SWAM.Rest.POST("/rpc/account/jwt/login", data, function(response, status) {
@@ -108,12 +154,36 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         }.bind(this), opts);
     },
 
-    logout: function() {
+    logoutJWT: function() {
         this.stopAutoJwtRefresh();
         this.credentials = {};
         SWAM.Rest.credentials = null;
         app.setProperty("credentials", null);
         this.trigger("logged_out", this);
+    },
+
+    loginBASIC: function(username, password, callback, opts) {
+        var data = {username:username, password:password};
+        if (window.app && window.app.app_uuid) data.device_id = app.app_uuid;
+        SWAM.Rest.POST("/rpc/account/login", data, function(response, status) {
+            if (response.status) {
+                // credentials get stored in SWAM.Rest
+                this.setBASIC(response.data);
+                if (this.isAuthenticated()) this.trigger("logged_in", this);
+            }
+            if (callback) callback(this, response);
+        }.bind(this), opts);
+    },
+
+    logoutBASIC: function(callback, opts) {
+        SWAM.Rest.POST("/rpc/account/logout", {}, function(response, status) {
+            if (response.status) {
+                // credentials get stored in SWAM.Rest
+                this.attributes = {};
+                this.trigger("change", this);
+            }
+            if (callback) callback(this, response);
+        }.bind(this), opts);
     },
 
     authExpiresIn: function() {

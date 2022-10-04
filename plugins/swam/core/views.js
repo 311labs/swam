@@ -7,7 +7,8 @@ SWAM.View = SWAM.Object.extend({
     },
     _events: {
         "click [data-action]": "on_action_click",
-        "click [data-showpage]": "on_showpage_click"
+        "click [data-showpage]": "on_showpage_click",
+        "click [data-showurl]": "on_showurl_click"
     },
     hal_events: {},
     tagName: "div",
@@ -32,7 +33,9 @@ SWAM.View = SWAM.Object.extend({
         this.children = {};
         if (this.options.enable_swipe) this.enableTouch();
         this.vid = _.uniqueId("SWAMView");
+        if (!this.id && this.options.auto_id) this.id = this.vid;
         this.setElement(document.createElement(this.tagName));
+        if (this.options.parent) this.options.$parent = $(this.options.parent);
         if (this.options.$parent) {
             delete this.options.$parent;
             this.addToDOM(opts.$parent);
@@ -45,16 +48,31 @@ SWAM.View = SWAM.Object.extend({
     setParams: function(params) {
         this.params = params || {};
     },
+    scrollToAnchor: function(anchor) {
+        if (!anchor) return;
+        // var parent = window.getScrollParent(this.el);
+        var anchor_el = this.$el.find("#" + anchor);
+        if (anchor_el.length) {
+            $("html, body").animate({
+                scrollTop: anchor_el.offset().top - 60
+            });
+        }
+    },
     normalizeElSel: function(el_sel) {
         if (!el_sel.startsWith("#") && !el_sel.startsWith(".")) el_sel = "#" + el_sel;
         return el_sel;
     },
-    addChild: function(el_sel, view) {
+    addChild: function(el_sel, view, append) {
+        if (this.children[el_sel]) this.removeChild(el_sel);
         this.children[el_sel] = view;
         if (!el_sel.startsWith("#") && !el_sel.startsWith(".")) el_sel = "#" + el_sel;
         var $parent = this.$el.find(this.normalizeElSel(el_sel));
-        if (this.isInDOM() && $parent) {
-            view.addToDOM($parent);
+        if (this.isInDOM()) {
+            if ($parent.length) {
+                view.addToDOM($parent);
+            } else if (append) {
+                view.addToDOM(this.$el);
+            }
         }
     },
     removeChild: function(el_sel) {
@@ -62,6 +80,19 @@ SWAM.View = SWAM.Object.extend({
             this.$el.find(this.normalizeElSel(el_sel)).empty();
             delete this.children[el_sel];
         }
+        if (this.appended_children && this.appended_children[el_sel]) {
+            delete this.appended_children[el_sel];
+            this.$el.find(this.normalizeElSel(el_sel)).remove()
+        }
+    },
+    appendChild: function(el_sel, view) {
+        if (view == undefined) {
+            view = el_sel;
+            el_sel = view.vid;
+        }
+        if (!this.appended_children) this.appended_children = {};
+        this.appended_children[el_sel] = view;
+        this.addChild(el_sel, view, true);
     },
     getChild: function(el_sel) {
         return this.children[el_sel];
@@ -88,6 +119,10 @@ SWAM.View = SWAM.Object.extend({
         }
         if (this.$el) this.$el.attr("class", this.classes);
     },
+    hasClass: function(name) {
+        var lst = this.classes.split(' ');
+        return lst.has(name);
+    },
     updateAttributes: function() {
         if (this.options.classes) this.classes = this.options.classes;
         var attrs = {};
@@ -104,6 +139,10 @@ SWAM.View = SWAM.Object.extend({
     },
     addToDOM: function($el) {
         if (this.$parent) this.removeFromDOM();
+        if (!$el) {
+            console.warn("cannot add to empty null parent");
+            return;
+        }
         this.$parent = $el;
         this.on_dom_adding();
         if (this.options.replaces_el) {
@@ -135,10 +174,12 @@ SWAM.View = SWAM.Object.extend({
     renderChildren: function(empty_parent) {
         if (!this.children) return;
         _.each(this.children, function(view, el_sel) {
-            var $parent = this.$el.find(this.normalizeElSel(el_sel));
-            if ($parent) {
+            var $parent = this.$el.find(this.normalizeElSel(el_sel)).first();
+            if ($parent.length) {
                 if (empty_parent) $parent.empty();
                 view.addToDOM($parent);
+            } else if (this.appended_children && this.appended_children[el_sel]) {
+                view.addToDOM(this.$el);
             }
         }.bind(this));
     },
@@ -202,14 +243,23 @@ SWAM.View = SWAM.Object.extend({
         var $el = $(evt.currentTarget);
         var page_name = $el.data("showpage");
         var params = $el.data("params");
+        var anchor = $el.data("anchor");
         if (params && params.startsWith("?")) params = {url_params:window.decodeSearchParams(params)};
         if (!page_name) return;
         var func_name = "on_showpage_" + page_name;
         if (_.isFunction(this[func_name])) {
-            this[func_name](evt, params);
+            this[func_name](evt, params, anchor);
         } else {
-            app.setActivePage(page_name, params);
+            app.setActivePage(page_name, params, anchor);
         }
+        return false;
+    },
+
+    on_showurl_click: function(evt) {
+        evt.stopPropagation();
+        var $el = $(evt.currentTarget);
+        var url = $el.data("showurl");
+        window.open(url, "_blank");
         return false;
     },
 
@@ -231,6 +281,18 @@ SWAM.View = SWAM.Object.extend({
         var elemBottom = elemTop + this.$el.height();
 
         return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) &&  (elemTop >= docViewTop) );
+    },
+
+    html: function() {
+        return this.$el.outerHTML;
+    },
+
+    empty: function() {
+        this.$el.html();
+        _.each(this.appended_children, function(obj, key){
+            if (this.children[key]) delete this.children[key];
+        }.bind(this));
+        this.appended_children = {};
     },
 
     on_dom_adding: function() {},

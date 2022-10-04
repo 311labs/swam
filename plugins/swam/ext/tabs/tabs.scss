@@ -1,10 +1,10 @@
 body.app {
-	div.swam-tabs-view {
-        background-color: white;
-        border-radius:0.3rem;
-        box-shadow: 0 0 1px rgba(0,0,0,0.1),  0 1px 3px rgba(0,0,0,0.2);
-        padding: 1rem;
-	}
+	// div.swam-tabs-view {
+ //        background-color: white;
+ //        border-radius:0.3rem;
+ //        box-shadow: 0 0 1px rgba(0,0,0,0.1),  0 1px 3px rgba(0,0,0,0.2);
+ //        padding: 1rem;
+	// }
 
 	div.tabs-container {
 	    #tab_dropdown {
@@ -13,7 +13,9 @@ body.app {
 	            text-align: left;
 	            font-size: 18px;
 	            border-bottom: 2px solid $blue;
-	            width: 100%;
+	            border-radius: 0;
+	            min-width: 80px;
+	            text-align: center;
 	        }
 	    }
 

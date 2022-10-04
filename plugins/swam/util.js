@@ -45,6 +45,9 @@ window.debounce = function (func, context, threshold, execAsap) {
     };
 };
 
+window.deleteCookie = function(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+};
 
 // BEGIN STRING EXT
 
@@ -62,11 +65,15 @@ Storage.prototype.getObject = function(key) {
 
 
 if (window._) {
+    window._.isJQuery = function(object) {
+        return (object instanceof jQuery);
+    }
+
     window._.deepClone = function(object) {
         var clone = _.clone(object);
 
         _.each(clone, function(value, key) {
-          if (_.isObject(value) && !_.isFunction(value)) {
+          if (_.isObject(value) && !_.isFunction(value) && !_.isJQuery(value)) {
             clone[key] = _.deepClone(value);
           }
         });
@@ -141,6 +148,10 @@ window.syntaxHighlight = function(json) {
 
 window.parseJWT = function(token) {
     var base64Url = token.split('.')[1];
+    return window.b64ToDict(base64Url);
+};
+
+window.b64ToDict = function(base64Url) {
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -174,6 +185,20 @@ window.findNestedValue = function(obj, key, default_value) {
     return default_value;
 };
 
+window.parseJWT = function(token) {
+    var base64Url = token.split('.')[1];
+    return window.b64ToDict(base64Url);
+};
+
+window.b64ToDict = function(base64Url) {
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
 window.getNestedValue = function(obj, key, default_valued) {
     var sub = key.split('.');
     var ret = obj;
@@ -198,14 +223,50 @@ window.isDict = function(obj) {
     return (_.isObject(obj) && obj && (obj["__super__"] == undefined));
 };
 
+if (window._) window._.isDict = window.isDict;
+
 window.decodeSearchParams = function(url) {
+    if ((url.indexOf('?') < 0)||(url.endsWith("?"))) return {};
     var qs = url.substring(url.indexOf('?') + 1).split('&');
     for(var i = 0, result = {}; i < qs.length; i++){
         qs[i] = qs[i].split('=');
         var dv = decodeURIComponent(qs[i][1]);
         if (dv[dv.length-1] == "#") dv = dv.substring(0, dv.length-1);
-        result[qs[i][0]] = dv;
+        var k = qs[i][0];
+        if (k) result[k] = dv;
     }
     return result;
+};
+
+window.encodeSearchParams = function(url, params) {
+    return url + "?" + $.param(params);
 }
 
+window.randomColor = function() {
+    return "#" + Math.floor(Math.random()*16777215).toString(16);
+};
+
+window.isNumeric = function(value) {
+    if ((value == null)||(value == undefined)) return false;
+    if (_.isFunction(value.isNumber)) return value.isNumber();
+    return false;
+}
+
+window.getScrollParent = function(element, includeHidden) {
+    var style = getComputedStyle(element);
+    var excludeStaticParent = style.position === "absolute";
+    var overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
+
+    if (style.position === "fixed") return document.body;
+    for (var parent = element; (parent = parent.parentElement);) {
+        style = getComputedStyle(parent);
+        if (excludeStaticParent && style.position === "static") {
+            continue;
+        }
+        if (overflowRegex.test(style.overflow + style.overflowY + style.overflowX)) return parent;
+    }
+
+    return document.body;
+}
+
+if (window._) window._.isNumeric = window.isNumeric;

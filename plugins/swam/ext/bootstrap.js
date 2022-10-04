@@ -41,8 +41,6 @@ SWAM.Ext.BS = {
 	},
 
 	on_clipboard_success: function(evt) {
-		console.log("success");
-		console.log(evt);
 		evt.trigger.setAttribute("data-bs-original-title", "Copied!");
 		var tooltip = bootstrap.Tooltip.getInstance(evt.trigger);
 		if (tooltip) tooltip.show();

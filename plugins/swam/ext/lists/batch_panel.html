@@ -1,0 +1,21 @@
+<div class="row g-0">
+	<div class="col-auto">
+		<div id="select_count" class="rounded-start">
+			{{options.list.selected.length}}
+		</div>
+	</div>
+	<div class="col">
+		<div class="ps-2 batch-select-title">{{options.list.options.batch_select_label}}</div>
+	</div>
+	<div class="col">
+		<div class="batch-select-actions d-flex justify-content-end">
+			{{#getActions}}
+			<div class="batch-select-action text-center {{#.is_last}}rounded-rend{{/.is_last}}" data-action="{{.action}}">
+				<div class="batch-action-icon fs-3">{{{ICON(.icon)}}}</div>
+				<div class="batch-action-title fs-8">{{.label}}</div>
+			</div>
+			{{/getActions}}
+		</div>
+	</div>
+</div>
+

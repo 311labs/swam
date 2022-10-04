@@ -1,0 +1,84 @@
+<h1>Loading/Busy Animation</h1>
+
+<p class="lead">
+    It is critical to inform the user when data is loading or the app is busy.  This is made easy by the following helper methods.
+</p>
+
+<div class="card mt-5">
+  <div class="card-header">
+    <h4>Busy Overlay</h4>
+  </div>
+  <div class="card-body">
+
+
+<div class="row">
+  <div class="col-5">
+        <p class="card-text fw-bold">Show busy overlay quickly and easily.</p>
+        <button class="btn btn-primary" data-action="app_busy">Show App Busy</button>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <h5>Code</h5>
+      </div>
+      <div class="card-body">
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+SWAM.Dialog.showLoading();
+</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-5">
+        <p class="card-text fw-bold">Show inline busy over a component.</p>
+        <button class="btn btn-primary" data-action="inline_busy">Show Inline Busy</button>
+  </div>
+  <div class="col">
+    <div class="card" id="test_busy">
+      <div class="card-header">
+        <h5>Code</h5>
+      </div>
+      <div class="card-body">
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">SWAM.Dialog.showLoading({
+    <span class="hljs-attr">parent</span>:<span class="hljs-built_in">this</span>.$el.find(<span class="hljs-string">"#test_busy"</span>)
+});</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<hr>
+
+<div class="row">
+  <div class="col-5">
+        <p class="card-text fw-bold">Provide icons for more context.</p>
+        {{#busy_examples}}
+        <a href="#" class="btn btn-primary m-2" data-action="busy" data-kind="{{.}}">{{{.|icon}}}</a>
+        {{/busy_examples}}
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <h5>Code</h5>
+      </div>
+      <div class="card-body">
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">app.showBusy({
+  <span class="hljs-attr">icon</span>:kind,
+  <span class="hljs-attr">color</span>:color,
+  <span class="hljs-attr">timeout</span>:<span class="hljs-number">4000</span>,
+  <span class="hljs-attr">no_timeout_alert</span>:<span class="hljs-literal">true</span>
+});</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </div>
+</div>

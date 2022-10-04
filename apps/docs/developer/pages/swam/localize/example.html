@@ -1,0 +1,10 @@
+<h1>{{title|lower}}</h1>
+<p>created {{created|date}}</p>
+<p>enabled is {{{enabled|yesno_icon}}}</p>
+<p>my balance is {{balance|currency}}</p>
+<p>my phone number is {{metadata.phone|phone}}</p>
+<p>my number({{mynumber}}) + 5 * 2 is {{mynumber|add(5)|multiply(2)}}</p>
+<p>my number({{mynumber}}) + metadata.age({{metadata.age}}) * 2 is {{mynumber|add(metadata.age)|multiply(2)}}</p>
+<div>
+	{{{metadata|table}}}
+</div>

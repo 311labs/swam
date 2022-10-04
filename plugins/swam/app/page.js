@@ -8,6 +8,14 @@ SWAM.Page = SWAM.View.extend({
 		app.setActivePage(this.page_name, {url_params:app.getSearchParams()});
 	},
 
+	on_page_enter: function() {
+
+	},
+
+	on_page_exit: function() {
+
+	},
+
 	isActivePage: function() {
 		return app.active_page == this;
 	},
@@ -53,7 +61,7 @@ SWAM.Page = SWAM.View.extend({
 		        best_route = best_route.replace(":" + p, v);
 		    });
 		}
-		if (window.isDict(params.url_params)) {
+		if (window.isDict(params.url_params) && (!_.isEmpty(params.url_params))) {
 			best_route += "?" + $.param(params.url_params);
 		}
 		return best_route;

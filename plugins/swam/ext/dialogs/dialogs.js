@@ -3,12 +3,14 @@ SWAM.Dialogs = {};
 
 SWAM.Dialog = SWAM.View.extend({
     classes: "modal fade",
-    template: "plugins.swam.ext.dialogs.base",
+    template: "swam.ext.dialogs.base",
     data_attrs: {"action":"bg_close"},
     defaults: {
+        scrollable: false,
         can_dismiss: false,
         show_close: true,
         replaces_el: false,
+        stack: true,
         size: null, // null=normal, sm, lg, xl
     },
     events: {
@@ -22,6 +24,16 @@ SWAM.Dialog = SWAM.View.extend({
         "lg": "lg",
         "sm": "sm",
         "xl": "xl",
+    },
+    // vertical sizes are fixed sizes to keep dialogs from jumping around during content changes
+    dialog_vsizes: {
+        "medium": "vmd",
+        "small": "vsm",
+        "large": "vlg",
+        "lg": "vlg",
+        "md": "vmd",
+        "sm": "vsm",
+        "xl": "vlg",
     },
     on_dlg_click: function(evt) {
         if ($(evt.target).hasClass("modal")) {
@@ -45,7 +57,7 @@ SWAM.Dialog = SWAM.View.extend({
         if (!this.options.stack && SWAM.active_dialog) {
             SWAM.active_dialog.dismiss();
         } else if (this.options.stack) {
-            SWAM.prev_dialog = SWAM.active_dialog;
+            this.prev_dialog = SWAM.active_dialog;
         }
         SWAM.active_dialog = this;
         if (this.options.json) {
@@ -53,14 +65,17 @@ SWAM.Dialog = SWAM.View.extend({
         } else if (this.options.xml) {
             this.options.pre = SWAM.Localize.prettyxml(this.options.xml);
         }
+        if (this.options.view) {
+            this.addChild("dlg_view", this.options.view);
+        }
         this.addToDOM($("body"));
         this.$el.show();
     },
     dismiss: function() {
         this.$el.removeClass("show").find(".show").removeClass("show");
         window.sleep(300).then(function(){
-            SWAM.active_dialog = SWAM.prev_dialog;
-            SWAM.prev_dialog = null;
+            SWAM.active_dialog = this.prev_dialog;
+            this.prev_dialog = null;
             this.removeFromDOM();
         }.bind(this));
 
@@ -83,6 +98,8 @@ SWAM.Dialog = SWAM.View.extend({
     },
     on_post_render: function() {
         if (this.options.size) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_sizes[this.options.size]);
+        if (this.options.vsize) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_vsizes[this.options.vsize]);
+        if (this.options.scrollable) this.$el.find(".modal-dialog").addClass("modal-dialog-scrollable");
         window.sleep(500).then(function(){
             if (this.$el.find(".offcanvas").length) {
                 this.$el.find(".offcanvas").addClass("show");
@@ -94,11 +111,14 @@ SWAM.Dialog = SWAM.View.extend({
     },
     getData: function(evt) {
         if (!_.isEmpty(this.children)) {
-            var form = this.children[".modal-body"];
+            var form = this.children["dlg_view"];
             if (form && form.getData) return form.getData();
         }
         return SWAM.Form.getData(this.$el.find("form"));
     },
+    getFormData: function() {
+        return this.getData();
+    }
 },{
     globals: {
         btn_primary: "btn btn-link",
@@ -129,24 +149,27 @@ SWAM.Dialog = SWAM.View.extend({
         return dlg;
     },
     yesno: function(opts) {
-        opts = _.extend({template:"plugins.swam.ext.dialogs.yesno"}, opts);
+        opts = _.extend({}, opts);
         opts.lbl_no = opts.lbl_no || "no";
         opts.lbl_yes = opts.lbl_yes || "yes";
         opts.buttons = [
             {
-                id: opts.lbl_no,
+                id: opts.lbl_no.lower(),
                 action:"choice",
                 label:opts.lbl_no,
                 classes: SWAM.Dialog.prototype.defaults.btn_secondary
             },
             {
-                id: opts.lbl_yes,
+                id: opts.lbl_yes.lower(),
                 action:"choice",
                 label:opts.lbl_yes,
                 classes: SWAM.Dialog.prototype.defaults.btn_primary
             }
         ];
         return this.alert(opts);
+    },
+    confirm: function(opts) {
+        return this.yesno(opts);
     },
     choices: function(opts) {
         var norm_choices = [];
@@ -174,28 +197,34 @@ SWAM.Dialog = SWAM.View.extend({
     showLoading: function(opts) {
         if (opts.icon) {
             if (!opts.icon.startsWith("<")) {
-                opts.icon = SWAM.Icons[opts.icon];
+                opts.icon = SWAM.Icons.getIcon(opts.icon);
             }
         }
-        opts = _.extend({template:"plugins.swam.ext.dialogs.loader", color:"warning", stack:true}, opts);
+        opts = _.extend({template:"swam.ext.dialogs.loader", color:"warning", stack:true}, opts);
+        if (opts.parent) {
+            opts.template = "swam.ext.dialogs.inline_loader";
+            opts.classes = "swam-view inline-modal";
+            var dlg = new SWAM.View(opts);
+            dlg.addToDOM(opts.parent);
+            return dlg;
+        }
         var dlg = new this(opts);
         dlg.show();
         return dlg;
     },
     showView: function(view, opts) {
         var defaults = {
-            title: "View",
+            title: null,
             buttons: [
                 {
                     action:"close",
-                    label:"Cancel"
+                    label:"Close"
                 }
             ],
             view: view
         };
         opts = _.extend(defaults, opts);
         var dlg = new this(opts);
-        dlg.addChild(".modal-body", view);
         dlg.show();
         return dlg;
     },
@@ -225,13 +254,14 @@ SWAM.Dialog = SWAM.View.extend({
         var dlg = new this(opts);
         dlg.addChild(".modal-body", view);
         dlg.show();
+        dlg.options.view = view;
         return dlg;
     },
     offcanvas: function(opts) {
         var defaults = {
             can_dismiss: true,
             stack: true,
-            template: "plugins.swam.ext.dialogs.offcanvas",
+            template: "swam.ext.dialogs.offcanvas",
             direction: "start",
             buttons: [
                 {
@@ -253,6 +283,15 @@ SWAM.Dialog = SWAM.View.extend({
         dlg.show();
         return dlg;
     },
+
+    dismissAll: function() {
+        var dlg = SWAM.active_dialog;
+        while (dlg) {
+            dlg.removeFromDOM();
+            dlg = dlg.prev_dialog;
+        }
+        SWAM.active_dialog = null;
+    }
 
 });
 

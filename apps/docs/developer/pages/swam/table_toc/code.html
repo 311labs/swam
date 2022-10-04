@@ -1,0 +1,122 @@
+<div class="card m-1">
+  <div class="card-body">
+
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+
+PORTAL.Views.ExampleTableTOCView = SWAM.View.extend(SWAM.Ext.BS).extend({
+    <span class="hljs-attr">template</span>: <span class="hljs-string">".pages.swam.table_toc.table_toc_view"</span>,
+
+});
+
+
+PORTAL.Pages.ExampleTableTOC = SWAM.Page.extend({
+    <span class="hljs-attr">classes</span>: <span class="hljs-string">"page-view page-padded has-topbar page-fullscreen"</span>,
+
+    <span class="hljs-attr">defaults</span>: {
+        <span class="hljs-attr">title</span>: <span class="hljs-string">"SWAM TOC"</span>,
+        <span class="hljs-attr">filter_bar_filters</span>: [
+            {
+                <span class="hljs-attr">columns_classes</span>: <span class="hljs-string">"col"</span>,
+                <span class="hljs-attr">size</span>: <span class="hljs-string">"sm"</span>,
+                <span class="hljs-string">"name"</span>: <span class="hljs-string">"modified"</span>,
+                <span class="hljs-string">"placeholder"</span>: <span class="hljs-string">"Pick Date Range"</span>,
+                <span class="hljs-string">"columns"</span>: <span class="hljs-number">8</span>,
+                <span class="hljs-string">"type"</span>: <span class="hljs-string">"daterange"</span>
+            },
+            {
+                <span class="hljs-attr">name</span>: <span class="hljs-string">"country"</span>,
+                <span class="hljs-attr">columns</span>: <span class="hljs-number">12</span>,
+                <span class="hljs-attr">columns_classes</span>: <span class="hljs-string">"col"</span>,
+                <span class="hljs-attr">size</span>: <span class="hljs-string">"sm"</span>,
+                <span class="hljs-attr">type</span>: <span class="hljs-string">"select"</span>,
+                <span class="hljs-attr">options</span>: [{<span class="hljs-attr">label</span>:<span class="hljs-string">"All"</span>, <span class="hljs-attr">value</span>:<span class="hljs-string">""</span>}, <span class="hljs-string">"United States"</span>, <span class="hljs-string">"Spain"</span>, <span class="hljs-string">"Russia"</span>, <span class="hljs-string">"China"</span>, <span class="hljs-string">"France"</span>]
+            },
+            {
+                <span class="hljs-attr">name</span>: <span class="hljs-string">"search"</span>,
+                <span class="hljs-attr">columns</span>: <span class="hljs-number">12</span>,
+                <span class="hljs-attr">columns_classes</span>: <span class="hljs-string">"col"</span>,
+                <span class="hljs-attr">size</span>: <span class="hljs-string">"sm"</span>,
+                <span class="hljs-attr">form_wrap</span>: <span class="hljs-string">"search"</span>,
+                <span class="hljs-attr">placeholder</span>: <span class="hljs-string">"search"</span>,
+                <span class="hljs-attr">button</span>: {
+                    <span class="hljs-attr">icon</span>: <span class="hljs-string">"bi bi-search"</span>
+                }
+            },
+        ],
+
+        <span class="hljs-attr">action_bar_filters</span>: [
+            {
+                <span class="hljs-attr">columns</span>: <span class="hljs-number">12</span>,
+                <span class="hljs-attr">columns_classes</span>: <span class="hljs-string">"col-auto"</span>,
+                <span class="hljs-attr">type</span>: <span class="hljs-string">"buttongroup"</span>,
+                <span class="hljs-attr">buttons</span>: [
+                    {
+                        <span class="hljs-attr">classes</span>: <span class="hljs-string">"btn btn-secondary swam-toc-hide"</span>,
+                        <span class="hljs-attr">icon</span>: <span class="hljs-string">"bi bi-code-slash"</span>,
+                        <span class="hljs-attr">action</span>: <span class="hljs-string">"show_code"</span>
+                    },
+                    {
+                        <span class="hljs-attr">classes</span>: <span class="hljs-string">"btn btn-secondary"</span>,
+                        <span class="hljs-attr">icon</span>: <span class="hljs-string">"bi bi-arrow-repeat"</span>,
+                        <span class="hljs-attr">action</span>: <span class="hljs-string">"reload"</span>
+                    },
+                    {
+                        <span class="hljs-attr">type</span>: <span class="hljs-string">"dropdown"</span>,
+                        <span class="hljs-attr">icon</span>: <span class="hljs-string">"bi bi-download"</span>,
+                        <span class="hljs-attr">items</span>: [
+                            {
+                                <span class="hljs-attr">icon</span>: <span class="hljs-string">"bi bi-filetype-csv"</span>,
+                                <span class="hljs-attr">label</span>: <span class="hljs-string">"Download CSV"</span>,
+                                <span class="hljs-attr">action</span>: <span class="hljs-string">"download_csv"</span>
+                            },
+                            {
+                                <span class="hljs-attr">icon</span>: <span class="hljs-string">"bi bi-filetype-json"</span>,
+                                <span class="hljs-attr">label</span>: <span class="hljs-string">"Download JSON"</span>,
+                                <span class="hljs-attr">action</span>: <span class="hljs-string">"download_json"</span>
+                            },
+                        ]
+                    }
+
+                ]
+            },
+        ]
+    },
+
+    <span class="hljs-attr">on_init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.collection = <span class="hljs-keyword">new</span> SWAM.Collection({<span class="hljs-attr">url</span>:<span class="hljs-string">"https://test.payauth.io/rpc/location/ips"</span>, <span class="hljs-attr">size</span>:<span class="hljs-number">50</span>}),
+        <span class="hljs-built_in">this</span>.appendChild(<span class="hljs-string">"table_toc"</span>, <span class="hljs-keyword">new</span> SWAM.View.TableTOC({
+            <span class="hljs-attr">title</span>: <span class="hljs-built_in">this</span>.options.title,
+            <span class="hljs-attr">filter_bar_filters</span>: <span class="hljs-built_in">this</span>.options.filter_bar_filters,
+            <span class="hljs-attr">action_bar_filters</span>: <span class="hljs-built_in">this</span>.options.action_bar_filters,
+            <span class="hljs-attr">view</span>: <span class="hljs-keyword">new</span> PORTAL.Views.ExampleTableTOCView(),
+            <span class="hljs-attr">table_options</span>: {
+                <span class="hljs-attr">collection</span>: <span class="hljs-built_in">this</span>.collection,
+                <span class="hljs-attr">pagination</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">batch_select</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">columns</span>: [
+                    {<span class="hljs-attr">field</span>:<span class="hljs-string">"ip"</span>},
+                    {<span class="hljs-attr">field</span>: <span class="hljs-string">"country"</span>},
+                    {<span class="hljs-attr">field</span>: <span class="hljs-string">"state"</span>, <span class="hljs-attr">classes</span>: <span class="hljs-string">"swam-toc-hide"</span>},
+                    {<span class="hljs-attr">field</span>: <span class="hljs-string">"isp"</span>, <span class="hljs-attr">classes</span>: <span class="hljs-string">"swam-toc-hide"</span>}
+                ]
+            }
+        }));
+    },
+    
+    <span class="hljs-attr">on_page_enter</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.collection.fetch();
+    },
+
+    <span class="hljs-attr">on_action_show_code</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        SWAM.Dialog.showView(<span class="hljs-keyword">new</span> SWAM.View({<span class="hljs-attr">template</span>:<span class="hljs-string">".pages.swam.table_toc.code"</span>}), {<span class="hljs-attr">title</span>:<span class="hljs-string">"Table TOC Code"</span>});
+    }
+});
+
+
+
+</code></pre>
+
+  </div>
+</div>
+
+

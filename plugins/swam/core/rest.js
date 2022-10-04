@@ -31,9 +31,67 @@ SWAM.Rest = {
         return SWAM.Rest.makeRequest("PUT", url, data, callback, opts);
     },
 
+    DOWNLOAD: function(url, params, callback, opts) {
+        opts = _.extend({filename:"download.csv"}, opts);
+
+        if (!url.startsWith("http")) {
+            if (window.app && window.app.options.api_url) {
+                url = window.app.options.api_url + url;
+            } else if (window.api_url) {
+                url = window.api_url + url;
+            }
+        }
+
+        if (params) {
+            url = encodeSearchParams(url, params);
+        }
+
+        var request = new XMLHttpRequest();
+        request.responseType = "blob";
+        request.open("get", url, true);
+
+        if (SWAM.Rest.credentials && !opts.no_auth) {
+            if (SWAM.Rest.credentials.kind == "JWT") {
+                // TODO check expires field of JWT
+                if (!request.headers) request.headers = {};
+                request.setRequestHeader('Authorization',  "Bearer " + SWAM.Rest.credentials.access);
+            } else if (SWAM.Rest.credentials.kind == "authtoken") {
+                request.setRequestHeader('Authorization', "authtoken " + SWAM.Rest.credentials.token);
+            }
+        }
+
+        request.send();
+
+        request.onreadystatechange = function() {
+            if ((this.readyState == 4) && (this.status == 200)) {
+                const objURL = window.URL.createObjectURL(this.response);
+                const anchor = document.createElement("a");
+                anchor.href = objURL;
+                anchor.download = opts.filename;
+                document.body.appendChild(anchor);
+                anchor.click();
+                setTimeout(function(){
+                    // lets remove the anchor from DOM
+                    anchor.remove();
+                }, 5000);
+                if (callback) callback(true, this.status);
+            } else if (this.readstate == 4) {
+                if (callback) callback(false, this.status);
+            }
+        };
+
+
+    },
+
     makeRequest: function(method, url, data, callback, opts) {
-        opts = opts || {};
-        var request = _.extend({"method":method}, SWAM.Rest.defaults, opts.request_options);
+        opts = _.extend({}, opts);
+        var request = _.extend({
+            "method":method,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            }
+        }, SWAM.Rest.defaults, opts.request_options);
         if (opts.params) {
             data = _.extend({}, opts.params, data);
         }
@@ -45,6 +103,13 @@ SWAM.Rest = {
             }
             
         }
+
+        // if (opts.no_cache) {
+        //     request.headers = request.headers || {};
+        //     request.headers['X-No-Cache'] = (Math.random() + "").slice(2, 100) + Date.now();
+        //     request.headers['Cache-Control'] = 'no-cache';
+        //     request.headers.Pragma = 'no-cache';
+        // }
 
         if (SWAM.Rest.credentials && !opts.no_auth) {
             if (SWAM.Rest.credentials.kind == "JWT") {

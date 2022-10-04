@@ -4,6 +4,7 @@ SWAM.Models = SWAM.Models || {};
 SWAM.Model = SWAM.Object.extend({
     defaults: {
         url:"",
+        id: null,
         stale_after_ms: 60000, // default 60s stale
     },
     attributes: {},
@@ -14,6 +15,7 @@ SWAM.Model = SWAM.Object.extend({
     initialize: function(attributes, opts) {
         this.id = null;
         this.init_options(opts);
+        this.id = this.options.id;
         this.params = _.extend({}, this.params, this.options.params);
         this.set(attributes);
         this.on_init();
@@ -22,6 +24,11 @@ SWAM.Model = SWAM.Object.extend({
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
         
+    },
+
+    clear: function() {
+        this.attributes = {};
+        this.trigger("change", this);
     },
 
     set: function(key, value) {
@@ -128,9 +135,14 @@ SWAM.Model = SWAM.Object.extend({
         }
     },
 
+    dataAge: function() {
+        // returns the age of the data (ie last fetched)
+        return (Date.now() - this.last_fetched_at);
+    },
+
     isStale: function() {
         if (!this.last_fetched_at) return true;
-        return (Date.now() - this.last_fetched_at) > this.options.stale_after_ms;
+        return (this.dataAge() > this.options.stale_after_ms);
     },
 
     abort: function() {
@@ -152,6 +164,7 @@ SWAM.Model = SWAM.Object.extend({
                 return;
             }
         }
+        this.trigger("fetch:started", this);
         this._request = SWAM.Rest.GET(this.getUrl(), this.params, function(response, status) {
             this._request = null;
             this._on_fetched(response, status);
@@ -209,6 +222,7 @@ SWAM.Model = SWAM.Object.extend({
             url = this.options.url();
         }
         if (this.options.no_url_id || !this.id) return url;
+        if (url.endsWith("/")) return url + this.id;
         return url + "/" + this.id;
     },
 

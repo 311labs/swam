@@ -1,0 +1,10 @@
+<input class="form-control form-control-text input-text" id="hidden_input" type="text" name="{{options.name}}" value="{{options.value}}">
+<ul class="dropdown-menu dropdown-menu-start shadow">
+   {{#options.menu_items}}   
+   <li>
+      <a href="#" class="dropdown-item" data-action="es_selected" data-id="{{.value}}">
+         {{#.icon}}{{{ICON(.icon)}}}{{/.icon}} {{.label}}
+      </a>
+   </li>
+   {{/options.menu_items}}  
+</div>

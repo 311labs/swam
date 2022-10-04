@@ -1,0 +1,14 @@
+<div class="dropdown">
+   <button class="{{options.btn_classes}} dropdown-toggle" type="button" id="searchdown" data-bs-auto-close="true" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false" data-bs-offset="0,0,0">
+     {{{active_label}}}
+   </button>
+   <div class="dropdown-menu dropdown-menu-start shadow" style="min-width: 200px">
+      <input class="form-control form-control-sm" name="search" id="search" type="text" placeholder="{{options.placeholder}}" autocomplete="off">
+      <button type="button" class="btn-close btn-xs p-2" data-action="close"></button>
+      <div id="searchdown-list"></div>
+   </div>
+   {{#options.input_name}}
+   <input id="hidden_input" type="hidden" name="{{options.input_name}}">
+   {{/options.input_name}}
+</div>
+

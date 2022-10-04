@@ -1,0 +1,113 @@
+<h1>Examples: Tables</h1>
+<div class="card mt-5">
+    <div class="card-header">
+        <h3>Tables</h3>
+    </div>
+    <div class="card-body">
+        <p class="card-text">SWAM.Views.Table provides a simple way to bind tables to data. That data can be local or fetched from a server. It can also be sortable.</p>
+        <div id="mytable">
+        </div>
+        <hr class="mt-3">
+        <h5>Code</h5>
+        <div class="highlight">
+            <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+            <pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+PORTAL.Pages.ExampleTables = SWAM.Page.extend({
+    <span class="hljs-attr">template</span>: <span class="hljs-string">".pages.swam.tables"</span>,
+    <span class="hljs-attr">classes</span>: <span class="hljs-string">"page-view page-padded has-topbar"</span>,
+
+    <span class="hljs-attr">busy_examples</span>: _.keys(SWAM.Icons),
+
+    <span class="hljs-attr">on_init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"mytable"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Table({
+            <span class="hljs-attr">remote_sort</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">add_classes</span>: <span class="hljs-string">"swam-table-clickable"</span>,
+            <span class="hljs-attr">columns</span>: [
+                {<span class="hljs-attr">field</span>:<span class="hljs-string">"id"</span>},
+                {<span class="hljs-attr">field</span>: <span class="hljs-string">"name"</span>},
+                {<span class="hljs-attr">label</span>:<span class="hljs-string">"when"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"created|datetime"</span>}
+            ]
+        }));
+        <span class="hljs-built_in">this</span>.collection = <span class="hljs-keyword">new</span> SWAM.Collection();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+            <span class="hljs-built_in">this</span>.collection.add(<span class="hljs-keyword">new</span> SWAM.Model({<span class="hljs-attr">id</span>:i, <span class="hljs-attr">name</span>:<span class="hljs-built_in">String</span>.Random(<span class="hljs-number">6</span>), <span class="hljs-attr">created</span>:(<span class="hljs-built_in">Date</span>.now()-(i * <span class="hljs-number">5000</span>))/<span class="hljs-number">1000</span>}));
+        }
+        <span class="hljs-built_in">this</span>.children.mytable.setCollection(<span class="hljs-built_in">this</span>.collection);
+        <span class="hljs-built_in">this</span>.children.mytable.on(<span class="hljs-string">"item:clicked"</span>, <span class="hljs-built_in">this</span>.on_item_clicked, <span class="hljs-built_in">this</span>);
+    },
+
+    <span class="hljs-attr">on_item_clicked</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item_view, evt</span>) </span>{
+        SWAM.toast(<span class="hljs-string">"Table Item Clicked"</span>, SWAM.renderString(<span class="hljs-string">"Item:{{model.id}} - {{model.name}}"</span>, item_view), <span class="hljs-number">5000</span>);
+    }
+});
+
+</code></pre>
+        </div>
+    </div>
+</div>
+<div class="card mt-5">
+    <div class="card-header">
+        <h3>Tables - Adding Row Selection</h3>
+    </div>
+    <div class="card-body">
+        <p class="card-text">SWAM.Views.Table supports row selection by just enabling <span class="fw-bold">batch_selection</span> option.  Adding custom actions is just as easy!  Use the <span class="fw-bold">batch_action</span> option to add custom buttons and simply add a handler method using the pattern on_action_<span class="fw-bold">your_action_name</span> for each custom action.   An action requires 3 parameters:</p>
+        <ul>
+            <li><span class="fw-bold">action</span> - the action name that will be used in your handler</li>
+            <li><span class="fw-bold">icon</span> - icon name or full icon classs to display for your action</li>
+            <li><span class="fw-bold">label</span> - label to display for your action</li>
+        </ul>
+        <div id="batch_table">
+        </div>
+        <hr class="mt-3">
+        <h5>Code</h5>
+        <div class="highlight">
+            <button type="button" class="btn btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard">Copy</button>
+            <pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">
+PORTAL.Pages.ExampleTables = SWAM.Page.extend({
+    <span class="hljs-attr">template</span>: <span class="hljs-string">".pages.swam.tables"</span>,
+    <span class="hljs-attr">classes</span>: <span class="hljs-string">"page-view page-padded has-topbar"</span>,
+
+    <span class="hljs-attr">on_init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"batch_table"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Table({
+            <span class="hljs-attr">remote_sort</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">add_classes</span>: <span class="hljs-string">"swam-table-clickable"</span>,
+            <span class="hljs-attr">batch_select</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">batch_actions</span>: [
+                {<span class="hljs-attr">label</span>:<span class="hljs-string">"Delete"</span>, <span class="hljs-attr">icon</span>:<span class="hljs-string">"trash"</span>, <span class="hljs-attr">action</span>:<span class="hljs-string">"delete"</span>},
+                {<span class="hljs-attr">label</span>:<span class="hljs-string">"Refresh"</span>, <span class="hljs-attr">icon</span>:<span class="hljs-string">"recycle"</span>, <span class="hljs-attr">action</span>:<span class="hljs-string">"refresh"</span>}
+            ]
+            <span class="hljs-attr">columns</span>: [
+                {<span class="hljs-attr">field</span>:<span class="hljs-string">"id"</span>},
+                {<span class="hljs-attr">field</span>: <span class="hljs-string">"name"</span>},
+                {<span class="hljs-attr">label</span>:<span class="hljs-string">"when"</span>, <span class="hljs-attr">field</span>:<span class="hljs-string">"created|datetime"</span>}
+            ]
+        }));
+
+        <span class="hljs-built_in">this</span>.batch_coll = <span class="hljs-keyword">new</span> SWAM.Collection();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+            <span class="hljs-built_in">this</span>.batch_coll.add(<span class="hljs-keyword">new</span> SWAM.Model({<span class="hljs-attr">id</span>:i, <span class="hljs-attr">name</span>:<span class="hljs-built_in">String</span>.Random(<span class="hljs-number">6</span>), <span class="hljs-attr">created</span>:(<span class="hljs-built_in">Date</span>.now()-(i * <span class="hljs-number">5000</span>))/<span class="hljs-number">1000</span>}));
+        }
+        <span class="hljs-built_in">this</span>.children.batch_table.setCollection(<span class="hljs-built_in">this</span>.batch_coll);
+
+        <span class="hljs-built_in">this</span>.children.batch_table.on(<span class="hljs-string">"item:clicked"</span>, <span class="hljs-built_in">this</span>.on_item_clicked, <span class="hljs-built_in">this</span>);
+
+    },
+
+    <span class="hljs-attr">on_item_clicked</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item_view, evt</span>) </span>{
+        SWAM.toast(<span class="hljs-string">"Table Item Clicked"</span>, SWAM.renderString(<span class="hljs-string">"Item:{{model.id}} - {{model.name}}"</span>, item_view), <span class="hljs-number">5000</span>);
+    },
+
+    <span class="hljs-attr">on_action_delete</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        SWAM.toast(<span class="hljs-string">"Table Action"</span>, <span class="hljs-string">"delete"</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">5000</span>);
+    },
+
+    <span class="hljs-attr">on_action_refresh</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+        SWAM.toast(<span class="hljs-string">"Table Action"</span>, <span class="hljs-string">"refresh"</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">5000</span>);
+    },
+});
+
+
+</code></pre>
+        </div>
+    </div>
+</div>

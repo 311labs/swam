@@ -1,0 +1,167 @@
+<h1>Data using Models and Collections</h1>
+
+<p class="lead">
+    Data is encapsulated into SWAM.Model and SWAM.Collection components.  These make it clean and easy to manipulate both local and remote data.  Data can easily be bound to components on the DOM for instant rendering on changes.
+</p>
+
+<h2 class="mt-5">SWAM.Model</h2>
+
+<p>
+   This is the heart of our framework.  It allows for us to represent our data schemas as objects.
+</p>
+
+<h4>Constructor Properties</h4>
+<ul>
+  <li><span class="fw-bold">url</span> - <span class="text-muted">the URL REST endpoint for this data model (can be path or full url)</span></li>
+  <li><span class="fw-bold">stale_after_ms</span> - <span class="text-muted">number of ms since last fetch model is stale</span></li>
+</ul>
+
+<h4>Functions</h4>
+<ul>
+  <li><span class="fw-bold">fetch(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">retrieve data from a remote endpoint</span></li>
+  <li><span class="fw-bold">fetchDebounced(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">call fetch debounced (<span class='fw-normal'>preventing multiple calls</span>)</span></li>
+  <li><span class="fw-bold">fetchIfSale(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted"> only fetch if data is stale</span></li>
+  <li><span class="fw-bold">save(<span class='fw-normal'>data, callback, opts</span>)</span> - <span class="text-muted"> save data to a remote endpoint</span></li>
+  <li><span class="fw-bold">destroy(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">delete data from a remote endpoint</span></li>
+  <li><span class="fw-bold">abort(<span class='fw-normal'></span>)</span> - <span class="text-muted"> cancel any pending fetch/save requests</span></li>
+  <li><span class="fw-bold">set(<span class='fw-normal'>key, value</span>)</span> - <span class="text-muted">set value/s by a key</span></li>
+  <li><span class="fw-bold">get(<span class='fw-normal'>key, defaultValue, localize_func</span>)</span> - <span class="text-muted"> get value/s by a key</span></li>
+  <li><span class="fw-bold">on(<span class='fw-normal'>event, callback, context</span>)</span> - <span class="text-muted"> subscribe events</span></li>
+  <li><span class="fw-bold">off(<span class='fw-normal'>event, callback, context</span>)</span> - <span class="text-muted"> unsubscribe events</span></li>
+</ul>
+
+
+<h4>Events</h4>
+<ul>
+  <li><span class="fw-bold">change</span>(model) - <span class="text-muted">called when model data changes</span></li>
+  <li><span class="fw-bold">fetched</span>(model) - <span class="text-muted">called when fetch is completed</span></li>
+  <li><span class="fw-bold">saved</span>(model) - <span class="text-muted">called when save is completed</span></li>
+  <li><span class="fw-bold">destroyed</span>(model) - <span class="text-muted">called when model is destroyed/deteled</span></li>
+</ul>
+
+
+
+
+<h2 class="mt-5">SWAM.Collection</h2>
+
+<p>
+   Collections make it easy for us to store ordered sets of our models.  These can then be easily rendered into various UI components like ListViews, Tables, etc.   
+</p>
+<p>Because the collection stores SWAM.Model it does not require a url property but instead will use the Models url property.</p>
+
+<h4>Constructor Properties</h4>
+<ul>
+  <li><span class="fw-bold">Model</span> - <span class="text-muted">the SWAM.Model class for this collection</span></li>
+  <li><span class="fw-bold">url</span> - <span class="text-muted">optional url if no Model is given</span></li>
+  <li><span class="fw-bold">size</span> - <span class="text-muted">the max number of elements to fetch</span></li>
+  <li><span class="fw-bold">stale_after_ms</span> - <span class="text-muted">number of ms since last fetch model is stale</span></li>
+</ul>
+
+<h4>Functions</h4>
+<ul>
+  <li><span class="fw-bold">fetch(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">retrieve data from a remote endpoint</span></li>
+  <li><span class="fw-bold">fetchDebounced(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">call fetch debounced (<span class='fw-normal'>preventing multiple calls</span>)</span></li>
+  <li><span class="fw-bold">fetchIfSale(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted"> only fetch if data is stale</span></li>
+  <li><span class="fw-bold">fetchPage(<span class='fw-normal'>page_number, callback, opts</span>)</span> - <span class="text-muted"> fetches a specific page number</span></li>
+  <li><span class="fw-bold">next(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">fetch the next page</span></li>
+  <li><span class="fw-bold">prev(<span class='fw-normal'>callback, opts</span>)</span> - <span class="text-muted">fetch the previous page</span></li>
+  <li><span class="fw-bold">abort(<span class='fw-normal'></span>)</span> - <span class="text-muted"> cancel any pending fetch/save requests</span></li>
+  <li><span class="fw-bold">set(<span class='fw-normal'>models, append_flag</span>)</span> - <span class="text-muted">sets the collections models</span></li>
+  <li><span class="fw-bold">get(<span class='fw-normal'>id</span>)</span> - <span class="text-muted"> get model by id</span></li>
+  <li><span class="fw-bold">getAt(<span class='fw-normal'>index</span>)</span> - <span class="text-muted"> get model at index</span></li>
+  <li><span class="fw-bold">add(<span class='fw-normal'>model</span>)</span> - <span class="text-muted"> add model to collection</span></li>
+  <li><span class="fw-bold">remove(<span class='fw-normal'>model</span>)</span> - <span class="text-muted"> remove model from collection</span></li>
+  <li><span class="fw-bold">reset(<span class='fw-normal'>model</span>)</span> - <span class="text-muted"> clears the collection</span></li>
+  <li><span class="fw-bold">sortBy(<span class='fw-normal'>field, descending_flag</span>)</span> - <span class="text-muted"> sort this collection by the specified field</span></li>
+  <li><span class="fw-bold">filter(<span class='fw-normal'>params</span>)</span> - <span class="text-muted"> filter models by params</span></li>
+  <li><span class="fw-bold">search(<span class='fw-normal'>field, value, inplace</span>)</span> - <span class="text-muted"> returns a list of all models that match field and value</span></li>
+  <li><span class="fw-bold">on(<span class='fw-normal'>event, callback, context</span>)</span> - <span class="text-muted"> subscribe events</span></li>
+  <li><span class="fw-bold">off(<span class='fw-normal'>event, callback, context</span>)</span> - <span class="text-muted"> unsubscribe events</span></li>
+</ul>
+
+
+<h4>Events</h4>
+<ul>
+  <li><span class="fw-bold">reset</span>(collection) - <span class="text-muted">called when collection is reset/cleared</span></li>
+  <li><span class="fw-bold">fetched</span>(collection) - <span class="text-muted">called when fetch is completed</span></li>
+  <li><span class="fw-bold">loading:begin</span>(collection) - <span class="text-muted">called when collecting begins a new remote fetch</span></li>
+  <li><span class="fw-bold">loading:end</span>(collection) - <span class="text-muted">called when fetch is complete</span></li>
+  <li><span class="fw-bold">add</span>(model) - <span class="text-muted">called when a model is added</span></li>
+  <li><span class="fw-bold">remove</span>(model) - <span class="text-muted">called when a model is removed</span></li>
+</ul>
+
+
+
+
+<div class="card mt-5">
+  <div class="border-bottom">
+   <h3 class="p-2">Examples</h3>
+  </div>
+  <div>
+    <div class="highlight">
+
+      <div class="border-bottom">
+        <div class="text-muted p-2">Javascript</div>
+      </div>
+      <div class="p-2">
+        
+                              <button type="button" class="btn btn-link position-absolute top-0 end-0 btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard"><i class="bi bi-clipboard"></i></button>
+
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px"><span class="hljs-comment">// DEFINE your model and collection</span>
+SWAM.Models.ExampleItem = SWAM.Model.extend({
+    <span class="hljs-attr">defaults</span>: {
+        <span class="hljs-attr">url</span>:<span class="hljs-string">"/rpc/examples/item"</span>
+    },
+});
+
+SWAM.Collections.ExampleItem = SWAM.Collection.extend({
+    <span class="hljs-attr">defaults</span>: {
+        <span class="hljs-attr">Model</span>: SWAM.Models. ExampleItem
+    }
+});
+
+<span class="hljs-comment">// TO Fetch a single instance from server</span>
+<span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> SWAM.Models.ExampleItem();
+model.fetch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">lmodel, resp</span>)</span>{
+  <span class="hljs-comment">// this is called on the response</span>
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resp status is: "</span> + resp.status);
+   <span class="hljs-built_in">console</span>.log(lmodel.attributes);
+});
+
+<span class="hljs-comment">// OR we can fetch a collection of models</span>
+<span class="hljs-keyword">var</span> col = <span class="hljs-keyword">new</span> SWAM.Collections.ExampleItem();
+
+col.fetch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">lcol, resp</span>)</span>{
+  <span class="hljs-comment">// this is called on the response</span>
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resp status is: "</span> + resp.status);
+   <span class="hljs-built_in">console</span>.log(lcol.models);
+});
+
+<span class="hljs-comment">// OR we can create local versions</span>
+<span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> SWAM.Model({
+  <span class="hljs-string">"id"</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// always create an id</span>
+  <span class="hljs-string">"name"</span>: <span class="hljs-string">"Test Item 1"</span>,
+  <span class="hljs-string">"value"</span>: <span class="hljs-number">19</span>
+});
+
+<span class="hljs-comment">// we can get our attributes </span>
+model.get(<span class="hljs-string">"name"</span>);
+
+<span class="hljs-comment">// we can update and add attributes later</span>
+model.set(<span class="hljs-string">"name"</span>, <span class="hljs-string">"Tester 1"</span>); <span class="hljs-comment">// update name</span>
+model.set(<span class="hljs-string">"age"</span>, <span class="hljs-number">32</span>); <span class="hljs-comment">// adds new attr called age</span>
+model.set(<span class="hljs-string">"address.street"</span>, <span class="hljs-string">"123 Pitt St"</span>); <span class="hljs-comment">// complex add</span>
+
+model.get(<span class="hljs-string">"address"</span>);
+
+<span class="hljs-keyword">var</span> col = <span class="hljs-keyword">new</span> SWAM.Collection();
+col.add(model);
+col.add(<span class="hljs-keyword">new</span> SWAM.Model({<span class="hljs-string">"id"</span>:<span class="hljs-number">2</span>, <span class="hljs-string">"name"</span>: <span class="hljs-string">"Item 2"</span>});
+</code></pre>
+
+      </div>
+
+  </div>
+  </div>
+</div>
+

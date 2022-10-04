@@ -1,7 +1,7 @@
 SWAM.Views.ListItem = SWAM.View.extend({
     template: "<div>{{display_label}}</div>",
     tagName: "li",
-    classes: "list-group-item",
+    classes: "swam-list-item",
 
     events: {
         "click": "on_clicked"
@@ -34,19 +34,34 @@ SWAM.Views.ListItem = SWAM.View.extend({
 
 
 SWAM.Views.List = SWAM.View.extend({
-    classes: "swam-list list-group",
+    classes: "swam-list",
     tagName: "ul",
 
     defaults: {
         ItemView: SWAM.Views.ListItem,
+        item_options: {},
         loading_html: "loading...",
-        empty_html: "No items returned"
+        collection_params: {size:50},
+        empty_html: "<div class='text-center p-3 text-muted'>No items returned</div>",
+        remote_sort: true
     },
 
     on_init: function() {
         this.collection = null;
         this.items = [];
+        this.selected = [];
+        if (!this.options.collection && this.options.Collection) {
+            this.options.collection = new this.options.Collection({params:this.options.collection_params});
+        }
         if (this.options.collection) this.setCollection(this.options.collection);
+    },
+
+    fetch: function(callback, options) {
+        this.collection.fetch(callback, options);
+    },
+
+    sortBy: function(field, decending, models) {
+        this.collection.sortBy(field, decending, models);
     },
 
     setCollection: function(col) {
@@ -70,6 +85,10 @@ SWAM.Views.List = SWAM.View.extend({
         if (this.options.sort_by) {
             this.collection.sortByField(this.options.sort_by, this.options.descending)
         }
+
+        _.each(this.collection.models, function(model){
+            this.add(model, true);
+        }.bind(this));
     },
 
     getAt: function(index) {
@@ -81,14 +100,14 @@ SWAM.Views.List = SWAM.View.extend({
         return _.findWhere(this.items, {id:id});
     },
 
-    add: function(model) {
+    add: function(model, silent) {
         var item = this.get(model.id);
         if (!item) {
-            var opts = {model:model, list:this};
+            var opts = _.extend({model:model, list:this}, this.options.item_options);
             if (this.options.item_template) opts.template = this.options.item_template;
             item = new this.options.ItemView(opts);
             this.items.push(item);
-            this.trigger("add", model);
+            if (!silent) this.trigger("add", model);
         }
         return item;
     },
@@ -117,11 +136,29 @@ SWAM.Views.List = SWAM.View.extend({
 
     on_loading_begin: function() {
         this.options.is_loading = true;
+        if (this.options.show_loading) {
+            this.showBusy();
+        }
     },
 
     on_loading_end: function() {
         this.options.is_loading = false;
         this.render();
+        if (this.options.show_loading) {
+            this.hideBusy();
+        }
+    },
+
+    showBusy: function() {
+        if (this.busy_dlg) this.hideBusy();
+        this.busy_dlg = SWAM.Dialog.showLoading({parent:this.$el});
+    },
+
+    hideBusy: function() {
+        if (this.busy_dlg) {
+            this.busy_dlg.removeFromDOM();
+            this.busy_dlg = null;
+        }
     },
 
     on_pre_render: function() {

@@ -19,6 +19,10 @@ SWAM.Collection = SWAM.Object.extend({
         this.id = _.uniqueId("col");
         this.models = [];
         this.shadow_models = null;
+        this.count = 0;
+        this.start = 0;
+        this.size = 0;
+        this.length = 0;
         this.is_loading = false;
         this.set(models);
         this.init_options(opts);
@@ -143,6 +147,7 @@ SWAM.Collection = SWAM.Object.extend({
             has_more: false,
             has_less: false
         };
+        if (this.params.start) delete this.params.start;
     },
 
     reset: function(silent) {
@@ -182,6 +187,12 @@ SWAM.Collection = SWAM.Object.extend({
 
     find: function(predicate) {
         return _.find(this.models, predicate);
+    },
+
+    pluck: function(field) {
+        var output = [];
+        _.each(this.models, function(obj){ output.push(obj.get(field));});
+        return output;
     },
 
     parseResponse: function(resp) {

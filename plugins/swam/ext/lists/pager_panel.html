@@ -1,0 +1,17 @@
+<nav class='row swam-paginated-list-footer'>
+	<div class='col' id="counter"></div>
+	{{#options.size_select}}
+	<div class="col-auto" id="size">
+			<div class="row g-1">
+				<div class="col text-end">
+					<div class="text-muted pt-1" for="size">show </div>
+				</div>
+				<div class="col-auto">
+					<select style="max-width: 80px;" class="form-select form-select-sm input-select normal" name="size" data-value="10"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select>
+				</div>
+			</div>
+	</div>
+	{{/options.size_select}}
+	<div class='col' id='pager'></div>
+</nav>
+

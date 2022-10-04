@@ -2,8 +2,13 @@
 
 SWAM.Views.ListPagination = SWAM.View.extend({
     tagName: "ul",
-    classes: "pagination pagination-sm justify-content-end",
-    template: "plugins.swam.ext.lists.pagination",
+    classes: "pagination pagination-sm",
+    template: "swam.ext.lists.pagination",
+
+    defaults: {
+        next_label: "Next",
+        prev_label: "Prev"
+    },
 
     on_init: function() {
         this.collection().on("loading:end", this.render.bind(this));
@@ -24,7 +29,7 @@ SWAM.Views.ListPagination = SWAM.View.extend({
 SWAM.Views.ListPaginationCount = SWAM.View.extend({
     tagName: "div",
     classes: "fs-6 text-muted",
-    template: "plugins.swam.ext.lists.paginationcount",
+    template: "swam.ext.lists.paginationcount",
 
     on_init: function() {
         this.is_loading = false;
@@ -44,7 +49,7 @@ SWAM.Views.ListPaginationCount = SWAM.View.extend({
 });
 
 SWAM.Views.PaginatedList = SWAM.View.extend({
-    template: "plugins.swam.ext.lists.paginatedlist",
+    template: "swam.ext.lists.paginatedlist",
     classes: "swam-paginated-list",
     defaults: {
         List: SWAM.Views.List,
@@ -61,7 +66,11 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.counter = new SWAM.Views.ListPaginationCount({list:this.list});
         this.addChild("counter", this.counter);
         if (this.options.filter_bar) {
-            this.filters = new SWAM.Views.ListFilters({list:this.list, filters:this.options.filter_bar});
+            this.filters = new SWAM.Views.ListFilters({
+                list: this.list, 
+                filter_bar: this.options.filter_bar,
+                filters: this.options.filters
+            });
             this.addChild("filters", this.filters);
         }
     },

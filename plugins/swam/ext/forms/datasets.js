@@ -17,7 +17,7 @@ SWAM.DataSets = {
 		} else {
 			if (!SWAM.DataSets[name]) {
 				var data_url = name;
-				if (!data_url.startsWith("http")) data_url = "/static/data/" + name + ".txt";
+				if (!data_url.startsWith("http")) data_url = "/plugins/data/" + name + ".txt";
 				$.ajax({
 					url : data_url,
 					dataType: "text",
@@ -48,7 +48,7 @@ SWAM.DataSets = {
 		} else {
 			if (_.isUndefined(SWAM.DataSets[name])) {
 				SWAM.DataSets[name] = {}; // so we don't reload;
-				$.getJSON("/static/data/" + name + ".json", function(result) {
+				$.getJSON("/plugins/data/" + name + ".json", function(result) {
 					SWAM.DataSets[name] = result;
 					if (callback) callback(name, result);
 				});
@@ -267,3 +267,5 @@ SWAM.DataSets = {
 		},
 	]
 };
+
+

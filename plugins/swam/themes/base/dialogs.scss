@@ -13,6 +13,25 @@ body.app {
 	    	}
 	    }
 
+
+	    div.modal-vsm {
+	        div.modal-content {
+	            height: 40vh;
+	        }
+	    }
+
+	    div.modal-vmd {
+	        div.modal-content {
+	            height: 60vh;
+	        }
+	    }
+
+	    div.modal-vlg {
+	        div.modal-content {
+	            height: 80vh;
+	        }
+	    }
+
 	    div.modal-primary div.modal-header {
 	    	background: $primary;
 	    	color: white;
@@ -63,9 +82,40 @@ body.app {
 		div.offcanvas.show {
 			visibility: visible;
 		}
+
+		div.modal-view {
+		    position: relative;
+		    flex: 1 1 auto;
+
+		    div.form-view {
+		        margin: 1rem;
+		    }
+
+		    > div.swam-paginated-table {
+		        margin: 1rem;
+		        div.swam-list-title {
+		            font-size: 1.3rem;
+		        }
+		    }
+		}
+
+		div.swam-card-header {
+			background-color: white;
+		    border-top-left-radius: 4px;
+		    border-top-right-radius: 4px;
+		}
+	}
+
+	div.inline-modal {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background-color: #00000047;
+		z-index: 100;
 	}
 }
-
 
 div.swam-search-down {
 	div.dropdown-header {
@@ -74,4 +124,48 @@ div.swam-search-down {
 		border-top-left-radius: 0.2rem;
 		border-top-right-radius: 0.2rem;
 	}
+
+	button.dropdown-toggle {
+		&:active, &:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	div#searchdown-list {
+		max-height: 80vh;
+		overflow-y: auto;
+	}
+
+	input#search {
+		border: none;
+		border-bottom: 2px solid #cccccc;
+		border-radius: 0;
+		&:active, &:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	button.btn-close {
+		position: absolute;
+		top: 4px;
+		right: 3px;
+	}
+
+	&.searchdown-on-top {
+
+		input#search {
+			border-bottom: 2px solid $brand-primary;
+			position: absolute;
+			top: -1.9rem;
+			left:0;right:0;
+		}
+
+		button.btn-close {
+			top: -1.9rem;
+		}
+	}
+
+
 }

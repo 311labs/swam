@@ -4,6 +4,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	classes: "page-view table-page-view page-padded has-topbar",
 	template: "<div id='list'></div>",
 	defaults: {
+		download_prefix: "download",
 		collection_params: {
 			size: 10
 		},
@@ -13,7 +14,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	        action: "add",
 	        label: "<i class='bi bi-plus'></i> Add",
 	        classes: "btn btn-primary",
-	        columns:3
+	        columns:3,
+	        columns_classes: "col-sm-12 col-md-3 col-lg-3",
 	    },
 		filter_bar: [
 		    {
@@ -24,6 +26,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		            {
 		                name: "search",
 		                columns: 6,
+		                columns_classes: "col-sm-12 col-md-5 col-lg-6",
 		                form_wrap: "search",
 		                placeholder: "search",
 		                button: {
@@ -32,7 +35,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		            },
 		            {
 		                columns: 3,
-		                columns_classes: "col-3",
+		                columns_classes: "col-sm-3 col-md-3 col-lg-2",
 		                type: "select",
 		                name: "size",
 		                options: [
@@ -65,7 +68,6 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		                            },
 		                        ]
 		                    }
-
 		                ]
 		            },
 		        ]
@@ -78,35 +80,34 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_init: function() {
+		this.addChild("list", new SWAM.Views.AdvancedTable(this.options));
+		this.collection = this.children.list.collection;
+		if (this.collection) {
+			this.collection.on("loading:begin", this.on_loading_begin, this);
+			if (this.options.collection_params) this.collection.params = _.extend({}, this.collection.params, this.options.collection_params);
+		}
+
 		if (this.options.group_filtering) {
 			app.on("group:change", this.on_group_change, this);
 		}
-		
-		if (this.options.Collection) {
-			this.collection = new this.options.Collection(this.options.collection_params);
-		}
-		this.collection.on("loading:begin", this.on_loading_begin, this);
 
-		if (this.options.filter_bar) {
-			if (this.options.filters) {
-				this.options.filter_bar[0].fields[2].buttons.push({
-					type: "dropdown",
-					icon: "bi bi-filter",
-					fields: this.options.filters
-				});
-			}
-			if (this.options.add_button) {
-				this.options.filter_bar.unshift(this.options.add_button);
-			} else {
-				this.options.filter_bar.unshift({columns:3, type:"hidden"}); // need this to make view look clean
+		if (this.options.no_search) {
+			var searchfield = _.find(this.options.filter_bar[0].fields, function(field) {
+				return (field.name == "search");
+			});
+			if (searchfield) {
+				this.options.filter_bar[0].fields.remove(searchfield);
 			}
 		}
+
+		if (this.options.table_options) this.options.list_options = this.options.table_options;
 
 		this.addChild("list", new SWAM.Views.PaginatedTable({
 			icon: this.options.icon,
 			title: this.options.title,
 			collection: this.collection, 
 			filter_bar: this.options.filter_bar,
+			filters: this.options.filters,
 			columns: this.options.columns,
 			list_options: this.options.list_options
 		}));
@@ -145,51 +146,53 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_item_clicked: function(item, evt) {
-		SWAM.Dialog.editModel(item.model, 
-			{
-				title:"Edit",
-				size: "lg",
-				callback:function(model, resp) {
-					if (resp.status) {
-					// auto saved nothing to do
-					}
-				}.bind(this)
-			});
+		if (!this.options.view_only && item.model.constructor.EDIT_FORM) {
+			SWAM.Dialog.editModel(item.model, 
+				{
+					title:"Edit",
+					size: "md",
+					callback:function(model, resp) {
+						if (resp.status) {
+						// auto saved nothing to do
+						}
+					}.bind(this)
+				});
+		} else {
+			SWAM.Dialog.showModel(item.model, null, {size:"md"});
+		}
+
 	},
 
 	on_action_add: function(evt) {
-	    // SWAM.Dialog.alert({title:"Not Implemented", message:"This form is not yet implemented"})
-		SWAM.Dialog.editModel(new this.collection.options.Model(), 
-			{
-				title:"Add",
-				size: "lg",
-				callback:function(model, resp) {
-					if (resp.status) {
-					// auto saved nothing to do
-					}
-				}.bind(this)
-			});
-	},
-
-	on_action_download_csv: function(evt) {
-		var filename = "download.csv";
-	    window.location.assign(this.collection.getRawUrl({
-	        format_filename: filename,
-	        format:"csv",
-	    }));
-	    SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
-	},
-
-	on_action_download_json: function(evt) {
-		var filename = "download.json";
-	    window.location.assign(this.collection.getRawUrl({
-	        format_filename: filename,
-	        format:"json",
-	    }));
-	    SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
+	    var options = {
+			title:"Add",
+			size: "md",
+			callback:function(model, resp) {
+				if (resp.status) {
+				// auto saved nothing to do
+					this.collection.fetch();
+				}
+			}.bind(this)
+		};
+		if (!this.options.edit_form) {
+			this.options.edit_form = this.collection.options.Model.constructor.EDIT_FORM;
+		}
+		if (this.options.edit_form) options.fields = this.options.edit_form;
+		if (this.collection.params.group) {
+			options.extra_fields = [
+				{
+				    type: "hidden",
+				    name: "group",
+				    default: this.collection.params.group
+				}
+			];
+		}
+		SWAM.Dialog.editModel(new this.collection.options.Model(), options);
 	},
 
 	on_action_download_pdf: function(evt) {
 	    SWAM.toast("Add Group", "Not implemented yet", "warning");
 	},
 });
+
+

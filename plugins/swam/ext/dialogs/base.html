@@ -1,5 +1,5 @@
 
-<div class="modal-dialog modal-dialog-centered {{options.add_classes}} modal-dialog-scrollable">
+<div class="modal-dialog modal-dialog-centered {{options.add_classes}}">
   <div class="modal-content rounded-6 shadow">
     {{#options.title}}
     <div class="modal-header border-bottom-1 user-select-none">
@@ -9,6 +9,15 @@
       {{/options.show_close}}
     </div>
     {{/options.title}}
+    {{#options.view}}
+    {{#options.scrollable}}
+    <div id="dlg_view" class="modal-view overflow-auto"></div>
+    {{/options.scrollable}}
+    {{^options.scrollable}}
+    <div id="dlg_view" class="modal-view"></div>
+    {{/options.scrollable}}
+    {{/options.view}}
+    {{^options.view}}
     <div class="modal-body">
       {{#options.message}}
       <p>
@@ -24,8 +33,9 @@
       </div>
       {{/options.choices}}
     </div>
+    {{/options.view}}
     {{^options.no_buttons}}
-    <div class="modal-footer flex-nowrap p-0">
+    <div class="modal-footer flex-nowrap py-0">
       {{#options.buttons}}
       <button type="button" class="btn-lg text-decoration-none ms-3 {{.classes|default(options.btn_primary)}}" data-action="{{.action}}" data-id="{{.id}}">{{.label}}</button>
       {{/options.buttons}}
@@ -33,3 +43,4 @@
     {{/options.no_buttons}}
   </div>
 </div>
+

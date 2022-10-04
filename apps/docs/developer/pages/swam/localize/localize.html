@@ -1,0 +1,93 @@
+<h1>Localization</h1>
+
+<p class="lead">
+    Localization was originally intended for for change data into localized format, but it now goes beyond that and allows you to specify various formats to render your data.
+</p>
+
+<div class="card mt-5">
+  <div class="border-bottom">
+   <h3 class="p-2">Available Functions</h3>
+  </div>
+  <div>
+    <div class="border-bottom p-2" id="test_localize"></div>
+    <div class="border-bottom p-2">
+        <div class="row">
+            <div class="col-auto">
+                <button class="btn btn-primary" data-action="localize">Localize</button>
+            </div>
+            <div class="col-auto p-2">
+                {{{ICON("arrow-right")}}}
+            </div>
+            <div class="col">
+                <div class="p-2 text-primary" id="localize_output">
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<div class="card mt-5">
+  <div class="border-bottom">
+   <h3 class="p-2">Sandbox</h3>
+  </div>
+    <div class="card-body">
+        <p class="card-text">Integrated into mustache templates!</p>
+        
+        <div class="row">
+            <div class="col border-end">
+                <h5>Test Localize Functions</h5>
+                <div id="test_form"></div>
+                <button class="btn btn-primary" data-action="test_form">Localize</button>
+            </div>
+            <div class="col">
+                <h5>Localize Outout</h5>
+                <div class="card">
+                    <div class="card-body" id="test_output">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="card mt-5">
+    <div class="border-bottom p-2">
+        <h3>SWAM.Localize Usage</h3>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Easily convert data to be more human readable.</p>
+        <div class="highlight">
+<button type="button" class="btn btn-link position-absolute top-0 end-0 btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard"><i class="bi bi-clipboard"></i></button>
+
+
+{{=||| |||=}}
+            <pre><code class="hljs" style="background:#FAFAFA;border-radius:8px"><span class="xml">// Localization is done normally in the mustache/html template.
+
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span></span><span class="hljs-template-variable">{{model.size|bytes}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+</span>
+<span class="hljs-comment">// you can render right in JS as well</span>
+<span class="hljs-keyword">var</span> txt = SWAM.renderString(
+    <span class="hljs-string">"This was created: {{model.created|datetime}}"</span>, 
+    {<span class="hljs-attr">model</span>:<span class="hljs-built_in">this</span>.model});
+    
+<span class="hljs-comment">// or localize it as we get it from the model</span>
+<span class="hljs-keyword">var</span> when = model.get(<span class="hljs-string">"created"</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">"datetime"</span>); 
+
+          </code></pre>
+|||={{ }}=|||
+
+
+        </div>
+    </div>
+</div>

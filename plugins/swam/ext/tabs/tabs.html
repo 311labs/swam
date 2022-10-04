@@ -6,7 +6,7 @@
 		<div class="tab-dropdown">
 			<div id="tab_dropdown">
 				<div class="dropdown">
-				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="tabs_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+				  <a class="btn btn-dropdown dropdown-toggle" href="#" role="button" id="tabs_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
 				    Dropdown link
 				  </a>
 				  <ul class="dropdown-menu">
@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<div class="tabs">
-			<ul>
+			<ul class="tabs-list">
 				{{#get_tabs}}
 				<li data-action="tab" data-id="{{.id}}" class="{{.classes}}">{{{.label}}}</li>
 				{{/get_tabs}}

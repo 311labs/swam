@@ -1,5 +1,4 @@
 
-
 SWAM.Models.Group = SWAM.Model.extend({
     defaults: {
     	url:"/rpc/account/group"
@@ -31,8 +30,9 @@ SWAM.Models.Group = SWAM.Model.extend({
                 },
                 {
                     label: "Group Kind",
-                    field: "kind",
+                    name: "kind",
                     type: "select",
+                    editable: true,
                     help: "Orgnazations are top level groups that hold merchants.  Merchants typically hold internal groups.",
                     options: [
                         {
@@ -46,6 +46,10 @@ SWAM.Models.Group = SWAM.Model.extend({
                         {
                             label: "Internal Group",
                             value: "internal_group",
+                        },
+                        {
+                            label: "Incident Group",
+                            value: "incident",
                         },
                         {
                             label: "Test Group",

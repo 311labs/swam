@@ -1,0 +1,41 @@
+    <div class="highlight">
+
+      <div class="p-2">
+        
+<button type="button" class="btn btn-link position-absolute top-0 end-0 btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="left" title="Copy to clipboard"><i class="bi bi-clipboard"></i></button>
+
+<pre><code class="hljs" style="background:#FAFAFA;border-radius:8px"><span class="hljs-comment">// OUR PAGE</span>
+
+PORTAL.Pages.MyPage = SWAM.Page.extend({
+    <span class="hljs-attr">template</span>: <span class="hljs-string">".pages.mypage"</span>,
+    <span class="hljs-attr">classes</span>: <span class="hljs-string">"page-view page-padded has-topbar"</span>,
+
+   <span class="hljs-attr">on_init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">// add a chart view</span>
+    <span class="hljs-comment">// this will look for an element with the id barchart in the pages html</span>
+    <span class="hljs-built_in">this</span>.addChild(<span class="hljs-string">"barchart"</span>, <span class="hljs-keyword">new</span> SWAM.Views.Chart({<span class="hljs-attr">type</span>:<span class="hljs-string">"bar"</span>});
+    <span class="hljs-comment">// add data to the view</span>
+    <span class="hljs-built_in">this</span>.children.barchart.setLabels(SWAM.DataSets.months.slice(<span class="hljs-number">0</span>,<span class="hljs-number">6</span>));
+    <span class="hljs-built_in">this</span>.children.barchart.addDataSet(<span class="hljs-string">"beers"</span>, [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>, <span class="hljs-number">60</span>]);
+    <span class="hljs-built_in">this</span>.children.barchart.addDataSet(<span class="hljs-string">"shots"</span>, [<span class="hljs-number">2</span>, <span class="hljs-number">80</span>, <span class="hljs-number">20</span>, <span class="hljs-number">15</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>]);
+
+    }
+});
+
+<span class="hljs-comment">// OUR APP</span>
+
+PORTAL.App = SWAM.App.extend({
+
+  <span class="hljs-comment">// Pages are added to your app in the apps on_init_pages</span>
+  <span class="hljs-attr">on_init_pages</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">// param 1 is the page id / name</span>
+    <span class="hljs-comment">// param 2 is an instance of the page</span>
+    <span class="hljs-comment">// param 3 is your url routing</span>
+    <span class="hljs-built_in">this</span>.addPage(<span class="hljs-string">"swam_views"</span>, <span class="hljs-keyword">new</span> PORTAL.Pages.ExampleViews(), [<span class="hljs-string">"swam/views"</span>]);
+  }
+
+});</code></pre>
+
+      </div>
+
+  </div>

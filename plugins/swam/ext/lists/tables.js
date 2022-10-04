@@ -4,14 +4,37 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
     tagName: "tr",
     classes: "swam-table-row",
 
+    on_action_batch_select: function(evt) {
+        evt.stopPropagation();
+        if (this.$el.hasClass("swam-batch-selected")) {
+            this.deselect();
+        } else {
+            this.select();
+        }
+    },
+
+    select: function() {
+        if (!this.options.list.selected.has(this)) this.options.list.selected.push(this);
+        this.$el.addClass("swam-batch-selected");
+        this.options.list.toggleBatchPanel();
+    },
+
+    deselect: function() {
+        if (this.options.list.selected.has(this)) this.options.list.selected.remove(this);
+        this.$el.removeClass("swam-batch-selected");
+        this.options.list.toggleBatchPanel();
+    },
+
     on_pre_render: function() {
     	this.template = "";
+        if (this.options.list.options.batch_select) {
+            this.template += "<td class='swam-batch-select' data-action='batch_select'><div class='swam-table-checkbox'></div></td>";
+        }
     	_.each(this.options.list.options.columns, _.bind(function(col){
     		if (_.isObject(col)) {
     			if (col.hideIf && col.hideIf()) return;
 
     			this.template += "<td";
-
     			if (col.classes) {
     				this.template += " class='" + col.classes + "'";
     			}
@@ -39,6 +62,16 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
     				this.template += "{{#model." + col.field + "}}";
     				this.template += "<img src='{{model." + col.field + "}}' class='image-xs lightbox-clickable'>";
     				this.template += "{{/model." + col.field + "}}";
+                } else if (col.context_menu) {
+                    this.template += " data-field='context_menu'>";
+                    var fc = {
+                        "$el":$("<div />"),
+                        id: "{{model.id}}",
+                        icon:"bi bi-three-dots-vertical",
+                        btn_classes: "btn btn-link py-0 h-100",
+                        classes: "text-end dropstart",
+                        items:col.context_menu};
+                    this.template += SWAM.Form.Builder.dropdown(fc).html();
     			} else {
     				this.template += " data-field='" + col.field + "'>";
     				this.template += "{{{model." + col.field;
@@ -65,16 +98,63 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         // sort_down_icon: ' <i class="bi bi-arrow-down text-success" data-action="sort"></i>',
         // sort_up_icon: ' <i class="bi bi-arrow-up text-success" data-action="sort"></i>',
         // sort_icon: ' <i class="bi bi-arrow-down-up text-muted hover-primary" data-action="sort"></i>',
-        sort_down_icon: ' <i class="swam-icon swam-icon-sorted-down text-muted hover-primary" data-action="sort"></i>',
-        sort_up_icon: ' <i class="swam-icon swam-icon-sorted-up text-muted hover-primary" data-action="sort"></i>',
-        sort_icon: ' <i class="swam-icon swam-icon-sort text-muted hover-primary" data-action="sort"></i>',
+        sort_down_icon: ' <i class="swam-icon swam-icon-sorted-down text-muted hover-primary"></i>',
+        sort_up_icon: ' <i class="swam-icon swam-icon-sorted-up text-muted hover-primary"></i>',
+        sort_icon: ' <i class="swam-icon swam-icon-sort text-muted hover-primary"></i>',
         filter_icon_active: ' <i class="bi bi-filter text-success" data-action="filter"></i>',
-        filter_icon: ' <i class="bi bi-filter text-muted hover-primary" data-action="filter"></i>'
+        filter_icon: ' <i class="bi bi-filter text-muted hover-primary" data-action="filter"></i>',
+        batch_select: false,
+        batch_select_label: 'Rows Selected',
+        batch_actions: [
+            {label:"Delete", icon:"trash", action:"delete"}
+        ],
+        pagination: false,
+        empty_html: "<tr><td colspan='100' class='text-center p-3 text-muted'>No items returned</td>",
+
+    },
+
+    selectAll: function() {
+        _.each(this.items, function(item){
+            item.select();
+        });
+    },
+
+    deselectAll: function() {
+        _.each(this.items, function(item){
+            item.deselect();
+        });
+    },
+
+    showBatchPanel: function() {
+        if (!this.batch_panel) {
+            this.batch_panel = new SWAM.Views.TableBatchPanel({list:this});
+        }
+        if (!this.batch_panel.$parent) {
+            this.batch_panel.addToDOM(this.$parent);
+        } else {
+            this.batch_panel.render();
+        }
+    },
+
+    hideBatchPanel: function() {
+        if (this.batch_panel) this.batch_panel.removeFromDOM();
+    },
+
+    toggleBatchPanel: function() {
+        if (this.selected.length) {
+            this.showBatchPanel();
+        } else {
+            this.hideBatchPanel();
+        }
     },
 
     on_action_sort: function(evt) {
-        var $column = $(evt.currentTarget).parent();
+        var $column = $(evt.currentTarget);
     	var sort_field = $column.data("sort");
+        if (!sort_field) {
+            $column = $column.parent();
+            sort_field = $column.data("sort");
+        }
     	if (!sort_field) return;
     	this.collection.sort_field = sort_field;
     	this.collection.sort_descending = !this.collection.sort_descending;
@@ -87,7 +167,11 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     		this.collection.params.sort = sort_field;
     	}
     	this.trigger("sort", this, sort_field);
-    	this.collection.fetch();
+        if (!this.options.remote_sort) {
+            this.sortBy(sort_field, this.collection.sort_descending);
+        } else {
+            this.collection.fetch();
+        }
     },
 
     on_action_filter: function(evt) {
@@ -107,15 +191,41 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         }});
     },
 
+    on_action_batch_select_all: function(evt) {
+        var $row = $(evt.currentTarget).parent();
+        if ($row.hasClass("swam-batch-selected")) {
+            $row.removeClass("swam-batch-selected");
+            this.deselectAll();
+        } else {
+            $row.addClass("swam-batch-selected");
+            this.selectAll();
+        }
+    },
+
     on_pre_render: function() {
     	this.$el.empty();
     	var $head = $("<thead />").appendTo(this.$el);
     	this.$header = $("<tr />").appendTo($head);
     	this.$body = $("<tbody />").appendTo(this.$el);
     	this.on_render_header();
+
+        if (this.options.pagination) {
+
+            if (!this.pagination) {
+                var popts = _.extend({list:this}, this.options.pager_options);
+                this.pagination = new SWAM.Views.TablePaginationPanel(popts);
+            }
+            this.pagination.addToDOM(this.$parent);
+        }
     },
 
     on_render_header: function() {
+        if (this.options.batch_select) {
+            var $el = $("<th class='swam-batch-select' data-action='batch_select_all' />");
+            var $input = $("<div />").addClass("swam-table-checkbox");
+            $input.prop("type", "checkbox");
+            this.$header.append($el.append($input));
+        }
     	_.each(this.options.columns, this.on_render_column.bind(this));
     },
 
@@ -123,6 +233,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     	if (_.isObject(column)) {
     		if (column.hideIf && column.hideIf()) return;
     		var $el = $("<th></th>");
+            if (column.context_menu) {
+                this.$header.append($el);
+                return;
+            }
     		if (column.label && !column.field) {
                 column.field = column.label;
                 column.no_sort = column.sort == undefined;
@@ -138,7 +252,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     			if (!column.sort_field) column.sort_field = column.field;
     			if (column.sort) column.sort_field = column.sort;
     			$el.addClass("sortable");
-    			// $el.attr("data-action", "sort");
+    			$el.attr("data-action", "sort");
     			$el.data("sort", column.sort_field);
     			if (this.collection.sort_field == column.sort_field) {
     				if (this.collection.sort_descending) {
@@ -167,155 +281,72 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     	} else {
     		this.$header.append("<th>" + column + "</th>");
     	}
-    }
+    },
+
+    on_reset: function() {
+        this.deselectAll();
+        SWAM.Views.List.prototype.on_reset.call(this);
+    },
 });
 
 
-SWAM.Views.PaginatedTable = SWAM.Views.PaginatedList.extend({
-	defaults: {
-		List: SWAM.Views.Table,
-	},
-    classes: "swam-paginated-table swam-paginated-table-bs",
+SWAM.Views.TableBatchPanel = SWAM.View.extend({
+    template: "swam.ext.lists.batch_panel",
+    tagName: "div",
+    classes: "swam-batch-select-panel rounded-start rounded-end",
 
-    on_init: function() {
-        if (!this.options.list_options || !this.options.list_options.columns) {
-            this.options.list_options = _.extend({columns:this.options.columns}, this.options.list_options);
+    on_action_click: function(evt) {
+        this.options.list.on_action_click(evt);
+    },
+
+    getActions: function() {
+        if (!this.actions) {
+            this.actions = [];
+            _.each(this.options.list.options.batch_actions, function(item){
+                var citem = _.clone(item);
+                citem.is_last = false;
+                this.actions.push(citem);
+            }.bind(this));
         }
-        SWAM.Views.PaginatedList.prototype.on_init.apply(this, arguments);
-    },
-
-});
-
-
-SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
-    classes: "swam-paginated-table swam-table-clickable",
-    defaults: {
-        List: SWAM.Views.Table,
-        collection_params: {
-            size: 10
-        },
-        filter_bar: [
-            {
-                type: "group",
-                classes: "justify-content-sm-end",
-                columns: 9,
-                fields: [
-                    {
-                        name: "search",
-                        columns: 6,
-                        form_wrap: "search",
-                        placeholder: "search",
-                        button: {
-                            icon: "bi bi-search"
-                        }
-                    },
-                    {
-                        columns: 2,
-                        type: "select",
-                        name: "size",
-                        options: [
-                            5, 10, 20, 50, 100
-                        ]
-                    },
-                    {
-                        columns: 3,
-                        columns_classes: "col-sm-auto",
-                        type: "buttongroup",
-                        buttons: [
-                            {
-                                classes: "btn btn-secondary",
-                                icon: "bi bi-arrow-repeat",
-                                action: "reload"
-                            },
-                            {
-                                type: "dropdown",
-                                icon: "bi bi-download",
-                                items: [
-                                    {
-                                        icon: "bi bi-filetype-csv",
-                                        label: "Download CSV",
-                                        action: "download_csv"
-                                    },
-                                    {
-                                        icon: "bi bi-filetype-json",
-                                        label: "Download JSON",
-                                        action: "download_json"
-                                    },
-                                ]
-                            }
-
-                        ]
-                    },
-                ]
-            }
-        ],
-    },
-
-    on_init: function() {
-        if (this.options.Collection) {
-            this.options.collection = new this.options.Collection(this.options.collection_params);
-        }
-
-        if (this.options.filter_bar) {
-            if (this.options.filters) {
-                var field = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
-                    return field.type == "buttongroup";
-                });
-                if (field) {
-                    field.buttons.push({
-                        type: "dropdown",
-                        icon: "bi bi-filter",
-                        fields: this.options.filters
-                    });
-                }
-            }
-            if (this.options.add_button) {
-                this.options.filter_bar.unshift(this.options.add_button);
-            } else {
-                this.options.filter_bar.unshift({columns:3, type:"hidden"}); // need this to make view look clean
-            }
-        }
-
-        if (!this.options.list_options || !this.options.list_options.columns) {
-            this.options.list_options = _.extend({columns:this.options.columns}, this.options.list_options);
-        }
-        SWAM.Views.PaginatedList.prototype.on_init.apply(this, arguments);
-
-        this.list.on("item:clicked", this.on_item_clicked, this);
-    },
-
-    setParams: function(params) {
-        this.params = params || {};
-        if (this.params.url_params) {
-            this.collection.params = _.extend({}, this.collection.params, this.params.url_params);
-        }
-    },
-
-    reload: function() {
-        this.collection.fetch();
-    },
-
-    on_action_download_csv: function(evt) {
-        var filename = "download.csv";
-        window.location.assign(this.collection.getRawUrl({
-            format_filename: filename,
-            format:"csv",
-        }));
-        SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
-    },
-
-    on_action_download_json: function(evt) {
-        var filename = "download.json";
-        window.location.assign(this.collection.getRawUrl({
-            format_filename: filename,
-            format:"json",
-        }));
-        SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
-    },
-
-    on_item_clicked: function(item) {
-        SWAM.toast("oops", "nope");
+        if (this.actions.length) this.actions.last().is_last = true;
+        return this.actions;
     }
 
 });
+
+
+SWAM.Views.TablePaginationPanel = SWAM.View.extend({
+    template: "swam.ext.lists.pager_panel",
+    tagName: "div",
+    classes: "swam-pager-panel",
+
+    events: {
+        "change select": "on_input_handler",
+    },
+
+    on_input_handler: function(evt) {
+        var $el = $(evt.currentTarget);
+        var ievt = {name:$el.attr("name"), value:$el.val(), event:evt};
+        evt.stopPropagation();
+        if ((ievt.value == null)||(ievt.value == "")) {
+            delete this.options.list.collection.params[ievt.name];
+        } else {
+            this.options.list.collection.params[ievt.name] = ievt.value;
+        }
+        this.options.list.collection.fetch();
+    },
+
+    on_init: function() {
+        this.pager = new SWAM.Views.ListPagination(this.options);
+        this.addChild("pager", this.pager);
+        this.counter = new SWAM.Views.ListPaginationCount(this.options);
+        this.addChild("counter", this.counter);
+    },
+
+    on_post_render: function() {
+        this.$el.find("#size select").val(this.options.list.collection.params.size);
+    }
+
+});
+
 

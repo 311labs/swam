@@ -1,7 +1,4 @@
 
-
-
-
 String.prototype.replaceAll = function(oldVal, newVal) {
     if (typeof oldVal !== "string" || typeof newVal !== "string" || oldVal === "") {
         return this;
@@ -181,4 +178,84 @@ String.prototype.isNumber = function() {
     var numberreg = /^\d+$/;
     return numberreg.test(this.removeAll(',').removeAll('$').removeAll("%"));
 };
+
+
+String.prototype.isZipcode = function() {
+    var numberreg = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+    return numberreg.test(this);
+};
+
+String.prototype.isPhone = function() {
+    return this.match(/^\s*\+?\s*1?[ \.\-\(]*[2-9]\d{2}[ \.\-\)]*[2-9]\d{2}[ \.\-]*\d{4}\s*$/) && true;
+};
+
+String.prototype.formatPhone = function() {
+    // return this.replace(/^(\d{3})(\d{3})(\d)+$/, "($1)$2-$3");
+    var value = this;
+    if (value.length && value[0] === "1") value = value.substr(1);
+    if (value.length > 10) return value.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)(\d+)/, '($1) $2-$3 $4');
+    if (value.length == 10) return value.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+    if (value.length > 6) return value.replace(/(\d\d\d)(\d\d\d)(\d+)/, '($1) $2-$3');
+    if (value.length == 6) return value.replace(/(\d\d\d)(\d\d\d)/, '($1) $2');
+    if (value.length > 3) return value.replace(/(\d\d\d)(.)/, '($1) $2');
+    if (value.length == 3) return value.replace(/(\d\d\d)/, '($1) ');
+    return value.substr(0);
+};
+
+String.prototype.isSSN = function() {
+    return this.length == 9 && this.match(/^\d+$/) && true;
+};
+
+String.prototype.formatSSN = function() {
+    // return this.replace(/^(\d{3})(\d{3})(\d)+$/, "($1)$2-$3");
+    var value = this;
+    if (value.length > 5) return value.replace(/(\d\d\d)(\d\d)(\d+)/, '$1-$2-$3');
+    if (value.length > 3) return value.replace(/(\d\d\d)(\d+)/, '$1-$2');
+    return value.substr(0);
+};
+
+String.prototype.formatEveryNth = function(n, delimiter) {
+    var value = this;
+    delimiter = delimiter || " ";
+    var re = new RegExp("(.{" + n + "})", "g");
+    return value.replace(re, "$1" + delimiter)
+};
+
+String.prototype.formatHiddenExpects = function(length, empty, not_empty) {
+    var value = this;
+    empty = empty || "_";
+    not_empty = not_empty || "*";
+    var remaining = length - value.length;
+    if (remaining) {
+        return new Array(value.length + 1).join( not_empty ) + new Array(remaining + 1).join( empty );
+    }
+    return new Array(value.length + 1).join( not_empty );
+};
+
+
+String.prototype.isEmail = function() {
+    return (/^[\w\-\+_]+(?:\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(?:\.[\w\-\+_]+)*$/).test(this);
+};
+
+String.prototype.__emojify_prefix = "twa twa-"; // this is twitter emoji (requires scss include)
+
+String.prototype.emojify = function() {
+    var urlRegex = /\:([^)]+)\:/gm;
+    var matches = this.match(urlRegex);
+    if (!matches) {
+        return this;
+    }
+    var result = this;
+    for (var i = 0; i < matches.length; i++) {
+        var match = matches[i];
+        if ((match.indexOf('/') == -1)&&(match.indexOf('/') == -1)) {
+            var emoji_class = matches[i].removeAll(":").replaceAll("_", "-");
+            result = result.replaceAll(match, "<i class=' " + this.__emojify_prefix + emoji_class + "'></i>");
+        }
+    }
+    return result;
+};
+
+
+
 

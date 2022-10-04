@@ -23,7 +23,7 @@ window.SWAM = {
                 troot = window.getNestedValue(troot, root_path);
                 if (troot == undefined) {
 
-                    console.warn("[Backbone.render] template root not found: " + tpath);
+                    console.warn("[SWAM.getTemplate] template root not found: " + tpath);
                     return t;
                 }
                 t = window.findNestedValue(troot, tpath);
@@ -106,6 +106,10 @@ SWAM.EventSupport = {
     }
 }
 
+// Global Ids make it easier to identify components
+window.__swam_global_index = 1;
+window.getNextSwamIndex = function() { return window.__swam_global_index++; };
+
 
 // Very simple and clean non es6 js class/objects
 // Needed to support old android and other legacy devices
@@ -140,6 +144,7 @@ _.extend(SWAM.Object.prototype, {
             super_defaults = _.deepClone(super_defaults);
             if (this.constructor.globals) super_defaults = _.extend({}, super_defaults, this.constructor.globals);
             this.options = _.extend({}, super_defaults, _.deepClone(this.defaults), opts);
+            this._id_ = window.getNextSwamIndex();
         }
     },
     SWAM.EventSupport);

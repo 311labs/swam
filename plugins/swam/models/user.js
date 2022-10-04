@@ -84,6 +84,13 @@ SWAM.Models.User = SWAM.Model.extend({
                     columns: 12
                 },
                 {
+                    name:"username",
+                    label:"Username",
+                    type:"username",
+                    placeholder:"Enter Username",
+                    columns: 12
+                },
+                {
                     name:"metadata.phone",
                     label:"Phone",
                     type:"tel",

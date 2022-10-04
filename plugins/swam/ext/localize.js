@@ -17,22 +17,44 @@ SWAM.Localize = {
         }
         return value;
     },
+
+    'phone': function(value, attr, fmt) {
+        if (_.isString(value)) {
+            return value.formatPhone();
+        }
+        return value;
+    },
+
+    'ssn': function(value, attr, fmt) {
+        if (value) {
+            return value.formatSSN();
+        }
+        return value;
+    },
+    
     'img' :function(value, attr, fmt) {
         var d = fmt;
         var classes = "lightbox-clickable";
         if (_.isArray(fmt)) {
             d = fmt[0];
             classes = fmt[1];
-        };
+        } else {
+            classes = fmt;
+        }
+
+        if (value && value.thumbnail) {
+            value = value.thumbnail;
+        }
 
         if (!value) value = d;
         if (!value) return "";
         return "<img class='" + classes + "' src='" + value + "' >";
     },
-    'sectoms': function(value) {
-        // to support legacy calls we change this into a date
-        return new Date(value * 1000);
+
+    'image': function(value, attr, fmt) {
+        return this.img(value, attr, fmt);
     },
+
     'iter': function(value, attr, fmt) {
         if (_.isObject(value)) {
             var res = [];
@@ -120,6 +142,7 @@ SWAM.Localize = {
 
     'iftruefalse': function(value, attr, fmt) {
         var values = fmt;
+        if (!values) return "<span class='text-danger'>missing params</span>";
         if (this.bool(value)) {
             return values[0].trim();
         }
@@ -136,8 +159,10 @@ SWAM.Localize = {
                 if (value == '') return false;
                 // return (["on", "true", "True", "y", "yes", "Yes"].indexOf(value) >= 0);
                 return (["off", "false", "False", "n", "no", "No", "0"].indexOf(value) < 0);
-            } else if (_.isNumber(value)) {
+            } else if (_.isNumeric(value)) {
                 return true;
+            } else if (_.isArray(value)) {
+                return value.length > 0;
             }
         }
         return value;
@@ -151,11 +176,15 @@ SWAM.Localize = {
         return value < 0;
     },
 
+    'eq': function(value, attr, fmt) {
+        return value == fmt;
+    },
+
     'timerSince': function(value, attr, fmt) {
         return SWAM.Localize.timer((Date.now() - value)/1000);
     },
 
-    'timer': function(value, attr, fmt) {
+    'timerObject': function(value, attr, fmt) {
         var d = {};
         d.SS = Math.floor(parseInt(value, 10));
         d.ss = d.SS % 60;
@@ -165,15 +194,22 @@ SWAM.Localize = {
         d.hh = d.HH % 60;
         d.DD = Math.floor(d.HH / 24);
         d.dd = d.DD;
-
+        return d;
+    },
+    'timer': function(value, attr, fmt) {
+        var d = this.timerObject(value, attr, fmt);
         _.each(['SS', 'ss', 'MM', 'mm', 'HH', 'hh', 'DD', 'dd'], function(v) {
             if(d[v] < 10) {
                 d[v] = "0" + d[v];
             }
         });
-        return this.formatDate(d, attr, fmt || 'MM:ss');
+        return this.formatDate(d, attr, fmt || 'hh:mm:ss');
+    },
+    'prettyTimer': function(seconds, attr, fmt) {
+        return this.prettytimer(seconds, attr, fmt);
     },
     'prettytimer': function(seconds, attr, fmt) {
+        if (!seconds) return "0 seconds";
         var interval = Math.floor(seconds / 31536000);
 
         if(interval > 1) {
@@ -218,12 +254,25 @@ SWAM.Localize = {
         });
         return this.formatDate(d, attr, fmt || 'MM:ss');
     },
+
+    'dow': function(value, attr, fmt) {
+        return Date.DOW[value];
+    },
+    'sectoms': function(value) {
+        // to support legacy calls we change this into a date
+        return new Date(value * 1000);
+    },
+    'mintosecs': function(value) {
+        // to support legacy calls we change this into a date
+        return value * 60;
+    },
+
     'safe_datetime': function(value, attr, fmt) {
         if(_.isUndefined(value)||(value === null)||(value == 0)) {
             return 0;
         }
 
-        if (_.isNumber(value)) {
+        if (_.isNumeric(value)) {
             // we will assume then this is secs
             value = value * 1000;
         } else if (_.isString(value)) {
@@ -232,10 +281,17 @@ SWAM.Localize = {
             if (dt) value = dt.getTime();
         } else if (_.isFunction(value.getMonth)) {
             value = value.getTime();
+        } else if ((value.attributes != undefined)&&(value.attributes.hour != undefined)) {
+            value = value.attributes;
+            value = moment(value);
+        } else if (value.hour != undefined) {
+            value = new Date(value.year, value.month, value.hour, value.minute, value.second,value.millisecond);
+            value = value.getTime();
         }
         return value;
     },
-    'dateobj': function(value) {
+    
+    'datetoobj': function(value) {
         if((value === null)||(value == 0)) {
             return null;
         }
@@ -281,7 +337,7 @@ SWAM.Localize = {
     //     if((value === null)||(value == 0)) {
     //         return '';
     //     }
-    //     var d = this.dateobj(this.safe_datetime(value));
+    //     var d = this.datetoobj(this.safe_datetime(value));
     //     if (!fmt) fmt = "yyyy-MM-dd HH:mm:ss t";
     //     return this.formatDate(d, attr, fmt);
     // },
@@ -290,7 +346,7 @@ SWAM.Localize = {
     //         return '';
     //     }
     //     if(!fmt) fmt = "yyyy-MM-dd";
-    //     var d = this.dateobj(this.safe_datetime(value));
+    //     var d = this.datetoobj(this.safe_datetime(value));
     //     return this.formatDate(d, attr, fmt);
     // },
     // 'time': function(value, attr, fmt) {
@@ -298,7 +354,7 @@ SWAM.Localize = {
     //         return '';
     //     }
     //     if(!fmt) fmt = "HH:mm:ss t";
-    //     var d = this.dateobj(this.safe_datetime(value));
+    //     var d = this.datetoobj(this.safe_datetime(value));
     //     return this.formatDate(d, attr, fmt);
     // },
     "formatDate": function(obj, attr, fmt) {
@@ -432,7 +488,7 @@ SWAM.Localize = {
         return value;
     },
     'icon': function(value, attr, fmt) {
-        return SWAM.Icons[value];
+        return SWAM.Icons.getIcon(value);
     },
 
     'subtract': function(value, attr, fmt) {
@@ -441,7 +497,7 @@ SWAM.Localize = {
 
     'minus': function(value, attr, fmt) {
         var m = 0;
-        if (_.isNumber(fmt)){
+        if (_.isNumeric(fmt)){
             m = fmt;
         } else if (fmt && fmt.isNumber()) {
             m = Number(fmt);
@@ -488,6 +544,77 @@ SWAM.Localize = {
         }
         return value / m;
     },
+
+    'percent': function(value, attr, fmt) {
+        return this.percentage(value, attr, fmt);
+    },
+
+    'percentage': function(value, attr, fmt) {
+        var pos = 0;
+        if (_.isNumber(fmt)){
+            pos = fmt;
+        } else if (fmt && fmt.isNumber()) {
+            pos = Number(fmt);
+        }
+
+        if (!value) return "0%";
+
+        return (value*100.0).toFixed(pos) + "%";
+    },
+
+    CURRENCY_FORMATS: {
+        'dollars': {
+            decimals:0,
+            thousand_sep:",",
+            decimal_sep:".",
+            sign:"$"
+        },
+        'dollarscents': {
+            decimals:2,
+            thousand_sep:",",
+            decimal_sep:".",
+            sign:"$"
+        },
+        'plain': {
+            decimals:0,
+            thousand_sep:",",
+            decimal_sep:".",
+            sign:""
+        },
+        'decimal': {
+            decimals:2,
+            thousand_sep:",",
+            decimal_sep:".",
+            sign:""
+        },
+        'crypto': {
+            decimals:8,
+            thousand_sep:",",
+            decimal_sep:".",
+            sign:""
+        }
+
+    },
+
+    'currency': function(value, attr, fmt) {
+        if (value == null) return "n/a";
+
+        try {
+            fmt = this.CURRENCY_FORMATS[fmt] || this.CURRENCY_FORMATS["dollarscents"];
+            var n = value;
+            var c = fmt.decimals;
+            var d = fmt.decimal_sep;
+            var t = fmt.thousand_sep;
+            var s = n < 0 ? "-" : "";
+            var i = parseInt(n = Math.abs(+n || 0).toFixed(c), 10) + "";
+            var j = (j = i.length) > 3 ? j % 3 : 0;
+            return fmt.sign + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+        } catch(err) {
+            console.log(err);
+        }
+        return value;
+    },
+
     'has': function(value, attr, fmt) {
         if (_.isString(value)) {
             return value.includes(fmt);
@@ -614,6 +741,60 @@ SWAM.Localize = {
 
         if (value.length > fmt) {
             return value.slice(0, fmt) + "...";
+        }
+        return value;
+    },
+
+    'table': function(value, attr, fmt) {
+        if (!value) return null;
+        if (value.attributes) value = value.attributes;
+
+        var $table = $("<table />").addClass("swam-table swam-table-bs table table-striped");
+        var $thead = $("<thead />").appendTo($table);
+        var $tbody = $("<tbody />").appendTo($table);
+        var $hrow = $("<tr />").appendTo($thead);
+        $hrow.append("<th>key</th>").append("<th>value</th>");
+
+        var obj_to_models = function(obj, prefix) {
+            _.each(obj, function(value, key){
+                var lbl = key;
+                if (prefix) lbl = prefix + "." + key
+                if (_.isDict(value)) return obj_to_models(value, lbl);
+                if (["modified", "created", "when", "last_activity", "last_login"].has(key)) value = SWAM.Localize.datetime(value);
+                var $row = $("<tr />").appendTo($tbody);
+                $row.append($("<td />").text(lbl)).append($("<td />").text(value));
+            });
+        };
+        obj_to_models(value);
+        var $w = $("<div />").append($table);
+        return $w.html();
+    },
+
+    'lower': function(value, attr, fmt) {
+        return this.lowercase(value, attr, fmt);
+    },
+
+    'lowercase': function(value, attr, fmt) {
+        if (_.isString(value)) {
+            return value.toLowerCase();
+        }
+        return value;
+    },
+
+    'capitalize': function(value, attr, fmt) {
+        if (_.isString(value)) {
+            return value.capitalize();
+        }
+        return value;
+    },
+
+    'upper': function(value, attr, fmt) {
+        return this.uppercase(value, attr, fmt);
+    },
+
+    'uppercase': function(value, attr, fmt) {
+        if (_.isString(value)) {
+            return value.toUpperCase();
         }
         return value;
     },

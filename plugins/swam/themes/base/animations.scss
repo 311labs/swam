@@ -1,0 +1,6 @@
+.swam-anim-hover-scale {
+	transition: transform 0.3s;
+	&:hover {
+		transform: scale(1.1);
+	}
+}

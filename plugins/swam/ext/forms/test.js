@@ -92,7 +92,7 @@ SWAM.Form.Test.Datetime = [
     },
     {
         label: "Select Day",
-        name: "simple_time",
+        name: "simple_day",
         type: "select",
         options: "days",
         placeholder: "Select Day",

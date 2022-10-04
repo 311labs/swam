@@ -39,7 +39,7 @@ $gray-800: #343a40;
 $gray-900: #212529;
 
 
-$page-background: white;
+$page-background: #fafbfe;
 
 $panel-background: #fff;
 $panel-color: #000;
@@ -54,16 +54,16 @@ $brand-success: #198754;
 $brand-info: #0dcaf0;
 $brand-warning: #ffc107;
 $brand-danger: #dc3545;
-$brand-default: $gray-100;
+$brand-default: #f7f7f7;
 $brand-light: #f8f9fa;
 $brand-dark: #212529;
 
-
-$topbar-height: 60px;
-$topbar-background: #4C99D7;
+$topbar-height: 50px;
+$topbar-background: #55697a;
 $topbar-border: 1px solid rgba(0,0,0,0.3);
 $topbar-box-shadow: 0 0 4px 1px rgba(0,0,0,0.5);
 $topbar-color: #ffffff;
+$topbar-link-color: #BEEBEA;
 $topbar-font-size: 18px;
 
 $panel-left-font-size: 16px;
@@ -107,7 +107,15 @@ $dialog-modal-background: rgba(255,255,255,0.51);
 $dialog-color: #212529;
 $dialog-background: #f9f9f9;
 
+$table-odd-bg: #f1f3fa;
+$swam-toc-header-bg: #585e66;
+$swam-toc-header-color: white;
+$swam-toc-header-link-color: #95b9ed;
+$swam-toc-header-link-hover: white;
+$swam-toc-header-height: auto;
+$swam-toc-width: 250px;
 
+$batch-select-bg: transparent;
 
 @mixin nolist {
 	list-style: none;
@@ -125,6 +133,4 @@ $dialog-background: #f9f9f9;
 		clear: both;
 	}
 }
-
-
 

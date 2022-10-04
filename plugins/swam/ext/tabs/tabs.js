@@ -1,9 +1,9 @@
 
 SWAM.Views.Tabs = SWAM.View.extend({
-    template: "plugins.swam.ext.tabs",
+    template: "swam.ext.tabs",
     classes: "swam-tabs-view",
     defaults: {
-
+        force_dropdown: false
     },
 
     on_init: function(evt) {
@@ -25,7 +25,6 @@ SWAM.Views.Tabs = SWAM.View.extend({
         this.options.active_tab = tab_id;
         var view = this.getTab(tab_id);
         if (!view) {
-            SWAM.Dialog.warning("No view for tab: " + tab_id);
             return;
         }
         this.children["#active_tab_view"] = view;
@@ -34,6 +33,7 @@ SWAM.Views.Tabs = SWAM.View.extend({
         this.$el.find("#tabs_dropdown").html(this.getTabLabel(tab_id));
         this.renderChildren(true);
         if (_.isFunction(view.on_tab_focus)) view.on_tab_focus();
+        this.trigger("tab:change", {id:tab_id, view:view});
     },
 
     setModel: function(model) {
@@ -72,10 +72,60 @@ SWAM.Views.Tabs = SWAM.View.extend({
         return allowed_tabs;
     },
 
+
+    getEstimatedWidth: function() {
+        var len = 0;
+        _.each(this.options.tabs, function(tab){
+            len += tab.label.length * 15;
+        });
+        return len;
+    },
+
+    isCollapsed: function() {
+        return this.$el.find("div.tabs-container").hasClass("wrapped");
+    },
+
+    checkWrapped: function() {
+        if (!this.$el) return;
+        if (this.options.force_dropdown) {
+            this.$el.find("div.tabs-container").addClass("wrapped");
+            return true;
+        }
+
+        if (this.hasWrapped()) {
+            this.$el.find("div.tabs-container").addClass("wrapped");
+            return true;
+        } else {
+            this.$el.find("div.tabs-container").removeClass("wrapped");
+        }
+    },
+
+    hasWrapped: function() {
+        if (this.options.force_dropdown) {
+            return true;
+        }
+
+        if (this.isCollapsed()) return true;
+        var $children = this.$el.find("div.tabs > ul").children();
+        var prevOffset = 0;
+        var flag = false;
+        $children.each(function(){
+            console.log(this.offsetLeft);
+            if (this.offsetLeft < prevOffset) {
+                flag = true;
+            }
+            prevOffset = this.offsetLeft;
+        });
+        return flag;
+    },
+
     on_post_render: function() {
+        if (!this.options.active_tab && this.options.tabs.length) this.options.active_tab = this.options.tabs[0].id;
         if (this.options.active_tab) {
             this.setActiveTab(this.options.active_tab);
         }
+        // give the browser some render time, then check for wrapping
+        setTimeout(this.checkWrapped.bind(this), 0);
     }
 
 });

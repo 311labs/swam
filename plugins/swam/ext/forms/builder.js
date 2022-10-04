@@ -26,6 +26,7 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 			fc.append_label = true;
 			fc.$el.addClass("form-floating");
 		}
+		if ((fc.requires_perm) && (!app.me || !app.me.hasPerm(fc.requires_perm))) return;
 		SWAM.Form.buildField(fc, form_info);
 		SWAM.Form.Builder.form_wrap(fc, form_info);
 		SWAM.Form.Builder.row(fc, form_info);
@@ -37,6 +38,7 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 
 SWAM.Form.buildField = function(fc, form_info) {
 	var func_name = fc.type;
+	if (fc.field && !fc.name) fc.name = fc.field; // common type when building forms
 	if (fc.name) {
 		SWAM.Form.Builder.getValue(fc, form_info);
 	}
@@ -65,7 +67,7 @@ SWAM.Form.buildField = function(fc, form_info) {
 			}
 		}
 
-		if (fc.value) {
+		if (fc.value != undefined) {
 			SWAM.Form.Builder.value(fc, form_info);
 		}
 	}
@@ -87,7 +89,13 @@ SWAM.Form.buildGroup = function(fc, form_info) {
 	SWAM.Form.Builder.row(fc, form_info);
 }
 
-SWAM.Form.Builder = {};
+SWAM.Form.Builder = {
+	config:{
+		btn_classes: "btn btn-primary",
+		dropdown_btn_classes: "btn btn-secondary dropdown-toggle",
+		input_group_btn_classes: "btn btn-default btn-outline-secondary"
+	}
+};
 
 SWAM.Form.Builder.getValue = function(fc, form_info) {
 	if (form_info.defaults && (form_info.defaults[fc.name] != undefined)) fc.default = form_info.defaults[fc.name];
@@ -109,6 +117,22 @@ SWAM.Form.Builder.value = function(fc, form_info) {
 		if (!_.isBoolean(fc.value) && fc.value.isNumber()) fc.value = fc.value.toInt();
 		if (_.isString(fc.value)) fc.value = 0;
 		fc.$input.prop("checked", fc.value);
+	} else if (fc.type == "select") {
+		if (fc.value) {
+			// add an option for the value if missing
+			var exists = false;
+			fc.$input.find("option").each(function(){
+			    if (this.value == fc.value) {
+			        exists = true;
+			        return false;
+			    }
+			});
+			if (!exists) {
+				fc.$input.append($("<option />").text(fc.value).val(fc.value));
+			}
+			fc.$input.attr("data-value", fc.value);
+			fc.$input.val(fc.value);
+		}
 	} else {
 		fc.$input.attr("data-value", fc.value);
 	}
@@ -210,12 +234,16 @@ SWAM.Form.Builder.line = function(fc, form_info) {
 	fc.$el.append("<hr />");
 }
 
+SWAM.Form.Builder.empty = function(fc, form_info) {
+	fc.$el.append("&nbsp;");
+}
+
 SWAM.Form.Builder.button = function(fc, form_info) {
 	SWAM.Form.Builder.iconlabel(fc);
 	fc.$button = $("<button type='button' />").html(fc.label);
 	if (fc.disabled) fc.$button.attr("disabled", "disabled");
 	if (fc.action) fc.$button.attr("data-action", fc.action);
-	if (!fc.classes) fc.classes = "btn btn-primary";
+	if (!fc.classes) fc.classes = SWAM.Form.Builder.config.btn_classes;
 	if (fc.full_width) fc.$el.addClass("d-grid");
 	fc.$button.attr("class", fc.classes);
 	fc.$el.append(fc.$button);
@@ -263,6 +291,7 @@ SWAM.Form.Builder.input_group = function(fc, form_info) {
 	SWAM.Form.Builder.label(fc);
 	fc.$el.append(fc.$label);
 	fc.$wrap = $("<div />").addClass("input-group");
+	if (fc.size) fc.$wrap.addClass("input-group-" + fc.size);
 	fc.$el.append(fc.$wrap);
 	if (fc.left_icon) {
 		fc.$wrap.append("<div class='input-group-text'><i class='" + fc.left_icon + "'></i></div>");
@@ -271,11 +300,11 @@ SWAM.Form.Builder.input_group = function(fc, form_info) {
 	fc.$input.prop("type", fc.type);
 	fc.$wrap.append(fc.$input);
 	if (fc.button) {
-		var $btn = $("<button class='btn btn-default btn btn-outline-secondary'><i class='" + fc.button.icon + "'></i></button>");
+		var $btn = $("<button class='" + SWAM.Form.Builder.config.input_group_btn_classes + "'><i class='" + fc.button.icon + "'></i></button>");
 		if (fc.button.action) $btn.attr("data-action", fc.button.action);
 		fc.$wrap.append($btn);
 	} else if (fc.icon) {
-		fc.$wrap.append("<div class='input-group-text'><i class='" + fc.icon + "'></i></div>");
+		fc.$wrap.append("<div class='input-group-text'>" + SWAM.Icons.getIcon(fc.icon) + "</div>");
 	}
 	return fc;
 }
@@ -303,6 +332,7 @@ SWAM.Form.Builder.daterange = function(fc, form_info) {
 SWAM.Form.Builder.select = function(fc, form_info) {
 	SWAM.Form.Builder.label(fc);
 	fc.$input = $("<select />").addClass("form-select").addClass("input-" + fc.type);
+	if (fc.size) fc.$input.addClass("form-select-" + fc.size);
 	if (fc.multiple || fc.multi) {
 		fc.$input.attr("multiple", "multiple");
 	}
@@ -317,52 +347,55 @@ SWAM.Form.Builder.select = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.options = function(fc, form_info) {
+	if (_.isFunction(fc.options)) {
+		fc.options = fc.options(fc, form_info);
+	}
+
 	if (_.isString(fc.options)) {
-		if (_.isFunction(fc.options)) {
-			fc.options = fc.options();
-		} else {
-			// data sets
-			var dataset = SWAM.DataSets.get(fc.options + "_select");
-			if (!dataset || _.isEmpty(dataset)) dataset = SWAM.DataSets.get(fc.options);
-			if (dataset) fc.options = dataset;
+		// data sets
+		var dataset = SWAM.DataSets.get(fc.options + "_select");
+		if (!dataset || _.isEmpty(dataset)) dataset = SWAM.DataSets.get(fc.options);
+		if (dataset) fc.options = dataset;
+	}
+
+	if (fc.placeholder) {
+		fc.$input.append($("<option />").text(fc.placeholder).val(""));
+	}
+
+	if (fc.options != undefined) {
+		if (_.isArray(fc.options)) {
+			SWAM.Form.Builder.options_array(fc, form_info);
+		} else if (_.isArray(fc.options.models)) {
+			SWAM.Form.Builder.options_collection(fc, form_info);
+		} else if (window.isDict(fc.options)) {
+			SWAM.Form.Builder.options_dict(fc, form_info);
 		}
 	}
 
-	if (fc.options == undefined) {
-		return fc;
-	} else if (_.isArray(fc.options)) {
-		SWAM.Form.Builder.options_array(fc, form_info);
-	} else if (_.isArray(fc.options.models)) {
-		SWAM.Form.Builder.options_collection(fc, form_info);
-	} else if (window.isDict(fc.options)) {
-		SWAM.Form.Builder.options_dict(fc, form_info);
-	} else if ((fc.start != undefined) && (fc.start.isNumber())) {
+	if ((fc.start != undefined) && (fc.start.isNumber())) {
 		SWAM.Form.Builder.options_range(fc, form_info);
 	}
-
 
 	return fc;
 }
 
 SWAM.Form.Builder.options_array = function(fc, form_info) {
-	if (fc.placeholder) {
-		fc.$input.append($("<option />").text(fc.placeholder).val(""));
-	}
-	_.each(fc.options, function(value){
+
+	_.each(fc.options, function(value, index){
 		if (_.isObject(value)) {
 			if ((value.requires_perm) && (!app.me.hasPerm(value.requires_perm))) return;
 			fc.$input.append($("<option />").text(value.label).val(value.value));
+		} else if (fc.index_value) {
+			fc.$input.append($("<option />").text(value).val(index));
 		} else {
 			fc.$input.append($("<option />").text(value).val(value));
 		}
 	});
+	
 }
 
 
 SWAM.Form.Builder.options_collection = function(fc, form_info) {
-	if (fc.placeholder) {
-		fc.$input.append($("<option />").text(fc.placeholder).val(""));
-	}
 
 	if (!fc.value_field) fc.value_field = "id";
 	if (!fc.display_field) fc.display_field = fc.value_field;
@@ -373,9 +406,7 @@ SWAM.Form.Builder.options_collection = function(fc, form_info) {
 
 
 SWAM.Form.Builder.options_dict = function(fc, form_info) {
-	if (fc.placeholder) {
-		fc.$input.append($("<option />").text(fc.placeholder).val(""));
-	}
+
 	var keys = [], len = 0;
 	_.each(fc.options, function(value, key){
 		keys.push(key);
@@ -383,16 +414,27 @@ SWAM.Form.Builder.options_dict = function(fc, form_info) {
 	keys.sort();
 	len = keys.length;
 	for (i = 0; i < len; i++) {
-		var value = dataset[keys[i]];
+		var value = fc.options[keys[i]];
 		var key = keys[i]
 		fc.$input.append($("<option />").text(value).val(key));
 	}
 }
 
+SWAM.Form.Builder.options_func = function(fc, form_info) {
+
+	var items = fc.options(fc, form_info);
+	_.each(items, function(value){
+		if (_.isObject(value)) {
+			if ((value.requires_perm) && (!app.me.hasPerm(value.requires_perm))) return;
+			fc.$input.append($("<option />").text(value.label).val(value.value));
+		} else {
+			fc.$input.append($("<option />").text(value).val(value));
+		}
+	});
+}
+
 SWAM.Form.Builder.options_range = function(fc, form_info) {
-	if (fc.placeholder) {
-		fc.$input.append($("<option />").text(fc.placeholder).val(""));
-	}
+
 	fc.end = fc.end || fc.stop || 5;
 	var i = fc.start;
 	var s = fc.step || 5;
@@ -414,7 +456,7 @@ SWAM.Form.Builder.options_range = function(fc, form_info) {
 
 SWAM.Form.Builder.iconlabel = function(fc, form_info) {
 	var lbl = "";
-	if (fc.icon) lbl = '<i class="' + fc.icon + '"></i> ';
+	if (fc.icon) lbl = SWAM.Icons.getIcon(fc.icon) + ' ';
 	if (fc.label) lbl = lbl + fc.label;
 	fc.label = lbl;
 }
@@ -423,13 +465,14 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 	SWAM.Form.Builder.iconlabel(fc);
 	fc.did = _.uniqueId("dropdown");
 	fc.$child = $("<div />").addClass("dropdown");
+	if (fc.classes) fc.$child.addClass(fc.classes);
 
 	var $button = $("<button />")
 		.prop("type", "button")
 		.attr("id", fc.did)
 		.attr("data-bs-toggle", "dropdown")
 		.attr("aria-expanded", "false")
-		.addClass("btn btn-secondary dropdown-toggle")
+		.addClass(fc.btn_classes || SWAM.Form.Builder.config.dropdown_btn_classes)
 		.html(fc.label);
 
 	if (fc.className) {
@@ -447,8 +490,8 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 		SWAM.Form.Builder._dropdownview(fc, form_info);
 	}
 	
-
 	fc.$el.append(fc.$child);
+	return fc.$el;
 }
 
 SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
@@ -457,11 +500,17 @@ SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
 		.appendTo(fc.$child);
 
 	_.each(fc.items, function(item) {
+		console.log(item);
 		var $li = $("<li />").appendTo($menu);
 		var $item = $("<a href='#' />").addClass("dropdown-item").appendTo($li);
 		if (item.action) $item.attr("data-action", item.action);
+		if (item.id) {
+			$item.attr("data-id", item.id);
+		} else if (fc.id) {
+			$item.attr("data-id", fc.id);
+		}
 		var ilbl = "";
-		if (item.icon) ilbl = '<i class="' + item.icon + '"></i> ';
+		if (item.icon) ilbl = SWAM.Icons.getIcon(item.icon) + ' ';
 		if (item.label) ilbl = ilbl + item.label;
 		$item.html(ilbl);
 	});
@@ -499,9 +548,12 @@ SWAM.Form.Builder.image = function(fc, form_info) {
 		.addClass("input-" + fc.type);
 	fc.$input.prop("type", "file");
 	fc.$input.data("label", fc.label);
-
-	if (fc.value) {
-		fc.$input.data("image", fc.value);
+	value = fc.value;
+	if (value) {
+		if (value.thumbnail) {
+			value = value.thumbnail;
+		}
+		fc.$input.data("image", value);
 	}
 	fc.$el.append(fc.$input);
 	fc.value = null;

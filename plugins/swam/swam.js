@@ -9,11 +9,12 @@ core/*.js
 ext/*.js
 ext/lists/list.js
 ext/lists/pagination.js
+ext/lists/tables.js
 ext/forms/base.js
 ext/forms/datasets.js
-ext/forms/forms.js
+ext/forms/view.js
 ext/dialogs/dialogs.js
-ext/**/*.js
+ext/nav/**/*.js
 app/*.js
 app/pages/*.js
 models/model.js
@@ -22,4 +23,5 @@ models/user.js
 models/member.js
 models/*.js
 
+ext/**/*.js
 

@@ -1,0 +1,22 @@
+{{#options.items|bool}}
+<a href='#' data-bs-toggle="collapse" data-bs-parent='#{{options.nav.id}}' data-bs-target='#submenu{{_id_}}' class='nav-link nav-link-toggle'>
+{{/options.items|bool}}
+{{^options.items|bool}}
+{{#options.page}}
+<a href='#' data-showpage="{{options.page}}" class='nav-link' {{{get_tooltip}}}>
+{{/options.page}}
+{{#options.url}}
+<a href='#' data-showurl="{{options.url}}" class='nav-link'>
+{{/options.url}}
+{{/options.items|bool}}
+
+{{#options.icon}}{{{ICON(options.icon)}}}{{/options.icon}}
+{{options.label}}
+</a>
+{{#options.items|bool}}
+<div id="submenu{{_id_}}" class="collapse">
+	<ul id="submenu"></ul>
+</div>
+{{/options.items|bool}}
+
+

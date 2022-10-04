@@ -1,0 +1,52 @@
+<h1>Toast Notifications</h1>
+
+<p class="lead">
+    Toasts are lightweight notifications designed to mimic the push notifications that have been popularized by mobile and desktop operating systems. They’re built with flexbox, so they’re easy to align and position.
+</p>
+
+<h4>Global Configuration</h4>
+
+<h5>Placement</h5>
+
+<p>You can change where notifications appear by setting the <span class="fw-bold">toast_placement</span> paremeter in SWAM.App options.  Play around with the available options below.</p>
+
+<div class="row">
+  <div class="col">
+    <h6 class="text-muted">Placement</h6>
+    <div id="toast_placement"></div>
+  </div>
+  <div class="col">
+    <h6 class="text-muted">Theme</h6>
+    <div id="toast_theme"></div>
+  </div>
+</div>
+
+
+
+<div class="card mt-5">
+  <div class="card-header">
+    Javascript
+  </div>
+  <div class="card-body">
+    <div class="highlight">
+
+    <pre><code class="hljs" style="background:#FAFAFA;border-radius:8px">    <span class="hljs-keyword">let</span> toast = {
+        <span class="hljs-attr">title</span>: <span class="hljs-string">"Voila!"</span>,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">"How easy was that?"</span>,
+        <span class="hljs-attr">status</span>: TOAST_STATUS.SUCCESS,
+        <span class="hljs-attr">timeout</span>: <span class="hljs-number">5000</span>
+    }
+    Toast.create(toast);
+    // or SWAM.toast(title, message, status, timeout);
+
+  </code>
+
+  </pre>
+
+    </div>
+    <button class="btn btn-success m-2" data-action="toast" data-kind="success">Show Success Toast</button>
+    <button class="btn btn-warning m-2" data-action="toast" data-kind="warning">Show Warning Toast</button>
+    <button class="btn btn-danger m-2" data-action="toast" data-kind="danger">Show Danger Toast</button>
+    <button class="btn btn-info m-2" data-action="toast" data-kind="info">Show Info Toast</button>
+  </div>
+</div>
