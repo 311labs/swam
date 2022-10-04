@@ -7,6 +7,8 @@
  * var past = now.minus({days:3, minutes:20});
  */
 
+Date.DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 Date.prototype.plus = function(delta) {
   return this.transform(delta);
 }
@@ -34,7 +36,7 @@ Date.prototype.transform = function(delta) {
     ms += (delta.seconds * 1000);
     result.setTime(result.getTime() + ms);
   }
+  
   return result;
 }
-
 
