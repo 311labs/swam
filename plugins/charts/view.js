@@ -99,6 +99,11 @@ SWAM.Views.Chart = SWAM.View.extend({
 	on_dom_removed: function() {
 		this.chart.destroy();
 		this.$el.empty();
+	},
+
+	update: function() {
+		this.on_dom_removed();
+		this.on_post_render();
 	}
 }, {
     LAST_ID: 0,

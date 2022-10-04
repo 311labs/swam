@@ -51,6 +51,13 @@ SWAM.Models.User = SWAM.Model.extend({
         return false;
     },
 
+    sendEvent: function(name, message, extra, callback, opts) {
+        var payload = {message:message, extra:extra, name:name, action:"send_event", member:this.id};
+        SWAM.Rest.POST("/rpc/account/member/action", payload, function(response, status) {
+            if (callback) callback(this, response);
+        }.bind(this), opts);
+    }
+
 }, {
     EDIT_FORM: [
         {

@@ -33,6 +33,10 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         console.log(evt);
         if (_.isFunction(this["on_prop_" + evt.key])) this["on_prop_" + evt.key](evt.value);
     },
+    on_route: function(view, params) {
+        console.log(params);
+        view.on_route.apply(view, params);
+    },
     addPage: function(name, view, routes) {
         if (!view.getRoute) {
             alert("Unable to add page: " + name + "!   Most likely it is not have type SWAM.Page");
@@ -46,7 +50,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         if (!routes) routes = [this.root + name];
         view.routes = routes;
         this.registerRouteHandler(routes, function() {
-            view.on_route.apply(view, arguments);
+            this.on_route(view, arguments);
         }.bind(this));
     },
     hasPage: function(name) {

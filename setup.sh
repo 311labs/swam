@@ -23,7 +23,7 @@ ln -snf "$SWAMCORE/swam.py" "swam.py"
 cp "$SWAMCORE/swam.conf" "swam.conf"
 mkdir -p "apps"
 cd apps
-ln -snf "../$SWAMCORE/apps/examples" "examples"
+ln -snf "../$SWAMCORE/apps/docs" "docs"
 cd ..
 mkdir -p "plugins"
 

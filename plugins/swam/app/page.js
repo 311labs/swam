@@ -4,8 +4,10 @@ SWAM.Page = SWAM.View.extend({
 	classes: "page-view",
 	
 	on_route: function(path) {
+		// this is only called for an initial route loaded by the app
 		console.log("on_route: " + this.page_name);
-		app.setActivePage(this.page_name, {url_params:app.getSearchParams()});
+		var params = {url_params:app.getSearchParams()};
+		app.setActivePage(this.page_name, params);
 	},
 
 	on_page_enter: function() {

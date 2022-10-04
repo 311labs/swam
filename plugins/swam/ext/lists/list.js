@@ -1,7 +1,7 @@
 SWAM.Views.ListItem = SWAM.View.extend({
     template: "<div>{{display_label}}</div>",
     tagName: "li",
-    classes: "swam-list-item",
+    classes: "swam-list-item list-group-item",
 
     events: {
         "click": "on_clicked"
@@ -34,7 +34,7 @@ SWAM.Views.ListItem = SWAM.View.extend({
 
 
 SWAM.Views.List = SWAM.View.extend({
-    classes: "swam-list",
+    classes: "swam-list list-group",
     tagName: "ul",
 
     defaults: {
