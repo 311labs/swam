@@ -76,6 +76,9 @@ SWAM.Localize = {
         }
         return value;
     },
+    'isnull': function(value, attr, fmt) {
+        return ((value == null)||(value == undefined));
+    },
     'ifempty': function(value, attr, fmt) {
         return SWAM.Localize.ifemptyornull(value, attr, fmt);
     },

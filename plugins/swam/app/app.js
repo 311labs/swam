@@ -1,7 +1,7 @@
 
 
 SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).extend({
-    template: "<div id='panel-left'></div><div id='panel-main'><header id='title-bar'></header><div id='pages' class='has-topbar'></div></div>",
+    template: "<div id='panel-left'></div><div id='panel-main'><header id='title-bar'></header><div id='pages' class='has-topbar pages-absolute'></div></div>",
     _pages: {},
     active_page: null,
     started: false,
