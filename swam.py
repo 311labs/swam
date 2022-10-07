@@ -22,6 +22,7 @@ config = objict.fromFile("swam.conf")
 
 parser = OptionParser()
 parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=config.get("verbose", False))
+parser.add_option("-a", "--auto_version", action="store_true", dest="auto_version", default=False, help="auto update app versions on change")
 parser.add_option("-f", "--force", action="store_true", dest="force", default=False, help="force the revision")
 parser.add_option("-m", "--minify", action="store_true", dest="minify", default=False, help="minify the revision")
 parser.add_option("-w", "--watch", action="store_true", dest="watch", default=False, help="watch for changes and auto refresh")
@@ -520,7 +521,7 @@ def buildApp(app_path, config, opts):
         # bump local version
         if config.version is None:
             config.version = "1.0.0"
-        if opts.bump_rev:
+        if opts.auto_version:
             major, minor, rev = config.version.split('.')
             rev = int(rev) + 1
             config.version = "{}.{}.{}".format(major, minor, rev)
@@ -605,7 +606,7 @@ def loadAppsFromPath(opts, app_path, parent_folder=None):
 class FileWatcher():
     def __init__(self, opts, freq=1.0):
         self.opts = opts
-        self.opts.bump_rev = True
+        self.opts.auto_version = opts.auto_version
         self._thread = None
         self._watch_freq = freq
 

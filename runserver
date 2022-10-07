@@ -13,4 +13,7 @@ if [ ! -e "./swam.py" ]; then
     git submodule update
 fi
 
-./swam.py -w -s
+# run once to build with no versioning
+./swam.py
+# run again to build with versioning
+./swam.py -w -s -a
