@@ -18,17 +18,21 @@ SWAM.Dialog.editModel = function(model, opts) {
 	        {
 	            id: "cancel",
 	            action:"choice",
-	            label: "Cancel"
+	            label: opts.lbl_cancel || "Cancel"
 	        },
 	        {
 	            id: "save",
 	            action:"choice",
-	            label: "Save"
+	            label: opts.lbl_save || "Save"
 	        }
 	    ],
 	    model: model,
 	    fields:model.constructor.EDIT_FORM
 	};
+
+	if (opts.lbl_cancel === null) {
+		defaults.buttons.shift();
+	}
 
 	opts = _.extend(defaults, opts);
 
@@ -52,7 +56,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 			model.save(data, function(model, resp) {
 				app.hideBusy();
 				if (resp.error) {
-					SWAM.Dialog.warning(resp.error);
+					if (!callback) SWAM.Dialog.warning(resp.error);
 				} else {
 					dlg.dismiss();
 				}

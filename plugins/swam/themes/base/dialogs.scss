@@ -8,9 +8,6 @@ body.app {
 
 	    div.modal-content {
 	    	background-color: $dialog-background;
-	    	form {
-	    		margin-top: 1rem;
-	    	}
 	    }
 
 
@@ -83,13 +80,13 @@ body.app {
 			visibility: visible;
 		}
 
+		div.form-view {
+		    margin: 1rem 2rem;
+		}
+
 		div.modal-view {
 		    position: relative;
 		    flex: 1 1 auto;
-
-		    div.form-view {
-		        margin: 1rem;
-		    }
 
 		    > div.swam-paginated-table {
 		        margin: 1rem;

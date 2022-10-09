@@ -72,6 +72,10 @@ SWAM.Form.buildField = function(fc, form_info) {
 		}
 	}
 
+	if (fc.optional && fc.$el) {
+		fc.$el.addClass("optional");
+	}
+
 	if (fc.help) {
 		if (fc.$label) {
 			fc.$label.after(SWAM.Form.Builder.help(fc, form_info));
@@ -236,6 +240,13 @@ SWAM.Form.Builder.line = function(fc, form_info) {
 
 SWAM.Form.Builder.empty = function(fc, form_info) {
 	fc.$el.append("&nbsp;");
+}
+
+SWAM.Form.Builder.heading = function(fc, form_info) {
+	if (!fc.size) fc.size = 3;
+	var tag = "h" + fc.size;
+	var el = document.createElement(tag);
+	fc.$el = $(el).html(fc.value || fc.label);
 }
 
 SWAM.Form.Builder.button = function(fc, form_info) {

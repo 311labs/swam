@@ -239,7 +239,7 @@ SWAM.Dialog = SWAM.View.extend({
                 {
                     id: "cancel",
                     action:"choice",
-                    label: "Cancel"
+                    label: opts.lbl_cancel || "Cancel"
                 },
                 {
                     id: "save",
@@ -248,6 +248,11 @@ SWAM.Dialog = SWAM.View.extend({
                 }
             ]
         };
+
+        if (opts.lbl_cancel === null) {
+            defaults.buttons.shift();
+        }
+        
         if (fields) opts.fields = fields;
         opts = _.extend(defaults, opts);
         var view = new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model});

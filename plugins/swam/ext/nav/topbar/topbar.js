@@ -2,11 +2,14 @@ SWAM.Views.TopBar = SWAM.View.extend({
 	classes: "swam-topbar bg-dark",
 	template: "swam.ext.nav.topbar",
 	defaults: {
-		replaces_el: true
+		replaces_el: true,
 	},
 
 	on_init: function() {
 		if (app.me) app.me.on("change", this.render, this);
+		if (this.options.nav_menu) {
+			this.addChild("nav_menu", new SWAM.Views.Nav({replaces_el:true}));
+		}
 	},
 
 	on_action_logout: function(evt) {

@@ -1,22 +1,32 @@
-{{#options.items|bool}}
+{{#options.has_dropmenu}}
+<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+{{/options.has_dropmenu}}
+{{#options.has_submenu}}
 <a href='#' data-bs-toggle="collapse" data-bs-parent='#{{options.nav.id}}' data-bs-target='#submenu{{_id_}}' class='nav-link nav-link-toggle'>
-{{/options.items|bool}}
+{{/options.has_submenu}}
 {{^options.items|bool}}
 {{#options.page}}
-<a href='#' data-showpage="{{options.page}}" class='nav-link' {{{get_tooltip}}}>
+<a href='#' data-showpage="{{options.page}}" class='{{options.link_classes}}' {{{get_tooltip}}}>
 {{/options.page}}
 {{#options.url}}
-<a href='#' data-showurl="{{options.url}}" class='nav-link'>
+<a href='#' data-showurl="{{options.url}}" class='{{options.link_classes}}'>
 {{/options.url}}
+{{#options.action}}
+<a href='#' data-action="{{options.action}}" class='{{options.link_classes}}'>
+{{/options.action}}
 {{/options.items|bool}}
 
 {{#options.icon}}{{{ICON(options.icon)}}}{{/options.icon}}
 {{options.label}}
 </a>
-{{#options.items|bool}}
+{{#options.has_submenu}}
 <div id="submenu{{_id_}}" class="collapse">
 	<ul id="submenu"></ul>
 </div>
-{{/options.items|bool}}
+{{/options.has_submenu}}
+
+{{#options.has_dropmenu}}
+<ul id="dropmenu"></ul>
+{{/options.has_dropmenu}}
 
 
