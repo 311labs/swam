@@ -21,6 +21,9 @@ SWAM.Views.Nav = SWAM.View.extend({
 	},
 
 	render_menu: function(menu) {
+		if (this.options.type == "dropdown_menu") {
+			menu.link_classes = "dropdown-item";
+		}
 		var view = new SWAM.Views.NavItem(menu);
 		view.options.nav = this;
 		this.appendChild(view);
@@ -40,6 +43,10 @@ SWAM.Views.NavItem = SWAM.View.extend({
 	classes: "nav-item",
 	template: "swam.ext.nav.item",
 
+	defaults: {
+		link_classes: "nav-link",
+	},
+
 	get_tooltip: function() {
 		// hack because mustache is having hard time parsing inside elements
 		if (!this.options.tooltip) return null;
@@ -47,7 +54,14 @@ SWAM.Views.NavItem = SWAM.View.extend({
 	},
 
 	on_init: function() {
-		if (this.options.items) {
+		if (this.options.type == "dropdown") {
+			this.options.has_dropmenu = true;
+			var classes = "dropdown-menu p-2";
+			if (this.options.is_dark) classes += " dropdown-menu-dark";
+			this.addClass("dropdown");
+			this.addChild("dropmenu", new SWAM.Views.Nav({items:this.options.items, type:"dropdown_menu", classes:classes, replaces_el:true}));
+		} else if (this.options.items) {
+			this.options.has_submenu = true;
 			this.addChild("submenu", new SWAM.Views.Nav({items:this.options.items, add_classes:"nav-submenu", replaces_el:true}));
 		} else if (this.options.kind == "label") {
 			this.template = "<label>{{#options.icon}}{{{ICON(options.icon)}}}{{/options.icon}} {{options.label}}</label>";

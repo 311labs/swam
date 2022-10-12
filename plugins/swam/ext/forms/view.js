@@ -14,7 +14,7 @@ SWAM.Form.View = SWAM.View.extend({
     },
 
     on_render: function() {
-        this.$el.html(SWAM.Form.build(this.options.fields, this.options.default, this.options.model));
+        this.$el.html(SWAM.Form.build(this.options.fields, this.options.defaults, this.options.model));
     },
 
     on_submit: function(evt) {

@@ -24,8 +24,11 @@ body.app {
 			box-shadow: $topbar-box-shadow;
 			z-index: 100;
 		}
+	}
 
-		#pages {
+	#pages {
+
+		&.pages-absolute {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -33,31 +36,31 @@ body.app {
 			right: 0;
 			overflow-y: auto;
 			background: $page-background;
+		}
 
-			div.page-view {
-				&.page-fullscreen {
-					position: absolute;
-					top: 0;
-					left: 0;
-					bottom: 0;
-					right: 0;
-				}
-				
-				&.page-scroll {
-					overflow-y: auto;
-				}
+		div.page-view {
+			&.page-fullscreen {
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+			}
+			
+			&.page-scroll {
+				overflow-y: auto;
+			}
 
-				&.page-padded {
-					padding: 15px;
-				}
+			&.page-padded {
+				padding: 15px;
+			}
 
-				&.has-topbar {
-					margin-top: $topbar-height;
-				}
+			&.has-topbar {
+				margin-top: $topbar-height;
+			}
 
-				&.has-footer {
-					padding-bottom: $topbar-height;
-				}
+			&.has-footer {
+				padding-bottom: $topbar-height;
 			}
 		}
 	}

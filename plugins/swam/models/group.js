@@ -29,6 +29,14 @@ SWAM.Models.Group = SWAM.Model.extend({
                     columns: 12
                 },
                 {
+                    name:"uuid",
+                    label:"UUID",
+                    help: "globaly unique id that can be used to reference this group.",
+                    type:"text",
+                    placeholder:"Enter UUID (OPTIONAL)",
+                    columns: 12
+                },
+                {
                     label: "Group Kind",
                     name: "kind",
                     type: "select",

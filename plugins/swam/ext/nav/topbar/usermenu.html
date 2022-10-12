@@ -1,0 +1,37 @@
+<a class="d-flex align-items-center text-decoration-none" href="#" data-bs-auto-close="true" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+    <div>
+        <div class="avatar avatar-sm rounded-circle">
+            {{#app.me.avatar}}
+            <img src="{{app.me.avatar}}">
+            {{/app.me.avatar}}
+            {{^app.me.avatar}}
+            <img src="/plugins/portal_ext/media/empty_avatar.jpg">
+            {{/app.me.avatar}}
+        </div>
+    </div>
+    <div class="d-sm-block ms-3 text-white"><span class="h6">{{app.me.display_name}}</span></div>
+    <div class="d-md-block ms-md-2 text-white"><i class="bi bi-chevron-down text-muted text-xs"></i></div>
+</a>
+<div class="dropdown-menu dropdown-menu-end shadow">
+    <div class="dropdown-header">
+        <div class="d-flex align-items-center">
+            <div class="avatar avatar-sm avatar-circle">
+                {{#app.me.avatar}}
+                <img src="{{app.me.avatar}}">
+                {{/app.me.avatar}}
+                {{^app.me.avatar}}
+                <img src="/plugins/portal_ext/media/empty_avatar.jpg">
+                {{/app.me.avatar}}
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="mb-0">{{app.me.display_name}}</h5>
+                <span class="d-block text-heading font-semibold">{{app.me.email}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#" data-action="reset_password"><i class="bi bi-key me-3"></i>Change Password</a>
+    <a class="dropdown-item" href="#" data-action="edit_profile"><i class="bi bi-pencil me-3"></i>Edit profile</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#" data-action="logout"><i class="bi bi-person me-3"></i>Logout</a>
+</div>

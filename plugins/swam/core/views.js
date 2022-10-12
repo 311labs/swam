@@ -239,7 +239,6 @@ SWAM.View = SWAM.Object.extend({
     },
 
     on_showpage_click: function(evt) {
-        evt.stopPropagation();
         var $el = $(evt.currentTarget);
         var page_name = $el.data("showpage");
         var params = $el.data("params");
@@ -248,11 +247,25 @@ SWAM.View = SWAM.Object.extend({
         if (!page_name) return;
         var func_name = "on_showpage_" + page_name;
         if (_.isFunction(this[func_name])) {
-            this[func_name](evt, params, anchor);
+            return this[func_name](evt, params, anchor);
         } else {
             app.setActivePage(page_name, params, anchor);
         }
-        return false;
+
+        if ($el.hasClass("dropdown-item")) {
+            var dropdown = $el.parent().parent().parent().find(".dropdown-toggle");
+            if (dropdown.length) {
+                dropdown.dropdown("hide");
+            }
+        }
+
+        var propagate = $el.data("propagate");
+        if (!propagate) {
+            evt.stopPropagation();
+            return false;
+        }
+
+        return true;
     },
 
     on_showurl_click: function(evt) {
