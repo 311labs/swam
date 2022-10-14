@@ -102,6 +102,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             page.setParams(params);
             page.addToDOM($parent);
             page.updateURL();
+            if (window.scrollY > 0) {
+                setTimeout(function(){ window.scrollTo(0, 0); }, 100);
+            }
             $parent[0].scrollTop = 0; // force the new page to show from top scroll
             page.on_page_enter();
             if (anchor) page.scrollToAnchor(anchor);
