@@ -52,7 +52,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
         }.bind(this)});
 	},
 
-	on_action_toggle_menu: function() {
+	on_action_toggle_sidebar: function() {
 		app.toggleLeftPanel();
 	},
 

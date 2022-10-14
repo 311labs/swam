@@ -135,7 +135,8 @@ body.app {
 @media (max-width: 760px) {
 	#app_body.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
 		div#panel-main {
-			left: 0;
+			left: $panel-left-width;
+			right: -$panel-left-width;
 		}
 
 		div#panel-left {
