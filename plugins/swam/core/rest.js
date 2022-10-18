@@ -97,7 +97,15 @@ SWAM.Rest = {
         }
         if (data != null) {
             if (method == "POST") {
-                request.data = JSON.stringify(data);
+                if (data.__files) {
+                    // this is formdata
+                    // request.contentType = "multipart/form-data";
+                    request.processData = false;
+                    request.contentType = false;
+                    request.data = data.__files.formdata;
+                } else {
+                    request.data = JSON.stringify(data);
+                }
             } else {
                 request.data = $.param(data);
             }

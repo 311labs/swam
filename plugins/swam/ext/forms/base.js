@@ -138,24 +138,23 @@ SWAM.Form.getData = function($form, options) {
 	if (data.fkpassword != undefined) delete data.fkpassword;
 
 
-	// var files = {};
-	// $form.find('input[value!=""]:file:enabled').each(function(k,field){
-	// 	var $field = $(field);
-	// 	var n = $field.attr('name');
-	// 	data[n] = $field.val();
-
-	// 	files[n] = $field;
-	// });
-	// if (_.keys(files).length) {
-	// 	data.__files = {
-	// 		form: $form,
-	// 		formvals: data,
-	// 		files: files
-	// 	};
-	// 	try {
-	// 		data.__files.formdata = new FormData($form[0]);
-	// 	} catch(e) {
-	// 	}
-	// }
+	var files = {};
+	$form.find('input[value!=""]:file:enabled').each(function(k,field){
+		var $field = $(field);
+		var n = $field.attr('name');
+		data[n] = $field.val();
+		files[n] = $field;
+	});
+	if (_.keys(files).length) {
+		data.__files = {
+			form: $form,
+			formvals: data,
+			files: files
+		};
+		try {
+			data.__files.formdata = new FormData($form[0]);
+		} catch(e) {
+		}
+	}
 	return data;
 };

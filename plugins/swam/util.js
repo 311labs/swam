@@ -74,6 +74,7 @@ if (window._) {
 
         _.each(clone, function(value, key) {
           if (_.isObject(value) && !_.isFunction(value) && !_.isJQuery(value)) {
+            if (_.isString(key) && key.startsWith("__")) return;
             clone[key] = _.deepClone(value);
           }
         });
