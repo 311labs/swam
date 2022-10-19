@@ -319,7 +319,14 @@ class MustacheFile(SwamFile):
         self.output.close()
 
     def minify(self, value):
-        return htmlmin.minify(value, remove_all_empty_space=True, remove_comments=True, keep_pre=True)
+        return htmlmin.minify(
+            value,
+            remove_optional_attribute_quotes=False,
+            reduce_boolean_attributes=False,
+            reduce_empty_attributes=False,
+            remove_all_empty_space=True,
+            remove_comments=True,
+            keep_pre=True)
         # split = value.split()
         # return " ".join(split)
 

@@ -28,6 +28,7 @@ SWAM.Views.EditSelect = SWAM.View.extend({
         this.options.value = $el.val();
         var self = this;
         $el.find("option").each(function(){
+            console.log(this.value);
             self.options.menu_items.push({label:this.innerHTML, value:this.value})
         });
 
