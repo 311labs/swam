@@ -1,5 +1,5 @@
 SWAM.Views.TopBar = SWAM.View.extend({
-	classes: "swam-topbar bg-dark",
+	classes: "swam-topbar",
 	template: "swam.ext.nav.topbar",
 	tagName: "header",
 	defaults: {
