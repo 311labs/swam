@@ -37,9 +37,24 @@ SWAM.Form.View = SWAM.View.extend({
     },
 
     getData: function() {
-        var data = SWAM.Form.getData(this.$el.find("form"));
+        var $form = this.$el.find("form");
+        var data = SWAM.Form.getData($form);
+        var files = SWAM.Form.getFiles($form);
+        if (files) {
+            // this has files
+            // lets check if these are form files or base64
+            var has_real_files = _.difference(_.keys(files), _.keys(this.files)).length > 0;
+            if (has_real_files) {
+                data.__mpf = SWAM.Form.convertToFormData($form, data);
+            }
+        }
+        // local base64 files
         _.each(this.files, function(f, k) {
             data[k] = f;
+            if (data.__mpf) {
+                data.__mpf.delete(k);
+                data.__mpf.set(k, f);
+            }
         });
         return data;
     },

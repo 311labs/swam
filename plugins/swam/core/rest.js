@@ -97,12 +97,12 @@ SWAM.Rest = {
         }
         if (data != null) {
             if (method == "POST") {
-                if (data.__files) {
+                if (data.__mpf) {
                     // this is formdata
                     // request.contentType = "multipart/form-data";
                     request.processData = false;
                     request.contentType = false;
-                    request.data = data.__files.formdata;
+                    request.data = data.__mpf;
                 } else {
                     request.data = JSON.stringify(data);
                 }

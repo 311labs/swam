@@ -1,30 +1,22 @@
 SWAM.Form = {};
 
-SWAM.Form.getDataWithImage = function(img, $form, options) {
-	options = _.extend({}, {"name":"thumbnail", "filename":"image.png", "content_type": "image/png"}, options);
+SWAM.Form.getFiles = function($form) {
+	var files = {};
+	$form.find('input[value!=""]:file:enabled').each(function(k,field){
+		var $field = $(field);
+		var n = $field.attr('name');
+		if (n) files[n] = $field;
+	});
+	return files;
+}
 
-	var formdata = new FormData($form[0]);
-	var blobBin = null;
-	if (img.toDataURL) {
-	    blobBin = atob(img.toDataURL().split(',')[1]);
-	} else {
-	    blobBin = atob(img.src.split(',')[1]);
-	}
-	var array = [];
-	for(var i = 0; i < blobBin.length; i++) {
-	    array.push(blobBin.charCodeAt(i));
-	}
-	var file=new Blob([new Uint8Array(array)], {type: options.content_type});
-	formdata.append(options.name, file, options.filename);
-
-
-	var data = SWAM.Form.getData($form, options);
-	data.__files = {
-	    formvals: {},
-	    files: [file]
-	};
-	data.__files.formdata = formdata;
-	return data;
+SWAM.Form.convertToFormData = function($form, data) {
+	var fdat = new FormData($form[0]);
+	// update the form data with any translations etc
+	_.each(data, function(f, k) {
+		fdat.set(k, f);
+	});
+	return fdat;
 }
 
 SWAM.Form.getData = function($form, options) {
@@ -137,24 +129,6 @@ SWAM.Form.getData = function($form, options) {
 	if (data.fkuser != undefined) delete data.fkuser;
 	if (data.fkpassword != undefined) delete data.fkpassword;
 
-
-	var files = {};
-	$form.find('input[value!=""]:file:enabled').each(function(k,field){
-		var $field = $(field);
-		var n = $field.attr('name');
-		data[n] = $field.val();
-		files[n] = $field;
-	});
-	if (_.keys(files).length) {
-		data.__files = {
-			form: $form,
-			formvals: data,
-			files: files
-		};
-		try {
-			data.__files.formdata = new FormData($form[0]);
-		} catch(e) {
-		}
-	}
 	return data;
 };
+

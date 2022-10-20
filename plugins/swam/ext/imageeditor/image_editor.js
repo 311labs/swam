@@ -329,11 +329,7 @@ SWAM.Dialogs.ImageEditor = SWAM.View.extend({
 
 
         data = {};
-        data.__files = {
-            formvals: {},
-            files: [file]
-        };
-        data.__files.formdata = formdata;
+        data.__mpf = formdata;
 
         var image = new Models.Selfie();
         var self = this;

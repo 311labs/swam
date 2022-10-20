@@ -3,6 +3,7 @@ window.SWAM = {
         return this.renderString(SWAM.getTemplate(template, true), context);
     },
     renderString: function(text, context) {
+        if (!text) return "";
         var defaults = {};
         if (window.app) defaults.app = window.app;
         if (window.app) defaults.APP = window.app;
