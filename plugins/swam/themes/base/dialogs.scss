@@ -48,6 +48,20 @@ body.app {
 	    	background: $brand-danger;
 	    	color: white;
 	    }
+
+	    &.bg-dark {
+	    	div.modal-content {
+	    		background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;;
+	    	}
+
+	    	div.modal-header {
+	    		border: none;
+	    	}
+
+	    	div.modal-footer {
+	    		border: none;
+	    	}
+	    }
 	}
 
 	pre {
@@ -111,6 +125,14 @@ body.app {
 		bottom: 0;
 		background-color: #00000047;
 		z-index: 100;
+	}
+
+	div.swam-lightbox {
+		img {
+			width: 100%;
+			max-height: 80vh;
+			max-width: 80vw;
+		}
 	}
 }
 

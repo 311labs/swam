@@ -31,14 +31,65 @@ SWAM.Localize = {
         }
         return value;
     },
+
+    'lightbox' :function(value, attr, fmt) {
+        // lightbox('https://example.com/1.mp4', 'video')
+
+        var thumb_url = value;
+        var media_url = value;
+        var media_kind = "image";
+        var title = null;
+
+        if (value && value.attributes) value = value.attributes;
+
+        if (value && value.thumbnail) {
+            thumb_url = value.thumbnail;
+            title = value.name;
+            if (value.kind == "I") {
+                media_kind = "image";
+                if (value.renditions) media_url = value.renditions.large.url;
+            } else if (value.kind == "V") {
+                media_kind = "video";
+                if (value.renditions) media_url = value.renditions.large.url;
+            } else if (value.kind == "*") {
+                media_kind = "download";
+                if (value.renditions) media_url = value.renditions.original.url;
+            }
+        } else if (value && value.renditions) {
+            media_kind = "download";
+            if (value.renditions) media_url = value.renditions.original.url;
+            var output = "<i class='bi bi-cloud-download-fill' data-action='lightbox'";
+            if (media_url) output += " data-media='" + media_url + "'";
+            if (media_kind) output += " data-kind='" + media_kind + "'";
+            if (title) output += " data-title='" + title + "'";
+            output += ">";
+            return output; 
+        }
+
+        if (_.isArray(fmt) && fmt.length) {
+            media_url = fmt[0];
+            if (fmt.length > 1) media_kind = fmt[1];
+            if (fmt.length > 2) title = fmt[2];
+        } else if (fmt) {
+            classes = fmt;
+        }
+
+        if (!value) return "";
+        var output = "<img class='swam-lighbox-img' src='" + thumb_url + "' data-action='lightbox'";
+        if (media_url) output += " data-media='" + media_url + "'";
+        if (media_kind) output += " data-kind='" + media_kind + "'";
+        if (title) output += " data-title='" + title + "'";
+        output += ">";
+        return output;
+    },
     
     'img' :function(value, attr, fmt) {
         var d = fmt;
-        var classes = "lightbox-clickable";
+        var classes = "swam-image";
         if (_.isArray(fmt)) {
             d = fmt[0];
             classes = fmt[1];
-        } else {
+        } else if (fmt) {
             classes = fmt;
         }
 

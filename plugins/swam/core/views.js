@@ -221,6 +221,36 @@ SWAM.View = SWAM.Object.extend({
         return true;
     },
 
+    on_action_lightbox: function(evt) {
+        evt.stopPropagation();
+        var $el = $(evt.currentTarget);
+        var opts = {};
+        opts.url = $el.data("media");
+        opts.kind = $el.data("kind");
+        opts.title = $el.data("title");
+        if (!opts.url || !opts.kind) return true;
+        var view = null;
+        if (opts.kind == "image") {
+            view = new SWAM.View({
+                classes: "swam-lightbox",
+                template:"<div>{{{options.src|image}}}</div>",
+                src:opts.url});
+        } else if (opts.kind == "video") {
+            view = new SWAM.Views.Video({src:opts.url});
+        } else {
+            window.open(opts.url, '_blank');
+            return;
+        }
+        SWAM.Dialog.show({
+            add_classes: "bg-dark text-white",
+            size: "xl",
+            title: opts.title,
+            view: view,
+            buttons: []
+        });
+        return false;
+    },
+
     setModel: function(model) {
         if (this.model) {
             if (this.model == model) return;
