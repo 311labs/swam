@@ -4,3 +4,10 @@
 		transform: scale(1.1);
 	}
 }
+
+.swam-anim-hover-scale2 {
+	transition: transform 0.3s;
+	&:hover {
+		transform: scale(1.2);
+	}
+}

@@ -443,7 +443,7 @@ class StaticFile(SwamFile):
 
 
 class IndexFile(SwamFile):
-    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root", "template_root", "app_root"]
+    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root", "template_root", "app_root", "loader_color"]
     JS_INCLUDE_TEMP = """<script type="text/javascript" src="{{path}}?version={{version}}"></script>"""
     CSS_INCLUDE_TEMP = """<link rel="stylesheet" href="{{path}}?version={{version}}">"""
 
@@ -526,6 +526,8 @@ def buildApp(app_path, config, opts):
         config = objict.fromFile(os.path.join(app_path, "app.json"))
         config.template_root = "{}".format(app_path.replace("/", "."))
         # bump local version
+        if config.loader_color is None:
+            config.loader_color = "#598A77"
         if config.version is None:
             config.version = "1.0.0"
         if opts.auto_version:

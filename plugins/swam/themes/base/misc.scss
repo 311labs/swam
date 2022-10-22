@@ -209,6 +209,33 @@ body.app {
         }
     }
 
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .cursor-help {
+        cursor: help;
+    }
+
+    .cursor-wait {
+        cursor: wait;
+    }
+
+    .cursor-crosshair {
+        cursor: crosshair;
+    }
+
+    .cursor-not-allowed {
+        cursor: not-allowed;
+    }
+
+    .cursor-zoom, .cursor-zoom-in {
+        cursor: zoom-in;
+    }
+
+    .cursor-grab {
+        cursor: grab;
+    }
 }
 
 

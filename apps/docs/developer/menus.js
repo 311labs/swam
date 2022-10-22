@@ -142,6 +142,11 @@ PORTAL.Menus.Default = [
                 icon: "box-arrow-up-right",
                 url: "https://icons.getbootstrap.com/"
             },
+            {
+                label: "Animations",
+                icon: "camera-reels",
+                url: "https://animate.style/"
+            }
         ]
     }
 ];
