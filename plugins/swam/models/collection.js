@@ -157,6 +157,7 @@ SWAM.Collection = SWAM.Object.extend({
         this.start = 0;
         this.size = 0;
         this.length = 0;
+        this.last_fetched_at = 0;
         if (!silent) this.trigger("reset", this);
     },
 
