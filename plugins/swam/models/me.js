@@ -211,7 +211,10 @@ SWAM.Models.Me = SWAM.Models.User.extend({
                 // credentials get stored in SWAM.Rest
                 this.setJWT(response.data);
             } else {
-                this.logout();
+                // check for network errors
+                if (!response.network_error) {
+                    this.logout();
+                }
             }
             if (callback) callback(this, response);
         }.bind(this), opts);

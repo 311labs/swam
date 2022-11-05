@@ -148,25 +148,33 @@ SWAM.Rest = {
                     if (status === 'timeout') {
                         resp.error = 'Request timed-out';
                         resp.error_code = 522;
+                        resp.network_error = true;
                     } else if (status === 'abort') {
                         resp.error = 'Request aborted';
                         resp.error_code = 420;
+                        resp.network_error = true;
                     } else if (status === 'parsererror') {
                         resp.error = 'Request got jumbled-up';
+                        resp.network_error = true;
                     } else if (xhr.status == 400) {
                         resp.error = "bad request";
+                        resp.network_error = true;
                     } else if (xhr.status == 401) {
                         resp.error = "Unauthorized";
                     } else if (xhr.status == 403) {
                         resp.error = "Forbidden";
                     } else if (xhr.status == 404) {
                         resp.error = "page not found";
+                        resp.network_error = true;
                     } else if (xhr.status == 408) {
                         resp.error = "request timed out";
+                        resp.network_error = true;
                     } else if (xhr.status == 429) {
                         resp.error = "server busy";
+                        resp.network_error = true;
                     } else if (xhr.status == 500) {
                         resp.error = "Internal Server Error";
+                        resp.network_error = true;
                     }
                     callback(resp, xhr.status);
                 }
