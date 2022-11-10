@@ -15,12 +15,13 @@ SWAM.Views.ModelView = SWAM.View.extend({
             _.each(obj, function(value, key){
                 var lbl = key;
                 if (prefix) lbl = prefix + "." + key
+                if (options.fields && !options.fields.includes(lbl)) return;
                 if (_.isDict(value)) return obj_to_models(value, col, lbl);
                 if (["modified", "created", "when", "last_activity", "last_login"].has(key)) value = SWAM.Localize.datetime(value);
                 col.add(new SWAM.Model({id:lbl, key:lbl, value:value}));
             });
         };
-        obj_to_models(model, collection);
+        obj_to_models(model, collection, null);
 
         var table = new SWAM.Views.Table({
             collection: collection,

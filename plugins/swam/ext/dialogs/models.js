@@ -3,7 +3,7 @@
 SWAM.Dialog.showModel = function(model, fields, options) {
 
     options = _.extend({
-        view: SWAM.Views.ModelView.buildTable(model),
+        view: SWAM.Views.ModelView.buildTable(model, {fields:fields}),
         scrollable: true
     }, options);
 
