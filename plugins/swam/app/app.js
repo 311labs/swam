@@ -15,6 +15,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         catch_errors: true, // catch and show popup for uncaught errors
         sync_debounce_ms: 5000,
         toast_placement: "top_right",
+        track_page_views: false,
         toast_theme: "dark"
     },
     on_init: function() {
@@ -98,6 +99,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             }
             console.log("active page now: " + page.page_name);
             this.active_page = page;
+            if (this.options.track_page_views) SWAM.Metrics.trackView(page.page_name)
             $parent.empty();
             page.setParams(params);
             page.addToDOM($parent);
