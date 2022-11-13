@@ -106,6 +106,19 @@ div.swam-table-tiny {
     }
 }
 
+div.swam-paginated-table {
+     &.swam-inline-filters {
+        div.filter-action-bar {
+            display: inline-block !important;
+        }
+
+        div.swam-list-filter-items {
+            display: inline-block !important;
+        }
+    }
+}
+
+
 div.swam-paginated-table-compact {
     table.swam-table {
         thead {
