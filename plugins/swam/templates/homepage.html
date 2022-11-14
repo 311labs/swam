@@ -168,6 +168,7 @@
     window.template_root = "{{template_root}}";
     window.app_path = "{{app_root}}";
     window.app_version = "{{version}}";
+    window.no_es6_site = "{{no_es6_site}}";
     window.isDevToolsOpen = function() {
       var r = /./
       window.devtools_open = false;
@@ -176,11 +177,32 @@
       }
       return window.devtools_open;
     }
+
+    window.supportsES6 = function() {
+        "use strict";
+
+        if (typeof Symbol == "undefined") return false;
+        try {
+            eval("class Foo {}");
+            eval("var bar = (x) => x+1");
+        } catch (e) { return false; }
+
+        return true;
+    }
+
     window.preapp_error_handler = function(evt){
       // e.message, e.filename, e.lineno, e.colno, e.error, e
       window.last_error = evt;
       $("#pre-loader-frame").hide();
-      $("#pre-loader-errors").show().append("<div>ERROR..." + evt.error.message + "</div>");
+      if (!window.supportsES6()) {
+        $("#pre-loader-errors").show().append("<div>Our apologies but your browser is not supported!</div>");
+        if (window.no_es6_site) {
+          window.location.href = window.no_es6_site;
+        }
+      } else {
+        $("#pre-loader-errors").show().append("<div>ERROR..." + evt.error.message + "</div>");
+      }
+      
       if (window.isDevToolsOpen()) return;
       console.log(evt);
       return false;
