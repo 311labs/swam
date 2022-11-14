@@ -443,7 +443,7 @@ class StaticFile(SwamFile):
 
 
 class IndexFile(SwamFile):
-    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root", "template_root", "app_root", "loader_color"]
+    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root", "template_root", "app_root", "loader_color", "no_es6_site"]
     JS_INCLUDE_TEMP = """<script type="text/javascript" src="{{path}}?version={{version}}"></script>"""
     CSS_INCLUDE_TEMP = """<link rel="stylesheet" href="{{path}}?version={{version}}">"""
 
