@@ -197,7 +197,8 @@
       if (!window.supportsES6()) {
         $("#pre-loader-errors").show().append("<div>Our apologies but your browser is not supported!</div>");
         if (window.no_es6_site) {
-          window.location.href = window.no_es6_site;
+          window.no_es6_site = null; // avoid looping errors?
+          window.location = window.no_es6_site;
         }
       } else {
         $("#pre-loader-errors").show().append("<div>ERROR..." + evt.error.message + "</div>");
