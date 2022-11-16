@@ -18,22 +18,23 @@ SWAM.Metrics.track = function(slug, category, geolocate) {
 	}, null, {no_auth:true});
 }
 
-SWAM.Metrics.getChart = function(slugs, category, geolocate) {
+SWAM.Metrics.getChartFor = function(slugs, callback) {
 	SWAM.Rest.GET("/rpc/metrics/metrics", {
-		"slugs": slugs,
+		"slugs": slugs
+	}, callback, {no_auth:true});
+}
+
+SWAM.Metrics.getCategoryChart = function(category, callback) {
+	SWAM.Rest.GET("/rpc/metrics/metrics", {
 		"category": category
-	}, null, {no_auth:true});
+	}, callback, {no_auth:true});
 }
 
 
-SWAM.Metrics.getPageViews = function() {
-	SWAM.Rest.GET("/rpc/metrics/metrics", {
-		"category": "page_views"
-	}, null, {no_auth:true});
+SWAM.Metrics.getPageViews = function(callback) {
+	SWAM.Metrics.getCategoryChart("page_views", callback);
 }
 
-SWAM.Metrics.getRestMetrics = function() {
-	SWAM.Rest.GET("/rpc/metrics/metrics", {
-		"category": "rest_calls"
-	}, null, {no_auth:true});
+SWAM.Metrics.getRestMetrics = function(callback) {
+	SWAM.Metrics.getCategoryChart("rest_calls", callback);
 }
