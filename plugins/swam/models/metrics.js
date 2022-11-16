@@ -7,12 +7,13 @@ SWAM.Metrics.trackView = function(page_name, geolocate) {
 		app_name = app_name.substr(5).replaceAll(".", "_");
 	}
 	var slug = "page__" + app_name + "__" + page_name;
-	SWAM.Metrics.track(slug, geolocate);
+	SWAM.Metrics.track(slug, "page_views", geolocate);
 }
 
-SWAM.Metrics.track = function(slug, geolocate) {
+SWAM.Metrics.track = function(slug, category, geolocate) {
 	SWAM.Rest.POST("/rpc/metrics/metric", {
 		"slug": slug,
+		"category": category,
 		"geolocate": geolocate
 	}, null, {no_auth:true});
 }
