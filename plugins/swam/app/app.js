@@ -99,7 +99,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             }
             console.log("active page now: " + page.page_name);
             this.active_page = page;
-            if (this.options.track_page_views) SWAM.Metrics.trackView(page.page_name)
+            if (this.options.track_page_views) SWAM.Metrics.trackView(page.page_name, true)
             $parent.empty();
             page.setParams(params);
             page.addToDOM($parent);
