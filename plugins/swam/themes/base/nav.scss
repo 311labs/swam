@@ -65,6 +65,14 @@ div#panel-left {
 }
 
 
+#topbar {
+	nav.navbar.bg-transparent {
+		a.nav-link {
+			color: $topbar-link-color;
+		}
+	}
+}
+
 
 div.sidebar-container {
     .nav-link-toggle {
