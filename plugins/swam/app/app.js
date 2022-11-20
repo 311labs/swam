@@ -118,10 +118,11 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             console.warn("invalid page: " + name);
             if (this.hasPage("not_found")) {
                 this.setActivePage("not_found", {invalid_page: name}); 
+            } else if (this.options.not_found && (this.options.not_found != name)) {
+                this.setActivePage(this.options.not_found, {invalid_page: name}); 
             } else {
                 SWAM.Dialog.show({title:"Page Not Found", message:"Oops, the page " + name + " could not be found!"});
             }
-            
         }
 
     },
@@ -245,6 +246,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             console.warn("failed to load starting page: " + this.getPath());
             if (this._pages.not_found) {
                 this.setActivePage("not_found", {"path":this.getPath()});
+            } else if (this.options.not_found) {
+                this.setActivePage(this.options.not_found, {"path":this.getPath()});
             }
         }
         this.trigger("ready", this);        
