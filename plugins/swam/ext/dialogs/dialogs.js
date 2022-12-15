@@ -236,6 +236,7 @@ SWAM.Dialog = SWAM.View.extend({
         }
         var defaults = {
             title: "Edit",
+            padded: true,
             buttons: [
                 {
                     id: "cancel",

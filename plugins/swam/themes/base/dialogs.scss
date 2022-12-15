@@ -112,6 +112,10 @@ body.app {
 		            font-size: 1.3rem;
 		        }
 		    }
+
+		    &.modal-view-padded {
+		    	padding: 1rem;
+		    }
 		}
 
 		div.swam-card-header {

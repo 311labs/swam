@@ -10,12 +10,7 @@
     </div>
     {{/options.title}}
     {{#options.view}}
-    {{#options.scrollable}}
-    <div id="dlg_view" class="modal-view overflow-auto"></div>
-    {{/options.scrollable}}
-    {{^options.scrollable}}
-    <div id="dlg_view" class="modal-view"></div>
-    {{/options.scrollable}}
+    <div id="dlg_view" class="modal-view{{#options.padded}} modal-view-padded{{/options.padded}}{{#options.scrollable}} overflow-auto{{/options.scrollable}}"></div>
     {{/options.view}}
     {{^options.view}}
     <div class="modal-body">
