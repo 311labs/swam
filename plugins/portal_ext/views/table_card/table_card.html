@@ -1,0 +1,24 @@
+<div class="accordion" id="{{options.tc_id}}">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="{{options.tc_id}}_heading">
+        <button class="accordion-button noprint collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{options.tc_id}}_collapse" aria-expanded="false" aria-controls="{{options.tc_id}}_collapse">
+			{{options.title}}
+
+			{{#options.prefetch_badge}}
+        <span class="noprint">
+          <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            {{options.prefetch_count}}
+          <span class="visually-hidden">Count</span>
+        </span>
+			{{/options.prefetch_badge}}
+        </button>
+      </h2>
+      <div id="{{options.tc_id}}_collapse" class="accordion-collapse collapse" aria-labelledby="{{options.tc_id}}_heading" data-bs-parent="#{{options.tc_id}}">
+        <div class="accordion-body">
+			<div class="col-7 d-none d-lg-block" id="filter_bar"></div>
+			<div class="col-auto" id="action_bar"></div>
+			<div id="tc_table" class="swam-tc-table"></div>
+        </div>
+      </div>
+    </div>
+  </div>

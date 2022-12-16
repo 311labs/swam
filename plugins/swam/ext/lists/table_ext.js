@@ -85,6 +85,8 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
             if (this.options.collection_params) this.collection.params = _.extend({}, this.collection.params, this.options.collection_params);
         } else if (this.options.Collection) {
             this.collection = new this.options.Collection({params:this.options.collection_params});
+        } else if (this.options.collection_url) {
+            this.collection = new SWAM.Collection({url:this.options.collection_url, params:this.options.collection_params});
         }
         this.options.collection = this.collection;
 

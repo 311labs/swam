@@ -32,21 +32,41 @@ body.app {
 	    div.modal-primary div.modal-header {
 	    	background: $primary;
 	    	color: white;
+	    	button.btn {
+	    		color: white;
+	    	}
+	    }
+
+	    div.modal-success div.modal-header {
+	    	background: $brand-success;
+	    	color: white;
+	    	button.btn {
+	    		color: white;
+	    	}
 	    }
 
 	    div.modal-secondary div.modal-header {
 	    	background: $brand-secondary;
 	    	color: white;
+	    	button.btn {
+	    		color: white;
+	    	}
 	    }
 
 	    div.modal-warning div.modal-header {
 	    	background: $brand-warning;
 	    	color: white;
+	    	button.btn {
+	    		color: white;
+	    	}
 	    }
 
 	    div.modal-danger div.modal-header {
 	    	background: $brand-danger;
 	    	color: white;
+	    	button.btn {
+	    		color: white;
+	    	}
 	    }
 
 	    &.bg-dark {

@@ -144,6 +144,13 @@ class FileCache():
                         if ":" in item:
                             k, v = item.split(':')
                             options[k] = v
+        elif not os.path.exists(path):
+            pp(Colors.RED, F"CRITICAL ERROR PATH NOT FOUND: {path}")
+            if self.hasPath(path):
+                del self.cache[path]
+                self.save()
+            raise Exception(f"path: '{path}' does not exist!")
+            
         self.cache[path] = nobjict(mtime=os.path.getmtime(path), is_merge_file=is_merge_file, outpath=outpath, options=options)
         self.save()
         return self.cache[path]
@@ -552,7 +559,10 @@ def copyCore(path, opts):
 def copyStatic(app_path, path, opts):
     if isinstance(path, list):
         for p in path:
-            copyStatic(app_path, p, opts)
+            try:
+                copyStatic(app_path, p, opts)
+            except Exception:
+                pass
         return
 
     opath = path

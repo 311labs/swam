@@ -511,7 +511,6 @@ SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
 		.appendTo(fc.$child);
 
 	_.each(fc.items, function(item) {
-		console.log(item);
 		var $li = $("<li />").appendTo($menu);
 		var $item = $("<a href='#' />").addClass("dropdown-item").appendTo($li);
 		if (item.action) $item.attr("data-action", item.action);

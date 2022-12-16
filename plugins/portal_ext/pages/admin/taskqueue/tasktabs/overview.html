@@ -1,0 +1,72 @@
+<div class="model-fields ms-3">
+    <div class="row mt-3">
+        <div class="col"><div class="swam-field" data-label="Id">{{options.model.id}}</div></div>
+        <div class="col"><div class="swam-field" data-label="State">{{options.model.state_display}}</div></div>
+    </div>
+    
+    <div class="row">
+        <div class="col"><div class="swam-field" data-label="Channel">{{options.model.channel}}</div></div>
+        <div class="col"><div class="swam-field" data-label="Runtime">{{options.model.runtime}}s</div></div>
+    </div>
+    
+    <div class="row">
+        <div class="col"><div class="swam-field" data-label="Module">{{options.model.model}}</div></div>
+        <div class="col"><div class="swam-field" data-label="Handler">{{options.model.fname}}</div></div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <div class="swam-field" data-label="Created">
+                {{#options.model.created}}
+                {{options.model.created|datetime_utc}}
+                {{/options.model.created}}
+                {{^options.model.created}}
+                    n/a
+                {{/options.model.created}}
+            </div>
+        </div>
+        <div class="col">
+            <div class="swam-field" data-label="Modified">
+                {{#options.model.state}}
+                {{options.model.state|datetime_utc}}
+                {{/options.model.state}}
+                {{^options.model.state}}
+                    n/a
+                {{/options.model.state}}
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <div class="swam-field" data-label="Started At"">
+                {{#options.model.started_at}}
+                {{options.model.started_at|datetime_utc}}
+                {{/options.model.started_at}}
+                {{^options.model.started_at}}
+                    n/a
+                {{/options.model.started_at}}
+            </div>
+        </div>
+        <div class="col">
+            <div class="swam-field" data-label="Completed At"">
+                {{#options.model.completed_at}}
+                {{options.model.completed_at|datetime_utc}}
+                {{/options.model.completed_at}}
+                {{^options.model.completed_at}}
+                    n/a
+                {{/options.model.completed_at}}
+            </div>
+        </div>
+    </div>
+    
+    <div class="swam-field" data-label="Reason">
+        {{#options.model.reason}}
+            {{options.model.reason}}
+        {{/options.model.reason}}
+        {{^options.model.reason}}
+        n/a
+        {{/options.model.reason}}
+    </div>
+</div>
+

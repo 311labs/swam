@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col">
+		<h3>Task Queue</h3>
+	</div>
+	<div class="col-auto">
+		<h5>running: <span class="badge bg-primary" id="tq_running_count"></span></h5>
+	</div>
+	<div class="col-auto">
+		<h5>backlog: <span class="badge bg-danger" id="tq_backlog_count"></span></h5>
+	</div>
+</div>
+<div>
+	<div class="row row-cols-1 row-cols-md-3 g-4">
+		<div class="col">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Completed</h5>
+					<div id="barchart_cmpltd"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+		  <div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Failed</h5>
+				<div id="barchart_failed"></div>
+			</div>
+		  </div>
+		</div>
+		<div class="col">
+		  	<div class="card">
+				<div class="card-body">
+			  		<h5 class="card-title">Longest</h5>
+					<div id="barchart_lngst"></div>
+		  		</div>
+			</div>
+	  	</div>
+	</div>
+
+	<div class="card mt-3">
+		<div id="list">
+			
+		</div>
+	</div>
+</div>

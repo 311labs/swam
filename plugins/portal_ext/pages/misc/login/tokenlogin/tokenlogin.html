@@ -1,0 +1,33 @@
+<main class="form-signin">
+    <form>
+      <div class="signin-brand text-center mb-3">
+        <h2 class="mb-3">{{app.options.title}}</h2>
+      </div>
+      
+      <div class="card card-login">
+        <div class="card-body">
+          <h1 class="h3 mb-3 fw-normal text-left text-white">Token Login</h1>
+          <div id="err_box" class="alert alert-danger collapse" role="alert">
+            {{{ICON('exclamation-triangle-fill')}}} <span id="err_msg"></span>
+          </div>
+          <div>
+            <div class="mb-3 text-white">Enter your username or email and a login token will be sent to you via email and text.</div>
+            <div class="form-floating">
+                <input type="username" class="form-control" name="username" placeholder="name@example.com">
+                <label for="username">Email address</label>
+            </div>
+          </div>
+      
+  
+          <button class="mt-3 w-100 btn btn-lg btn-primary" data-action="submitemail">Submit</button>
+        </div>
+      </div>
+  
+      <div class="login-footer text-center">
+            <p class="mt-5 text-muted text-center">© 2022</p>
+      {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
+      </div>
+  
+    </form>
+  </main>
+  

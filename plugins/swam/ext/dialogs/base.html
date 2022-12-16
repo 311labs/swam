@@ -1,5 +1,5 @@
 
-<div class="modal-dialog modal-dialog-centered {{options.add_classes}}">
+<div class="modal-dialog modal-dialog-centered {{options.add_classes}}{{#options.kind}} modal-{{options.kind}}{{/options.kind}}">
   <div class="modal-content rounded-6 shadow">
     {{#options.title}}
     <div class="modal-header border-bottom-1 user-select-none">
@@ -7,6 +7,9 @@
       {{#options.show_close}}
       <button type="button" class="btn-close" data-action="close"></button>
       {{/options.show_close}}
+      {{#options.show_context_menu}}
+      <div class="modal-context-menu"></div>
+      {{/options.show_context_menu}}
     </div>
     {{/options.title}}
     {{#options.view}}
@@ -38,4 +41,3 @@
     {{/options.no_buttons}}
   </div>
 </div>
-

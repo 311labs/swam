@@ -69,6 +69,12 @@ SWAM.Dialog = SWAM.View.extend({
         if (this.options.view) {
             this.addChild("dlg_view", this.options.view);
         }
+
+        if (this.options.context_menu) {
+            this.options.show_close = false;
+            this.options.show_context_menu = true;
+        }
+
         this.addToDOM($("body"));
         this.$el.show();
     },
@@ -97,10 +103,36 @@ SWAM.Dialog = SWAM.View.extend({
             this.trigger("dialog:closed", this);
         }
     },
+    on_action_context_menu: function(evt) {
+        var id = $(evt.currentTarget).data("id");
+        var menu = _.findWhere(this.options.context_menu, {action: id});
+        if (menu && menu.callback) {
+            menu.callback(this, menu);
+        }
+    },
     on_post_render: function() {
         if (this.options.size) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_sizes[this.options.size]);
         if (this.options.vsize) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_vsizes[this.options.vsize]);
+        if (this.options.height) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_vsizes[this.options.height]);
         if (this.options.scrollable) this.$el.find(".modal-dialog").addClass("modal-dialog-scrollable");
+        
+        if (this.options.context_menu) {
+            var cmenu = [];
+            _.each(this.options.context_menu, function(menu){
+                if (menu.action == undefined) menu.action = _.uniqueId("context_menu");
+                cmenu.push({icon:menu.icon, label:menu.label, action:"context_menu", id:menu.action});
+            });
+            var fc = {
+                "$el": this.$el.find(".modal-context-menu"),
+                id: "{{model.id}}",
+                icon:"bi bi-three-dots-vertical",
+                btn_classes: "btn btn-link py-0 px-2",
+                classes: "text-end",
+                items:cmenu};
+            SWAM.Form.Builder.dropdown(fc);
+        }
+
+
         window.sleep(500).then(function(){
             if (this.$el.find(".offcanvas").length) {
                 this.$el.find(".offcanvas").addClass("show");
