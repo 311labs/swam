@@ -4,7 +4,7 @@ window.PORTAL.Pages = window.PORTAL.Pages || {};
 
 
 window.PORTAL.init_admin_pages = function() {
-	app.addPage("dashboard", new PORTAL.Pages.Dashboard(), ["dashboard"]);
+	app.addPage("admin_dashboard", new PORTAL.Pages.AdminDashboard(), ["admin/dashboard"]);
 	app.addPage("users", new PORTAL.Pages.Users(), ["admin/users", "users"]);
 	app.addPage("groups", new PORTAL.Pages.Groups(), ["admin/groups", "groups"]);
 	app.addPage("audit_logs", new PORTAL.Pages.AuditLogs(), ["admin/logs", "logs"]);

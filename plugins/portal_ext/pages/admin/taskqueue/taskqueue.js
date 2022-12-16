@@ -1,15 +1,3 @@
-PORTAL.Views.TaskDialog = SWAM.Dialog.extend({
-    on_action_retry_now: function() {
-        this.options.model.save({action:"retry_now"}, function(model, resp) {
-            app.hideBusy();
-            if (resp.status) {
-                SWAM.toast("Retrying", "Retry now sent");
-            } else {
-                SWAM.toast("Retry Now Failed", resp.error, "danger");
-            }
-        }.bind(this));
-    }
-});
 
 PORTAL.Views.TaskTabs = SWAM.Views.Tabs.extend({
     on_init: function() {
@@ -151,7 +139,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
            {label:"Completed At", field:"completed_at|date"},
            {label:"Reason", field:"reason"}
         ],
-        Collection: SWAM.Collections.TaskCollection,
+        Collection: SWAM.Collections.Task,
         collection_params: {
             size: 10,
             sort: "-modified",
@@ -215,62 +203,88 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
         this.renderChildren();
     },
 
+    cancelTask: function(model) {
+        app.showBusy();
+    model.save({action:"cancel", reason:"canceled by user " + app.me.get("username")}, function(m, resp) {
+            app.hideBusy();
+            if (resp.status) {
+                SWAM.toast(`Task #${model.id}`, "Task has been rescheduled!", "success");
+            } else {
+                SWAM.toast(`Task #${model.id} Error`, resp.error, "danger");
+            }
+        }.bind(this));
+    },
+
+    retryTask: function(model) {
+        app.showBusy();
+        model.save({action:"retry_now"}, function(m, resp) {
+            app.hideBusy();
+            if (resp.status) {
+                SWAM.toast(`Task #${model.id}`, "Task has been rescheduled!", "success");
+            } else {
+                SWAM.toast(`Task #${model.id} Error`, resp.error, "danger");
+            }
+        }.bind(this));
+    },
+
     on_item_clicked: function(item, evt) {
         this.task_view.setModel(item.model);
+        var context_menu = [];
+        if (item.model.canCancel()) {
+            context_menu.push({
+                    label: "Cancel Task",
+                    icon: "x-octagon",
+                    action: "cancel_task",
+                    callback: function(dlg, menu) {
+                        SWAM.Dialog.confirm({
+                            title: `Cancel Task #${item.model.id}`,
+                            message: "Are you sure you want to cancel this task?",
+                            callback: function(dlg, choice) {
+                                if (choice == "yes") {
+                                    dlg.dismiss();
+                                    this.cancelTask(item.model);
+                                }
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                });
+        } else {
+            context_menu.push({
+                label: "Retry Task",
+                icon: "recycle",
+                action: "rerun_task",
+                callback: function(dlg, menu) {
+                    SWAM.Dialog.confirm({
+                        title: `Retry Task #${item.model.id}`,
+                        message: "Are you sure you want to reschedule this task?",
+                        callback: function(dlg, choice) {
+                            if (choice == "yes") {
+                                dlg.dismiss();
+                                this.retryTask(item.model);
+                            }
+                        }.bind(this)
+                    });
+                }.bind(this)
+            });
+        }
+
+        context_menu.push({
+                label: "Close",
+                icon: "x-circle-fill",
+                action: "close_item",
+                callback: function(dlg, menu) {
+                    dlg.dismiss();
+                }
+            });
+
         SWAM.Dialog.showView(this.task_view, {
             title: `Task #${item.model.id}`,
             kind: "primary",
             can_dismiss: true,
             padded: true,
             height: 'md',
-            context_menu:[
-                {
-                    label: "Edit",
-                    icon: "pencil",
-                    action: "edit_item",
-                    callback: function(dlg, menu) {
-                        SWAM.toast("hello friend", menu.action);
-                    }
-                },
-                {
-                    label: "Delete",
-                    icon: "trash",
-                    action: "delete_item",
-                    callback: function(dlg, menu) {
-                        SWAM.toast("hello friend", menu.action);
-                    }
-                }
-            ]
+            "context_menu": context_menu
         });
-
-
-
-        // if (!this.options.view_only && item.model.constructor.EDIT_FORM) {
-        //     SWAM.Dialog.editModel(item.model, 
-        //         {
-        //             title:"Edit",
-        //             size: "md",
-        //             callback:function(model, resp) {
-        //                 if (resp.status) {
-        //                 // auto saved nothing to do
-        //                 }
-        //             }.bind(this)
-        //         });
-        // } else {
-        //     //assign model that is clicked on to the tab view
-        //     PORTAL.Views.TaskDialog.showView(new PORTAL.Views.TaskTabs({model: item.model}), {buttons: [ {
-        //         action:"close",
-        //         label:"Ok"
-        //     },
-        //     {
-        //         action:"retry_now",
-        //         label:"Retry Now"
-        //     }], 
-        //     size:"lg",
-        //     vsize: "md",
-        //     model: item.model
-        //     });
-        // }
     },
 
     on_action_reload_stats: function() {

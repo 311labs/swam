@@ -6,12 +6,10 @@ PORTAL.Pages.EmailMessage = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
-            {label: "Date", field:"sent_at"},
+            {label: "Sent", field:"sent_at|datetime"},
             {label: "To", field: "to_email"},
             {label: "From", template: "{{model.from_name}} {{model.from_email}}"},
-            {label: "Subject", field: "subject"},
-            {label: "Source", field: "source"},
-            {label: "Reason", field: "reason"}
+            {label: "Subject", field: "subject"}
         ],
         Collection: SWAM.Collections.EmailMessage,
         collection_params: {

@@ -6,11 +6,11 @@ PORTAL.Pages.EmailOutgoing = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
-            {label: "Date", field:"sent_at"},
-            {label: "To", field: "to_email"},
-            {label: "From", template: "{{model.from_name}} {{model.from_email}}"},
+            {label: "Date", field:"created|datetime"},
+            {label: "State", field: "state_display"},
+            {label: "To", field: "to_emails"},
+            {label: "From", field: "from_addr"},
             {label: "Subject", field: "subject"},
-            {label: "Source", field: "source"},
             {label: "Reason", field: "reason"}
         ],
         Collection: SWAM.Collections.EmailOutgoing,
