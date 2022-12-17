@@ -110,7 +110,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         ],
         pagination: false,
         empty_html: "<tr><td colspan='100' class='text-center p-3 text-muted'>No items returned</td>",
-
+        fetch_on_tab: true
     },
 
     selectAll: function() {
@@ -287,6 +287,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         this.deselectAll();
         SWAM.Views.List.prototype.on_reset.call(this);
     },
+
+    on_tab_focus: function() {
+        if (this.options.fetch_on_tab) this.collection.fetchIfStale();
+    }
 });
 
 

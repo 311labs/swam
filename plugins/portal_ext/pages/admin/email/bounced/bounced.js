@@ -12,8 +12,7 @@ PORTAL.Pages.EmailBounced = SWAM.Pages.TablePage.extend({
         ],
         Collection: SWAM.Collections.EmailBounced,
         collection_params: {
-            size: 10,
-            sort: "-last_activity"
+            size: 10
         },
         group_filtering: false
     },

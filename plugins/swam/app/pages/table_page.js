@@ -114,6 +114,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		this.children["list"].list.on("item:clicked", this.on_item_clicked, this);
 	},
 
+	getBatchSelected: function() {
+		return this.children.list.list.selected;
+	},
+
 	setParams: function(params) {
 		this.params = params || {};
 		if (this.params.url_params) {

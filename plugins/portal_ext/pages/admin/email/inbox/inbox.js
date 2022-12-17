@@ -12,8 +12,7 @@ PORTAL.Pages.EmailInbox = SWAM.Pages.TablePage.extend({
         ],
         Collection: SWAM.Collections.EmailInbox,
         collection_params: {
-            size: 10,
-            sort: "-last_activity"
+            size: 10
         },
         group_filtering: false
     },

@@ -22,6 +22,17 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                     "rgba(50, 255, 100, 0.9)",
                 ]
             }));
+
+        this.addChild("incident_events",
+            new PORTAL.Views.MetricsChart({
+                title: "Events",
+                category: "incident_events"
+            }));
+        this.addChild("incidents",
+            new PORTAL.Views.MetricsChart({
+                title: "Incidents",
+                category: "incidents"
+            }));
     },
 
     refresh: function() {
