@@ -482,6 +482,7 @@ div.swam-table-toc {
             background-color: $brand-primary;
             color: white;
             > td {
+                --bs-table-accent-bg: transparent;
                 color: white;
             }
 

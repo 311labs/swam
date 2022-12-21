@@ -1,7 +1,7 @@
 PORTAL.Pages.EmailBounced = SWAM.Pages.TablePage.extend({
     defaults: {
         icon: "mailbox",
-        title: "Email Inboxes",
+        title: "Email Bounces",
         list_options: {
             add_classes: "swam-table-clickable",
         },
@@ -14,7 +14,8 @@ PORTAL.Pages.EmailBounced = SWAM.Pages.TablePage.extend({
         collection_params: {
             size: 10
         },
-        group_filtering: false
+        group_filtering: false,
+        add_button: false
     },
 
     on_init: function() {

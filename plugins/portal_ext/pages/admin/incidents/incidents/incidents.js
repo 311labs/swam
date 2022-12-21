@@ -117,6 +117,10 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             pagination: true,
         }));
 
+        this.getTab("events").on("item:clicked", function(item){
+            SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+        }.bind(this));
+
         collection = new SWAM.Collections.IncidentHistory();
         collection.params.parent = -1;
         this.addTab("History", "history", new SWAM.Views.Table({

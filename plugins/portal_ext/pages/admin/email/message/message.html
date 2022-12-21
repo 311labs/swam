@@ -1,0 +1,21 @@
+<div class="card">
+
+	<div class="card-header">
+		<div>
+			to: {{model.to}}
+		</div>
+		<div>
+			from: {{model.from_name}} {{model.from_addr}}
+		</div>
+		<div>
+			subject: {{model.subject}}
+		</div>
+		<div>
+			{{model.created|datetime}}
+		</div>
+		
+	</div>
+	<div class="card-body p-4">
+		{{{model.html}}}
+	</div>
+</div>

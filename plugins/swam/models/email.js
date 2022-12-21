@@ -22,6 +22,21 @@ SWAM.Collections.EmailMessage = SWAM.Collection.extend({
     }
 });
 
+
+SWAM.Models.EmailAttachment = SWAM.Model.extend({
+    defaults: {
+        url:"/rpc/inbox/message/attachment"
+    },
+});
+
+SWAM.Collections.EmailAttachment = SWAM.Collection.extend({
+    defaults: {
+        Model: SWAM.Models.EmailAttachment
+    }
+});
+
+
+
 SWAM.Models.EmailBounced = SWAM.Model.extend({
     defaults: {
         url:"/rpc/inbox/bounced"

@@ -1,15 +1,18 @@
-<button class="{{options.btn_classes}} dropdown-toggle" type="button" data-bs-auto-close="true" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+<button id="dropdown_toggle" class="{{options.btn_classes}}{{^options.show_context_menu}} dropdown-toggle{{/options.show_context_menu}}" type="button" data-bs-auto-close="true" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+  {{#options.show_context_menu}}
+  {{{ICON(options.context_menu_icon)}}}
+  {{/options.show_context_menu}}
+  {{^options.show_context_menu}}
   {{{active_label}}}
+  {{/options.show_context_menu}}
 </button>
 <ul class="dropdown-menu shadow">
    {{#options.menu_items}}
       <li>
       <a href="#" class="dropdown-item" data-action="{{options.action}}" data-id="{{.id}}">
-         {{#.icon}}{{{ICON(.icon)}}}{{/.icon}} {{.label}}
+         {{#.icon}}{{{ICON(.)}}}{{/.icon}} {{.label}}
       </a>
       </li>
    {{/options.menu_items}}
 </ul>
-
-
 

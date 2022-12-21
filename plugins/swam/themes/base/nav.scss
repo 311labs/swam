@@ -32,6 +32,12 @@ div#panel-left {
 			}
 		}
 
+		div#menuselect {
+			button.btn.dropdown-toggle {
+				color: white;
+			}
+		}
+
 		&.bg-dark {
 			background-color: $panel-left-background !important;
 

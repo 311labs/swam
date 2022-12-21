@@ -13,7 +13,7 @@
 			  		{{#get_tabs}}
 				  		<li>
 				  			<a href="#"  data-action="tab" data-id="{{.id}}" class="dropdown-item">
-				  				{{{.label}}}
+				  				{{#.icon}}{{{ICON(.)}}}{{/.icon}} {{{.label}}}
 				  			</a>
 				  		</li>
 			  		{{/get_tabs}}
@@ -21,10 +21,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="tabs">
+		<div class="tabs {{options.tabs_classes}}">
 			<ul class="tabs-list">
 				{{#get_tabs}}
-				<li data-action="tab" data-id="{{.id}}" class="{{.classes}}">{{{.label}}}</li>
+				<li data-action="tab" data-id="{{.id}}" class="{{.classes}}">{{#.icon}}{{{ICON(.)}}} {{/.icon}}{{{.label}}}</li>
 				{{/get_tabs}}
 			</ul>
 		</div>

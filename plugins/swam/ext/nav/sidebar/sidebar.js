@@ -23,7 +23,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			}
 		],
 		menu_select: false,
-		menu_select_items: [],
+		menu_select_items: []
 	},
 
 	on_init: function() {
@@ -123,8 +123,9 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		this.setActivePage(name);
 	},
 
-	on_action_merchant_menu: function() {
-		app.sidebar.showMenu("sidebar");
+	on_action_show_menu: function(evt) {
+		let id = $(evt.currentTarget).data("id");
+		app.sidebar.showMenu(id);
 	},
 
 	on_action_about: function() {

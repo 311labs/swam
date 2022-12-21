@@ -3,7 +3,8 @@ SWAM.Views.Tabs = SWAM.View.extend({
     template: "swam.ext.tabs",
     classes: "swam-tabs-view",
     defaults: {
-        force_dropdown: false
+        force_dropdown: false,
+        tabs_classes: "",
     },
 
     on_init: function(evt) {

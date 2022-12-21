@@ -2,8 +2,10 @@ SWAM.Views.Dropdown = SWAM.View.extend({
     classes: "dropdown",
     template: "swam.ext.misc.dropdown",
     defaults: {
-        btn_classes: "btn btn-link dropdown-toggle",
+        btn_classes: "btn btn-link",
         menu_items: [],
+        show_context_menu: false,
+        context_menu_icon: "bi bi-three-dots-vertical",
         action: "dropdown_item",
         empty_label: "Select Item"
     },
@@ -14,7 +16,7 @@ SWAM.Views.Dropdown = SWAM.View.extend({
             if (_.isString(item)) {
                 normalized.push({id:item, label:item});
             } else {
-                if (_.isUndefined(item.id)) item.id = item.label;
+                if (_.isUndefined(item.id)) item.id = item.label.lower();
                 normalized.push(item);
             }
         });
@@ -42,7 +44,10 @@ SWAM.Views.Dropdown = SWAM.View.extend({
 
     setActiveItem: function(item, evt) {
         this.options.active_item = item;
-        this.$el.find("button.dropdown-toggle").html(this.active_label());
+        if (!this.options.show_context_menu) {
+            this.$el.find("button#dropdown_toggle").html(this.active_label());
+        }
+        
         this.trigger("change", item);
     }
 });

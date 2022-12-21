@@ -14,7 +14,7 @@ PORTAL.Pages.EmailInbox = SWAM.Pages.TablePage.extend({
         collection_params: {
             size: 10
         },
-        group_filtering: false
+        group_filtering: false,
     },
 
     on_init: function() {
