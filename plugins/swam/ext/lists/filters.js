@@ -115,7 +115,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_action_download_csv: function(evt) {
         var filename = this.options.download_prefix + ".csv";
-        SWAM.Rest.DOWNLOAD(this.collection.getRawUrl(
+        SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
                 format_filename: filename,
                 format:"csv",
@@ -128,7 +128,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_action_download_json: function(evt) {
         var filename = this.options.download_prefix + ".json";
-        SWAM.Rest.DOWNLOAD(this.collection.getRawUrl(
+        SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
                 format_filename: filename,
                 format:"json",

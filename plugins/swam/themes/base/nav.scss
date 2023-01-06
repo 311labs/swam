@@ -41,6 +41,12 @@ div#panel-left {
 		&.bg-dark {
 			background-color: $panel-left-background !important;
 
+			div#groupselect {
+				button.dropdown-toggle {
+					color: white;
+				}
+			}
+
 			ul.nav.nav-pills li {
 				a, button {
 					color: $panel-left-color;

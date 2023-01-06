@@ -261,6 +261,10 @@ SWAM.Dialog = SWAM.View.extend({
         dlg.show();
         return dlg;
     },
+    showInput: function(opts) {
+        opts = _.extend({lbl_save: "Ok", title:"Input Value"}, opts);
+        return this.showForm([{kind:"text", name:"input"}], opts);
+    },
     showForm: function(fields, opts) {
         if ((opts == undefined) && (!_.isArray(fields))) {
             opts = fields;

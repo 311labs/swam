@@ -256,12 +256,14 @@ SWAM.View = SWAM.Object.extend({
             if (this.model == model) return;
             this.model.off("change", this.on_model_change, this);
         }
+        let has_changed = this.model == model;
         this.model = model;
         this.options.model = model;
         this.model.on("change", this.on_model_change, this);
         _.each(this.children, function(child){
             child.setModel(model);
         });
+        if (has_changed) this.trigger("set_model", model);
     },
 
     on_model_change: function(model) {

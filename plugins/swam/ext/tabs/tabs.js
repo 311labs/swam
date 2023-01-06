@@ -111,7 +111,7 @@ SWAM.Views.Tabs = SWAM.View.extend({
         var prevOffset = 0;
         var flag = false;
         $children.each(function(){
-            console.log(this.offsetLeft);
+            // console.log(this.offsetLeft);
             if (this.offsetLeft < prevOffset) {
                 flag = true;
             }

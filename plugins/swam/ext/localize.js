@@ -650,6 +650,10 @@ SWAM.Localize = {
 
     },
 
+    'cents_to_currency': function(value, attr, fmt) {
+        return this.currency(value / 100, attr, fmt);
+    },
+
     'currency': function(value, attr, fmt) {
         if (value == null) return "n/a";
 

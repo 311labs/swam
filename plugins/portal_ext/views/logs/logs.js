@@ -3,10 +3,15 @@
 PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
     classes: "swam-paginated-table swam-table-clickable swam-table-tiny",
     defaults: {
+        model_field: "user",
         columns: [
             {label:"Created", field:"when|datetime"},
-            {label:"Path", template:"<div>{{model.request_path}}</div>{{model.action}}", sort_field:"request_path"},
-        ],
+            {label:"Path", template:"<div>{{model.request_method}}:{{model.request_path}}</div>"},
+            {label:"IP", field:"session.ip", classes:"d-none d-lg-table-cell"},
+            {label:"Action", field:"action", classes:"d-none d-xl-table-cell"},
+            {label:"Component", field:"component", classes:"d-none d-lg-table-cell"},
+            {label:"User", field:"user.username", classes:"d-none d-xl-table-cell"},
+         ],
         Collection: SWAM.Collections.AuditLog,
         collection_params: {
             size: 15
@@ -109,39 +114,54 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
     },
 
     on_item_clicked: function(item) {
+        // var opts = {
+        //     title: SWAM.renderString("Audit Log - {{when|datetime_tz}} - {{request_path}}", item.model),
+        //     size: "xl"
+        // }
+        // var header = SWAM.Views.ModelView.build(item.model,
+        //     [
+        //         {label:"Created", field:"when|datetime", columns: 3},
+        //         {label:"Method", field:"request_method", columns: 3},
+        //         {label:"Level", field:"level", columns: 3},
+        //         {label:"Path", field:"request_path", columns: 3},
+        //         {label:"IP", field:"session.ip", columns: 3},
+        //         {label:"Action", field:"action", columns: 3},
+        //         {label:"Component", field:"component", columns: 3},
+        //         {label:"User", field:"user.username", columns: 3},
+        //         {label:"UserAgent", field:"session.user_agent", columns: 12},
+        //     ]);
+        // if (item.model.get("action") == "error") {
+        //     opts.message = header + item.model.get("message", "", "prettystacktrace|wrap('pre')");
+        // } else {
+        //     opts.message = header;
+        //     opts.json = item.model.get("message");
+        // }
+
+        // SWAM.Dialog.show(opts);
+
         var opts = {
             title: SWAM.renderString("Audit Log - {{when|datetime_tz}} - {{request_path}}", item.model),
             size: "xl"
         }
-        var header = SWAM.Views.ModelView.build(item.model,
-            [
-                {label:"Created", field:"when|datetime", columns: 3},
-                {label:"Method", field:"request_method", columns: 3},
-                {label:"Level", field:"level", columns: 3},
-                {label:"Path", field:"request_path", columns: 3},
-                {label:"IP", field:"session.ip", columns: 3},
-                {label:"Action", field:"action", columns: 3},
-                {label:"Component", field:"component", columns: 3},
-                {label:"User", field:"user.username", columns: 3},
-                {label:"UserAgent", field:"session.user_agent", columns: 12},
-            ]);
-        if (item.model.get("action") == "error") {
-            opts.message = header + item.model.get("message", "", "prettystacktrace|wrap('pre')");
-        } else {
-            opts.message = header;
-            opts.json = item.model.get("message");
-        }
-
-        SWAM.Dialog.show(opts);
+        var view = new PORTAL.Views.AuditLog();
+        view.setModel(item.model);
+        SWAM.Dialog.showView(view, opts);
     },
 
     setModel: function(model) {
         this.model = model;
-        if (model.get("member")) {
-            this.collection.params.user = model.get("member.id");
+        if (this.options.model_field == "user") {
+            if (model.get("member")) {
+                this.collection.params.user = model.get("member.id");
+            } else {
+                this.collection.params.user = model.id;
+            }
+        } else if (this.options.model_field == "terminal") {
+            this.collection.params.tid = model.get("tid");
         } else {
-            this.collection.params.user = model.id;
+            this.collection.params[this.options.model_field] = model.id;
         }
+
         
         if (app.group) {
             this.collection.params.group = app.group.id;

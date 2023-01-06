@@ -512,6 +512,10 @@ SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
 
 	_.each(fc.items, function(item) {
 		var $li = $("<li />").appendTo($menu);
+		if (item.divider) {
+			$li.append($('<hr class="dropdown-divider">'));
+			return;
+		}
 		var $item = $("<a href='#' />").addClass("dropdown-item").appendTo($li);
 		if (item.action) $item.attr("data-action", item.action);
 		if (item.id) {

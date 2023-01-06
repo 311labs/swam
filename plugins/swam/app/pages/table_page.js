@@ -150,7 +150,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_item_clicked: function(item, evt) {
-		if (!this.options.view_only && item.model.constructor.EDIT_FORM) {
+		if (this.options.view) {
+			this.options.view.setModel(item.model);
+			SWAM.Dialog.showView(this.options.view, {size:"lg", vsize:"lg", can_dismiss:true});
+		} else if (!this.options.view_only && item.model.constructor.EDIT_FORM) {
 			SWAM.Dialog.editModel(item.model, 
 				{
 					title:"Edit",
@@ -164,7 +167,6 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		} else {
 			SWAM.Dialog.showModel(item.model, null, {size:"md"});
 		}
-
 	},
 
 	on_action_add: function(evt) {

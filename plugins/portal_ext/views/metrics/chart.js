@@ -5,10 +5,18 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         title: "Metrics Chart",
         category: null,
         slugs: null,
+        group: null,
+        chart_type: "line"
     },
 
     on_init: function(opts) {
-        this.addChild("metrics_chart", new SWAM.Views.Chart({type:"line", max_length:12}));
+        if (this.options.source == "db") {
+            this.options.url = "/rpc/metrics/db/metrics"
+        } else {
+            this.options.url = "/rpc/metrics/metrics"
+        }
+
+        this.addChild("metrics_chart", new SWAM.Views.Chart({type:this.options.chart_type, max_length:12}));
     },
 
     showBusy: function() {
@@ -32,9 +40,13 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         } else if (this.options.slugs) {
             params.slugs = this.options.slugs;
         }
+
+        if (this.options.group) {
+            params.group = this.options.group;
+        }
         this.showBusy();
 
-        SWAM.Rest.GET("/rpc/metrics/metrics", params, function(resp, status) {
+        SWAM.Rest.GET(this.options.url, params, function(resp, status) {
             this.hideBusy();
             if (resp.status) {
                 this.on_metrics(resp.data);
@@ -71,9 +83,18 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         } else {
             colors = [...this.options.colors];
         }
-        _.each(data.data, function(slug_data) {
+
+        if (this.options.source == "db") {
+            this.on_db_metrics(data, colors);
+        } else {
+            this.on_redis_metrics(data, colors);
+        }
+    },
+
+    on_redis_metrics: function(data, colors) {
+        _.each(data.data, function(slug_data, slug) {
             let color = null;
-            if (this.options.slugs) {
+            if (_.isArray(this.options.slugs)) {
                 color = colors[this.options.slugs.indexOf(slug_data.slug)];
             } else {
                 color = colors.pop();
@@ -85,7 +106,25 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }.bind(this));
 
         this.renderChildren();
-    }, 
+    },
+
+    on_db_metrics: function(data, colors) {
+        _.each(data.data, function(slug_data, slug) {
+            let color = null;
+            if (this.options.keys) {
+                if (this.options.keys.indexOf(slug)<0) return;
+                color = colors[this.options.keys.indexOf(slug)];
+            } else {
+                color = colors.pop();
+            }
+            
+            this.children.metrics_chart.addDataSet(
+                slug, slug_data, 
+                {backgroundColor: color});
+        }.bind(this));
+
+        this.renderChildren();
+    },
 
     on_pre_render: function() {
         this.refreshDebounced();
