@@ -41,6 +41,7 @@ SWAM.Form.View = SWAM.View.extend({
         this.on_init_daterangepicker();
         this.on_init_es();
         this.enablePops();
+        this.enableClear();
     },
 
     getData: function() {
@@ -240,7 +241,8 @@ SWAM.Form.View = SWAM.View.extend({
 
     on_input_handler: function(evt) {
         var $el = $(evt.currentTarget);
-        var ievt = {name:$el.attr("name"), value:$el.val(), event:evt};
+        var ievt = {name:$el.attr("name"), value:$el.val(), event:evt, type:$el.attr("type")};
+        ievt.$el = $el;
         ievt.currentTarget = $el[0];
         if (!ievt.name) ievt.name = $el.attr("id");
         if (!ievt.name) return;
@@ -263,6 +265,14 @@ SWAM.Form.View = SWAM.View.extend({
                 }
             }
         }.bind(ievt);
+
+        if (ievt.type == "text") {
+            if (ievt.value == "") {
+                ievt.$el.parent().removeClass("input-clearable");
+            } else {
+                ievt.$el.parent().addClass("input-clearable");
+            }
+        }
         this.trigger("input:change", ievt);
         if (_.isFunction(this[func_name])) {
             this[func_name](evt, ievt.value, ievt);
@@ -278,6 +288,37 @@ SWAM.Form.View = SWAM.View.extend({
         });
     },
 
+    enableClear: function() {
+        this.$el.find("button.btn-clear").each(function(index){
+            var $parent = $(this).parent();
+            var $input = $parent.find("input");
+            if ($input.val()) {
+                $parent.addClass("input-clearable");
+            }
+        });
+    },
+
+    on_action_show_password: function(evt) {
+        var $parent = $(evt.currentTarget).parent();
+        var $input = $parent.find("input");
+        if ($input.attr("type") == "password") {
+            $input.attr("type", "text");
+        } else {
+            $input.attr("type", "password");
+        }
+    },
+
+    on_action_clear_field: function(evt) {
+        var $parent = $(evt.currentTarget).parent();
+        var $input = $parent.find("input");
+        $input.val("").change();
+        // $parent.removeClass("input-clearable");
+        // var ievt = {name:$input.attr("name"), value:"", event:evt, type:$input.attr("type")};
+        // ievt.$el = $input;
+        // ievt.currentTarget = $input[0];
+        // if (!ievt.name) ievt.name = $input.attr("id");
+        // this._handle_input_change(ievt);
+    },
 });
 
 // $form.find('input[value!=""]:file:enabled').each(function(k,field){

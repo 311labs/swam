@@ -7,17 +7,18 @@
         "/swamcore/plugins/clipboard.js",
         "/swamcore/plugins/swam/swam_all.js",
         "/swamcore/plugins/charts/include.js",
-        "/plugins/portal_ext/include.js",
+        "/swamcore/plugins/portal_ext/include.js",
         "includes.js"
     ],
     "mustache_files": [
         "/swamcore/plugins/swam/templates.js",
-        "/plugins/portal_ext/templates.js",
+        "/swamcore/plugins/portal_ext/templates.js",
         "templates.js"
     ],
     "css_files": [
         "/swamcore/plugins/bootstrap/bootstrap5.css",
         "/swamcore/plugins/bootstrap/bootstrap5-icons.css",
+        "/swamcore/plugins/datepicker.css",
         "includes.css"
     ],
     "static_files": [
@@ -26,6 +27,7 @@
         "/swamcore/plugins/bootstrap/fonts"
     ],
     "static_paths": true,
-    "version": "0.1.1443",
-    "template_root": "apps.docs.developer"
+    "version": "0.1.1483",
+    "template_root": "apps.docs.developer",
+    "loader_color": "#598A77"
 }

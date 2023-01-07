@@ -28,7 +28,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		                columns: 6,
 		                columns_classes: "col-sm-12 col-md-5 col-lg-6",
 		                form_wrap: "search",
-		                placeholder: "search",
+		                placeholder: "search...",
+		                can_clear: true,
 		                button: {
 		                    icon: "bi bi-search"
 		                }

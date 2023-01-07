@@ -140,7 +140,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     on_pre_render: function() {
-        this.children.fb_actions.options.default = this.options.list.collection.params;
+        this.children.fb_actions.options.defaults = this.options.list.collection.params;
         this.children.fb_actions.options.model = this.options.model;
         this.children.fb_filters.children = {};
         _.each(this.options.list.collection.params, function(value, key){

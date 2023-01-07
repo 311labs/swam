@@ -11,7 +11,8 @@ SWAM.Form.Test.Basic = [
         label: "plain input (default value)",
         name: "plain1",
         columns: 4,
-        value: "hello world"
+        value: "hello world",
+        can_clear: true
     },
     {
         label: "with place holder",
@@ -334,9 +335,18 @@ SWAM.Form.Test.Misc = [
         columns: 12
     },
     {
+        label: "Password",
+        name: "password_normal",
+        type: "password",
+        can_view: true,
+        value: "my secret password",
+        columns: 6
+    },
+    {
         label: "Password (Floating Labels)",
         name: "password_floating",
         type: "text",
+        can_view: true,
         floating_label: true,
         columns: 12
     },

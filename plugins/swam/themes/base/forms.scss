@@ -40,6 +40,67 @@ div.swam-form-input {
     }
 }
 
+div.form-floating {
+    button.btn-icon {
+        position: absolute;
+        right: 8px;
+        top: 15px;
+        background-color: transparent;;
+        border: none;
+        &:hover {
+            color: $brand-primary;
+        }
+    }
+}
+
+div.password-input-group {
+    position: relative;
+    button.btn-icon {
+        position: absolute;
+        right: 8px;
+        bottom: 14px;
+        background-color: transparent;;
+        border: none;
+        &:hover {
+            color: $brand-primary;
+        }
+    }
+}
+
+div.text-input-group {
+    position: relative;
+
+    button.btn-clear {
+        display: none;
+        color: #6c757d;
+    }
+
+    button.btn-icon, button.btn-clear {
+        position: absolute;
+        right: 8px;
+        bottom: 14px;
+        background-color: transparent;;
+        border: none;
+        &:hover {
+            color: $brand-primary;
+        }
+    }
+
+    &.input-clearable, div.input-group.input-clearable {
+        button.btn-clear {
+            display: block;
+        }
+    }
+
+    div.input-group {
+        button.btn-clear {
+            right: 50px;
+            bottom: 5px;
+            z-index: 5;
+        }
+    }
+}
+
 
 .inputimage-wrapper {
   // required

@@ -211,17 +211,38 @@ SWAM.Form.Builder.help = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.text = function(fc, form_info) {
-	if (fc.button || fc.icon || fc.left_icon) return SWAM.Form.Builder.input_group(fc, form_info);
-	SWAM.Form.Builder.label(fc);
-	fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
-	fc.$input.prop("type", fc.type);
-	SWAM.Form.Builder.orderLabel(fc, form_info);
+	if (fc.button || fc.icon || fc.left_icon) {
+		fc = SWAM.Form.Builder.input_group(fc, form_info);
+	} else {
+		SWAM.Form.Builder.label(fc);
+		fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
+		fc.$input.prop("type", fc.type);
+		SWAM.Form.Builder.orderLabel(fc, form_info);
+
+	}
+
+	if (fc.can_clear) {
+		SWAM.Form.Builder.button({
+			$el: fc.$wrap || fc.$el,
+			classes: "btn-clear",
+			action: "clear_field",
+			icon: "x-circle-fill"
+		});
+	}
 	return fc;
 }
 
 SWAM.Form.Builder.password = function(fc, form_info) {
 	SWAM.Form.Builder.text(fc, form_info);
 	fc.$input.attr("autocomplete", "new-password");
+	if (fc.can_view) {
+		SWAM.Form.Builder.button({
+			$el: fc.$el,
+			classes: "btn-icon",
+			action: "show_password",
+			icon: "eye-fill"
+		});
+	}
 	return fc;
 }
 
@@ -311,7 +332,8 @@ SWAM.Form.Builder.input_group = function(fc, form_info) {
 	fc.$input.prop("type", fc.type);
 	fc.$wrap.append(fc.$input);
 	if (fc.button) {
-		var $btn = $("<button class='" + SWAM.Form.Builder.config.input_group_btn_classes + "'><i class='" + fc.button.icon + "'></i></button>");
+		fc.button.classes = fc.button.classes || SWAM.Form.Builder.config.input_group_btn_classes;
+		var $btn = $("<button class='" + fc.button.classes + "'>" + SWAM.Icons.getIcon(fc.button.icon) + "</button>");
 		if (fc.button.action) $btn.attr("data-action", fc.button.action);
 		fc.$wrap.append($btn);
 	} else if (fc.icon) {

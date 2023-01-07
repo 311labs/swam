@@ -9,3 +9,4 @@ pages/misc/**/*.js
 pages/swam/**/*.js
 views/**/*.js
 app.js
+
