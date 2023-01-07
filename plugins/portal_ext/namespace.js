@@ -16,7 +16,7 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("email_complaint", new PORTAL.Pages.EmailComplaint(), ["admin/email/complaints"]);
 	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
 
-	app.addPage("incidents", new PORTAL.Pages.Incidents(), ["admin/incidents"]);
-	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents(), ["admin/incident/events"]);
-	app.addPage("incident_rules", new PORTAL.Pages.IncidentRules(), ["admin/incident/rules"]);
+	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
+	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({group_filtering:false}), ["admin/incident/events"]);
+	app.addPage("incident_rules", new PORTAL.Pages.IncidentRules({group_filtering:false}), ["admin/incident/rules"]);
 }
