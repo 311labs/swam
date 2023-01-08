@@ -125,7 +125,8 @@ class FileCache():
     def clearChanges(self):
         for path in self.cache:
             self.cache[path].mtime = os.path.getmtime(path)
-        return False    
+        self.save()
+        return True
 
     def hasPath(self, path):
         return path in self.cache
