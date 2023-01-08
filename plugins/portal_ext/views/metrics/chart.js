@@ -6,7 +6,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         category: null,
         slugs: null,
         group: null,
-        chart_type: "line"
+        chart_type: "line",
+        granularity: "daily"
     },
 
     on_init: function(opts) {
@@ -16,7 +17,11 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             this.options.url = "/rpc/metrics/metrics"
         }
 
-        this.addChild("metrics_chart", new SWAM.Views.Chart({type:this.options.chart_type, max_length:12}));
+        this.addChild("metrics_chart", new SWAM.Views.Chart({
+            type:this.options.chart_type, max_length:12,
+            hide_tooltips: this.options.hide_tooltips,
+            hide_legend: this.options.hide_legend
+        }));
     },
 
     showBusy: function() {
@@ -32,9 +37,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }
     },
 
-    refresh: function() {
+    _refresh: function() {
         // slugs are sorted automatically, so metrics data values will be arranged accordingly
-        var params = {};
+        var params = {granularity:this.options.granularity};
+        if (this.options.no_refresh) return; // this assume data is coming from somewhere else
         if (this.options.category) {
             params.category = this.options.category
         } else if (this.options.slugs) {
@@ -54,11 +60,15 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }.bind(this));
     },
 
+    refresh: function() {
+        this.refreshDebounced();
+    },
+
     refreshDebounced: function() {
         if (!this._debounce_refresh) {
             this._debounce_time = this.options.debounce_time || 400;
            this._debounce_refresh = window.debounce(
-               this.refresh.bind(this),
+               this._refresh.bind(this),
                this._debounce_time
            );
         }
@@ -68,6 +78,9 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     },
 
     on_metrics: function (data) {
+        if (this.options.on_localize) {
+            data = this.options.on_localize(data);
+        }
         this.options.labels = data.periods;
         this.options.period_beg = data.periods[0];
         this.options.period_end = data.periods[7];
@@ -89,6 +102,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         } else {
             this.on_redis_metrics(data, colors);
         }
+        this.trigger("metrics", data); // allow others to use data via event
     },
 
     on_redis_metrics: function(data, colors) {

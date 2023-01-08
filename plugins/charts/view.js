@@ -85,9 +85,17 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_post_render: function() {
         this.$el.attr("id", this.id);
-        this.chart_config = {data:this.options.data, options:this.options.options};
+        this.chart_config = {data:this.options.data, options: this.options.options || {}};
         var fname = "on_init_" + this.options.type;
         if (_.isFunction(this[fname])) this[fname](this.chart_config);
+
+        this.chart_config.options.plugins = this.chart_config.options.plugins || {};
+        if (this.options.hide_legend) {
+            this.chart_config.options.plugins.legend = {display:false};
+        }
+        if (this.options.hide_tooltips) {
+            this.chart_config.options.plugins.tooltips = {enabled:false};
+        }
 
         this.chart = new Chart(this.el, {
             type: this.options.type,

@@ -345,10 +345,17 @@ SWAM.Form.Test.Misc = [
     {
         label: "Password (Floating Labels)",
         name: "password_floating",
-        type: "text",
+        type: "password",
         can_view: true,
         floating_label: true,
-        columns: 12
+        columns: 6
+    },
+    {
+        label: "Password",
+        name: "password_floating",
+        type: "password",
+        can_view: true,
+        columns: 6
     },
 ];
 

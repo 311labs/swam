@@ -4,6 +4,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	classes: "page-view table-page-view page-padded has-topbar",
 	template: "<div id='list'></div>",
 	defaults: {
+		dialog_options: {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true},
 		download_prefix: "download",
 		collection_params: {
 			size: 10
@@ -153,7 +154,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	on_item_clicked: function(item, evt) {
 		if (this.options.view) {
 			this.options.view.setModel(item.model);
-			SWAM.Dialog.showView(this.options.view, {size:"lg", vsize:"lg", can_dismiss:true});
+			SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
 		} else if (!this.options.view_only && item.model.constructor.EDIT_FORM) {
 			SWAM.Dialog.editModel(item.model, 
 				{

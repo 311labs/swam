@@ -136,7 +136,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
            {label:"Function Name", field:"fname"},
            {label:"Channel", field:"channel"},
            {label:"Created", field:"created|date"},
-           {label:"Completed At", field:"completed_at|date"},
+           {label:"Completed At", field:"completed_at|ago"},
            {label:"Reason", field:"reason"}
         ],
         Collection: SWAM.Collections.Task,

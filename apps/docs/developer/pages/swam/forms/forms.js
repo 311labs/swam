@@ -1,4 +1,3 @@
-
 PORTAL.Pages.ExampleForms = SWAM.Page.extend(SWAM.Ext.BS).extend({
     template: ".pages.swam.forms",
     classes: "page-view page-padded has-topbar",
