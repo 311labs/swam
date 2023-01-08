@@ -14,6 +14,10 @@ SWAM.Page = SWAM.View.extend({
 
 	},
 
+	on_page_reenter: function() {
+
+	},
+
 	on_page_exit: function() {
 
 	},

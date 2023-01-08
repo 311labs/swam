@@ -83,6 +83,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                     // page.render();
                     if (anchor) page.scrollToAnchor(anchor);
                     page.updateURL();
+                    page.on_page_reenter();
                 }
                 return;
             }
@@ -479,3 +480,5 @@ SWAM.RE.namedParam = /(\(\?)?:\w+/g;
 SWAM.RE.optionalParam = /\((.*?)\)/g;
 SWAM.RE.escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 SWAM.RE.splatParam  = /\*\w+/g;
+
+

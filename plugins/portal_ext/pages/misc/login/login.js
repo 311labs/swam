@@ -9,14 +9,19 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         var data = SWAM.Form.getData(this.$el.find("form"));
         if (data.signin_username && data.signin_password) {
             app.showBusy({icon:'<i class="bi bi-key"></i>'});
-            app.me.login(data.signin_username, data.signin_password, function(model, data){
+            app.me.login(data.signin_username, data.signin_password, function(model, resp){
                 app.hideBusy();
-                if (app.me.isAuthenticated()) {
-                    app.on_logged_in();
-                    app.loadRoute(this.starting_url);
-                } else {
+                if (!resp.status) {
                     this.$el.find("#err_box").addClass("show");
-                    this.$el.find("#err_msg").text(data.error);
+                    this.$el.find("#err_msg").text(resp.error);
+                } else {
+                    if (app.me.isAuthenticated()) {
+                        app.on_logged_in();
+                        app.loadRoute(this.starting_url);
+                    } else {
+                        this.$el.find("#err_box").addClass("show");
+                        this.$el.find("#err_msg").text("unknown error");
+                    }
                 }
             }.bind(this));
         }

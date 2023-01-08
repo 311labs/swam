@@ -156,6 +156,9 @@ SWAM.Rest = {
                     } else if (status === 'parsererror') {
                         resp.error = 'Request got jumbled-up';
                         resp.network_error = true;
+                    } else if (xhr.status == 0) {
+                        resp.error = "could not connect to host, (verify network)";
+                        resp.network_error = true;
                     } else if (xhr.status == 400) {
                         resp.error = "bad request";
                         resp.network_error = true;

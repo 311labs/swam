@@ -122,6 +122,11 @@ class FileCache():
                 return True
         return False
 
+    def clearChanges(self):
+        for path in self.cache:
+            self.cache[path].mtime = os.path.getmtime(path)
+        return False    
+
     def hasPath(self, path):
         return path in self.cache
 
@@ -233,7 +238,7 @@ class SwamFile():
             self.merge()
         self.on_close()
         pp(Colors.BLUE, "\t{}\tregenerated".format(self.output_path))
-        self.info = FILE_CACHE.getPath(self.path, self.output_path, update=True)
+        self.info = FILE_CACHE.getPath(self.path, self.output_path, update=False)
 
     def on_open(self):
         self.output = open(self.output_path, "w")
@@ -591,6 +596,8 @@ def buildApps(opts):
             break
     compile_info.is_compiling = True
     loadAppsFromPath(opts, opts.app_path)
+    # how lets mark all changes
+    FILE_CACHE.clearChanges()
     compile_info.is_compiling = False
     print("total compile time: {:.3f}".format(time.time() - started_at))
 

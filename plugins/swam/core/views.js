@@ -95,7 +95,11 @@ SWAM.View = SWAM.Object.extend({
         this.addChild(el_sel, view, true);
     },
     getChild: function(el_sel) {
-        return this.children[el_sel];
+        var child = this.children[el_sel];
+        if (child === undefined) {
+            child = this.appended_children[el_sel];
+        }
+        return child;
     },
     setElement: function(el) {
         this.undelegateEvents();
