@@ -20,4 +20,3 @@ app/*.js
 
 models/model.js
 models/collection.js
-

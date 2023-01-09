@@ -79,7 +79,6 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                     $parent.empty();
                     page.addToDOM($parent);
                 } else {
-                    page.setParams(params);
                     // page.render();
                     if (anchor) page.scrollToAnchor(anchor);
                     page.updateURL();

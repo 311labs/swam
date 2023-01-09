@@ -74,3 +74,7 @@ SWAM.Page = SWAM.View.extend({
 	}
 
 });
+
+
+SWAM.HalPage = SWAM.Page.extend(SWAM.HALExt);
+

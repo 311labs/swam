@@ -47,6 +47,10 @@ SWAM.View = SWAM.Object.extend({
     },
     setParams: function(params) {
         this.params = params || {};
+        this.on_params();
+    },
+    on_params: function() {
+
     },
     scrollToAnchor: function(anchor) {
         if (!anchor) return;
@@ -96,7 +100,7 @@ SWAM.View = SWAM.Object.extend({
     },
     getChild: function(el_sel) {
         var child = this.children[el_sel];
-        if (child === undefined) {
+        if ((child === undefined)&&(this.appended_children)) {
             child = this.appended_children[el_sel];
         }
         return child;
