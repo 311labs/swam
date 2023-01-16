@@ -174,24 +174,25 @@ SWAM.Localize = {
         var action = null;
         if (_.isArray(fmt)) {
             yes_icon = fmt[0];
-            no_icon = fmt[1];
-            action = fmt[2];
+            no_icon = yes_icon;
+            if (fmt.length > 1) no_icon = fmt[1];
+            if (fmt.length > 2) action = fmt[2];
         } else {
-            action = fmt;
+            if (fmt == "invert_color") {
+                action = "invert_color"
+            } else {
+                yes_icon = fmt;
+                no_icon = fmt;
+            }
         }
-        if (action == "invert_color") {
-            yes_icon = yes_icon + " text-danger";
-            no_icon = no_icon + " text-success";
-        } else if (action == "no_color") {
-
-        } else {
-            yes_icon = yes_icon + " text-success";
-            no_icon = no_icon + " text-danger";
+        let icon = yes_icon;
+        let classes = "text-success";
+        if (action=="invert_color") v = !v;
+        if (!v) {
+            icon = no_icon;
+            classes = "text-danger";
         }
-        if (v) {
-            return '<i class="' + yes_icon + '"></i>';
-        }
-        return '<i class="' + no_icon + '"></i>';
+        return SWAM.Icons.getIcon(icon, classes);
     },
 
     'iftruefalse': function(value, attr, fmt) {
