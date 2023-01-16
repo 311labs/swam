@@ -157,7 +157,11 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.app_uuid = this.getProperty("app_uuid");
         if (!this.app_uuid) {
             // generate a unique app uuid to track this app
-            this.app_uuid = String.Random(32);
+            if (app.device_id) {
+                this.app_uuid = app.device_id;
+            } else {
+                this.app_uuid = String.Random(32);
+            }
             this.setProperty("app_uuid", this.app_uuid);
         }
         this.options.api_url = this.getProperty("api_url", this.options.api_url);
@@ -184,6 +188,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     showLeftPanel: function(partial) {
         // to make it slide over vs shrink add class slide to body
+        if (this.options.slide) this.$el.addClass("slide");
         if (partial) {
             this.$el.addClass("panel-animate").removeClass("panel-left-reveal").addClass("panel-left-reveal-partial");
         } else {

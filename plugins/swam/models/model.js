@@ -160,7 +160,7 @@ SWAM.Model = SWAM.Object.extend({
         this.abort();
         if (opts && opts.if_stale) {
             if (!this.isStale()) {
-                if (callback) callback(this, 200, this.attributes);
+                if (callback) callback(this, {status:true, cached:true});
                 return;
             }
         }

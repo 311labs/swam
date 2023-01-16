@@ -226,6 +226,14 @@ window.isDict = function(obj) {
 
 if (window._) window._.isDict = window.isDict;
 
+window.flipDict = function(obj) {
+    var ret = {};
+    for(var key in obj){
+      ret[obj[key]] = key;
+    }
+    return ret;
+}
+
 window.decodeSearchParams = function(url) {
     if ((url.indexOf('?') < 0)||(url.endsWith("?"))) return {};
     var qs = url.substring(url.indexOf('?') + 1).split('&');
@@ -271,3 +279,52 @@ window.getScrollParent = function(element, includeHidden) {
 }
 
 if (window._) window._.isNumeric = window.isNumeric;
+
+navigator.hasRegex = function(reg_token) {
+    return (navigator.userAgent.match(reg_token) !== null);
+};
+
+navigator.getOS = function() {
+    navigator.detectBrowser();
+    if (navigator.is_windows) return "Windows";
+    if (navigator.is_mac) return "Mac";
+    if (navigator.is_linux) return "Linux";
+    if (navigator.is_unix) return "Unix";
+    return "unknown";
+};
+
+navigator.detectBrowser = function() {
+    if (navigator.is_iphone === undefined) {
+        navigator.is_iphone = navigator.hasRegex(/iphone/i);
+        navigator.is_ipod = navigator.hasRegex(/ipod/i);
+        navigator.is_ipad = navigator.hasRegex(/ipad/i);
+        navigator.is_android = navigator.hasRegex(/android/i);
+        navigator.is_blackberry = navigator.hasRegex(/blackBerry/i);
+        navigator.is_chrome = navigator.hasRegex(/chrome/i);
+        navigator.is_firefox = navigator.hasRegex(/firefox/i);
+        navigator.is_safari = navigator.hasRegex(/safari/i);
+        navigator.is_ie = navigator.hasRegex(/msie/i);
+        navigator.is_ie_le_8 = navigator.hasRegex(/msie [0-8]\./i);
+        navigator.is_ie_le_7 = navigator.hasRegex(/msie [0-7]\./i);
+        navigator.is_cloudit = navigator.hasRegex(/cloudit/i);
+        navigator.is_electron = navigator.hasRegex(/electron/i);
+
+        navigator.is_ios = navigator.is_iphone || navigator.is_ipad || navigator.is_ipod;
+        navigator.is_mobile = navigator.is_ios || navigator.is_android;
+        navigator.supports_touch = false;
+
+        navigator.is_windows = (navigator.appVersion.indexOf("Win") != -1);
+        navigator.is_mac = (navigator.appVersion.indexOf("Mac") != -1);
+        navigator.is_unix = (navigator.appVersion.indexOf("X11") != -1);
+        navigator.is_linux = (navigator.appVersion.indexOf("Linux") != -1);
+
+        try {
+            navigator.supports_touch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) || navigator.userAgent.indexOf('IEMobile') != -1;
+        } catch (e) {
+
+        }
+        return navigator;
+
+    }
+};
+

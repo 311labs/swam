@@ -27,8 +27,12 @@ SWAM.PubSubClient = SWAM.Object.extend({
         this._bound_retry = this.on_retry.bind(this);
     },
 
-    auth: function(jwt) {
-        this.auth_msg = {action:"auth", kind:"jwt", token:jwt};
+    auth: function(credentials) {
+        if (credentials.kind.lower() == "jwt") {
+            this.auth_msg = {action:"auth", kind:"jwt", token:jwt};
+        } else {
+            this.auth_msg = {action:"auth", kind:credentials.kind, token:credentials.token};
+        }
         this.sendMessage(this.auth_msg);
     },
 
@@ -57,6 +61,13 @@ SWAM.PubSubClient = SWAM.Object.extend({
 
     publish: function(msg, channel, pk) {
         this.sendMessage({channel:channel, pk:pk, message:msg, action:"publish"});
+    },
+
+    save: function(data, echo) {
+        var msg = {action:"save", id:String.Random(8), data:data};
+        if (echo) msg.echo = true;
+        this.sendMessage(msg);
+        return msg.id;
     },
 
     log: function(msg) {
@@ -166,14 +177,19 @@ SWAM.PubSubClient = SWAM.Object.extend({
 
         if (this.options.use_app_credentials) {
             setTimeout(function(){
-                this.auth(app.me.credentials.access);
+                this.auth(SWAM.Rest.credentials);
+            }.bind(this), 500);
+        } else if (this.options.credentials) {
+            setTimeout(function(){
+                this.auth(this.options.credentials);
             }.bind(this), 500);
         }
 
-        this.trigger("connected", this.dead_time);
-
         this.attempts = 1;
         this.is_connected = true;
+
+        this.trigger("connected", this.dead_time);
+
         // this.deferred.resolve();
         if (this.options.heartbeat_msg && this.heartbeat_interval === null) {
             this.missed_heartbeats = 0;

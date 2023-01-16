@@ -494,6 +494,17 @@ SWAM.Form.Builder.iconlabel = function(fc, form_info) {
 	fc.label = lbl;
 }
 
+SWAM.Form.Builder.searchdown = function(fc, form_info) {
+	SWAM.Form.Builder.iconlabel(fc);
+	fc.$el.append(SWAM.Form.Builder.label(fc, form_info));
+	fc.$child = $("<div />").addClass("searchdown-input");
+	fc.$child.data("collection", fc.collection);
+	fc.$child.data("name", fc.name);
+	fc.$el.append(fc.$child);
+
+	return fc.$el;
+}
+
 SWAM.Form.Builder.dropdown = function(fc, form_info) {
 	SWAM.Form.Builder.iconlabel(fc);
 	fc.did = _.uniqueId("dropdown");

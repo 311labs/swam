@@ -40,6 +40,7 @@ SWAM.Form.View = SWAM.View.extend({
         this.on_init_datepicker();
         this.on_init_daterangepicker();
         this.on_init_es();
+        this.on_init_searchdown();
         this.enablePops();
         this.enableClear();
     },
@@ -73,6 +74,20 @@ SWAM.Form.View = SWAM.View.extend({
             var $el = $(this);
             var view = new SWAM.Views.EditSelect();
             view.replaceSelect($el);
+        });
+    },
+
+    on_init_searchdown: function() {
+        var self = this;
+        this.$el.find("div.searchdown-input").each(function(){
+            var $el = $(this);
+            var view = new SWAM.Views.SearchDown({
+                btn_classes: "btn text-decoration-none",
+                remote_search: true,
+                collection: $el.data("collection"),
+                input_name: $el.data("name") || "searchdown"
+            });
+            view.addToDOM($el);
         });
     },
 

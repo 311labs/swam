@@ -39,9 +39,6 @@ SWAM.StorageExtension = {
     getObject: function(key, dvalue) {
         value = window.localStorage.getObject(key);
         if (value === null || value == undefined) return dvalue;
-        if (value.Model) {
-
-        }
         return value;
     },
 

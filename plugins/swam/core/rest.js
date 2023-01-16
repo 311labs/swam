@@ -57,6 +57,8 @@ SWAM.Rest = {
                 request.setRequestHeader('Authorization',  "Bearer " + SWAM.Rest.credentials.access);
             } else if (SWAM.Rest.credentials.kind == "authtoken") {
                 request.setRequestHeader('Authorization', "authtoken " + SWAM.Rest.credentials.token);
+            } else {
+                request.setRequestHeader('Authorization', SWAM.Rest.credentials.kind + " " + SWAM.Rest.credentials.token);
             }
         }
 
@@ -120,12 +122,14 @@ SWAM.Rest = {
         // }
 
         if (SWAM.Rest.credentials && !opts.no_auth) {
+            if (!request.headers) request.headers = {};
             if (SWAM.Rest.credentials.kind == "JWT") {
                 // TODO check expires field of JWT
-                if (!request.headers) request.headers = {};
                 request.headers['Authorization'] = "Bearer " + SWAM.Rest.credentials.access;
             } else if (SWAM.Rest.credentials.kind == "authtoken") {
                 request.headers['Authorization'] = "authtoken " + SWAM.Rest.credentials.token;
+            } else {
+                request.headers['Authorization'] = SWAM.Rest.credentials.kind + " " + SWAM.Rest.credentials.token;
             }
         }
         
@@ -138,52 +142,14 @@ SWAM.Rest = {
         }
         request.url = url;
         request.complete = function(xhr, status) {
-            if (xhr.status == 200) {
-                var j = xhr.responseJSON;
-                if (!j) j = {error:"nothing returned"}; // avoid empty responses
-                if (callback) callback(j, xhr.status);
+            if (this.emulator && this.emulator.enabled && this.emulator.recv) {
+                this.on_emulate_recv(callback, xhr, status);
+            } else if (xhr.status == 200) {
+                if (callback) this.on_success(callback, xhr, status);
             } else {
-                if (callback) {
-                    var resp = {status:false, error_code: xhr.status, error: status};
-                    if (status === 'timeout') {
-                        resp.error = 'Request timed-out';
-                        resp.error_code = 522;
-                        resp.network_error = true;
-                    } else if (status === 'abort') {
-                        resp.error = 'Request aborted';
-                        resp.error_code = 420;
-                        resp.network_error = true;
-                    } else if (status === 'parsererror') {
-                        resp.error = 'Request got jumbled-up';
-                        resp.network_error = true;
-                    } else if (xhr.status == 0) {
-                        resp.error = "could not connect to host, (verify network)";
-                        resp.network_error = true;
-                    } else if (xhr.status == 400) {
-                        resp.error = "bad request";
-                        resp.network_error = true;
-                    } else if (xhr.status == 401) {
-                        resp.error = "Unauthorized";
-                    } else if (xhr.status == 403) {
-                        resp.error = "Forbidden";
-                    } else if (xhr.status == 404) {
-                        resp.error = "page not found";
-                        resp.network_error = true;
-                    } else if (xhr.status == 408) {
-                        resp.error = "request timed out";
-                        resp.network_error = true;
-                    } else if (xhr.status == 429) {
-                        resp.error = "server busy";
-                        resp.network_error = true;
-                    } else if (xhr.status == 500) {
-                        resp.error = "Internal Server Error";
-                        resp.network_error = true;
-                    }
-                    callback(resp, xhr.status);
-                }
+                if (callback) this.on_error(callback, xhr, status);
             }
-            
-        };
+        }.bind(this);
 
         if (this.debug_delay_ms) {
             console.warn("DEBUG MODE: delaying rest request by " + this.debug_delay_ms + " ms");
@@ -194,6 +160,116 @@ SWAM.Rest = {
         }
 
         $.ajax(request);
+    },
+
+    on_success: function(callback, xhr, status) {
+        var j = xhr.responseJSON;
+        if (!j) j = {error:"nothing returned"}; // avoid empty responses
+        callback(j, xhr.status);
+    },
+
+    on_error: function(callback, xhr, status) {
+        var resp = {status:false, error_code: xhr.status, error: status, when:Date.now()};
+        if (status === 'timeout') {
+            resp.error = 'Request timed-out';
+            resp.error_code = 522;
+            resp.network_error = true;
+        } else if (status === 'abort') {
+            resp.error = 'Request aborted';
+            resp.error_code = 420;
+        } else if (status === 'parsererror') {
+            resp.error = 'Request got jumbled-up';
+            resp.network_error = true;
+        } else if (xhr.status == 0) {
+            resp.error = "could not connect to host, (verify network)";
+            resp.network_error = true;
+        } else if (xhr.status == 400) {
+            resp.error = "bad request";
+            resp.network_error = true;
+        } else if (xhr.status == 401) {
+            resp.error = "Unauthorized";
+        } else if (xhr.status == 403) {
+            resp.error = "Forbidden";
+        } else if (xhr.status == 404) {
+            resp.error = "page not found";
+            resp.network_error = true;
+        } else if (xhr.status == 408) {
+            resp.error = "request timed out";
+            resp.network_error = true;
+        } else if (xhr.status == 429) {
+            resp.error = "server busy";
+            resp.network_error = true;
+        } else if (xhr.status == 500) {
+            resp.error = "Internal Server Error";
+            resp.network_error = true;
+        }
+        callback(resp, xhr.status);
+    },
+
+    on_emulate_recv: function(callback, xhr, status) {
+        this.emulator.counter -= 1;
+        if (this.emulator.counter > 0) {
+            if (this.emulator.recv == 1) {
+                setTimeout(function(){
+                    var resp = {status:false};
+                    resp.error = "request timed-out";
+                    resp.error_code = 522;
+                    resp.network_error = true;
+                    if (callback) callback(resp, "timeout");
+                }.bind(this), 5000);
+                
+            } else {
+                setTimeout(function(){
+                    if (xhr.status == 200) {
+                        if (callback) this.on_success(callback, xhr, status);
+                    } else {
+                        if (callback) this.on_error(callback, xhr, status);
+                    }
+                }.bind(this), this.emulator.recv);
+            }
+            return;
+        } else if (this.emulator.counter == 0) {
+            this.disableEmulator();
+        }
+
+        if (xhr.status == 200) {
+            if (callback) this.on_success(callback, xhr, status);
+        } else {
+            if (callback) this.on_error(callback, xhr, status);
+        }
+    },
+
+    emulateDelay: function(opts) {
+        // send: ms delaying sending 
+        // recv: ms delaying recv
+        this.emulator = _.extend(this.emulator || {}, {send:0, recv:5000, enabled:true, counter:1000}, opts);
+        app.setProperty("rest_emulator", this.emulator);
+        SWAM.toast("Network Emulator", `delay send: ${this.emulator.send} ms<br>recv:${this.emulator.recv}<br>counter: ${this.emulator.counter}`, "success", 5000);
+    },
+
+    emulateTimeout: function(opts) {
+        // send: ms delaying sending 
+        // recv: ms delaying recv
+        let counter = 1;
+        if (this.emulator.counter) counter += this.emulator.counter;
+        this.emulator = _.extend(this.emulator || {}, {send:0, recv:1, enabled:true, counter:counter}, opts);
+        app.setProperty("rest_emulator", this.emulator);
+        SWAM.toast("Network Emulator", `network timeout counter: ${this.emulator.counter}`, "success", 2000);
+    },
+
+    disableEmulator: function() {
+        if (this.emulator && this.emulator.enabled) {
+            this.emulator = {send:0, recv:0, enabled:false, counter:0};
+            app.setProperty("rest_emulator", this.emulator);
+            SWAM.toast("Network Emulator", "disabled", "danger", 2000);
+        }
+    },
+
+    loadEmulator: function() {
+        if (!this.emulator) {
+            this.emulator =app.getObject("rest_emulator", {});
+            SWAM.toast("Network Emulator", "loaded", "success", 2000);
+        }
     }
 }
 

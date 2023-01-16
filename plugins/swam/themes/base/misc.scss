@@ -150,6 +150,26 @@ body.app {
         background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
     }
 
+    .bg-blue {
+        background-color: $blue;
+    }
+
+    .bg-green {
+        background-color: $green;
+    }
+
+    .bg-orange {
+        background-color: $orange;
+    }
+
+    .bg-red {
+        background-color: $red;
+    }
+
+    .bg-yellow {
+        background-color: $yellow;
+    }
+
     .fs-7 {
         font-size: 0.9rem;
     }

@@ -39,7 +39,6 @@ version = "0.1.5"
 compile_info = nobjict(is_compiling=False)
 
 
-
 class Colors:
     BLACK = "\033[30m"
     RED = "\033[31m"

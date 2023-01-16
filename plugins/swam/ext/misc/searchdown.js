@@ -55,7 +55,7 @@ SWAM.Views.SearchDown = SWAM.View.extend({
         this.active_model = model;
         this.$button.text(model.get(this.options.display_field));
         if (this.options.input_name) {
-            this.$el.find("#hidden_input").val(this.model.get(this.options.input_value_field));
+            this.$el.find("#hidden_input").val(this.active_model.get(this.options.input_value_field));
         }
     },
 

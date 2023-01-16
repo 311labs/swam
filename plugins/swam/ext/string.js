@@ -141,6 +141,11 @@ String.prototype.fromHex = function(){
     return decodeURIComponent(escape(s))
 }
 
+String.prototype.isHex = function(){
+    var re = /^[a-fA-F0-9]+$/;
+    return re.test(this);
+}
+
 String.prototype.contains = function(str, caseSensitive) {
     if (typeof caseSensitive != "boolean") {
         caseSensitive = true;
@@ -255,7 +260,3 @@ String.prototype.emojify = function() {
     }
     return result;
 };
-
-
-
-

@@ -14,7 +14,7 @@ div.swam-list {
 }
 
 div.swam-paginated-list.compact, div.swam-paginated-table.compact {
-	background-color: white;
+    background-color: white;
     box-shadow: 0 0 1px rgba(0,0,0,0.1),  0 1px 3px rgba(0,0,0,0.2);
     border: 1px solid #c2c2c2;
     .swam-paginated-list-footer {
@@ -33,8 +33,6 @@ div.swam-paginated-list.compact, div.swam-paginated-table.compact {
             border-top-right-radius:.25rem!important;
         }
     }
-
-
 }
 
 div.swam-table, div.swam-toc-table, div.swam-paginated-table {
@@ -51,6 +49,18 @@ div.swam-table, div.swam-toc-table, div.swam-paginated-table {
                     border-color: $pager-active-bg;
                 }
 
+            }
+        }
+    }
+
+    &.swam-table-clickable {
+        cursor: pointer;
+        tbody {
+            tr {
+                &:hover {
+                    background-color: rgb(224, 230, 248);
+                    --bs-table-striped-bg: rgb(224, 230, 248);
+                }
             }
         }
     }

@@ -212,8 +212,10 @@ SWAM.Dialog = SWAM.View.extend({
                 obj = {
                     id:obj,
                     label: obj,
+                    classes: "btn btn-info"
                 }
             }
+            if (!obj.classes) obj.classes = "btn btn-info";
             count += 1;
             norm_choices.push(obj);
         });

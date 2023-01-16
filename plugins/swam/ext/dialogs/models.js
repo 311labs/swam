@@ -13,6 +13,7 @@ SWAM.Dialog.showModel = function(model, fields, options) {
 
 
 SWAM.Dialog.editModel = function(model, opts) {
+	opts = opts || {};
 	var defaults = {
 	    title: "Edit",
 	    padded: true,

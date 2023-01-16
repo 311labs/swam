@@ -9,9 +9,14 @@
 <ul class="dropdown-menu shadow">
    {{#options.menu_items}}
       <li>
+      {{#.divider}}
+      <hr class="dropdown-divider">
+      {{/.divider}}
+      {{^.divider}}
       <a href="#" class="dropdown-item" data-action="{{options.action}}" data-id="{{.id}}">
          {{#.icon}}{{{ICON(.)}}}{{/.icon}} {{.label}}
       </a>
+      {{/.divider}}
       </li>
    {{/options.menu_items}}
 </ul>

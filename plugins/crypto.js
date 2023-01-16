@@ -5986,3 +5986,21 @@
     return CryptoJS;
 
 }));
+
+window.aes = {
+    encrypt: function(data, key, random_size=16) {
+        if (_.isObject(data)) {
+            data = JSON.stringify(data);
+        }
+        if (random_size) data += String.Random(random_size);
+        return CryptoJS.AES.encrypt(data, key).toString();
+    },
+    decrypt: function(edata, key, random_size=16) {
+        let data = CryptoJS.AES.decrypt(edata, key).toString(CryptoJS.enc.Utf8);
+        if (random_size) data = data.substr(0, data.length-random_size);
+        try {
+            return JSON.parse(data);
+        } catch(err) {}
+        return data;
+    }
+}

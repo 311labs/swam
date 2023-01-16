@@ -12,8 +12,10 @@ SWAM.Icons = {
     "user": 'bi bi-person-fill',
     "reload": 'bi bi-arrow-repeat',
 
-    getIcon: function(icon) {
-        return "<i class='" + this.getIconClass(icon) + "'></i>";
+    getIcon: function(icon, extra_classes) {
+        let classes = this.getIconClass(icon);
+        if (extra_classes) classes += " " + extra_classes;
+        return "<i class='" + classes + "'></i>";
     },
 
     getIconClass: function(icon) {

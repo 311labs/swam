@@ -220,7 +220,7 @@ SWAM.View = SWAM.Object.extend({
     },
     on_action_click: function(evt) {
         var $el = $(evt.currentTarget);
-        var action = $el .data("action");
+        var action = $el.data("action");
         if (!action) return true;
         var func_name = "on_action_" + action;
         if (_.isFunction(this[func_name])) {

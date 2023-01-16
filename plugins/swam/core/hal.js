@@ -90,6 +90,7 @@ SWAM.HAL = _.extend({
         console.log("hal.send: " + service + ":" + event);
         if (window.hal && window.hal.sendToHal) {
             if (_.isObject(data)) data = JSON.stringify(data);
+            if (!data) data = null;
             hal.sendToHal(service, event, data);
         }
     },

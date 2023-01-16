@@ -15,7 +15,10 @@ SWAM.Views.Dropdown = SWAM.View.extend({
         _.each(this.options.menu_items, function(item){
             if (_.isString(item)) {
                 normalized.push({id:item, label:item});
+            } else if (item.divider) {
+                normalized.push(item);
             } else {
+                if (item.action) item.id = item.action;
                 if (_.isUndefined(item.id)) item.id = item.label.lower();
                 normalized.push(item);
             }

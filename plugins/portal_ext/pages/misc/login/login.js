@@ -121,6 +121,16 @@ PORTAL.Pages.Login = SWAM.Page.extend({
 
     on_action_tokeloginpage: function() {
         app.setActivePage("tokenlogin");
+    },
+
+    on_action_show_password: function(evt) {
+        var $parent = $(evt.currentTarget).parent();
+        var $input = $parent.find("input");
+        if ($input.attr("type") == "password") {
+            $input.attr("type", "text");
+        } else {
+            $input.attr("type", "password");
+        }
     }
 
 });
