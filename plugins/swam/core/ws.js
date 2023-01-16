@@ -29,7 +29,7 @@ SWAM.PubSubClient = SWAM.Object.extend({
 
     auth: function(credentials) {
         if (credentials.kind.lower() == "jwt") {
-            this.auth_msg = {action:"auth", kind:"jwt", token:jwt};
+            this.auth_msg = {action:"auth", kind:"jwt", token:credentials.access};
         } else {
             this.auth_msg = {action:"auth", kind:credentials.kind, token:credentials.token};
         }
