@@ -158,8 +158,13 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
             }
         } else if (this.options.model_field == "terminal") {
             this.collection.params.tid = model.get("tid");
-        } else {
+        } else if (this.options.model_field) {
             this.collection.params[this.options.model_field] = model.id;
+        }
+
+        if (this.options.component) {
+            this.collection.params.component = this.options.component;
+            this.collection.params.pkey = model.id;
         }
 
         

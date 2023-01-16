@@ -6,9 +6,10 @@ PORTAL.Pages.EmailBounced = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
-            {label:"User Name", field:"username"},
-            {label:"Display Name", field:"display_name"},
-            {label:"Last Activity", field:"last_activity|ago"},
+            {label:"created", field:"created|datetime"},
+            {label:"User Name", field:"user.username"},
+            {label:"Address", field:"address"},
+            {label:"Source", field:"source"}
         ],
         Collection: SWAM.Collections.EmailBounced,
         collection_params: {
@@ -20,9 +21,5 @@ PORTAL.Pages.EmailBounced = SWAM.Pages.TablePage.extend({
 
     on_init: function() {
         SWAM.Pages.TablePage.prototype.on_init.call(this);
-    },
-
-    on_item_clicked: function(item_view, evt) {
-
     }
 });
