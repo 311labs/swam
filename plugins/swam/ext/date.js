@@ -11,14 +11,14 @@ Date.DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "S
 
 Date.prototype.plus = function(delta) {
   return this.transform(delta);
-}
+};
 
 Date.prototype.minus = function(delta) {
   _.each(delta, function(value, key){
     delta[key] = value * - 1;
   });
   return this.transform(delta);
-}
+};
 
 Date.prototype.transform = function(delta) {
   delta = _.extend({months: 0, days:0, hours: 0, minutes: 0, seconds: 0}, delta);
@@ -38,5 +38,5 @@ Date.prototype.transform = function(delta) {
   }
   
   return result;
-}
+};
 

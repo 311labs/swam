@@ -1,22 +1,4 @@
-/**
- * jquery input file input
- *
- * To control input file input from eternal JS code use the following:
- * $('input[type=file]').val('').change(); // will reset the state to blank - for security reasons the browser does not allow any more control
- *
- * -----NOTE-----
- *
- * http://bash.org/?947444
- *
- * Before changing this file confirm that the required CSS has been added to your style-sheet.
- * 'jquery.twin_inputexamples.css' offers the best starting point.
- *
- * Always use 'inputs_test.html' to confirm that everything works correctly in at least:
- * iPad, Safari, Firefox, Chrome, IE8, IE9
- *
- * @version 1.1
- * @passed 2012-03-16
- */
+
 (function($) {
 	var imageholder = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjQ2MDkzNzUiIHk9IjEwMCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPnVwbG9hZCB0aHVtYm5haWw8L3RleHQ+PC9nPjwvc3ZnPg==";
 	var file_to_img = function(file, $img) {
