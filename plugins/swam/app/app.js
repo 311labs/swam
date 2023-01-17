@@ -248,11 +248,14 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     on_ready: function() {
         this.loadRoute();
         if (!this.active_page) {
-            console.warn("failed to load starting page: " + this.getPath());
-            if (this._pages.not_found) {
-                this.setActivePage("not_found", {"path":this.getPath()});
+            let path = this.getPath();
+            console.warn("failed to load starting page: " + path);
+            if ((path === "") && this.options.home_page && this.hasPage(this.options.home_page)) {
+                this.setActivePage(this.options.home_page);
+            } else if (this._pages.not_found) {
+                this.setActivePage("not_found", {"path":path});
             } else if (this.options.not_found) {
-                this.setActivePage(this.options.not_found, {"path":this.getPath()});
+                this.setActivePage(this.options.not_found, {"path":path});
             }
         }
         this.trigger("ready", this);        
