@@ -6,11 +6,10 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
         model_field: "user",
         columns: [
             {label:"Created", field:"when|datetime"},
-            {label:"Path", template:"<div>{{model.request_method}}:{{model.request_path}}</div>"},
-            {label:"IP", field:"session.ip", classes:"d-none d-lg-table-cell"},
+            {label:"Who", field:"model.user.username|ifempty(model.tid)", classes:"d-none d-xl-table-cell"},
             {label:"Action", field:"action", classes:"d-none d-xl-table-cell"},
+            {label:"Path", template:"<div>{{model.request_method}}:{{model.request_path}}</div>"},
             {label:"Component", field:"component", classes:"d-none d-lg-table-cell"},
-            {label:"User", field:"user.username", classes:"d-none d-xl-table-cell"},
          ],
         Collection: SWAM.Collections.AuditLog,
         collection_params: {

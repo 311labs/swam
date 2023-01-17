@@ -716,9 +716,12 @@ SWAM.Localize = {
             fmt = fmt.replaceAll("yy", "YY");
             return moment(value).tz(tz).format(fmt);
         }
-        if (!fmt) fmt = default_fmt;
-        fmt = fmt.replaceAll("yy", "YY");
-        return moment(value).tz(tz).format(fmt);
+        // if (!fmt) out_fmt = default_fmt;
+        // fmt = fmt.replaceAll("yy", "YY");
+        if (fmt) {
+            return moment(value, fmt).tz(tz).format(default_fmt);
+        }
+        return moment(value).tz(tz).format(default_fmt);
     },
     'time': function(value, attr, fmt) {
         return this.moment(value, attr, fmt, "h:mm:ss A");

@@ -62,20 +62,30 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
 
     on_action_ignore: function(evt) {
         app.showBusy();
-        _.each(this.getBatchSelected(), function(item){
-            SWAM.toast("Ignoring", item.model.get("description"), null, 2000);
-            item.model.save({state:3})
+        let selected = this.getBatchSelected();
+        let last_index = selected.length-1;
+        _.each(selected, function(item, index){
+            item.model.save({state:3});
+            if (index == last_index) {
+
+            }
         });
+        SWAM.toast("Incident System", `${selected.length} Incidents Ignored`);
         app.hideBusy();
         this.reload();
     },
 
     on_action_accept: function(evt) {
         app.showBusy();
-        _.each(this.getBatchSelected(), function(item){
-            SWAM.toast("Accepting", item.model.get("description"), null, 2000);
-            item.model.save({state:1})
+        let selected = this.getBatchSelected();
+        let last_index = selected.length-1;
+        _.each(selected, function(item, index){
+            item.model.save({state:1});
+            if (index == last_index) {
+
+            }
         });
+        SWAM.toast("Incident System", `${selected.length} Incidents Accepted`);
         app.hideBusy();
         this.reload();
     },
