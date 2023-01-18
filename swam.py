@@ -782,26 +782,6 @@ def clearCache(opts):
     FILE_CACHE.clear()
 
 
-def rsync(from_path, to_path, exclude=[], do_delete=False):
-    if from_path[-1] != '/':
-        from_path += "/"
-    if to_path[-1] != '/':
-        to_path += "/"
-    cmd = ["rsync", "-avzh"]
-    if "@" in to_path:
-        cmd.append('-e "ssh -o ConnectTimeout=2 -o ServerAliveInterval=2 -ServerAliveCountMax=2 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"')
-    for ex in exclude:
-        cmd.append("--exclude")
-        cmd.append(ex)
-    if do_delete:
-        cmd.append("--delete")
-    cmd.append(from_path)
-    cmd.append(to_path)
-    raw_cmd = " ".join(cmd)
-    print raw_cmd
-    os.system(raw_cmd)
-    
-
 def main(opts, args):
     print("== SWAM COMPILER {} ==".format(version))
     print(F"\tOutput: {opts.output}")
