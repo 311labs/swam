@@ -23,17 +23,22 @@ SWAM.Ext.BS = {
 	enableClipboard: function() {
 		var list = [].slice.call(this.$el[0].querySelectorAll('button.btn-clipboard'))
 		this._bs_popovers = list.map(function (sel) {
-			var clipb = new ClipboardJS(sel, {
-			    target: function(trigger) {
-			        // get first element with text?
-			        var el = trigger.nextElementSibling;
-			        while (el) {
-			            if (el.textContent) return el;
-			            el = el.nextElementSibling;
-			        }
-			        return trigger;
-			    }
-			});
+			if (!sel.attributes["data-clipboard-target"]) {
+				var clipb = new ClipboardJS(sel, {
+				    target: function(trigger) {
+				        // get first element with text?
+				        var el = trigger.nextElementSibling;
+				        while (el) {
+				            if (el.textContent) return el;
+				            el = el.nextElementSibling;
+				        }
+				        return trigger;
+				    }
+				});
+			} else {
+				var clipb = new ClipboardJS(sel);
+			}
+
 			clipb.on("success", this.on_clipboard_success.bind(this));
 		  return clipb;
 		}.bind(this));

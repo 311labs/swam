@@ -5,7 +5,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	template: "<div id='list'></div>",
 	defaults: {
 		dialog_options: {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true},
-		download_prefix: "download",
+		list_options: {
+			download_prefix: "download",
+			download_group_prefix: true
+		},
 		collection_params: {
 			size: 10
 		},
@@ -103,6 +106,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		}
 
 		if (this.options.table_options) this.options.list_options = this.options.table_options;
+		this.options.list_options = _.extend({}, {download_prefix:"download", download_group_prefix:true}, {download_prefix:this.options.download_prefix}, this.options.list_options);
 
 		this.addChild("list", new SWAM.Views.PaginatedTable({
 			icon: this.options.icon,

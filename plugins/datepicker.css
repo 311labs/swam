@@ -57,7 +57,8 @@
 	position: absolute;
 	transform: scale(0);
 	transform-origin: top left;
-	transition: transform .3s ease-out
+	transition: transform .3s ease-out;
+	z-index: 1;
 }
 
 .dp-container.calc {

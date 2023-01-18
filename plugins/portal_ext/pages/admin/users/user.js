@@ -1,5 +1,5 @@
 
-PORTAL.Views.User = SWAM.View.extend({
+PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
     template: "swamcore.plugins.portal_ext.pages.admin.users.user",
     classes: "acs-member",
     tagName: "div",
@@ -49,6 +49,11 @@ PORTAL.Views.User = SWAM.View.extend({
                 {
                     label:"Two Factor Auth",
                     field:"has_topt|yesno_icon",
+                    columns: 12
+                },
+                {
+                    label:"Auth Token",
+                    field:"auth_token|ifempty|clipboard",
                     columns: 12
                 },
             ]}));
@@ -153,4 +158,37 @@ PORTAL.Views.User = SWAM.View.extend({
             }
         }.bind(this));
     },
+
+    on_action_authtoken: function(evt) {
+        if (this.model.get("auth_token")) {
+            this.confirmNewToken();
+        } else {
+            this.generateAuthToken();
+        }
+    },
+
+    generateAuthToken: function() {
+        app.showBusy({icon:"key"});
+        this.model.save({action:"auth_token"}, function(model, resp) {
+            app.hideBusy();
+            if (resp.status) {
+                SWAM.toast("Auth Token", "Succesfully Generated");
+            } else {
+                SWAM.toast("Auth Token", resp.error, "danger");
+            }
+        }.bind(this));
+    },
+
+    confirmNewToken: function() {
+        SWAM.Dialog.confirm({
+            title: "Generate New Auth Token",
+            message: "The current token will not longer be valid, are you sure?",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.generateAuthToken();
+                }
+            }.bind(this)
+        });
+    }
 });

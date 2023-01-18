@@ -62,7 +62,7 @@ SWAM.Model = SWAM.Object.extend({
             }
             
         }
-        if (this.attributes.id) this.id = this.attributes.id;
+        if (this.attributes.id && !this.options.no_id) this.id = this.attributes.id;
     },
 
     get: function(key, defaultValue, localize) {
@@ -150,6 +150,17 @@ SWAM.Model = SWAM.Object.extend({
             this._request.abort();
             this._request = null;
         }
+    },
+
+    setDebounced: function(key, value) {
+        if (!this._debounce_set) {
+           let ms = 2000;
+           this._debounce_set = window.debounce( 
+               this.set.bind(this),
+               ms
+           );
+        }
+        this._debounce_set(key, value);
     },
 
     fetch: function(callback, opts) {

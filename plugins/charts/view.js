@@ -96,7 +96,7 @@ SWAM.Views.Chart = SWAM.View.extend({
         if (this.options.hide_tooltips) {
             this.chart_config.options.plugins.tooltips = {enabled:false};
         }
-
+        if (this.chart) this.chart.destroy();
         this.chart = new Chart(this.el, {
             type: this.options.type,
             data: this.chart_config.data,
@@ -106,6 +106,7 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_dom_removed: function() {
         this.chart.destroy();
+        this.chart = null;
         this.$el.empty();
     },
 

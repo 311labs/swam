@@ -25,11 +25,18 @@ SWAM.Views.ListItem = SWAM.View.extend({
         this.render();
     },
 
+    on_pre_render: function() {
+        if (_.isFunction(this.options.list.options.getItemViewClasses)) {
+            this.options.add_classes = this.options.list.options.getItemViewClasses(this);
+            this.updateAttributes();
+        }
+    },
+
     setModel: function(model) {
         this.model = model;
         this.id = model.id;
         this.model.on("change", this.on_model_change, this);
-    }
+    },
 });
 
 

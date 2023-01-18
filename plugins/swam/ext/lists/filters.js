@@ -114,7 +114,11 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     on_action_download_csv: function(evt) {
-        var filename = this.options.download_prefix + ".csv";
+        var filename = this.options.list.options.download_prefix;
+        if (this.options.list.options.download_group_prefix && app.group) {
+            filename += app.group.get("name").slugify() + "_";
+        }
+        filename + ".csv";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
                 format_filename: filename,
@@ -127,7 +131,11 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     on_action_download_json: function(evt) {
-        var filename = this.options.download_prefix + ".json";
+        var filename = this.options.list.options.download_prefix;
+        if (this.options.list.options.download_group_prefix && app.group) {
+            filename += app.group.get("name").slugify() + "_";
+        }
+        filename + ".json";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
                 format_filename: filename,

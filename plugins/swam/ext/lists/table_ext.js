@@ -9,6 +9,9 @@ SWAM.Views.PaginatedTable = SWAM.Views.PaginatedList.extend({
     on_init: function() {
         if (!this.options.list_options || !this.options.list_options.columns) {
             this.options.list_options = _.extend({columns:this.options.columns}, this.options.list_options);
+        } else {
+            if (this.options.download_prefix) this.options.list_options.download_prefix = this.options.download_prefix;
+            if (this.options.download_group_prefix != undefined) this.options.list_options.download_group_prefix = this.options.download_group_prefix;
         }
         SWAM.Views.PaginatedList.prototype.on_init.apply(this, arguments);
     },

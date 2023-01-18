@@ -26,6 +26,7 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
     },
 
     on_pre_render: function() {
+        SWAM.Views.ListItem.prototype.on_pre_render.call(this);
     	this.template = "";
         if (this.options.list.options.batch_select) {
             this.template += "<td class='swam-batch-select' data-action='batch_select'><div class='swam-table-checkbox'></div></td>";

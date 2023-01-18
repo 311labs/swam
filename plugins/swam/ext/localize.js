@@ -155,6 +155,11 @@ SWAM.Localize = {
         return "no";
     },
 
+    'clipboard': function(value, attr, fmt) {
+        let vid = _.uniqueId("clipboard");
+        return `<span id="${vid}">${value}</span><button type="button" class="btn btn-link btn-clipboard" data-clipboard-target="#${vid}" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="Copy to clipboard" aria-label="Copy to clipboard"><i class="bi bi-clipboard"></i></button>`;
+    },
+
     'yesno_color': function(value, attr, fmt) {
         var v = this.bool(value);
         var color = 'text-success';
@@ -177,7 +182,7 @@ SWAM.Localize = {
             no_icon = yes_icon;
             if (fmt.length > 1) no_icon = fmt[1];
             if (fmt.length > 2) action = fmt[2];
-        } else {
+        } else if (fmt) {
             if (fmt == "invert_color") {
                 action = "invert_color"
             } else {
@@ -308,6 +313,10 @@ SWAM.Localize = {
             }
         });
         return this.formatDate(d, attr, fmt || 'MM:ss');
+    },
+
+    'eod': function(value, attr, fmt) {
+        return SWAM.DataSets.hours[value];
     },
 
     'dow': function(value, attr, fmt) {
