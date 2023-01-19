@@ -94,11 +94,30 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
         this.options.collection = this.collection;
 
         if (this.options.filter_bar) {
-            if (this.options.filters) {
-                var field = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
+
+            var button_group;
+
+            if (this.options.summary_button || this.options.filters) {
+                button_group = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
                     return field.type == "buttongroup";
                 });
+            }
 
+
+            if (button_group && this.options.summary_button) {
+                button_group.buttons.push({
+                    classes: "btn btn-secondary",
+                    icon: "bi bi-calculator",
+                    action: "rest_summary"
+                });
+
+                if (this.options.summary_template) {
+                    if (!this.options.list_options) this.options.list_options = {};
+                    this.options.list_options.summary_template = this.options.summary_template;
+                }
+            }
+
+            if (button_group && this.options.filters) {
                 var menu = [];
                 _.each(this.options.filters, function(value){
                     menu.push({
@@ -109,13 +128,11 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
                     });
                 });
 
-                if (field) {
-                    field.buttons.push({
-                        type: "dropdown",
-                        icon: "bi bi-filter",
-                        items: menu
-                    });
-                }
+                button_group.buttons.push({
+                    type: "dropdown",
+                    icon: "bi bi-filter",
+                    items: menu
+                });
             }
             if (this.options.add_button) {
                 this.options.filter_bar.unshift(this.options.add_button);

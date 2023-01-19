@@ -34,6 +34,7 @@ SWAM.View = SWAM.Object.extend({
         if (this.options.enable_swipe) this.enableTouch();
         this.vid = _.uniqueId("SWAMView");
         if (!this.id && this.options.auto_id) this.id = this.vid;
+        if (this.options.model) this.setModel(this.options.model);
         this.setElement(document.createElement(this.tagName));
         if (this.options.parent) this.options.$parent = $(this.options.parent);
         if (this.options.$parent) {

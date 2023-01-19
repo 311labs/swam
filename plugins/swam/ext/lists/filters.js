@@ -88,6 +88,23 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         });
     },
 
+    on_action_rest_summary: function(evt) {
+        var model = new SWAM.Model({}, {url:this.options.list.collection.getRawUrl() + "&format=summary"});
+        model.fetch(function(model, resp){
+            if (resp.status) {
+                if (this.options.list.options.summary_template) {
+                    SWAM.Dialog.showView(
+                        new SWAM.View({template:this.options.list.options.summary_template, model:model}),
+                        {title:"Summary"});
+                } else {
+                    SWAM.Dialog.showModel(model, null, {title:"Summary"});
+                }
+            } else {
+                SWAM.Dialog.warning(resp.error);
+            }
+        }.bind(this));
+    },
+
     on_action_reload: function(evt) {
         // allow the event to bubble down to page
         this.options.list.collection.fetch();

@@ -106,7 +106,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		}
 
 		if (this.options.table_options) this.options.list_options = this.options.table_options;
-		this.options.list_options = _.extend({}, {download_prefix:"download", download_group_prefix:true}, {download_prefix:this.options.download_prefix}, this.options.list_options);
+		this.options.list_options = _.extend({}, 
+			{download_prefix:"download", download_group_prefix:true},
+			{download_prefix:this.options.download_prefix}, this.options.list_options);
+		if (this.options.summary_template) this.options.list_options.summary_template = this.options.summary_template;
 
 		this.addChild("list", new SWAM.Views.PaginatedTable({
 			icon: this.options.icon,
@@ -114,6 +117,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			collection: this.collection, 
 			filter_bar: this.options.filter_bar,
 			filters: this.options.filters,
+			summary_button: this.options.summary_button,
+			summary_template: this.options.summary_template,
 			columns: this.options.columns,
 			list_options: this.options.list_options
 		}));
