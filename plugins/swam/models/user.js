@@ -106,6 +106,41 @@ SWAM.Models.User = SWAM.Model.extend({
                 },
             ]
         },
+    ],
+    PERMISSIONS_FORM: [
+        {
+            label:"System Permissions",
+            type:"label",
+            columns: 12
+        },
+        {
+            name:"metadata.permissions.manage_users",
+            label:"Manage Users",
+            help: "Allow this user to manage other system users",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_all_groups",
+            label:"View Groups",
+            help: "Allow this user to view all groups",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.manage_groups",
+            label:"Manage Groups",
+            help: "Allow this user to created, edit, and view all groups",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_logs",
+            label:"View Logs",
+            help: "Allow this user to view all system logs",
+            type:"toggle",
+            columns: 6
+        }
     ]
 });
 

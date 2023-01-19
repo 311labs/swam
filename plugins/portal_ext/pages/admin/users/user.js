@@ -58,42 +58,19 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
                 },
             ]}));
 
+
+        // if (app.options.user_permissions) {
+        //     _.each(app.options.user_permissions, function(info){
+        //         let view = new SWAM.Form.View({
+        //             fields:info.fields
+        //         });
+        //         this.tabs.addTab(info.title, info.slugify(), view);
+        //         view.on("input:change", this.on_perm_change, this);
+        //     }.bind(this));
+        // }
+
         this.tabs.addTab("Permissions", "permissions", new SWAM.Form.View({
-            fields: [
-                {
-                    label:"System Permissions",
-                    type:"label",
-                    columns: 12
-                },
-                {
-                    name:"metadata.permissions.manage_users",
-                    label:"Manage Users",
-                    help: "Allow this user to manage other system users",
-                    type:"toggle",
-                    columns: 12
-                },
-                {
-                    name:"metadata.permissions.view_all_groups",
-                    label:"View Groups",
-                    help: "Allow this user to view all groups",
-                    type:"toggle",
-                    columns: 12
-                },
-                {
-                    name:"metadata.permissions.manage_groups",
-                    label:"Manage Groups",
-                    help: "Allow this user to created, edit, and view all groups",
-                    type:"toggle",
-                    columns: 12
-                },
-                {
-                    name:"metadata.permissions.view_logs",
-                    label:"View Logs",
-                    help: "Allow this user to view all system logs",
-                    type:"toggle",
-                    columns: 12
-                }
-            ],
+            fields: SWAM.Models.User.PERMISSIONS_FORM,
         }));
 
         this.tabs.tab_views.permissions.on("input:change", this.on_perm_change, this);
