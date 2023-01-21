@@ -28,6 +28,10 @@ SWAM.PubSubClient = SWAM.Object.extend({
     },
 
     auth: function(credentials) {
+        if (!credentials) {
+            console.warn("PubSubClient.auth called with no credentials!");
+            return;
+        }
         if (credentials.kind.lower() == "jwt") {
             this.auth_msg = {action:"auth", kind:"jwt", token:credentials.access};
         } else {

@@ -66,6 +66,16 @@ body.app {
         }
     }
 
+    button.btn-google-signin {
+        background-color: $gray-300;
+        color: $brand-primary;
+        border-color: $gray-100;
+        &:hover {
+            background-color: $gray-100;
+            color: #F32C2A;
+        }
+    }
+
     button {
         &.btn-xs {
             font-size: 0.775rem

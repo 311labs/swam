@@ -135,7 +135,18 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     login: function(username, password, callback, opts) {
         this["login" + this.options.auth_method.upper()](username, password, callback, opts);
-    },  
+    },
+
+    loginWithCode: function(username, code, callback, opts) {
+        SWAM.Rest.POST("/rpc/account/login", {username:username, auth_code:code}, function(response, status){
+            if (response.status) {
+                // credentials get stored in SWAM.Rest
+                this.setJWT(response.data);
+                if (this.isAuthenticated()) this.trigger("logged_in", this);
+            }
+            if (callback) callback(this, response);
+        }.bind(this), opts);
+    },
 
     logout: function() {
         this["logout" + this.options.auth_method.upper()]();

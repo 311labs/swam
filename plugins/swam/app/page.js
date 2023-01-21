@@ -27,6 +27,9 @@ SWAM.Page = SWAM.View.extend({
 	},
 
 	updateURL: function(url_params) {
+		if ((url_params === undefined)&&(this.params.url_params)) {
+			url_params = this.params.url_params;
+		}
 		if (window.isDict(url_params)) {
 			this.params = this.params || {};
 			this.params.url_params = url_params;

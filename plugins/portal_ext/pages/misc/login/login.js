@@ -131,6 +131,31 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         } else {
             $input.attr("type", "password");
         }
+    },
+
+    on_action_google_login: function() {
+        const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+        const redirectUri = '/rpc/account/oauth/google/login';
+        let state_token = JSON.stringify({url:location.href, token:String.Random(16)}).toHex();
+
+        const scope = [
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile'
+        ].join(' ');
+
+        const params = {
+          response_type: 'code',
+          client_id: app.options.google_client_id,
+          redirect_uri: `${app.options.api_url}${redirectUri}`,
+          prompt: 'select_account',
+          access_type: 'offline',
+          scope: scope,
+          state: state_token
+        };
+
+        const urlParams = new URLSearchParams(params).toString();
+        // console.log(`${googleAuthUrl}?${urlParams}`)
+        window.location = `${googleAuthUrl}?${urlParams}`;
     }
 
 });

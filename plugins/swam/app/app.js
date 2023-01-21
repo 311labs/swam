@@ -150,6 +150,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.on_init_views();
         this.render();
         this.starting_url = this.getPath();
+        this.starting_params = this.getSearchParams();
         this.on_started();
     },
 
