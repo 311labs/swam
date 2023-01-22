@@ -92,7 +92,6 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
                     value: 2,
                     label: "Component"
                 },
-                },
                 {
                     value: 3,
                     label: "Component and Hostname"
