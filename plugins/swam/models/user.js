@@ -140,6 +140,53 @@ SWAM.Models.User = SWAM.Model.extend({
             help: "Allow this user to view all system logs",
             type:"toggle",
             columns: 6
+        },
+        {
+            label:"System Notifications",
+            type:"label",
+            columns: 12
+        },
+        {
+            name:"metadata.notify.server_login",
+            label:"Server Login",
+            help: "Get notified when someone logs into a server.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.notify.ossec_alerts",
+            label:"Intrusion Detection",
+            help: "Get notifified when the intrusion detection system detects an anomaly.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.notify.rest_error",
+            label:"API Errors",
+            help: "Get notified when a api error occurs.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.notify.app_error",
+            label:"APP Errors",
+            help: "Get notified of application errors.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.notify.admin_alerts",
+            label:"User Audits",
+            help: "Get notified of general system alerts, like failed passwords.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.notify.unknown_incidents",
+            label:"Unknown Incidents",
+            help: "Get notified of unknown incidents.",
+            type:"toggle",
+            columns: 6
         }
     ]
 });

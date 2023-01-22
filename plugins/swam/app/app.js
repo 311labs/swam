@@ -147,6 +147,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.history = window.history;
         this.root = this.options.root;
         window.addEventListener("popstate", this.on_pop_state);
+        window.addEventListener("online", this.on_network_online.bind(this));
+        window.addEventListener("offline", this.on_network_offline.bind(this));
         this.on_init_views();
         this.render();
         this.starting_url = this.getPath();
@@ -434,6 +436,23 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             console.log("NAV CHANGE: " + evt.state.path);
             app.loadRoute(evt.state.path);
         }
+    },
+
+
+
+    on_network_online: function(evt) {
+        // javascript code the detects if the browser if online
+        SWAM.toast("NETWORK ONLINE", "Network is back!", "success");
+    },
+
+    on_network_offline: function(evt) {
+        SWAM.toast("NETWORK OFFLINE", "Check your network!", "danger", 8000);
+    },
+
+    hasNetwork: function() {return navigator.onLine; },
+
+    isOnline: function() {
+        return navigator.onLine;
     },
 
     navigate: function(path, trigger, title) {
