@@ -16,6 +16,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         },
         columns: [
             {label:"when", field:"created|datetime"},
+            {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id"},
             {label:"component", field:"component"},
             {label:"description", field:"description"},
             {label:"priority", field:"priority"},

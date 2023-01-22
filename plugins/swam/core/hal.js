@@ -104,10 +104,26 @@ SWAM.HAL = _.extend({
     triggerEvent: function(service, event, data) {
         SWAM.HAL.trigger(service + ":" + event, data);
     },
+    setSetting: function(key, value) {
+        if (window.hal) {
+            let new_settings = {};
+            new_settings[key] = value;
+            window.hal.saveSettings(JSON.stringify(new_settings));
+            setTimeout(this.refreshSettings.bind(this), 200);
+        }
+    },
     getSetting: function(key, defaultValue) {
         if (!this.config) return  defaultValue;
         if (_.isUndefined(this.config[key])) return defaultValue;
         return this.config[key];
+    },
+    refreshSettings: function() {
+        if (window.hal) {
+            this.config = JSON.parse(hal.getSettings());
+            if (this.config && this.config.sn) {
+                app.app_uuid = this.config.sn;
+            }
+        }
     },
     toast: function(msg) {this.send("hal", "toast", msg)}
 }, SWAM.EventSupport, SWAM.SendWaitSupport);

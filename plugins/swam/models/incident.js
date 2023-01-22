@@ -74,6 +74,33 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             columns: 6
         },
         {
+            name:"bundle_by",
+            label:"Bundle By",
+            type:"select",
+            help: "Perform an action when the rule is triggered. <br>Notify members of the group.<br>Trigger a task 'task:APP_NAME:FNAME:CHANNEL'.<br>Send email 'email:USER_NOTIFICATION'<br>Send sms 'sms:USER_NOTIFICATION'",
+            editable: true,
+            options: [
+                {
+                    value: 0,
+                    label: "Not Set"
+                },
+                {
+                    value: 1,
+                    label: "Hostname"
+                },
+                {
+                    value: 2,
+                    label: "Component"
+                },
+                },
+                {
+                    value: 3,
+                    label: "Component and Hostname"
+                },
+            ],
+            columns: 6
+        },
+        {
             name:"action",
             label:"Action",
             type:"select",
