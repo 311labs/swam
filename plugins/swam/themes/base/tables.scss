@@ -264,11 +264,13 @@ table.swam-table {
 
         th.swam-batch-select {
             width: 1%;
+            background-color: $batch-select-bg;
         }
 
         td.swam-batch-select {
             width: 1%;
             background-color: $batch-select-bg;
+            --bs-table-accent-bg: $batch-select-bg;
         }
 
         &.swam-batch-selected {
@@ -276,6 +278,7 @@ table.swam-table {
             div.swam-table-checkbox {
                 &:before {
                     background-color: $brand-primary;
+                    border-color: $brand-primary;
                 }
 
                 &:after {
@@ -286,6 +289,11 @@ table.swam-table {
                     width: 14px;
                     height: 14px;
                 }
+            }
+
+            td.swam-batch-select, th.swam-batch-select {
+                background-color: $batch-selected-bg;
+                --bs-table-accent-bg: $batch-selected-bg;
             }
         }
     }

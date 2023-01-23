@@ -98,7 +98,7 @@ SWAM.Models.User = SWAM.Model.extend({
                     columns: 12
                 },
                 {
-                    name:"metadata.phone",
+                    name:"phone_number",
                     label:"Phone",
                     type:"tel",
                     placeholder:"Enter Phone Number",
@@ -161,14 +161,14 @@ SWAM.Models.User = SWAM.Model.extend({
             columns: 6
         },
         {
-            name:"metadata.notify.rest_error",
+            name:"metadata.notify.rest_errors",
             label:"API Errors",
             help: "Get notified when a api error occurs.",
             type:"toggle",
             columns: 6
         },
         {
-            name:"metadata.notify.app_error",
+            name:"metadata.notify.app_errors",
             label:"APP Errors",
             help: "Get notified of application errors.",
             type:"toggle",

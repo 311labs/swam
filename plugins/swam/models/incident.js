@@ -78,7 +78,6 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             label:"Bundle By",
             type:"select",
             help: "Perform an action when the rule is triggered. <br>Notify members of the group.<br>Trigger a task 'task:APP_NAME:FNAME:CHANNEL'.<br>Send email 'email:USER_NOTIFICATION'<br>Send sms 'sms:USER_NOTIFICATION'",
-            editable: true,
             options: [
                 {
                     value: 0,
@@ -106,6 +105,14 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             help: "Perform an action when the rule is triggered. <br>Notify members of the group.<br>Trigger a task 'task:APP_NAME:FNAME:CHANNEL'.<br>Send email 'email:USER_NOTIFICATION'<br>Send sms 'sms:USER_NOTIFICATION'",
             editable: true,
             options: ["notify", "email", "sms", "ignore", "task:APP_NAME:FNAME:CHANNEL", "email:USER_NOTIFICATION", "sms:USER_NOTIFICATION", "webhook:URL"],
+            columns: 6
+        },
+        {
+            name:"action_after",
+            label:"Action After Count",
+            type:"text",
+            help: "If bundled this will trigger the action after X number of events.",
+            default: 0,
             columns: 6
         },
     ]

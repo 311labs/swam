@@ -22,7 +22,7 @@ SWAM.Models.Member = SWAM.Model.extend({
             columns: 12
         },
         {
-            name:"member.metadata.phone",
+            name:"member.phone_number",
             label:"Phone",
             type:"tel",
             placeholder:"Enter Phone Number",

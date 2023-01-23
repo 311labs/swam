@@ -115,7 +115,8 @@ $swam-toc-header-link-hover: white;
 $swam-toc-header-height: auto;
 $swam-toc-width: 250px;
 
-$batch-select-bg: transparent;
+$batch-select-bg: #cccccc;
+$batch-selected-bg: $primary;
 
 @mixin nolist {
 	list-style: none;

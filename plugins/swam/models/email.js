@@ -72,3 +72,42 @@ SWAM.Collections.EmailOutgoing = SWAM.Collection.extend({
         Model: SWAM.Models.EmailOutgoing
     }
 });
+
+SWAM.Models.EmailTemplate = SWAM.Model.extend({
+    defaults: {
+        url:"/rpc/inbox/template"
+    },
+}, {
+    EDIT_FORM: [
+        {
+            name:"name",
+            label:"Name",
+            type:"text",
+            help: "An example would be group.invite",
+            placeholder:"Enter Name (must be unique)",
+            columns: 12
+        },
+        {
+            name:"kind",
+            label:"Kind",
+            type:"text",
+            help: "An example would be group.invite",
+            placeholder:"Enter Kind (email)",
+            default: "email",
+            columns: 12
+        },
+        {
+            name:"template",
+            label:"Template",
+            type:"textarea",
+            rows: 10,
+            columns: 12,
+        },
+    ]
+});
+
+SWAM.Collections.EmailTemplate = SWAM.Collection.extend({
+    defaults: {
+        Model: SWAM.Models.EmailTemplate
+    }
+});

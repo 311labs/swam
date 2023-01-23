@@ -14,6 +14,7 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("email_outbox", new PORTAL.Pages.EmailOutgoing(), ["admin/email/outbox"]);
 	app.addPage("email_bounced", new PORTAL.Pages.EmailBounced(), ["admin/email/bounced"]);
 	app.addPage("email_complaint", new PORTAL.Pages.EmailComplaint(), ["admin/email/complaints"]);
+	app.addPage("email_template", new PORTAL.Pages.EmailTemplate(), ["admin/email/templates"]);
 	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
 
 	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
