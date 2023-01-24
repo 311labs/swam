@@ -195,7 +195,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
         this.daily_lngst.length = 0;
         this.stats.forEach(element => {
             console.log(element);
-            this.dayLabels.push(SWAM.Localize.datetime(element.day,"", "MM/DD"));
+            this.dayLabels.push(SWAM.Localize.moment(element.day,"", null, "MM/DD"));
             this.daily_cmpltd.push(element.completed);
             this.daily_fails.push(element.failed);
             this.daily_lngst.push(element.longest);
