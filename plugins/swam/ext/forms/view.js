@@ -47,12 +47,22 @@ SWAM.Form.View = SWAM.View.extend({
 
     getData: function() {
         var $form = this.$el.find("form");
-        var data = SWAM.Form.getData($form);
+        var data = expandObject(SWAM.Form.getData($form));
         var files = SWAM.Form.getFiles($form);
         if (files) {
             // this has files
             // lets check if these are form files or base64
-            var has_real_files = _.difference(_.keys(files), _.keys(this.files)).length > 0;
+            // var has_real_files = _.difference(_.keys(files), _.keys(this.files)).length > 0;
+            var has_real_files = false;
+            for (var i = 0; i < files.length; i++) {
+                if (files[i][0].files.length) {
+                    has_real_files = true;
+                    break;
+                }
+            }
+            _.each(files, function(f){
+                if (f[0].files.length) {}
+            })
             if (has_real_files) {
                 data.__mpf = SWAM.Form.convertToFormData($form, data);
             }
@@ -65,6 +75,14 @@ SWAM.Form.View = SWAM.View.extend({
                 data.__mpf.set(k, f);
             }
         });
+        return data;
+    },
+
+    getChanges: function() {
+        var data = this.getData();
+        if (this.options.model) {
+            return deepDiff(this.options.model.attributes, data);
+        }
         return data;
     },
 

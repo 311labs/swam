@@ -84,6 +84,74 @@ if (window._) {
 
 }
 
+window.typeOf = o => Object.prototype.toString.call(o);
+window.isObject = o => o !== null && !Array.isArray(o) && typeOf(o).split(" ")[1].slice(0, -1) === "Object";
+
+window.isPrimitive = o => {
+  switch (typeof o) {
+    case "object": {
+      return false;
+    }
+    case "function": {
+      return false;
+    }
+    default: {
+      return true;
+    }
+  }
+};
+
+window.deepDiff = function(o1, o2){
+    var diff = {};
+    // Iterate over o1 and o2
+    for (var prop in o1) {
+        // Check if o2 has the same property
+        if (prop in o2) {
+            // Compare values
+            if (o1[prop] !== o2[prop]) {
+                // If values are not the same, check if they are objects
+                if (typeof o1[prop] === 'object' && typeof o2[prop] === 'object') {
+                    // If they are objects, compare them recursively
+                    var subDiff = deepDiff(o1[prop], o2[prop]);
+                    if (Object.keys(subDiff).length > 0) {
+                        diff[prop] = subDiff;
+                    }
+                } else {
+                    // Otherwise add the difference to the diff
+                    diff[prop] = o2[prop];
+                }
+            }
+        }
+    }
+    // Do the same for o2
+    for (var prop in o2) {
+        if (!(prop in o1)) {
+            diff[prop] = o2[prop];
+        }
+    }
+    return diff;
+};
+
+window.expandObject = function(obj) {
+  const expandedObj = {};
+  for (let key in obj) {
+    const splitKeys = key.split('.');
+    let currentObj = expandedObj;
+    for (let i = 0; i < splitKeys.length; i++) {
+      const currentKey = splitKeys[i];
+      if (i === splitKeys.length - 1) {
+        currentObj[currentKey] = obj[key];
+      } else {
+        if (currentObj[currentKey] === undefined) {
+          currentObj[currentKey] = {};
+        }
+        currentObj = currentObj[currentKey];
+      }
+    }
+  }
+  return expandedObj;
+};
+
 window.getBrowserUID = function() {
     var data = window.getBrowserHash();
     return data.toString().toHex();

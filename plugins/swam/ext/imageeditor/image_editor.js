@@ -344,12 +344,12 @@ SWAM.Dialogs.ImageEditor = SWAM.View.extend({
             window.app.hideBusy();
             $("form#camera input.camera").show();
             self.close();
-            window.app.alert("We are sorry, but something went wrong.", "Info");
+            SWAM.Dialog.alert("We are sorry, but something went wrong.", "Info");
         }});
     },
 
     on_delete: function(evt) {
-        window.app.confirm('Are you sure?', _.bind(this.do_delete, this));
+        SWAM.Dialog.confirm('Are you sure?', _.bind(this.do_delete, this));
     },
 
     do_delete: function(evt) {
@@ -423,7 +423,7 @@ SWAM.Dialogs.ImageEditor = SWAM.View.extend({
         loadImage(file,
             _.bind(function(img){
                 if (img.type === "error") {
-                    window.app.alert("Could not render image.", "Image Error");
+                    SWAM.Dialog.alert("Could not render image.", "Image Error");
                     this.close();
                 } else {
                     this.$el.find(".image-preview img").replaceWith(img);

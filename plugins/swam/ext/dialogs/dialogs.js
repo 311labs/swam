@@ -145,7 +145,7 @@ SWAM.Dialog = SWAM.View.extend({
     getData: function(evt) {
         if (!_.isEmpty(this.children)) {
             var form = this.children["dlg_view"];
-            if (form && form.getData) return form.getData();
+            if (form && form.getData) return form.getChanges();
         }
         return SWAM.Form.getData(this.$el.find("form"));
     },

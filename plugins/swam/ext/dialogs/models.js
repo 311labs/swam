@@ -53,8 +53,15 @@ SWAM.Dialog.editModel = function(model, opts) {
 	var callback = opts.callback;
 	opts.callback = function(dlg, choice) {
 		if (choice == "save") {
-			app.showBusy({icon:"upload", timeout:4000, color:"warning", no_timeout_alert:false});
 			var data = _.extend({}, opts.defaults, dlg.getData());
+			if (_.isEmpty(data)) {
+				console.warn("save called, but nothing to save");
+				dlg.dismiss();
+				if (callback) callback(model, {status:true});
+				return;
+			}
+			app.showBusy({icon:"upload", timeout:4000, color:"warning", no_timeout_alert:false});
+			// FIXME: this is not good, and can cause issues when in admin pages, etc
 			if (app.group && (data.group == undefined)) data.group = app.group.id;
 			model.save(data, function(model, resp) {
 				app.hideBusy();
