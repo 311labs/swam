@@ -13,6 +13,21 @@ SWAM.Form.View = SWAM.View.extend({
         "click form.search button": "on_submit"
     },
 
+    set: function(key, value) {
+        let field = this.getField(key);
+        if (field) field.value = value;
+    },
+
+    get: function(key, default_value) {
+        let field = this.getField(key);
+        if (field && (field.value != undefined)) return field.value;
+        return default_value;
+    },
+
+    getField: function(key) {
+        return _.findWhere(this.options.fields, {name:key});
+    },
+
     on_render: function() {
         var html = SWAM.Form.build(this.options.fields, this.options.defaults, this.options.model);
         if (this.options.title) {

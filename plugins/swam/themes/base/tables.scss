@@ -64,6 +64,10 @@ div.swam-table, div.swam-toc-table, div.swam-paginated-table {
             }
         }
     }
+
+    tfoot {
+        font-weight: bold;
+    }
 }
 
 div.swam-pager-panel {
@@ -302,6 +306,10 @@ table.swam-table {
         tr.swam-batch-selected {
             background-color: rgba(0, 120, 240, 0.14);
         }
+    }
+
+    tfoot {
+        font-weight: bold;
     }
 }
 

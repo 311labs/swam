@@ -40,75 +40,12 @@ SWAM.Form.getData = function($form, options) {
 		}
 	});
 
-	var cboxes = {};
-	var checkfields = [];
-	if (opts.checkbox_truefalse) {
-
-		$form.find('input[type="checkbox"]:not(:checked):not(:disabled)').each(function(k,v) {
-			console.log(v.name + " removing " + v.value);
-			if (v.value && (v.value != "off")) {
-
-				if (!cboxes[v.name]) cboxes[v.name] = [];
-			}
-			if (v.name) {
-				if (checkfields.indexOf(v.name) == -1) checkfields.push(v.name);
-				// var c = data[v.name];
-				data[v.name] = 0;
-				// console.log(data);
-			}
-		});
-		// console.log(cboxes);
-
-		$form.find('input[type="checkbox"]:checked').each(function(k,v) {
-			console.log(v.name + "adding " + v.value);
-			if (v.value && (v.value != "on")) {
-
-				if (!cboxes[v.name]) cboxes[v.name] = [];
-				if ($(v).data("value")) {
-					cboxes[v.name].push($(v).data("value"));
-				}else{
-					cboxes[v.name].push(v.value);
-				}
-			}
-
-			if (v.name) {
-				if (checkfields.indexOf(v.name) == -1) checkfields.push(v.name);
-				data[v.name] = 1;
-			}
-		});
-	} else {
-		$form.find('input[type="checkbox"]:not(:checked):not(:disabled)').each(function(k,v) {
-			// console.log(v.name + " removing " + v.value);
-			if (v.value && (v.value != "off")) {
-				console.log(v.name + " removing " + v.value);
-				if (!cboxes[v.name]) cboxes[v.name] = [];
-			}
-		});
-
-		$form.find('input[type="checkbox"]:checked').each(function(k,v) {
-			// console.log(v.name + "adding " + v.value);
-			if (v.value && (v.value != "on")) {
-				console.log(v.name + "adding " + v.value);
-				if (!cboxes[v.name]) cboxes[v.name] = [];
-				cboxes[v.name].push(v.value);
-			}
-		});
-	}
-
-	_.each(checkfields, function(f){
-		if (cboxes[f] && cboxes[f].length) {
-			if (cboxes[f].length == 1) {
-				data[f] = cboxes[f][0];
-				if (["true", "on", "yes", "1", "enabled"].indexOf(data[f]) >= 0) data[f] = 1;
-				if (["false", "no", "off", "1", "disabled"].indexOf(data[f]) >= 0) data[f] = 0;
-			} else {
-				data[f] = cboxes[f];
-			}
-		}
+	$form.find('input[type="checkbox"]').each(function(k, v){
+		var $field = $(v);
+		data[v.name] = $field.is(":checked");
 	});
 
 	$form.find('input[data-role="tagsinput"]').each(function(k, v){
-		console.log(k, v);
 		var $field = $(v);
 		data[v.name] = $field.tagsinput('items_mapped');
 	});

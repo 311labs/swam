@@ -111,7 +111,9 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         ],
         pagination: false,
         empty_html: "<tr><td colspan='100' class='text-center p-3 text-muted'>No items returned</td>",
-        fetch_on_tab: true
+        fetch_on_tab: true,
+        show_totals_label: "totals",
+        show_totals: null
     },
 
     selectAll: function() {
@@ -209,6 +211,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     	this.$header = $("<tr />").appendTo($head);
     	this.$body = $("<tbody />").appendTo(this.$el);
     	this.on_render_header();
+        this.on_render_footer();
 
         if (this.options.pagination) {
 
@@ -282,6 +285,77 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     	} else {
     		this.$header.append("<th>" + column + "</th>");
     	}
+    },
+
+    on_render_footer: function() {
+        if (this.options.show_totals) {
+            this.$footer = $("<tfoot />").appendTo(this.$el);
+            this.refreshTotals();
+            if (!_.isEmpty(this.totals)) {
+                var $tr = $("<tr />").appendTo(this.$footer);
+                var columns = [];
+                var col_span = 0;
+                _.each(this.options.columns, function(col, i) {
+                    let field_name, localize;
+                    if (_.isObject(col)) {
+                        field_name = col.field;
+                    } else {
+                        field_name = col;
+                    }
+                    var $el = $("<td />");
+                    if (this.totals[field_name] != undefined) {
+                        if (col_span > 0) {
+                            if (this.options.show_totals_label) {
+                                $el.html(this.options.show_totals_label);
+                            } else {
+                                $el.html("&nbsp;");
+                            }
+                            $tr.append($el.attr("colspan", col_span).addClass("totals-spacer"));
+                            $el = $("<td />");
+                        }
+                        if (this.localize_totals[field_name] != undefined) {
+                            // require support for complex localize
+                            $el.html(SWAM.Localize.render(field_name  + "|" + this.localize_totals[field_name], this.totals));
+                        } else {
+                            $el.text(this.totals[field_name])
+                        }
+                        $el.addClass("td-totals");
+                        $tr.append($el);
+                        col_span = -1;
+                    }
+                    col_span += 1;
+                }.bind(this));
+            }
+        }
+    },
+
+    refreshTotals: function() {
+        var totals = {};
+        var fields_to_filters = {};
+        for (var i = 0; i < this.items.length; i++) {
+            var item = this.items[i];
+            if (item.model) {
+                var prev_col = null;
+                _.each(this.options.show_totals, _.bind(function(col_name){
+                    if (_.isFunction(col_name)) {
+                        col_name(item, totals);
+                        return;
+                    }
+                    let field = col_name;
+                    if (field.contains("|")) {
+                        let filters = col_name.split("|");
+                        field = filters.shift();
+                        if (fields_to_filters[field] === undefined) fields_to_filters[field] = filters.join("|");
+                    }
+                    if (_.isUndefined(totals[field])) {
+                        totals[field] = 0;
+                    }
+                    totals[field] += item.model.get(field);
+                }, this));
+            }
+        }
+        this.localize_totals = fields_to_filters;
+        this.totals = totals;
     },
 
     on_reset: function() {

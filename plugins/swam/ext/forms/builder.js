@@ -329,7 +329,12 @@ SWAM.Form.Builder.input_group = function(fc, form_info) {
 		fc.$wrap.append("<div class='input-group-text'><i class='" + fc.left_icon + "'></i></div>");
 	}
 	fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
-	fc.$input.prop("type", fc.type);
+	if (fc.type.startsWith("dddate")) {
+		fc.$input.prop("type", "text");
+	} else {
+		fc.$input.prop("type", fc.type);
+	}
+	
 	fc.$wrap.append(fc.$input);
 	if (fc.button) {
 		fc.button.classes = fc.button.classes || SWAM.Form.Builder.config.input_group_btn_classes;

@@ -879,7 +879,14 @@ SWAM.Localize = {
             if (!SWAM.Localize.ignore_errors) return error;
         }
         return value;
-    }
+    },
+
+    render: function(key, context) {
+        // bug fix for flat keys with . notation
+        if (key && key.contains(".")) context = expandObject(context);
+        var mc = new Mustache.Context(context);
+        return mc.lookup(key);
+    },
 }
 
 
