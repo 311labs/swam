@@ -7,7 +7,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         slugs: null,
         group: null,
         chart_type: "line",
-        granularity: "daily"
+        granularity: "daily",
+        keys: null
     },
 
     on_init: function(opts) {
@@ -50,6 +51,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (this.options.group) {
             params.group = this.options.group;
         }
+        
         this.showBusy();
 
         SWAM.Rest.GET(this.options.url, params, function(resp, status) {

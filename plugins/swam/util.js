@@ -416,3 +416,12 @@ navigator.detectBrowser = function() {
     }
 };
 
+window.captureScreen = function(callback) {
+    html2canvas(document.body).then(function(canvas){
+        var data = canvas.toDataURL("image/png");
+        data = data.substr(data.indexOf(',')+1);
+        callback(data);
+    }.bind(this));
+}
+
+

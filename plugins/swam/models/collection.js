@@ -371,5 +371,54 @@ SWAM.Collection = SWAM.Object.extend({
             }
         }
         return url + "?" + str.join("&");
+    },
+
+    downloadLocal: function(name, fields) {
+        var output = [];
+        var field_labels = [];
+        var field_localize = {};
+        var field_names = [];
+        _.each(fields, function(f){
+            if (f.field) {
+                let field = f.field;
+                let label = f.field;
+                if (field.contains("|")) {
+                    let fl = field.split("|");
+                    field = fl.shift();
+                    field_localize[field] = fl.join("|");
+                } else if (f.localize) {
+                    field_localize[field] = f.localize;
+                }
+                if (f.label) label = f.label;
+                field_names.push(field);
+                field_labels.push(label);
+            } else {
+                field_names.push(field);
+                field_labels.push(field);
+            }
+        });
+        output.push(field_labels.join(','));
+        _.each(this.models, function (model) {
+            var row = [];
+            for (var i = 0; i < field_names.length; i++) {
+                let name = field_names[i];
+                if (field_localize[name]) {
+                    row.push(model.get(field_names[i] + "|" + field_localize[name]));
+                } else {
+                    row.push(model.get(field_names[i]));
+                }
+            }
+        
+            output.push(row.join(","));
+        }.bind(this));
+        var blob = new Blob([output.join("\n")]);
+        var a = window.document.createElement("a");
+        a.href = window.URL.createObjectURL(blob, {
+          type: "text/csv"
+        });
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 });
