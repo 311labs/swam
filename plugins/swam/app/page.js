@@ -10,6 +10,10 @@ SWAM.Page = SWAM.View.extend({
 		app.setActivePage(this.page_name, params);
 	},
 
+	on_page_pre_enter: function() {
+
+	},
+
 	on_page_enter: function() {
 
 	},
