@@ -356,6 +356,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         }
         this.localize_totals = fields_to_filters;
         this.totals = totals;
+        this.trigger("totals", this);
     },
 
     on_reset: function() {

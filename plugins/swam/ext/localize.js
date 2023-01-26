@@ -664,6 +664,10 @@ SWAM.Localize = {
         return this.currency(value / 100, attr, fmt);
     },
 
+    'cents_to_dollars': function(value, attr, fmt) {
+        return this.currency(value / 100, attr, "dollars");
+    },
+
     'currency': function(value, attr, fmt) {
         if (value == null) return "n/a";
 

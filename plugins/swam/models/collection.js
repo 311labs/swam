@@ -183,7 +183,7 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     get: function(id) {
-        return _.findWhere(this.models, {id:id});
+        return _.findWhere(this.models, {id:parseInt(id)});
     },
 
     find: function(predicate) {
@@ -202,6 +202,8 @@ SWAM.Collection = SWAM.Object.extend({
         this.size = resp.size;
         this.start = resp.start;
         this.end = Math.min(this.count, resp.start + resp.size);
+        this.dr_start = resp.dr_start;
+        this.dr_end = resp.dr_end;
         this.updatePager();
     },
 
@@ -377,12 +379,15 @@ SWAM.Collection = SWAM.Object.extend({
         var output = [];
         var field_labels = [];
         var field_localize = {};
+        var field_templates = {};
         var field_names = [];
         _.each(fields, function(f){
             if (f.field) {
                 let field = f.field;
                 let label = f.field;
-                if (field.contains("|")) {
+                if (f.template) {
+                    field_templates[field] = f.template;
+                } else if (field.contains("|")) {
                     let fl = field.split("|");
                     field = fl.shift();
                     field_localize[field] = fl.join("|");
@@ -402,7 +407,9 @@ SWAM.Collection = SWAM.Object.extend({
             var row = [];
             for (var i = 0; i < field_names.length; i++) {
                 let name = field_names[i];
-                if (field_localize[name]) {
+                if (field_templates[name]) {
+                    row.push(SWAM.renderString(field_templates[name], {model: model}));
+                } else if (field_localize[name]) {
                     row.push(model.get(field_names[i] + "|" + field_localize[name]));
                 } else {
                     row.push(model.get(field_names[i]));
