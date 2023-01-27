@@ -81,8 +81,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                 } else {
                     // page.render();
                     if (anchor) page.scrollToAnchor(anchor);
-                    page.updateURL();
                     page.on_page_reenter();
+                    page.updateURL();
                 }
                 return;
             }
