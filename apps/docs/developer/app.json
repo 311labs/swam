@@ -23,11 +23,11 @@
     ],
     "static_files": [
         "imgs",
-        "/plugins/portal_ext/media",
+        "/plugins/media",
         "/swamcore/plugins/bootstrap/fonts"
     ],
     "static_paths": true,
-    "version": "0.1.1483",
+    "version": "0.1.1493",
     "template_root": "apps.docs.developer",
     "loader_color": "#598A77"
 }

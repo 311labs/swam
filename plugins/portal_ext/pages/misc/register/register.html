@@ -1,0 +1,41 @@
+<main class="form-signin">
+  <form>
+    <div class="signin-brand text-center">
+      {{#options.logo}}<img src="{{options.logo}}" alt="" class="logo mb-3" width="160">{{/options.logo}}
+    </div>
+    
+    <div class="card card-login">
+      <div class="card-body">
+        <h1 class="h3 mb-4 fw-normal text-left text-white">Register your account</h1>
+        <div class="form-floating">
+          <input type="text" class="form-control" name="username" readonly value="{{params.token.username}}">
+          <label for="username">Username</label>
+        </div>
+        <br>
+        <div class="form-floating">
+          <input type="text" class="form-control" name="display_name">
+          <label for="display_name">Enter Full Name</label>
+        </div>
+        <br>
+        <div class="form-floating">
+          <input type="password" class="form-control" name="new_password">
+          <label for="new_password">Enter New Password</label>
+        </div>
+
+        <button type="button" class="mt-5 w-100 btn btn-lg btn-primary" data-action="register">REGISTER</button>
+      </div>
+    </div>
+
+    <div class="login-footer text-center">
+          <div class="mt-5 text-muted text-center">© 2023</div>
+         <div class="text-center text-muted">{{app.options.title}} {{app.version}}</div> 
+         <div>
+          <a class="btn btn-link text-muted" href="/static/privacy.html" target="_blank">Privacy Policy</a>
+          <a class="btn btn-link text-muted" href="/static/terms.html" target="_blank">Terms of Use</a>
+         </div>
+    {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
+    </div>
+
+  </form>
+</main>
+

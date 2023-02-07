@@ -36,7 +36,7 @@ parser.add_option("--clear", action="store_true", dest="clear", default=False, h
 parser.add_option("--app_path", type="str", dest="app_path", default=config.get("app_path", "apps"), help="app path to compile from")
 
 version = "0.1.5"
-compile_info = nobjict(is_compiling=False)
+compile_info = nobjict(is_compiling=False, verbose=False)
 
 
 class Colors:
@@ -117,7 +117,8 @@ class FileCache():
                 self.removeOld()
                 return True
             if self.cache[path].mtime != os.path.getmtime(path):
-                pp(Colors.YELLOW, F"CHANGED: {path} - {self.cache[path].mtime}")
+                if compile_info.verbose:
+                    pp(Colors.YELLOW, F"CHANGED: {path} - {self.cache[path].mtime}")
                 return True
         return False
 
@@ -237,7 +238,8 @@ class SwamFile():
         else:
             self.merge()
         self.on_close()
-        pp(Colors.BLUE, "\t{}\tregenerated".format(self.output_path))
+        if compile_info.verbose:
+            pp(Colors.BLUE, "\t{}\tregenerated".format(self.output_path))
         self.info = FILE_CACHE.getPath(self.path, self.output_path, update=False)
 
     def on_open(self):
@@ -272,7 +274,8 @@ class SwamFile():
 
     def mergeFile(self, path):
         sf = SwamFile(path, self.static_folder, force=self.force)
-        pp(Colors.GREEN, "\tadding: {}".format(path))
+        if compile_info.verbose:
+            pp(Colors.GREEN, "\tadding: {}".format(path))
         self.output.write(sf.readAll())
 
     def _addPath(self, path, f):
@@ -785,6 +788,7 @@ def clearCache(opts):
 def main(opts, args):
     print("== SWAM COMPILER {} ==".format(version))
     print(F"\tOutput: {opts.output}")
+    compile_info.verbose = opts.verbose
     opts.output = os.path.abspath(opts.output)
     opts.plugins = config.get("plugins", ["plugins"])
     print(F"\tAbsolute Output: {opts.output}")

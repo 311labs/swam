@@ -2,7 +2,7 @@
   <form>
     <div class="signin-brand text-center mb-3">
       {{#options.logo}}<img src="{{options.logo}}" alt="" class="logo mb-3">{{/options.logo}}
-      <h2 class="mb-3">{{app.options.title}}</h2>
+      {{#options.title}}<h2 class="mb-3">{{options.title}}</h2>{{/options.title}}
       
     </div>
     
@@ -27,13 +27,8 @@
           <button type="button" class="btn-icon" data-action="show_password">{{{ICON('eye-fill')}}}</button>
         </div>
 
-        <div class="checkbox mt-3 mb-3 text-white">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
 
-        <button type="button" class="mt-3 w-100 btn btn-lg btn-primary" data-action="login">Sign in</button>
+        <button class="mt-3 w-100 btn btn-lg btn-primary" data-action="login">Sign in</button>
         {{#app.options.allow_google_login}}
             <button type="button" class="mt-3 w-100 btn btn-lg btn-google-signin" data-action="google_login">{{{ICON('google')}}} Google Sign in</button>
         {{/app.options.allow_google_login}}
