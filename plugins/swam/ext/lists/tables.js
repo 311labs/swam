@@ -365,7 +365,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     },
 
     on_tab_focus: function() {
-        if (this.options.fetch_on_tab) this.collection.fetchIfStale();
+        if (this.isInDOM() && this.options.fetch_on_tab) this.collection.fetchIfStale();
     }
 });
 

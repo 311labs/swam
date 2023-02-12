@@ -31,8 +31,8 @@ String.prototype.removeAll = function(str) {
 };
 
 String.prototype.slugify = function() {
-    // remove non-words and replace consecutive spaces with a hyphen
-    return this.toLowerCase().replace(/[^\w ]+/g, '').replace(/[ ]+/g, '-');
+    // remove non-words and replace consecutive spaces with a underscore
+    return this.toLowerCase().replace(/[^\w ]+/g, '').replace(/[ ]+/g, '_');
 };
 
 String.prototype.removeAll = function(str) {

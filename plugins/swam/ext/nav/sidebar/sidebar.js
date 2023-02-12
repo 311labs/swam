@@ -8,18 +8,19 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		empty_label: "Select Group",
 		replaces_el: false,
 		only_one: true,
-		menu: [
-			{
-				label: "Dashboard",
-				icon: "bi bi-speedometer2",
-				page: "dashboard"
-			}
-		],
+		menu: null,
 		admin_menu: [
 			{
 				label: "Admin Dashboard",
 				icon: "bi bi-speedometer2",
 				page: "admin_dashboard"
+			}
+		],
+		admin_menus: [
+			{
+				label: "Admin Menu",
+				icon: "tools",
+				id: "admin"
 			}
 		],
 		menu_select: false,
@@ -28,6 +29,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 	on_init: function() {
 		app.me.on("change", this.on_me_change, this);
+		app.on("ready", this.on_app_ready, this);
 		app.on("page:change", this.on_page_change, this);
 		app.on("group:change", this.on_group_change, this);
 		this.on("rendered", this.on_rendered, this); // this avoid conflicting with post render
@@ -61,14 +63,38 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			this.nav.options.items = this.options.admin_menu;
 			this.render();
 		} else {
-			this.template = "swam.ext.nav.sidebar.sidebar";;
-			this.$el.removeClass("bg-light").addClass("bg-dark");
-			this.classes = "main bg-dark";
-			if (this.options.menus && this.options.menus[name]) {
-				this.nav.options.items = this.options.menus[name];
+			if (this.options.templates && this.options.templates[name]) {
+				this.template = this.options.templates[name];
 			} else {
-				this.nav.options.items = this.options.menu;
+				this.template = "swam.ext.nav.sidebar.sidebar";
 			}
+
+			let menu = null;
+			if (this.options.menus && this.options.menus[name]) {
+				menu = this.options.menus[name];
+			} else if (this.options.menu) {
+				menu = this.options.menu;
+			} else if (this.options.menus && this.options.menus["default"]) {
+				menu = this.options.menus["default"];
+			}
+
+			if (menu.menu) {
+				this.nav.options.items = menu.menu;
+			} else {
+				this.nav.options.items = menu;
+			}
+			
+			if (menu.classes) {
+				this.classes = "main " + menu.classes;
+				this.$el.attr("class", this.classes);
+			} else if (this.options.admin_menus && this.options.admin_menus[name]) {
+				this.classes = "main bg-light";
+				this.$el.attr("class", this.classes);
+			} else {
+				this.classes = "main bg-dark";
+				this.$el.attr("class", this.classes);
+			}
+			
 			this.render();
 		}
 	},
@@ -113,18 +139,16 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		this.render();
 	},
 
+	on_app_ready: function() {
+		this.showMenu(app.getRootPath());
+	},
+
 	on_page_change: function(name) {
 		if (name == "not_found") return;
-		if (app.active_page.getRoute().contains("admin") ) {
-			this.showAdmin();
-		} else {
-			this.hideAdmin();
-		}
 		this.setActivePage(name);
 	},
 
-	on_action_show_menu: function(evt) {
-		let id = $(evt.currentTarget).data("id");
+	on_action_show_menu: function(evt, id) {
 		app.sidebar.showMenu(id);
 	},
 

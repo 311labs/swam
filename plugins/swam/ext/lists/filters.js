@@ -131,9 +131,14 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     on_action_download_csv: function(evt) {
-        var filename = this.options.list.options.download_prefix;
+        var filename = "";
         if (this.options.list.options.download_group_prefix && app.group) {
             filename += app.group.get("name").slugify() + "_";
+        }
+        if (this.options.list.options.download_prefix) {
+            filename += this.options.list.options.download_prefix;
+        } else {
+            filename += "data";
         }
         filename + ".csv";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
@@ -148,9 +153,15 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     on_action_download_json: function(evt) {
+        var filename = "";
         var filename = this.options.list.options.download_prefix;
         if (this.options.list.options.download_group_prefix && app.group) {
             filename += app.group.get("name").slugify() + "_";
+        }
+        if (this.options.list.options.download_prefix) {
+            filename += this.options.list.options.download_prefix;
+        } else {
+            filename += "data";
         }
         filename + ".json";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(

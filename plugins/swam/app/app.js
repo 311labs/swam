@@ -265,11 +265,20 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.trigger("ready", this);        
     },
 
-    getPath: function() {
-        var path = this.decodeFragment(
-          this.location.pathname + this.getSearch()
-        ).slice(this.root.length - 1);
+    getPath: function(ignore_search) {
+        var path = this.location.pathname;
+        if (!ignore_search) {
+            path = this.decodeFragment(
+              this.location.pathname + this.getSearch()
+            );
+        }
+        path = path.slice(this.root.length - 1);
         return path.charAt(0) === '/' ? path.slice(1) : path;
+    },
+
+    getRootPath: function() {
+        var path = this.getPath(true);
+        return path.split('/')[0];
     },
 
     getSearch: function() {
