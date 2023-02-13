@@ -65,24 +65,18 @@ SWAM.Form.View = SWAM.View.extend({
         var data = expandObject(SWAM.Form.getData($form));
         var files = SWAM.Form.getFiles($form);
         if (files) {
-            // this has files
-            // lets check if these are form files or base64
-            // var has_real_files = _.difference(_.keys(files), _.keys(this.files)).length > 0;
             var has_real_files = false;
-            for (var i = 0; i < files.length; i++) {
-                if (files[i][0].files.length) {
-                    has_real_files = true;
-                    break;
-                }
-            }
             _.each(files, function(f){
-                if (f[0].files.length) {}
+                if (f[0].files.length) {
+                    has_real_files = true;
+                }
             })
             if (has_real_files) {
+                // convert form data to multi-part form
                 data.__mpf = SWAM.Form.convertToFormData($form, data);
             }
         }
-        // local base64 files
+        // delete local base64 files
         _.each(this.files, function(f, k) {
             data[k] = f;
             if (data.__mpf) {
