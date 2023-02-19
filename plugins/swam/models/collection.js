@@ -292,12 +292,22 @@ SWAM.Collection = SWAM.Object.extend({
         }
     },
 
+    _debounced_callbacks: function(col, status, data) {
+        if (this._callbacks) {
+            _.each(this._callbacks, function(callback){
+                callback(col, status, data);
+            });
+            this._callbacks = null;
+        }
+    },
+
     _fetch: function(callback, opts) {
         this.is_loading = true;
         this.abort();
         if (opts && opts.if_stale) {
             if (!this.isStale()) {
                 if (callback) callback(this, 200);
+                this._debounced_callbacks(this, 200);
                 this.trigger("fetched", this);
                 this.trigger('loading:end', this);
                 return;
@@ -308,6 +318,7 @@ SWAM.Collection = SWAM.Object.extend({
             this._request = null;
             this._on_fetched(data, status);
             if (callback) callback(this, status, data);
+            this._debounced_callbacks(this, status, data);
         }.bind(this), opts);
     },
 
@@ -321,6 +332,11 @@ SWAM.Collection = SWAM.Object.extend({
         }
         this.is_loading = true;
         this.trigger('loading:begin', this);
+        if (!this._callbacks) this._callbacks = [];
+        if (callback) {
+            this._callbacks.push(callback);
+            callback = null;
+        }
         this._debounce_fetch(callback, opts);
     },
 
