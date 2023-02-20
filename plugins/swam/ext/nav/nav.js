@@ -24,6 +24,10 @@ SWAM.Views.Nav = SWAM.View.extend({
 		if (this.options.type == "dropdown_menu") {
 			menu.link_classes = "dropdown-item";
 		}
+		if (menu.requires_perm) {
+			if (!app.me || !app.me.isAuthed()) return;
+			if (!app.me.hasPerm(menu.requires_perm)) return;
+		}
 		var view = new SWAM.Views.NavItem(menu);
 		view.options.nav = this;
 		this.appendChild(view);

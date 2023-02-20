@@ -3,6 +3,16 @@ SWAM.Models.Group = SWAM.Model.extend({
     defaults: {
     	url:"/rpc/account/group"
     },
+
+    fetchMembership: function(callback) {
+        // this will fetch the membership for the app.me for this group
+        if (!this.membership) this.membership = new SWAM.Models.Member();
+        SWAM.Rest.GET(`/rpc/account/membership/group/${this.id}`, {}, function(resp, status){
+            this.membership._on_fetched(resp, status);
+            if (callback) callback(this, resp);
+        }.bind(this));
+        return this.membership;
+    },
 }, {
     EDIT_FORM: [
         {

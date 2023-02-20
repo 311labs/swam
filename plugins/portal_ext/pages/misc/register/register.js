@@ -1,7 +1,7 @@
 
 
 PORTAL.Pages.RegisterUser = SWAM.Page.extend({
-    template: ".pages.misc.register",
+	template: "swamcore.plugins.portal_ext.pages.misc.register",
     classes: "page-view page-fullscreen",
 
     showInvalid: function() {

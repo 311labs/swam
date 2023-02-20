@@ -5,6 +5,18 @@ SWAM.Models.Member = SWAM.Model.extend({
     defaults: {
     	url:"/rpc/account/membership"
     },
+
+    hasPerm: function(perm) {
+        if (_.isArray(perm)) {
+            var i=0;
+            for (; i < perm.length; i++) {
+                if (this.hasPerm(perm[i])) return true;
+            }
+            return false;
+        }
+        if (this.get("metadata.permissions." + perm)) return true;
+        return false;
+    }
 }, {
     EDIT_FORM: [
         {
