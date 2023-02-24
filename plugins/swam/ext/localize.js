@@ -874,6 +874,34 @@ SWAM.Localize = {
         return value;
     },
 
+    'lpad': function(value, attr, fmt) {
+        if (_.isNumber(value)) value = value.toString();
+        if (!_.isString(value)) return value;
+        var pad_len = 4;
+        var pad_char = " ";
+        if (_.isArray(fmt)) {
+            pad_len = parseInt(fmt[0]);
+            if (fmt.length > 1) pad_char = fmt[1];
+        } else {
+            pad_len = parseInt(fmt);
+        }
+        return value.padStart(pad_len, pad_char);
+    },
+
+    'rpad': function(value, attr, fmt) {
+        if (_.isNumber(value)) value = value.toString();
+        if (!_.isString(value)) return value;
+        var pad_len = 4;
+        var pad_char = " ";
+        if (_.isArray(fmt)) {
+            pad_len = parseInt(fmt[0]);
+            if (fmt.length > 1) pad_char = fmt[1];
+        } else {
+            pad_len = parseInt(fmt);
+        }
+        return value.padEnd(pad_len, pad_char);
+    },
+
     ignore_errors: true,
     localize: function(value, attr, fmt, context) {
         try {

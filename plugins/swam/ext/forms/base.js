@@ -1,4 +1,6 @@
-SWAM.Form = {};
+SWAM.Form = {
+	changes_only: true, // only return changes on a form from existing data
+};
 
 SWAM.Form.getFiles = function($form) {
 	var files = {};

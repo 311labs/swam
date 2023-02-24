@@ -31,6 +31,12 @@ SWAM.Collection = SWAM.Object.extend({
         if (!this.options.url) this.options.url = this.options.Model.prototype.defaults.url;
     },
 
+    clone: function() {
+        var obj = new this.constructor(this.models, this.options);
+        obj.params = this.params;
+        return obj;
+    },
+
     sortBy: function(field, decending, models) {
         var comparator = null;
         if (!decending) {
@@ -129,7 +135,12 @@ SWAM.Collection = SWAM.Object.extend({
         }
 
         _.each(models, function(m){
-            var model = new this.options.Model(m);
+            var model;
+            if (_.isObject(m.attributes)) {
+                model = m;
+            } else {
+                model = new this.options.Model(m);
+            }
             this.models.push(model);
             this.trigger("add", model);
         }.bind(this));

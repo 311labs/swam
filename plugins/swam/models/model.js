@@ -21,6 +21,10 @@ SWAM.Model = SWAM.Object.extend({
         this.on_init();
     },
 
+    clone: function() {
+        return new this.constructor(this.attributes, this.options);
+    },
+
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
         
