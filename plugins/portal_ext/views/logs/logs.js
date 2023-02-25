@@ -1,5 +1,4 @@
 
-
 PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
     classes: "swam-paginated-table swam-table-clickable swam-table-tiny",
     defaults: {
@@ -7,7 +6,7 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
         model_field: "id",
         columns: [
             {label:"Created", field:"when|datetime"},
-            {label:"Who", field:"model.user.username|ifempty(model.tid)", classes:"d-none d-xl-table-cell"},
+            {label:"Who", field:"who", classes:"d-none d-xl-table-cell"},
             {label:"Action", field:"action", classes:"d-none d-xl-table-cell"},
             {label:"Path", template:"<div>{{model.request_method}}:{{model.request_path}}</div>"},
             {label:"Component", field:"component", classes:"d-none d-lg-table-cell"},
