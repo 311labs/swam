@@ -65,6 +65,24 @@ SWAM.Views.Chart = SWAM.View.extend({
     on_init_bar: function(config) {
         config.data.labels = this.options.labels;
         config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+        if (this.options.yaxis_localize) {
+            var localizer = SWAm.Localize[this.options.yaxis_localize];
+            config.options.scales.y.ticks = {
+                callback: function(value, index, ticks) {
+                    return localizer(value);
+                }
+            }
+        }
+
+        if (this.options.xaxis_localize) {
+            config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
+            var localizer = this.options.xaxis_localize;
+            config.options.scales.x.ticks = {
+                callback: function(value, index, ticks) {
+                    return SWAM.Localize.localize(value, localizer);
+                }
+            }
+        }
     },
 
     on_init_line: function(config) {
@@ -73,6 +91,24 @@ SWAM.Views.Chart = SWAM.View.extend({
             if (ds.fill == undefined) ds.fill = false;
             if (ds.tension == undefined) ds.tension = 0.1;
         });
+        if (this.options.yaxis_localize) {
+            config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+            var localizer = this.options.yaxis_localize;
+            config.options.scales.y.ticks = {
+                callback: function(value, index, ticks) {
+                    return SWAM.Localize.localize(value, localizer);
+                }
+            }
+        }
+        if (this.options.xaxis_localize) {
+            config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
+            var localizer = this.options.xaxis_localize;
+            config.options.scales.x.ticks = {
+                callback: function(value, index, ticks) {
+                    return SWAM.Localize.localize(value, localizer);
+                }
+            }
+        }
     },
 
     on_init_pie: function(config) {
@@ -96,6 +132,7 @@ SWAM.Views.Chart = SWAM.View.extend({
         if (this.options.hide_tooltips) {
             this.chart_config.options.plugins.tooltips = {enabled:false};
         }
+
         if (this.chart) this.chart.destroy();
         this.chart = new Chart(this.el, {
             type: this.options.type,
