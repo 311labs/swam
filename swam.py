@@ -10,7 +10,6 @@ import json
 import sass
 import rcssmin
 import rjsmin
-import htmlmin
 from objict import nobjict, objict
 from datetime import datetime
 import time
@@ -334,14 +333,20 @@ class MustacheFile(SwamFile):
         self.output.close()
 
     def minify(self, value):
-        return htmlmin.minify(
-            value,
-            remove_optional_attribute_quotes=False,
-            reduce_boolean_attributes=False,
-            reduce_empty_attributes=False,
-            remove_all_empty_space=True,
-            remove_comments=True,
-            keep_pre=True)
+        # htmlmin is breaking mustache inside attributes
+        if config.disable_html_minify:
+            return value
+        tmin = HTMLMinifier()
+        return tmin.minify(value)
+        # return htmlmin.minify(
+        #     value,
+        #     remove_optional_attribute_quotes=False,
+        #     reduce_boolean_attributes=False,
+        #     reduce_empty_attributes=False,
+        #     remove_all_empty_space=True,
+        #     remove_comments=True,
+        #     keep_pre=True)
+        # return value.replace('\n', '').replace('\t', '').replace(' ', '')
         # split = value.split()
         # return " ".join(split)
 
@@ -357,6 +362,68 @@ class MustacheFile(SwamFile):
     def mergeFile(self, path):
         sf = SwamFile(path, self.static_folder, force=self.force)
         self.setKey(path, self.minify(sf.readAll()))
+
+
+from html.parser import HTMLParser
+NO_CLOSE_TAGS = ('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
+                 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track',
+                 'wbr')
+
+# We might need to stop using htmlmin as it is not compatible with mustache
+# attempt at a simple minimizer
+class HTMLMinifier(HTMLParser):
+    def __init__(self):
+        self.is_in_pre = False
+        self.pre_tags = ["pre", "textarea"]
+        HTMLParser.__init__(self, convert_charrefs=False)
+
+    def minify(self, value):
+        self.output = []
+        self.feed(value)
+        return "".join(self.output)
+
+    def handle_starttag(self, tag, attrs):
+        if tag.lower() in self.pre_tags:
+            self.is_in_pre = True
+        # print("Encountered a start tag:", tag, attrs)
+        self.output.append(self.get_starttag_text())
+
+    def handle_endtag(self, tag):
+        if tag.lower() in self.pre_tags:
+            self.is_in_pre = False
+        if tag not in NO_CLOSE_TAGS:
+            self.output.append(f"</{tag}>")
+        # print("Encountered an end tag :", tag)
+
+    # def handle_startendtag(self, tag, attrs):
+    #     self._after_doctype = False
+    #     data = self.build_tag(tag, attrs, tag not in NO_CLOSE_TAGS)[1]
+    #     self._data_buffer.append(data)
+
+    def handle_comment(self, data):
+        pass
+
+    def handle_data(self, data):
+        # print("Encountered some data  :", repr(data))
+        if self.is_in_pre:
+            self.output.append(data)
+        else:
+            self.output.append(data.replace('\n', '').replace('\t', '').replace('  ', ' ').replace('  ', ' '))
+
+    def handle_entityref(self, data):
+        self.output.append('&{};'.format(data))
+
+    def handle_charref(self, data):
+        self.output.append('&#{};'.format(data))
+
+    def handle_pi(self, data):
+        self.output.append('<?' + data + '>')
+
+    def handle_decl(self, decl):
+        self.output.append('<!' + decl + '>')
+
+    def unknown_decl(self, data):
+        self.output.append('<![' + data + ']>')
 
 
 class SCSSFile(SwamFile):
