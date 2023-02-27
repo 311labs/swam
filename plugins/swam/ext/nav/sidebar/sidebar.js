@@ -69,6 +69,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 				this.template = "swam.ext.nav.sidebar.sidebar";
 			}
 
+			this.options.active_menu = null;
 			let menu = null;
 			if (this.options.menus && this.options.menus[name]) {
 				menu = this.options.menus[name];
@@ -80,6 +81,10 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 			if (menu.menu) {
 				this.nav.options.items = menu.menu;
+				if (menu.template) {
+					this.template = menu.template;
+				}
+				this.options.active_menu = menu;
 			} else {
 				this.nav.options.items = menu;
 			}

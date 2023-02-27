@@ -1,7 +1,12 @@
 <div class="sidebar-container d-flex flex-column flex-shrink-0 p-0">
 
     <div class="pt-1 text-center">
-      {{{ICON(tools)}}} <span class="ms-2 fs-4">ADMIN</span>
+      {{^options.active_menu.title}}
+      <span class="ms-2 fs-4">{{{ICON(tools)}}} ADMIN</span>
+      {{/options.active_menu.title}}
+      {{#options.active_menu.title}}
+      <span class="ms-2 fs-4">{{{options.active_menu.title}}}</span>
+      {{/options.active_menu.title}}
     </div>
     <hr>
 
@@ -11,7 +16,7 @@
     </div>
 
     <hr>
-    <button class="btn btn-default mb-2 px-1" data-action="show_menu" data-id="default">{{{ICON(arrow-left)}}} EXIT ADMIN</button>
+    <button class="btn btn-default mb-2 px-1" data-action="show_menu" data-id="default">{{{ICON(arrow-left)}}} EXIT MENU</button>
     <div class="version" data-action="about" style="cursor: pointer;">
     	<div>App Version {{app.version}}</div>
     	<div>Server Version {{app.api_version}}</div>
