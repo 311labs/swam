@@ -317,7 +317,7 @@ SWAM.Form.View = SWAM.View.extend({
         }
         this.trigger("input:change", ievt);
         if (_.isFunction(this[func_name])) {
-            this[func_name](evt, ievt.value, ievt);
+            this[func_name](ievt.name, ievt.value, ievt);
         } else if (_.isFunction(this["on_input_change"])) {
             this.on_input_change(ievt.name, ievt.value, ievt);
         }
