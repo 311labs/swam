@@ -24,6 +24,12 @@ SWAM.Views.Nav = SWAM.View.extend({
 		if (this.options.type == "dropdown_menu") {
 			menu.link_classes = "dropdown-item";
 		}
+		if (menu.group_kind) {
+			if (!app.group || (app.group.get("kind") != menu.group_kind)) return;
+		}
+		if (menu.group_setting) {
+			if (!app.group || !app.group.checkSetting(menu.group_setting)) return;
+		}
 		if (menu.requires_perm) {
 			if (!app.me || !app.me.isAuthed()) return;
 			if (!app.me.hasPerm(menu.requires_perm)) return;

@@ -1,7 +1,20 @@
 
+
+
 SWAM.Models.Group = SWAM.Model.extend({
     defaults: {
     	url:"/rpc/account/group"
+    },
+
+    checkSetting: function(key) {
+        if (_.isArray(key)) {
+            var i=0;
+            for (; i < key.length; i++) {
+                if (this.checkSetting(key[i])) return true;
+            }
+            return false;
+        }
+        return _.isTrue(this.get("metadata." + key));
     },
 
     fetchMembership: function(callback) {
@@ -84,6 +97,24 @@ SWAM.Models.Group = SWAM.Model.extend({
                     options: "timezones",
                     columns: 12
                 },
+                {
+                    name: "parent",
+                    label: "Parent",
+                    type: "searchdown",
+                    options: {
+                        inline: true
+                    },
+                    collection: function(fc, form_info) {
+                        var col = new SWAM.Collections.Group(null, {size:5});
+                        if (form_info.model) {
+                            var value = form_info.model.get(fc.name);
+                            if (_.isDict(value)) {
+                                col.active_model = new SWAM.Model(value);
+                            }
+                        }
+                        return col;
+                    }
+                }
             ]
         }
     ]

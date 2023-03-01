@@ -5,7 +5,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		this.me = new SWAM.Models.Me();
 		this.me.on("logged_out", this.on_logged_out, this);
 		this.me.on("logged_in", this.on_logged_in, this);
-		this.groups = new SWAM.Collections.Group({size:50});
+		this.groups = new SWAM.Collections.Group({size:10});
 	},
 
 	on_started: function() {

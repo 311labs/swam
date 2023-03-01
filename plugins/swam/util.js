@@ -287,6 +287,14 @@ window.getNestedValue = function(obj, key, default_valued) {
     return ret;
 };
 
+window.__TRUE_VALUES__ = [true, 1, "true", "yes", "True", "1", "Y", "y"];
+
+window.testTrue = function(value) {
+    return window.__TRUE_VALUES__.indexOf(value) >= 0;
+}
+
+if (window._) window._.isTrue = window.testTrue;
+
 window.isDict = function(obj) {
     if (_.isArray(obj) || _.isFunction(obj)) return false;
     return (_.isObject(obj) && obj && (obj["__super__"] == undefined));

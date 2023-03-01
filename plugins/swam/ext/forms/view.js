@@ -108,12 +108,16 @@ SWAM.Form.View = SWAM.View.extend({
         var self = this;
         this.$el.find("div.searchdown-input").each(function(){
             var $el = $(this);
-            var view = new SWAM.Views.SearchDown({
+            var options = _.extend({
                 btn_classes: "btn text-decoration-none",
                 remote_search: true,
-                collection: $el.data("collection"),
-                input_name: $el.data("name") || "searchdown"
-            });
+            }, $el.data("options"));
+            options.collection = $el.data("collection");
+            options.input_name = $el.data("name") || "searchdown";
+            var view = new SWAM.Views.SearchDown(options);
+            if (options.collection.active_model) {
+                view.active_model = options.collection.active_model;
+            }
             view.addToDOM($el);
         });
     },
