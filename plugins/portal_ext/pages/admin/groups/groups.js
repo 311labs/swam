@@ -54,5 +54,16 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
             }
         ]
     },
+
+    on_group_change: function() {
+        if (app.group) {
+            this.collection.params.parent = app.group.id;
+        } else if (this.collection.params.parent) {
+            delete this.collection.params.parent;
+        }
+        if (this.isActivePage()) {
+            this.collection.fetch();
+        }
+    },
 });
 

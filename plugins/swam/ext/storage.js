@@ -24,7 +24,7 @@ SWAM.StorageExtension = {
 
     getPropertyModel: function(Model, key) {
         var value = this.getObject(key);
-        if (value) {
+        if (_.isDict(value)) {
             return new Model(value);
         }
         return null;

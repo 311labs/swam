@@ -39,9 +39,17 @@ PORTAL.PortalApp = SWAM.App.extend({
 	on_logged_in: function() {
 		this.me.fetchIfStale();
 		this.ws.connect();
+
+		// check if there is a group is the url params?
 		// check if we have an active group already stored
 		var group = this.getPropertyModel(SWAM.Models.Group, "active_group");
-		if (!group) {
+		if (this.starting_params && this.starting_params.group) {
+			if (group && (group.id == this.starting_params.group)) {
+				this.setGroup(group);
+			} else {
+				this.setGroup(this.starting_params.group);
+			}
+		} else if (!group) {
 			// no active group lets get the first in the list and default to that
 			this.showBusy({icon:"download", color:"success", no_timeout_alert:true});
 			this.groups.fetch(function(){
@@ -66,8 +74,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	setGroup: function(group, no_) {
 		var old_group = this.group;
-		if (_.isNumber(group)) {
-			var id = group;
+		if (_.isString(group) || _.isNumber(group)) {
+			var id = parseInt(group);
 			group = this.groups.get(id);
 			if (!group) {
 				this.group = new SWAM.Models.Group({id:id});
