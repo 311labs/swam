@@ -124,7 +124,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			var $parent = $active.parents(".collapse");
 			if ($parent) {
 				$parent.addClass("show");
-				var $toggle = this.$el.find('[data-bs-target="' + $parent.attr("id") + '"]')
+				var $toggle = this.$el.find('[data-bs-target="#' + $parent.attr("id") + '"]')
 						.removeClass("collapsed")
 						.attr("aria-expanded", "true");
 			}
