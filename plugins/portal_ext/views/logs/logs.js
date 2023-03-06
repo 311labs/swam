@@ -182,7 +182,7 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
             }
         }
 
-        if (app.group) {
+        if (this.options.group_filtering && app.group) {
             this.collection.params.group = app.group.id;
         } else if (this.collection.params.group) {
             delete this.collection.params.group;
