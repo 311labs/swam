@@ -1,22 +1,25 @@
-<nav class="navbar navbar-expand-sm py-2 {{options.navbar_classes}}">
+<nav class="navbar mt-1 {{options.navbar_classes}}">
   <div class="{{options.container_class}}">
-    {{#options.has_sidebar}}
-    <button class="btn btn-link text-decoration-none" data-action="toggle_menu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    {{/options.has_sidebar}}
-    <a class="navbar-brand" href="#" data-showpage="{{app.options.home_page}}">
-      {{#options.logo_image}}
-      <img class="logo" src="{{options.logo_image}}" alt="">
-      {{/options.logo_image}}
-      {{{options.title}}}
-    </a>
+    <div>
+      {{#options.has_sidebar}}
+      <button class="btn btn-link text-decoration-none" data-action="toggle_sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      {{/options.has_sidebar}}
+      <a class="navbar-brand align-middle" href="#" data-showpage="{{app.options.home_page}}">
+        {{#options.logo_image}}
+        <img class="d-inline-block align-text-top" src="{{options.logo_image}}" alt="" height="24">
+        {{/options.logo_image}}
+        {{{options.title}}}
+      </a>
+      
+    </div>
     {{^options.has_sidebar}}
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sitenav_bar" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     {{/options.has_sidebar}}
-    <div class="collapse navbar-collapse" id="sitenav_bar">
+    <div id="sitenav_bar">
       <ul id="nav_menu" class="navbar-nav me-auto mb-2 mb-md-0">
 
       </ul>

@@ -151,6 +151,9 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	on_page_change: function(name) {
 		if (name == "not_found") return;
 		this.setActivePage(name);
+		if (window.innerWidth < 720) {
+			app.hideLeftPanel();
+		}
 	},
 
 	on_action_show_menu: function(evt, id) {
