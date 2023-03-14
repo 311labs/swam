@@ -53,7 +53,8 @@ SWAM.Views.EditSelect = SWAM.View.extend({
 
     on_action_es_selected: function(evt) {
         var $el = $(evt.currentTarget);
-        this.$el.find("input").val($el.data("id"));
+        var $input = this.$el.find("input");
+        $input.val($el.data("id")).trigger("change");
     },
 
     active_label: function() {
