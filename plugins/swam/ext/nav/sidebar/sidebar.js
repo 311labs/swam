@@ -140,7 +140,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	},
 
 	on_group_change: function() {
-		this.children.groupselect.setActive(app.group);
+		if (this.children.groupselect) this.children.groupselect.setActive(app.group);
 		this.render();
 	},
 
