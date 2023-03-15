@@ -236,6 +236,14 @@ SWAM.Localize = {
         return value < 0;
     },
 
+    'gt': function(value, attr, fmt) {
+        return value > parseFloat(fmt.trim());
+    },
+
+    'lt': function(value, attr, fmt) {
+        return value < parseFloat(fmt.trim());
+    },
+
     'eq': function(value, attr, fmt) {
         return value == fmt;
     },

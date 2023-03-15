@@ -126,6 +126,15 @@ SWAM.Views.List = SWAM.View.extend({
         }
     },
 
+    reset: function() {
+        this.collection.reset();
+    },
+
+    clear: function() {
+        this.items = [];
+        this.render();
+    },
+
     on_add: function(model) {
         this.add(model);
 
