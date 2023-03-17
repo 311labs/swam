@@ -243,6 +243,9 @@ SWAM.Form.Builder.password = function(fc, form_info) {
 			icon: "eye-fill"
 		});
 	}
+	if (fc.random && !fc.value) {
+		fc.value = String.Random(fc.random);
+	}
 	return fc;
 }
 

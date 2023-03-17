@@ -9,6 +9,7 @@ SWAM.PubSubClient = SWAM.Object.extend({
         retry_max_interval: 30000,
         retry_interval: 2000,
         retry_decay: 1.1,
+        ignore_errors: true,
         use_app_credentials: true
     },
 
@@ -156,7 +157,15 @@ SWAM.PubSubClient = SWAM.Object.extend({
     },
 
     send: function(message) {
-        this.ws.send(message);
+        if (!this.options.ignore_errors) {
+            this.ws.send(message);
+        } else {
+            try {
+                this.ws.send(message);
+            } catch(err) {
+                this.error(err);
+            }
+        }
     },
 
     sendMessage: function(data) {

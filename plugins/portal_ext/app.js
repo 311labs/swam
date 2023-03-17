@@ -138,8 +138,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 	fetchUser: function() {
 		this.me.fetch(function(model, resp) {
 			if (resp.status) {
-				this.on_logged_in();
 				this.on_ready();
+				this.on_logged_in();
 			} else {
 				this.refreshUserToken();
 			}
