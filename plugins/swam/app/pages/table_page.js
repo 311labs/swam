@@ -81,6 +81,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	reload: function() {
+		this.collection.params.start = 0; // reset the page to 0
 		this.collection.fetch();
 	},
 
@@ -145,6 +146,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		} else if (this.collection.params.group) {
 			delete this.collection.params.group;
 		}
+		this.collection.params.start = 0; // reset the page to 0
 		if (this.isActivePage()) {
 			this.collection.fetch();
 		}
