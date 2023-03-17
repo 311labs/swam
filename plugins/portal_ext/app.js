@@ -30,7 +30,11 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.refreshUserToken();
 		} else if (app.starting_params && app.starting_params.oauth_code) {
 			// login with oauth 
-			SWAM.Rest.POST("/rpc/account/login", app.starting_params, function(data, status){
+			let data = {
+				auth_code: app.starting_params.oauth_code,
+				username: app.starting_params.username
+			};
+			SWAM.Rest.POST("/rpc/account/login", data, function(data, status){
 			    app.hideBusy();
 			    if (data.error) {
 			        SWAM.toast("Error", data.error, "error");
