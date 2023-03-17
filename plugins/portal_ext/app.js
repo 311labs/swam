@@ -28,7 +28,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.fetchUser();
 		} else if (this.me.isOrCanAuth()) { 
 			this.refreshUserToken();
-		} else if (app.starting_params && app.starting_params.oauth_cde) {
+		} else if (app.starting_params && app.starting_params.oauth_code) {
 			// login with oauth 
 			SWAM.Rest.POST("/rpc/account/login", app.starting_params, function(data, status){
 			    app.hideBusy();
