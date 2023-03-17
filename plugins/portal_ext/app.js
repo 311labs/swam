@@ -28,6 +28,20 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.fetchUser();
 		} else if (this.me.isOrCanAuth()) { 
 			this.refreshUserToken();
+		} else if (app.starting_params && app.starting_params.oauth_cde) {
+			// login with oauth 
+			SWAM.Rest.POST("/rpc/account/login", app.starting_params, function(data, status){
+			    app.hideBusy();
+			    if (data.error) {
+			        SWAM.toast("Error", data.error, "error");
+			    } else {
+			        app.me.setJWT(data.data);
+			        if (app.me.isAuthenticated()) {
+			            app.on_logged_in();
+			            app.loadRoute(this.starting_url);
+			        }
+			    }
+			}.bind(this), {timeout: 15});
 		} else if (this.starting_url.contains("auth_code=")) {
 			app.showPage("register", window.decodeSearchParams(this.starting_url));
 		} else {
