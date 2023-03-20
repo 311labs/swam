@@ -163,14 +163,19 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_item_clicked: function(item, evt) {
+		if (!this.options.edit_form) {
+			this.options.edit_form = this.collection.options.Model.constructor.EDIT_FORM;
+		}
+
 		if (this.options.view) {
 			this.options.view.setModel(item.model);
 			SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
-		} else if (!this.options.view_only && item.model.constructor.EDIT_FORM) {
+		} else if (!this.options.view_only && this.options.edit_form) {
 			SWAM.Dialog.editModel(item.model, 
 				{
 					title:"Edit",
 					size: "md",
+					fields: this.options.edit_form,
 					callback:function(model, resp) {
 						if (resp.status) {
 						// auto saved nothing to do
@@ -193,10 +198,11 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 				}
 			}.bind(this)
 		};
-		if (!this.options.edit_form) {
-			this.options.edit_form = this.collection.options.Model.constructor.EDIT_FORM;
-		}
-		if (this.options.edit_form) options.fields = this.options.edit_form;
+
+		if (!this.options.edit_form) this.options.edit_form = this.collection.options.Model.constructor.EDIT_FORM;
+		if (!this.options.add_form && this.options.edit_form) this.options.add_form = this.options.edit_form;
+
+		if (this.options.add_form) options.fields = this.options.add_form;
 		if (this.collection.params.group) {
 			options.extra_fields = [
 				{
