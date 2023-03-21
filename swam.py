@@ -361,6 +361,8 @@ class MustacheFile(SwamFile):
 
     def mergeFile(self, path):
         sf = SwamFile(path, self.static_folder, force=self.force)
+        if os.name == "nt":
+            path = path.replace("/", os.sep)
         self.setKey(path, self.minify(sf.readAll()))
 
 
@@ -606,7 +608,10 @@ def buildApp(app_path, config, opts):
     if is_dirty or index.hasChanged():
         # load to check for any changes
         config = objict.fromFile(os.path.join(app_path, "app.json"))
-        config.template_root = "{}".format(app_path.replace("/", "."))
+        if os.name == "nt":
+            config.template_root = "{}".format(app_path.replace("/", ".").replace(os.sep, "."))
+        else:
+            config.template_root = "{}".format(app_path.replace("/", "."))
         # bump local version
         if config.loader_color is None:
             config.loader_color = "#598A77"
