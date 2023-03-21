@@ -27,7 +27,7 @@
         "/swamcore/plugins/bootstrap/fonts"
     ],
     "static_paths": true,
-    "version": "0.1.1507",
+    "version": "0.1.1508",
     "template_root": "apps.docs.developer",
     "loader_color": "#598A77"
 }

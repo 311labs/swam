@@ -221,7 +221,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 		if (msg.name == "subscribed") {
 			// this means we have authed
 			this.on_ws_subscription(msg);
-			return;
+		} else if (msg.name == "unsubscribed") {
+			console.log("unsubscribed");
 		} else if (msg.channel == "group") {
 			this.on_ws_group_event(msg);
 		} else if (msg.channel == "user") {
