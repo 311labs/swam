@@ -1,7 +1,7 @@
 
 
 PORTAL.Views.Rule = SWAM.View.extend({
-    template: "swamcore.plugins.portal_ext.pages.admin.incidents.rules.rule",
+    template: "portal_ext.pages.admin.incidents.rules.rule",
     classes: "momo-rule",
     tagName: "div",
 

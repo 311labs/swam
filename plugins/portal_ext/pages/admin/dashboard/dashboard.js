@@ -1,6 +1,6 @@
 
 PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
-    template: "swamcore.plugins.portal_ext.pages.admin.dashboard",
+    template: "portal_ext.pages.admin.dashboard",
     classes: "page-view page-padded has-topbar",
 
     on_init: function() {

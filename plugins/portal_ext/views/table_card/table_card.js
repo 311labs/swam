@@ -1,5 +1,5 @@
 PORTAL.Views.TableCard = SWAM.View.extend(SWAM.Ext.BS).extend({
-    template: "swamcore.plugins.portal_ext.views.table_card",
+    template: "portal_ext.views.table_card",
     classes: "swam-table-card",
     defaults: {
         view_padding: true,

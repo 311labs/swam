@@ -1,5 +1,5 @@
 PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
-    template: "swamcore.plugins.portal_ext.views.metrics.chart",
+    template: "portal_ext.views.metrics.chart",
 
     defaults: {
         title: "Metrics Chart",

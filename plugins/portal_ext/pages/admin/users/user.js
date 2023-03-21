@@ -1,6 +1,6 @@
 
 PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
-    template: "swamcore.plugins.portal_ext.pages.admin.users.user",
+    template: "portal_ext.pages.admin.users.user",
     classes: "acs-member",
     tagName: "div",
 

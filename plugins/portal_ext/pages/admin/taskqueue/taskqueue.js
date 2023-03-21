@@ -29,7 +29,7 @@ PORTAL.Views.TaskTabs = SWAM.Views.Tabs.extend({
 });
 
 PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
-    template: "swamcore.plugins.portal_ext.pages.admin.taskqueue",
+    template: "portal_ext.pages.admin.taskqueue",
     classes: "page-view page-padded has-topbar",
     defaults: {
         table_options: {

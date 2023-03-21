@@ -1,7 +1,7 @@
 
 
 PORTAL.Pages.Login = SWAM.Page.extend({
-    template: "swamcore.plugins.portal_ext.pages.misc.login",
+    template: "portal_ext.pages.misc.login",
     classes: "page-view page-fullscreen",
 
     on_action_login: function(evt) {
