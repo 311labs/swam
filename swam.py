@@ -609,9 +609,8 @@ def buildApp(app_path, config, opts):
         # load to check for any changes
         config = objict.fromFile(os.path.join(app_path, "app.json"))
         if os.name == "nt":
-            config.template_root = "{}".format(app_path.replace("/", ".").replace(os.sep, "."))
-        else:
-            config.template_root = "{}".format(app_path.replace("/", "."))
+            app_path = app_path.replace("\\", "/")
+        config.template_root = "{}".format(app_path.replace("/", "."))
         # bump local version
         if config.loader_color is None:
             config.loader_color = "#598A77"
