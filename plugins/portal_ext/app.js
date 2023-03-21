@@ -11,10 +11,12 @@ PORTAL.PortalApp = SWAM.App.extend({
 	on_started: function() {
 		Toast.setTheme(TOAST_THEME.DARK);
 
-		this.ws = new SWAM.PubSubClient();
-		this.ws.on("connected", this.on_ws_connected, this);
-		this.ws.on("disconnected", this.on_ws_disconnected, this);
-		this.ws.on("message", this.on_ws_message, this);
+		if (!this.options.disable_ws) {
+			this.ws = new SWAM.PubSubClient();
+			this.ws.on("connected", this.on_ws_connected, this);
+			this.ws.on("disconnected", this.on_ws_disconnected, this);
+			this.ws.on("message", this.on_ws_message, this);
+		}
 
 		// get the api version
 		SWAM.Rest.GET("/rpc/version", {}, function(resp, status) {
@@ -56,7 +58,10 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	on_logged_in: function() {
 		this.me.fetchIfStale();
-		this.ws.connect();
+		if (!this.options.disable_ws) {
+			this.ws.connect();
+		}
+		
 
 		// check if there is a group is the url params?
 		// check if we have an active group already stored
@@ -109,7 +114,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.group = null;
 			this.setProperty("active_group", null);
 			this.trigger("group:change", {group:null});
-			if (old_group) this.ws.unsubscribe("group", old_group.id);
+			if (old_group && this.ws) this.ws.unsubscribe("group", old_group.id);
 		} else {
 			this.group = group;
 			this.setProperty("active_group", group);
@@ -137,7 +142,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	wsChangeGroup: function(old_group) {
-		if (this.ws.is_auth) {
+		if (this.ws && this.ws.is_auth) {
 			if (old_group) {
 				this.ws.unsubscribe("group", old_group.id);
 				_.delay(this.ws.subscribe.bind(this.ws), 500, "group", app.group.id);
