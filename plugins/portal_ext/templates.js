@@ -1,4 +1,4 @@
-#!#MERGE ignore_prefix:plugins
+#!#MERGE ignore_prefix:swamcore.plugins
 
 pages/**/*.html
 pages/**/**/*.html
