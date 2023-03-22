@@ -34,7 +34,7 @@ parser.add_option("--bump_major", action="store_true", dest="bump_major", defaul
 parser.add_option("--clear", action="store_true", dest="clear", default=False, help="clear all cache")
 parser.add_option("--app_path", type="str", dest="app_path", default=config.get("app_path", "apps"), help="app path to compile from")
 
-version = "0.1.5"
+version = "0.1.7"
 compile_info = nobjict(is_compiling=False, verbose=False)
 
 
@@ -806,7 +806,7 @@ def runHTTP(opts):
                 path = urlparse(self.path).path
                 ext = os.path.splitext(path)[1]
                 if path[1:].startswith(app_path):
-                    print(f"===\nname: {name}\napp_path: {app_path}\npath: {path}")
+                    print(f"===xxx===\nname: {name}\napp_path: {app_path}\npath: {path}")
                     if not ext:
                         self.path = os.path.join(APP_PATHS[name], 'index.html')
                     else:
