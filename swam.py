@@ -805,14 +805,15 @@ def runHTTP(opts):
                 app_path = name.replace("__", "/")
                 path = urlparse(self.path).path
                 ext = os.path.splitext(path)[1]
-                # print(ext)
+                print(f"===\nname: {name}\napp_path: {app_path}\npath: {path}")
                 if path[1:].startswith(app_path):
                     if not ext:
                         self.path = os.path.join(APP_PATHS[name], 'index.html')
                     else:
                         self.path = "/apps" + self.path
-                        # print(self.path)
+                        print(self.path)
             full_path = os.path.join(opts.output, self.path)
+            print(f"full_path: {full_path}")
             if not os.path.exists(full_path) and not ext:
                 app_list = []
                 apps = {}
