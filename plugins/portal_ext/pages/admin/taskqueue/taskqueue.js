@@ -240,7 +240,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                             title: `Cancel Task #${item.model.id}`,
                             message: "Are you sure you want to cancel this task?",
                             callback: function(dlg, choice) {
-                                if (choice == "yes") {
+                                if (choice.lower() == "yes") {
                                     dlg.dismiss();
                                     this.cancelTask(item.model);
                                 }
@@ -258,7 +258,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                         title: `Retry Task #${item.model.id}`,
                         message: "Are you sure you want to reschedule this task?",
                         callback: function(dlg, choice) {
-                            if (choice == "yes") {
+                            if (choice.lower() == "yes") {
                                 dlg.dismiss();
                                 this.retryTask(item.model);
                             }

@@ -56,7 +56,7 @@ PORTAL.Views.Rule = SWAM.View.extend({
             message: "Are you sure you want to remove this rule from the current group?",
             callback: function(dlg, value) {
                 dlg.dismiss();
-                if (value == "YES") {
+                if (value.upper() == "YES") {
                     dlg.dismiss();
                     app.showBusy({icon:"trash"});
                     this.model.destroy(function(model, resp) {
