@@ -108,6 +108,22 @@ PORTAL.Menus.Admin = [
 		]
 	},
 	{
+		icon: "speedometer2",
+		label: "Cloud Watch",
+		items: [
+			{
+				label:"Servers",
+				icon: "pc-horizontal",
+				page: "cw_ec2"
+			},
+			{
+				label:"Databases",
+				icon: "database-fill",
+				page: "cw_rds"
+			},
+		]
+	},
+	{
 		icon: "wrench-adjustable-circle-fill",
 		label:"Global",
 		page: "admin_global"

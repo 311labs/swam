@@ -26,6 +26,7 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 			fc.append_label = true;
 			fc.$el.addClass("form-floating");
 		}
+		if (fc.nopad) fc.$el.addClass("p-0")
 		if ((fc.requires_perm) && (!app.me || !app.me.hasPerm(fc.requires_perm))) return;
 		SWAM.Form.buildField(fc, form_info);
 		SWAM.Form.Builder.form_wrap(fc, form_info);

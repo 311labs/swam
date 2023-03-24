@@ -108,7 +108,6 @@ SWAM.Models.Me = SWAM.Models.User.extend({
                 if (window.app) app.setProperty("credentials", this.credentials);
                 SWAM.Rest.credentials = this.credentials;
             }
-            this.startAutoJwtRefresh();
         } else {
             this.credentials = {};
         }   
