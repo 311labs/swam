@@ -48,8 +48,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 			        }
 			    }
 			}.bind(this), {timeout: 15});
-		} else if (this.starting_url.contains("auth_code=")) {
-			app.showPage("register", window.decodeSearchParams(this.starting_url));
+		} else if (this.starting_params.auth_code) {
+			app.showPage("register", this.starting_params);
 		} else {
 			this.showPage("login");
 		}
