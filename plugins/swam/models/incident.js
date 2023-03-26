@@ -219,6 +219,11 @@ SWAM.Models.Incident = SWAM.Model.extend({
         url:"/rpc/incident/incident"
     },
 }, {
+    COMPONENTS: [
+        "taskqueue_errors",
+        "rest_errors",
+        "ossec"
+    ],
     EDIT_FORM: [
         {
             name:"description",

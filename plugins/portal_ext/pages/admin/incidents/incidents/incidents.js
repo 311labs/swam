@@ -66,13 +66,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         type: "select",
                         editable: true,
                         placeholder: "Select Component",
-                        options: [
-                            "terminal_error",
-                            "terminal_bug",
-                            "taskqueue_errors",
-                            "rest_errors",
-                            "ossec"
-                        ],
+                        options: SWAM.Models.Incident.COMPONENTS,
                         columns: 3,
                     },
                     {
