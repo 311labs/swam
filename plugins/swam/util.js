@@ -229,6 +229,12 @@ window.b64ToDict = function(base64Url) {
     return JSON.parse(jsonPayload);
 };
 
+window.stackToMethods = function(stackTrace) {
+  return stackTrace.split('\n')
+                   .filter(line => line.trim().startsWith("at "))
+                   .map(line => line.trim().substring(3, line.trim().indexOf("(")))
+                   .join("\n");
+};
 
 window.findNestedValue = function(obj, key, default_value) {
     if (key[0] == '.') key = key.slice(1);
