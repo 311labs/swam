@@ -307,6 +307,12 @@ div.searchdown-input {
     }
 }
 
+div.modal-view {
+    [data-field] {
+      white-space: pre;
+    }
+}
+
 
 #image-editor {
 	.row {

@@ -10,17 +10,18 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             batch_select: true,
             batch_actions: [
                 {label:"Ignore", icon:"shield-fill-x", action:"ignore"},
-                {label:"Accept", icon:"eye-fill", action:"open"},
+                {label:"Accept", icon:"eye-fill", action:"accept"},
                 {label:"Resolved", icon:"shield-check", action:"resolved"},
             ],
         },
         columns: [
+            {label:"state", field:"state_display"},
             {label:"when", field:"created|datetime"},
-            {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id"},
             {label:"component", field:"component"},
-            {label:"description", field:"description", classes:"d-none d-lg-block"},
+            {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id", classes:"d-none d-lg-table-cell"},
+            {label:"description", field:"description", classes:"d-none d-lg-table-cell"},
             {label:"priority", field:"priority"},
-            {label:"state", field:"state_display"}
+
         ],
         Collection: SWAM.Collections.Incident,
         collection_params: {
@@ -36,18 +37,6 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 operator: "is"
             },
             {
-                label: "State",
-                type: "select",
-                name: "state",
-                options: [
-                    {label:"Active", value:"__lt:3"},
-                    {label:"New", value:"0"},
-                    {label:"Accepted/Opened", value:"1"},
-                    {label:"Ignored", value:"3"},
-                    {label:"Resolved", value:"4"}
-                ]
-            },
-            {
                 labe: "Search",
                 name: "search",
                 type: "text",
@@ -60,6 +49,19 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 columns: 9,
                 fields: [
                     {
+                        placeholder: "Select State",
+                        type: "select",
+                        name: "state",
+                        options: [
+                            {label:"Active", value:"__lt:3"},
+                            {label:"New", value:"0"},
+                            {label:"Opened", value:"1"},
+                            {label:"Ignored", value:"3"},
+                            {label:"Resolved", value:"4"}
+                        ],
+                        columns: 3
+                    },
+                    {
                         name: "component",
                         type: "select",
                         editable: true,
@@ -71,7 +73,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                             "rest_errors",
                             "ossec"
                         ],
-                        columns: 6,
+                        columns: 3,
                     },
                     {
                         columns: 3,
