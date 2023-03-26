@@ -26,6 +26,7 @@ SWAM.Views.EditSelect = SWAM.View.extend({
     replaceSelect: function($el) {
         this.options.name = $el.attr("name");
         this.options.value = $el.val();
+        this.options.placeholder = $el.attr("placeholder");
         var self = this;
         $el.find("option").each(function(){
             self.options.menu_items.push({label:this.innerHTML, value:this.value})

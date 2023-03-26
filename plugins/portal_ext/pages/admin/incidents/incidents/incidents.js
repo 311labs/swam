@@ -18,7 +18,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             {label:"when", field:"created|datetime"},
             {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id"},
             {label:"component", field:"component"},
-            {label:"description", field:"description"},
+            {label:"description", field:"description", classes:"d-none d-lg-block"},
             {label:"priority", field:"priority"},
             {label:"state", field:"state_display"}
         ],
@@ -36,12 +36,6 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 operator: "is"
             },
             {
-                label: "Component",
-                name: "component",
-                type: "text",
-                operator: "is"
-            },
-            {
                 label: "State",
                 type: "select",
                 name: "state",
@@ -53,6 +47,71 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                     {label:"Resolved", value:"4"}
                 ]
             },
+            {
+                labe: "Search",
+                name: "search",
+                type: "text",
+            },
+        ],
+        filter_bar: [
+            {
+                type: "group",
+                classes: "justify-content-sm-end",
+                columns: 9,
+                fields: [
+                    {
+                        name: "component",
+                        type: "select",
+                        editable: true,
+                        placeholder: "Select Component",
+                        options: [
+                            "terminal_error",
+                            "terminal_bug",
+                            "taskqueue_errors",
+                            "rest_errors",
+                            "ossec"
+                        ],
+                        columns: 6,
+                    },
+                    {
+                        columns: 3,
+                        columns_classes: "col-sm-3 col-md-3 col-lg-2",
+                        type: "select",
+                        name: "size",
+                        options: [
+                            5, 10, 20, 50, 100
+                        ]
+                    },
+                    {
+                        columns: 3,
+                        columns_classes: "col-auto",
+                        type: "buttongroup",
+                        buttons: [
+                            {
+                                classes: "btn btn-secondary",
+                                icon: "bi bi-arrow-repeat",
+                                action: "reload"
+                            },
+                            {
+                                type: "dropdown",
+                                icon: "bi bi-download",
+                                items: [
+                                    {
+                                        icon: "bi bi-filetype-csv",
+                                        label: "Download CSV",
+                                        action: "download_csv"
+                                    },
+                                    {
+                                        icon: "bi bi-filetype-json",
+                                        label: "Download JSON",
+                                        action: "download_json"
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+                ]
+            }
         ],
     },
 
