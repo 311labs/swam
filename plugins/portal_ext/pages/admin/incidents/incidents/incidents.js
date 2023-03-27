@@ -146,6 +146,21 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         this.reload();
     },
 
+    on_action_resolved: function(evt) {
+        app.showBusy();
+        let selected = this.getBatchSelected();
+        let last_index = selected.length-1;
+        _.each(selected, function(item, index){
+            item.model.save({state:4});
+            if (index == last_index) {
+
+            }
+        });
+        SWAM.toast("Incident System", `${selected.length} Incidents Resolved`);
+        app.hideBusy();
+        this.reload();
+    },
+
     on_item_clicked: function(item) {
         this.view.setModel(item.model);
         var title = item.model.get("description") + " on " + item.model.get("component"); 
