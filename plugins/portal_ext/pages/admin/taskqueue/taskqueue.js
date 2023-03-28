@@ -283,6 +283,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             can_dismiss: true,
             padded: true,
             height: 'md',
+            scrollable: true,
             "context_menu": context_menu
         });
     },

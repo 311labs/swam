@@ -164,7 +164,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 
 	on_item_clicked: function(item, evt) {
 		if (!this.options.edit_form) {
-			this.options.edit_form = this.collection.options.Model.constructor.EDIT_FORM;
+			this.options.edit_form = this.collection.options.Model.EDIT_FORM;
 		}
 
 		if (this.options.view) {
@@ -199,7 +199,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			}.bind(this)
 		};
 
-		if (!this.options.edit_form) this.options.edit_form = this.collection.options.Model.constructor.EDIT_FORM;
+		if (!this.options.edit_form) this.options.edit_form = this.collection.options.Model.EDIT_FORM;
 		if (!this.options.add_form && this.options.edit_form) this.options.add_form = this.options.edit_form;
 
 		if (this.options.add_form) options.fields = this.options.add_form;
