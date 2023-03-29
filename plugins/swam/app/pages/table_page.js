@@ -219,5 +219,3 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	    SWAM.toast("Add Group", "Not implemented yet", "warning");
 	},
 });
-
-
