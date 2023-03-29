@@ -274,6 +274,10 @@ SWAM.Form.Builder.heading = function(fc, form_info) {
 	fc.$el = $(el).html(fc.value || fc.label);
 }
 
+SWAM.Form.Builder.html = function(fc, form_info) {
+	fc.$el = $("<div />").html(fc.value || fc.label);
+}
+
 SWAM.Form.Builder.button = function(fc, form_info) {
 	SWAM.Form.Builder.iconlabel(fc);
 	fc.$button = $("<button type='button' />").html(fc.label);
