@@ -116,11 +116,14 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.trigger("group:change", {group:null});
 			if (old_group && this.ws) this.ws.unsubscribe("group", old_group.id);
 		} else {
-			this.group = group;
-			this.setProperty("active_group", group);
-			// do not trigger until we fetch our membership
-			this.fetchMS();
-			this.wsChangeGroup(old_group);
+			if (this.group != group) {
+				this.group = group;
+				this.setProperty("active_group", group);
+				// do not trigger until we fetch our membership
+				this.group.fetchIfStale();
+				this.fetchMS();
+				this.wsChangeGroup(old_group);
+			}
 		}
 
 	},
@@ -161,8 +164,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 	fetchUser: function() {
 		this.me.fetch(function(model, resp) {
 			if (resp.status) {
-				this.on_ready();
 				this.on_logged_in();
+				this.on_ready();
 			} else {
 				this.refreshUserToken();
 			}
