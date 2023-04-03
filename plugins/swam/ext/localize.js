@@ -639,31 +639,31 @@ SWAM.Localize = {
             decimal_digits:0,
             thousand_sep:",",
             decimal_sep:".",
-            sign:"$"
+            symbol:"$"
         },
         'dollarscents': {
             decimal_digits:2,
             thousand_sep:",",
             decimal_sep:".",
-            sign:"$"
+            symbol:"$"
         },
         'plain': {
             decimal_digits:0,
             thousand_sep:",",
             decimal_sep:".",
-            sign:""
+            symbol:""
         },
         'decimal': {
             decimal_digits:2,
             thousand_sep:",",
             decimal_sep:".",
-            sign:""
+            symbol:""
         },
         'crypto': {
             decimal_digits:8,
             thousand_sep:",",
             decimal_sep:".",
-            sign:""
+            symbol:""
         },
         "usd": {
             "symbol": "$",
@@ -742,6 +742,7 @@ SWAM.Localize = {
     },
 
     'hasperm': function(value, attr, fmt) {
+        if (!value) return false;
         var values;
         if (_.isString(fmt)) {
             fmt = fmt.removeAll("'");
@@ -754,6 +755,7 @@ SWAM.Localize = {
     },
 
     'has_setting': function(value, attr, fmt) {
+        if (!value) return false;
         var values;
         if (_.isString(fmt)) {
             fmt = fmt.removeAll("'");
