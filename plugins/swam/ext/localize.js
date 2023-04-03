@@ -636,35 +636,53 @@ SWAM.Localize = {
 
     CURRENCY_FORMATS: {
         'dollars': {
-            decimals:0,
+            decimal_digits:0,
             thousand_sep:",",
             decimal_sep:".",
             sign:"$"
         },
         'dollarscents': {
-            decimals:2,
+            decimal_digits:2,
             thousand_sep:",",
             decimal_sep:".",
             sign:"$"
         },
         'plain': {
-            decimals:0,
+            decimal_digits:0,
             thousand_sep:",",
             decimal_sep:".",
             sign:""
         },
         'decimal': {
-            decimals:2,
+            decimal_digits:2,
             thousand_sep:",",
             decimal_sep:".",
             sign:""
         },
         'crypto': {
-            decimals:8,
+            decimal_digits:8,
             thousand_sep:",",
             decimal_sep:".",
             sign:""
-        }
+        },
+        "USD": {
+            "symbol": "$",
+            "name": "US Dollar",
+            "symbol_native": "$",
+            "decimal_digits": 2,
+            "rounding": 0,
+            "code": "USD",
+            "name_plural": "US dollars"
+        },
+        "EUR": {
+            "symbol": "€",
+            "name": "Euro",
+            "symbol_native": "€",
+            "decimal_digits": 2,
+            "rounding": 0,
+            "code": "EUR",
+            "name_plural": "euros"
+        },
 
     },
 
@@ -678,19 +696,40 @@ SWAM.Localize = {
 
     'currency': function(value, attr, fmt) {
         if (value == null) return "n/a";
+        if (!fmt) {
+            fmt = "USD";
+        } else {
+            fmt = fmt.upper();
+        }
 
         try {
-            fmt = this.CURRENCY_FORMATS[fmt] || this.CURRENCY_FORMATS["dollarscents"];
+            let info = null;
+            if (SWAM.DataSets.currency) {
+                info = SWAM.DataSets.currency[fmt];
+            } else {
+                info = this.CURRENCY_FORMATS[fmt]
+            }
+
             var n = value;
-            var c = fmt.decimals;
-            var d = fmt.decimal_sep;
-            var t = fmt.thousand_sep;
+            var c = info.decimal_digits;
+            var t = ",";
+            var d = ".";
             var s = n < 0 ? "-" : "";
             var i = parseInt(n = Math.abs(+n || 0).toFixed(c), 10) + "";
             var j = (j = i.length) > 3 ? j % 3 : 0;
-            return fmt.sign + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+            return info.symbol + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+
         } catch(err) {
             console.log(err);
+        }
+        return value;
+    },
+
+    'currency_name': function(value, attr, fmt) {
+        if (SWAM.DataSets.currency) {
+            if (SWAM.DataSets.currency[value]) {
+                return SWAM.DataSets.currency[value].name;
+            }
         }
         return value;
     },

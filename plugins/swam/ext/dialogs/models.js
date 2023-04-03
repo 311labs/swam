@@ -42,12 +42,16 @@ SWAM.Dialog.editModel = function(model, opts) {
 	if (!opts.fields) {
 		var error = "editModel requires fields or model.EDIT_FORM";
 		SWAM.Dialog.warning(error);
-		opts.callback(model, {error:error});
+		if (opts.callback) opts.callback(model, {error:error});
 		return;
 	}
 
 	if (opts.extra_fields) {
 		opts.fields = _.clone(opts.fields).concat(opts.extra_fields);
+	}
+
+	if (!opts.callback) {
+		opts.callback = function() {};
 	}
 
 	var callback = opts.callback;

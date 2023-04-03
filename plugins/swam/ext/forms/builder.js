@@ -430,14 +430,14 @@ SWAM.Form.Builder.options_array = function(fc, form_info) {
 	_.each(fc.options, function(value, index){
 		if (_.isObject(value)) {
 			if ((value.requires_perm) && (!app.me.hasPerm(value.requires_perm))) return;
-			fc.$input.append($("<option />").text(value.label).val(value.value));
+			if (!fc.display_field) fc.display_field = "label";
+			fc.$input.append($("<option />").text(value[fc.display_field]).val(value.value));
 		} else if (fc.index_value) {
 			fc.$input.append($("<option />").text(value).val(index));
 		} else {
 			fc.$input.append($("<option />").text(value).val(value));
 		}
 	});
-	
 }
 
 
@@ -462,7 +462,12 @@ SWAM.Form.Builder.options_dict = function(fc, form_info) {
 	for (i = 0; i < len; i++) {
 		var value = fc.options[keys[i]];
 		var key = keys[i]
-		fc.$input.append($("<option />").text(value).val(key));
+		if (_.isDict(value)) {
+			if (!fc.display_field) fc.display_field = "label";
+			fc.$input.append($("<option />").text(value[fc.display_field]).val(key));
+		} else {
+			fc.$input.append($("<option />").text(value).val(key));
+		}
 	}
 }
 
