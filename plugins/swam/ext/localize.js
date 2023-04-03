@@ -665,7 +665,7 @@ SWAM.Localize = {
             decimal_sep:".",
             sign:""
         },
-        "USD": {
+        "usd": {
             "symbol": "$",
             "name": "US Dollar",
             "symbol_native": "$",
@@ -674,7 +674,7 @@ SWAM.Localize = {
             "code": "USD",
             "name_plural": "US dollars"
         },
-        "EUR": {
+        "eur": {
             "symbol": "€",
             "name": "Euro",
             "symbol_native": "€",
@@ -707,7 +707,7 @@ SWAM.Localize = {
             if (SWAM.DataSets.currency) {
                 info = SWAM.DataSets.currency[fmt];
             } else {
-                info = this.CURRENCY_FORMATS[fmt]
+                info = this.CURRENCY_FORMATS[fmt.lower()];
             }
 
             var n = value;
@@ -750,6 +750,18 @@ SWAM.Localize = {
             values = fmt;
         }
         if (value.hasPerm) return value.hasPerm(values);
+        return false
+    },
+
+    'has_setting': function(value, attr, fmt) {
+        var values;
+        if (_.isString(fmt)) {
+            fmt = fmt.removeAll("'");
+            values = fmt.split(',');
+        } else {
+            values = fmt;
+        }
+        if (value.hasSetting) return value.hasSetting(values);
         return false
     },
 
