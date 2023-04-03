@@ -130,6 +130,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		return this.children.list.list.selected;
 	},
 
+	clearBatchSelected: function() {
+		this.children.list.list.deselectAll();
+	},
+
 	setParams: function(params) {
 		this.params = params || {};
 		if (this.params.url_params) {

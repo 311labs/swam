@@ -267,7 +267,7 @@ SWAM.Rest = {
 
     loadEmulator: function() {
         if (!this.emulator) {
-            this.emulator =app.getObject("rest_emulator", {});
+            this.emulator = app.getObject("rest_emulator", {});
             SWAM.toast("Network Emulator", "loaded", "success", 2000);
         }
     }
