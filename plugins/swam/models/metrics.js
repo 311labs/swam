@@ -38,3 +38,32 @@ SWAM.Metrics.getPageViews = function(callback) {
 SWAM.Metrics.getRestMetrics = function(callback) {
 	SWAM.Metrics.getCategoryChart("rest_calls", callback);
 }
+
+
+
+
+SWAM.Models.Metrics = SWAM.Model.extend({
+    defaults: {
+    	url:"/rpc/metrics/db/metrics/objects"
+    },
+
+    getMetrics: function() {
+    	var output = {
+    		slug:this.get("slug"),
+    		uuid:this.get("uuid"),
+    		start:this.get("start|datetime"),
+    		expires:this.get("expires|date")
+    	};
+    	for (var i = 1; i < 15; i++) {
+    		let key = this.get(`k${i}`);
+    		output[key] = this.get(`v${i}`);
+    	}
+    	return output;
+    }
+});
+
+SWAM.Collections.Metrics = SWAM.Collection.extend({
+    defaults: {
+        Model: SWAM.Models.Metrics
+    }
+});

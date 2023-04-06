@@ -17,6 +17,7 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("email_complaint", new PORTAL.Pages.EmailComplaint(), ["admin/email/complaints"]);
 	app.addPage("email_template", new PORTAL.Pages.EmailTemplate(), ["admin/email/templates"]);
 	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
+	app.addPage("admin_metrics", new PORTAL.Pages.Metrics(), ["admin/metrics"]);
 
 	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
 	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({group_filtering:false}), ["admin/incident/events"]);
@@ -122,6 +123,11 @@ PORTAL.Menus.Admin = [
 				page: "cw_rds"
 			},
 		]
+	},
+	{
+		icon: "wrench-adjustable",
+		label:"Metrics",
+		page: "admin_metrics"
 	},
 	{
 		icon: "wrench-adjustable-circle-fill",

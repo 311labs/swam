@@ -10,6 +10,7 @@ SWAM.Form.View = SWAM.View.extend({
         // "click :checkbox": "on_checkbox_handler",
         "change input": "on_input_handler",
         "change select": "on_input_handler",
+        "keydown input": "on_stop_submit",
         "click form.search button": "on_submit"
     },
 
@@ -37,6 +38,16 @@ SWAM.Form.View = SWAM.View.extend({
         } else {
             this.$el.html(html);
         }
+    },
+
+    on_stop_submit: function(evt) {
+        if (evt.keyCode == 13) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            $(evt.currentTarget).change();
+            return false;
+        }
+        return true;
     },
 
     on_submit: function(evt) {
