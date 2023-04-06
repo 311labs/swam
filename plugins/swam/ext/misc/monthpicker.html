@@ -1,4 +1,15 @@
-<div id="year_picker">
+<div id="year_picker" class="border-bottom">
+	<div class="row">
+		<div class="col-sm-4">
+			<button class="btn btn-link" type="button" data-action="year_prev">{{{ICON('chevron-left')}}}</button>
+		</div>
+		<div class="col-sm-4 text-center" style="padding: .375rem .75rem;">
+			{{options.year}}
+		</div>
+		<div class="col-sm-4">
+			<button class="btn btn-link" type="button" data-action="year_next">{{{ICON('chevron-right')}}}</button>
+		</div>
+	</div>
 	
 </div>
 <div class="month-picker">
@@ -6,12 +17,18 @@
 		<div class="col month-item" data-id="1", data-action="month">Jan</div>
 		<div class="col month-item" data-id="2", data-action="month">Feb</div>
 		<div class="col month-item" data-id="3", data-action="month">Mar</div>
+	</div>
+	<div class="row">
 		<div class="col month-item" data-id="4", data-action="month">Apr</div>
 		<div class="col month-item" data-id="5", data-action="month">May</div>
 		<div class="col month-item" data-id="6", data-action="month">Jun</div>
+	</div>
+	<div class="row">
 		<div class="col month-item" data-id="7", data-action="month">Jul</div>
 		<div class="col month-item" data-id="8", data-action="month">Aug</div>
 		<div class="col month-item" data-id="9", data-action="month">Sep</div>
+	</div>
+	<div class="row">
 		<div class="col month-item" data-id="10", data-action="month">Oct</div>
 		<div class="col month-item" data-id="11", data-action="month">Nov</div>
 		<div class="col month-item" data-id="12", data-action="month">Dec</div>
