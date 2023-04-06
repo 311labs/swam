@@ -17,6 +17,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 	var defaults = {
 	    title: "Edit",
 	    padded: true,
+	    use_app_group: model.id == null, // only use app group on new models?
 	    buttons: [
 	        {
 	            id: "cancel",
@@ -66,7 +67,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 			}
 			app.showBusy({icon:"upload", timeout:4000, color:"warning", no_timeout_alert:false});
 			// FIXME: this is not good, and can cause issues when in admin pages, etc
-			if (app.group && (data.group == undefined)) data.group = app.group.id;
+			if (opts.use_app_group && app.group && (data.group == undefined)) data.group = app.group.id;
 			model.save(data, function(model, resp) {
 				app.hideBusy();
 				if (resp.error) {

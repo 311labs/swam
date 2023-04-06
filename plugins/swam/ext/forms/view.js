@@ -62,11 +62,19 @@ SWAM.Form.View = SWAM.View.extend({
     },
 
     on_init_widgets: function() {
-        this.on_init_image_editor();
-        this.on_init_datepicker();
-        this.on_init_daterangepicker();
-        this.on_init_es();
-        this.on_init_searchdown();
+        // this allows us to easily create extensions
+        let keys = Object.getOwnPropertyNames(this.constructor.prototype);
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i].startsWith("on_init__")) {
+                this[keys[i]]();
+            }
+        }
+            
+        // this.on_init__image_editor();
+        // this.on_init__datepicker();
+        // this.on_init__daterangepicker();
+        // this.on_init__es();
+        // this.on_init__searchdown();
         this.enablePops();
         this.enableClear();
     },
@@ -106,7 +114,7 @@ SWAM.Form.View = SWAM.View.extend({
         return data;
     },
 
-    on_init_es: function() {
+    on_init__es: function() {
         var self = this;
         this.$el.find("select.editable").each(function(){
             var $el = $(this);
@@ -115,7 +123,7 @@ SWAM.Form.View = SWAM.View.extend({
         });
     },
 
-    on_init_searchdown: function() {
+    on_init__searchdown: function() {
         var self = this;
         this.$el.find("div.searchdown-input").each(function(){
             var $el = $(this);
@@ -133,7 +141,7 @@ SWAM.Form.View = SWAM.View.extend({
         });
     },
 
-    on_init_image_editor: function() {
+    on_init__image_editor: function() {
         if (window.loadImage && this.$el.find("input.thumbnail-picker").length) {
             this.files = {};
             this.$el.find("input.thumbnail-picker").InputImage().on("image", function(evt, image){
@@ -156,7 +164,7 @@ SWAM.Form.View = SWAM.View.extend({
         }
     },
 
-    on_init_datepicker: function() {
+    on_init__datepicker: function() {
         if (!window.easepick) return;
 
         var list = [].slice.call(this.$el[0].querySelectorAll('input.input-date '))
@@ -194,7 +202,7 @@ SWAM.Form.View = SWAM.View.extend({
         }.bind(this));
     },
 
-    on_init_daterangepicker: function($root) {
+    on_init__daterangepicker: function($root) {
         if (!window.easepick) return;
 
         var list = [].slice.call(this.$el[0].querySelectorAll('input.input-daterange'))

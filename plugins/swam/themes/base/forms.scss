@@ -313,6 +313,31 @@ div.modal-view {
     }
 }
 
+div.month-input-group {
+    position: relative;
+}
+
+div.swam-month-picker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    div.month-picker {
+        div.month-item {
+            border-radius: 3px;
+            text-align: center;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            &:hover {
+                cursor: pointer;
+                color: white;
+                background-color: $brand-primary;
+            }
+        }
+    }
+}
+
+
 
 #image-editor {
 	.row {

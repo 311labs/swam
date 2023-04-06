@@ -13,6 +13,7 @@ ext/lists/tables.js
 ext/forms/base.js
 ext/forms/datasets.js
 ext/forms/view.js
+ext/forms/builder.js
 ext/dialogs/dialogs.js
 ext/nav/**/*.js
 app/*.js
@@ -24,4 +25,3 @@ models/member.js
 models/*.js
 
 ext/**/*.js
-
