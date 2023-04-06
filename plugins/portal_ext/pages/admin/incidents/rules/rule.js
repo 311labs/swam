@@ -81,6 +81,7 @@ PORTAL.Views.Rule = SWAM.View.extend({
                 // nothing to do?
                 this.checks.fetch();
             }.bind(this),
+            use_app_group: false,
             stack: true,
             defaults: {
                 parent: this.model.id
@@ -91,6 +92,7 @@ PORTAL.Views.Rule = SWAM.View.extend({
     on_action_edit_item: function(evt) {
         var check_model = this.checks.get($(evt.currentTarget).data("id"));
         SWAM.Dialog.editModel(check_model, {
+            use_app_group: false,
             callback: function(model, resp, dlg) {
                 // nothing to do?
                 this.checks.fetch();
