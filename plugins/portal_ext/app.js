@@ -57,7 +57,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 
 	on_logged_in: function() {
-		this.me.fetchIfStale();
+		this.me.fetch();
 		if (!this.options.disable_ws) {
 			this.ws.connect();
 		}

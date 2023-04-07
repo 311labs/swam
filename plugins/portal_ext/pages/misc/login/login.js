@@ -9,7 +9,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         var data = SWAM.Form.getData(this.$el.find("form"));
         if (data.signin_username && data.signin_password) {
             app.showBusy({icon:'<i class="bi bi-key"></i>'});
-            app.me.login(data.signin_username, data.signin_password, function(model, resp){
+            app.me.login(data.signin_username.trim(), data.signin_password, function(model, resp){
                 app.hideBusy();
                 if (!resp.status) {
                     this.$el.find("#err_box").addClass("show");
@@ -49,7 +49,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                     var data = dlg.getData();
                     if (!data.username) return;
                     dlg.dismiss();
-                    this.options.username = data.username;
+                    this.options.username = data.username.trim();
                     SWAM.toast("Reset Password", "Request sent to reset password!");
                     app.showBusy({icon:"lock"});
                     data.use_code = 1; // use a 6 digit code vs a link
