@@ -29,6 +29,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 	on_init: function() {
 		app.me.on("change", this.on_me_change, this);
+		app.me.on("logged_in", this.on_logged_in, this);
 		app.on("ready", this.on_app_ready, this);
 		app.on("page:change", this.on_page_change, this);
 		app.on("group:change", this.on_group_change, this);
@@ -135,6 +136,15 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		this.showMenu(item.id);
 	},
 
+	on_logged_in: function() {
+		this.render();
+		if (this.children.groupselect) {
+			this.children.groupselect.setActive(app.group);
+			this.children.groupselect.setRecent(app.recent_groups);
+			this.children.groupselect.collection.fetch();
+		}
+	},
+
 	on_me_change: function() {
 		this.render();
 	},
@@ -142,6 +152,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	on_group_change: function() {
 		if (this.children.groupselect) this.children.groupselect.setActive(app.group);
 		if (!this.options.menu) this.on_app_ready();
+		this.children.groupselect.setRecent(app.recent_groups);
 		this.render();
 	},
 

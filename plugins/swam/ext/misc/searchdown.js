@@ -59,6 +59,10 @@ SWAM.Views.SearchDown = SWAM.View.extend({
         }
     },
 
+    setRecent: function(recent_ids) {
+        this.options.recent_ids = recent_ids;
+    },
+
     active_label: function() {
         if (this.active_model) return this.active_model.get(this.options.display_field);
         return this.options.empty_label;
@@ -78,9 +82,12 @@ SWAM.Views.SearchDown = SWAM.View.extend({
     },
 
     on_filter: function(keyword) {
+        if (this.collection.params.pk__in) delete this.collection.params.pk__in;
         if (!keyword) {
             // nothing?
             this.collection.clearFilter();
+            // if (this.options.recent_ids) this.collection.params.pk__in = this.options.recent_ids;
+            this.collection.fetch();
         } else if (this.options.remote_search) {
             this.collection.params[this.options.search_field] = keyword;
             this.collection.fetch();
@@ -109,6 +116,7 @@ SWAM.Views.SearchDown = SWAM.View.extend({
             this.$el.addClass("searchdown-on-top");
         }
         if (this.options.auto_fetch && !this.collection.length) {
+            // if (this.options.recent_ids) this.collection.params.pk__in = this.options.recent_ids;
             this.collection.fetch();
         }
         if (this.active_model) {

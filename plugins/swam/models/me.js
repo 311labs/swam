@@ -149,6 +149,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     logout: function() {
         this["logout" + this.options.auth_method.upper()]();
+        this.attributes = {};
     },
 
     loginJWT: function(username, password, callback, opts) {

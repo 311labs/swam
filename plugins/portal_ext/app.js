@@ -57,15 +57,27 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 
 	on_logged_in: function() {
-		this.me.fetch();
+		this.me.fetchDebounced(this.on_logged_in_ready.bind(this));
 		if (!this.options.disable_ws) {
 			this.ws.connect();
 		}
 		
+	},
 
+	on_logged_in_ready: function() {
 		// check if there is a group is the url params?
 		// check if we have an active group already stored
-		var group = this.getPropertyModel(SWAM.Models.Group, "active_group");
+		var username = this.me.get("username");
+		var active_username = this.getProperty("active_username");
+		var group = null;
+		app.recent_groups = [];
+		if (username == active_username) {
+			group = this.getPropertyModel(SWAM.Models.Group, "active_group");
+			app.recent_groups = this.getObject("recent_groups", []);
+		} else {
+			this.setProperty("active_username", username);
+		}
+		
 		if (this.starting_params && this.starting_params.group) {
 			if (group && (group.id == this.starting_params.group)) {
 				this.setGroup(group);
@@ -124,6 +136,12 @@ PORTAL.PortalApp = SWAM.App.extend({
 				this.fetchMS();
 				this.wsChangeGroup(old_group);
 			}
+		}
+
+		if (group) {
+			if (app.recent_groups.indexOf(group.id) < 0) app.recent_groups.insertAt(group.id, 0);
+			if (app.recent_groups.length > 10) app.recent_groups.pop();
+			app.setProperty("recent_groups", app.recent_groups);
 		}
 
 	},
