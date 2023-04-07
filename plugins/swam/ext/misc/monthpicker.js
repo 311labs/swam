@@ -58,16 +58,31 @@ SWAM.Views.MonthPicker = SWAM.View.extend({
     },
 
     on_focus_in: function(evt) {
+        this.toggle();
+    },
+
+    toggle: function() {
         if (this.$el.hasClass("d-none")) {
             this.$el.removeClass("d-none");
         } else {
             this.$el.addClass("d-none");
         }
+    },
 
+    hide: function() {
+        if (!this.$el.hasClass("d-none")) {
+            this.$el.addClass("d-none");
+        }
+    },
+
+    show: function() {
+        if (this.$el.hasClass("d-none")) {
+            this.$el.removeClass("d-none");
+        }
     },
 
     on_focus_out: function(evt) {
-        this.$el.hide();
+        this.hide();
         if (this.options.orig_value != this.options.value) {
             this.options.input.change();
         }
@@ -77,12 +92,18 @@ SWAM.Views.MonthPicker = SWAM.View.extend({
         this.render();
         if (!this._on_focus_in) this._on_focus_in = this.on_focus_in.bind(this);
         this.options.input.on("click", this._on_focus_in);
+        let $btn = this.options.input.next();
+        if ($btn.hasClass("input-group-text")) {
+            this.options.button = $btn;
+            this.options.button.on("click", this._on_focus_in);
+        }
         // if (!this._on_focus_out) this._on_focus_out = this.on_focus_out.bind(this);
         // this.options.input.on("focusout", this._on_focus_out);
     },
 
     on_dom_removed: function() {
         this.options.input.off("focusin", this._on_focus_in);
+        if (this.options.button) this.options.button.off("click", this._on_focus_in);
         // this.options.input.off("focusout", this._on_focus_out);
         this.$el.empty();
     },
