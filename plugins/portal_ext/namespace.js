@@ -18,6 +18,7 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("email_template", new PORTAL.Pages.EmailTemplate(), ["admin/email/templates"]);
 	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
 	app.addPage("admin_metrics", new PORTAL.Pages.Metrics(), ["admin/metrics"]);
+	app.addPage("admin_cloudwatch", new PORTAL.Pages.CloudWatch(), ["admin/cloudwatch"]);
 
 	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
 	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({group_filtering:false}), ["admin/incident/events"]);
@@ -115,7 +116,7 @@ PORTAL.Menus.Admin = [
 			{
 				label:"Servers",
 				icon: "pc-horizontal",
-				page: "cw_ec2"
+				page: "admin_cloudwatch"
 			},
 			{
 				label:"Databases",

@@ -66,20 +66,27 @@ SWAM.Views.Chart = SWAM.View.extend({
         config.data.labels = this.options.labels;
         config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
         if (this.options.yaxis_localize) {
-            var localizer = SWAm.Localize[this.options.yaxis_localize];
+            config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+            var ylocalizer = this.options.yaxis_localize;
             config.options.scales.y.ticks = {
                 callback: function(value, index, ticks) {
-                    return localizer(value);
+                    return SWAM.Localize.localize(value, ylocalizer);
                 }
             }
         }
-
         if (this.options.xaxis_localize) {
-            config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
-            var localizer = this.options.xaxis_localize;
+            if (!config.options.scales) {
+                config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
+            } else {
+                config.options.scales.x = {beginAtZero: true};
+            }
+            
+            var xlocalizer = this.options.xaxis_localize;
+            var labels = this.options.labels;
             config.options.scales.x.ticks = {
                 callback: function(value, index, ticks) {
-                    return SWAM.Localize.localize(value, localizer);
+                    // if (index == 0) return "";
+                    return SWAM.Localize.localize(labels[index], xlocalizer);
                 }
             }
         }
@@ -93,22 +100,32 @@ SWAM.Views.Chart = SWAM.View.extend({
         });
         if (this.options.yaxis_localize) {
             config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
-            var localizer = this.options.yaxis_localize;
+            var ylocalizer = this.options.yaxis_localize;
             config.options.scales.y.ticks = {
                 callback: function(value, index, ticks) {
-                    return SWAM.Localize.localize(value, localizer);
+                    return SWAM.Localize.localize(value, ylocalizer);
                 }
             }
         }
         if (this.options.xaxis_localize) {
-            config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
-            var localizer = this.options.xaxis_localize;
+            if (!config.options.scales) {
+                config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
+            } else {
+                config.options.scales.x = {beginAtZero: true};
+            }
+            
+            var self = this;
             config.options.scales.x.ticks = {
                 callback: function(value, index, ticks) {
-                    return SWAM.Localize.localize(value, localizer);
+                    // if (index == 0) return "";
+                    return SWAM.Localize.localize(self.options.labels[index], self.options.xaxis_localize);
                 }
             }
         }
+    },
+
+    updateConfig: function() {
+        this.chart.update();
     },
 
     on_init_pie: function(config) {

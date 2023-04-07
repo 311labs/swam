@@ -1,5 +1,6 @@
 PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     template: "portal_ext.views.metrics.chart",
+    classes: "position-relative",
 
     defaults: {
         title: "Metrics Chart",
@@ -8,14 +9,19 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         group: null,
         chart_type: "line",
         granularity: "daily",
-        keys: null
+        keys: null,
+        url: null,
+        duration: null,
+        size: 8
     },
 
     on_init: function(opts) {
-        if (this.options.source == "db") {
-            this.options.url = "/rpc/metrics/db/metrics"
-        } else {
-            this.options.url = "/rpc/metrics/metrics"
+        if (!this.options.url) {
+            if (this.options.source == "db") {
+                this.options.url = "/rpc/metrics/db/metrics"
+            } else {
+                this.options.url = "/rpc/metrics/metrics"
+            }
         }
 
         this.addChild("metrics_chart", new SWAM.Views.Chart({
@@ -48,6 +54,13 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             params.category = this.options.category
         } else if (this.options.slugs) {
             params.slugs = this.options.slugs;
+        } else if (this.options.ids) {
+            params.ids = this.options.ids;
+            if (this.options.duration) {
+                params.duration = this.options.duration;
+                params.period = parseInt(this.options.duration / this.options.size);
+                params.period = (Math.ceil(params.period / 60)) * 60;
+            }
         }
 
         if (this.options.group) {
@@ -62,6 +75,12 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 this.on_metrics(resp.data);
             }
         }.bind(this));
+    },
+
+    update: function() {
+        if (this.options.yaxis_localize) this.getChild("metrics_chart").options.yaxis_localize = this.options.yaxis_localize;
+        if (this.options.xaxis_localize) this.getChild("metrics_chart").options.xaxis_localize = this.options.xaxis_localize;
+        // this.getChild("metrics_chart").updateConfig();
     },
 
     refresh: function() {
@@ -87,7 +106,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }
         this.options.labels = data.periods;
         this.options.period_beg = data.periods[0];
-        this.options.period_end = data.periods[7];
+        this.options.period_end = data.periods[data.periods.length-1];
         this.children.metrics_chart.clearData();
         this.children.metrics_chart.setLabels(this.options.labels);
         var colors = [];
@@ -103,10 +122,24 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
         if (this.options.source == "db") {
             this.on_db_metrics(data, colors);
+        } else if (this.options.source == "aws") {
+            this.on_aws_metrics(data, colors);
         } else {
             this.on_redis_metrics(data, colors);
         }
         this.trigger("metrics", data); // allow others to use data via event
+    },
+
+    on_aws_metrics: function(data, colors) {
+        _.each(data.data, function(data, key) {
+            let color = colors.pop();
+
+            this.children.metrics_chart.addDataSet(
+                key, data, 
+                {backgroundColor: color});
+        }.bind(this));
+
+        this.renderChildren();
     },
 
     on_redis_metrics: function(data, colors) {
@@ -142,6 +175,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }.bind(this));
 
         this.renderChildren();
+    },
+
+    on_action_chart_refresh: function(evt, id) {
+        this.refresh();
     },
 
     on_pre_render: function() {

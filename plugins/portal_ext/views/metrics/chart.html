@@ -3,6 +3,9 @@
         <div class="row">
             <div class="col h4">{{{options.title}}}</div> 
             <div class="col-auto text-end small">{{options.period_beg}} - {{options.period_end}}</div>
+            {{{#options.show_refresh}}}
+            <div class="col-auto small"><button class="btn btn-light btn-sm" data-action="chart_refresh">{{{ICON('arrow-repeat')}}}</button></div>
+            {{{/options.show_refresh}}}
         </div>
     </div>
     <div class="card-body">
