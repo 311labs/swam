@@ -23,6 +23,7 @@ SWAM.View.TableTOC = SWAM.View.extend(SWAM.Ext.BS).extend({
                     {
                         type: "dropdown",
                         icon: "bi bi-download",
+                        classes: "btn btn-secondary swam-toc-hide",
                         items: [
                             {
                                 icon: "bi bi-filetype-csv",

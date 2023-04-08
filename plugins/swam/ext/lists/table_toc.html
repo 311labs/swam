@@ -3,7 +3,16 @@
 	<div id="toc_header" class="swam-toc-header">
 		<div class="row">
 			<div class="col">
-				<div class="swam-toc-title">{{options.title}}</div>
+				<div class="row">
+					<div class="col">
+							<div class="swam-toc-title">{{options.title}}</div>
+					</div>
+					{{#options.filter_bar_filters|bool}}
+					<div class="col-auto mt-1" id="filter_bar">
+					</div>
+					{{/options.filter_bar_filters|bool}}
+				</div>
+
 			</div>
 			<div class="col-auto mt-1" id="action_bar">
 
