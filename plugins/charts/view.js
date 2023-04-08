@@ -106,6 +106,14 @@ SWAM.Views.Chart = SWAM.View.extend({
                     return SWAM.Localize.localize(value, ylocalizer);
                 }
             }
+
+            if (!config.options.plugins) config.options.plugins = {};
+            if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
+            config.options.plugins.tooltip.callbacks = {
+                label: function(context) {
+                    return SWAM.Localize.localize(context.parsed.y, ylocalizer);
+                }
+            };
         }
         if (this.options.xaxis_localize) {
             if (!config.options.scales) {
