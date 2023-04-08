@@ -19,7 +19,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 			this.addChild(
 				"nav_menu",
 				 new SWAM.Views.Nav({
-				 	classes: "navbar-nav me-auto",
+				 	classes: "navbar-expand navbar-nav me-auto",
 				 	replaces_el:true, 
 				 	items:this.options.nav_menu}));
 		}
@@ -29,7 +29,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 			this.addChild(
 				"right_nav",
 				new SWAM.Views.Nav({
-					classes: "navbar-nav",
+					classes: "navbar-expand navbar-nav",
 					replaces_el:true, 
 					items:this.options.right_nav})
 			);

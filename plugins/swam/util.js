@@ -293,6 +293,34 @@ window.getNestedValue = function(obj, key, default_valued) {
     return ret;
 };
 
+window.deepExtend = function(obj) {
+  var parentRE = /#{\s*?_\s*?}/,
+      slice = Array.prototype.slice;
+
+  _.each(slice.call(arguments, 1), function(source) {
+    for (var prop in source) {
+      if (_.isUndefined(obj[prop])) {
+        obj[prop] = source[prop];
+      } else if (_.isObject(obj[prop]) && _.isObject(source[prop])) {
+        obj[prop] = _.deepExtend(obj[prop], source[prop]);
+      } else if (parentRE.test(source[prop])) {
+        if (_.isObject(obj[prop])) {
+          obj[prop] = obj[prop] || {};
+          obj[prop][(source[prop].match(/^#{\s*?_?\s*?}(.*)#{\s*?_?\s*?}$/)[1])] = source[prop].replace(parentRE, obj[prop][(source[prop].match(/^#{\s*?_?\s*?}(.*)#{\s*?_?\s*?}$/)[1])]);
+        } else {
+          obj[prop] = obj[prop] || source[prop].replace(parentRE, obj[prop]);
+        }
+      } else {
+        obj[prop] = source[prop];
+      }
+    }
+  });
+  return obj;
+}
+
+if (window._) window._.deepExtend = window.deepExtend;
+
+
 window.__TRUE_VALUES__ = [true, 1, "true", "yes", "True", "1", "Y", "y"];
 
 window.testTrue = function(value) {

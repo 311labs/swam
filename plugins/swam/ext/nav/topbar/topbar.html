@@ -1,4 +1,4 @@
-<nav class="navbar mt-1 {{options.navbar_classes}}">
+<nav class="navbar navbar-expand mt-1 {{options.navbar_classes}}">
   <div class="{{options.container_class}}">
     <div>
       {{#options.has_sidebar}}
@@ -19,12 +19,10 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     {{/options.has_toggle}}
-    <div id="sitenav_bar">
-      <ul id="nav_menu" class="navbar-nav me-auto mb-2 mb-md-0">
+      <ul id="nav_menu">
 
       </ul>
-      <div id="right_nav"></div>
-    </div>
+      <div class="navbar-nav" id="right_nav"></div>
   </div>
 </nav>
 
