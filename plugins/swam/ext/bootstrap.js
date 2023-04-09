@@ -1,9 +1,11 @@
 _.extend(TOAST_STATUS, {success:1, danger:2, warning:3, info:4});
 
 
-SWAM.toast = function(title, message, status, timeout) {
+SWAM.toast = function(title, message, status, timeout, close_on_click) {
 	timeout = timeout || 2000;
-	Toast.create({title:title, message:message, status: TOAST_STATUS[status], timeout:timeout})
+	setTimeout(function(){
+		Toast.create({title:title, message:message, status: TOAST_STATUS[status], timeout:timeout, close_on_click:close_on_click==true})
+	}, 100);
 }
 
 SWAM.Ext.BS = {

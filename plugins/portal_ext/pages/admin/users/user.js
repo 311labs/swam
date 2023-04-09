@@ -75,7 +75,13 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
 
         this.tabs.tab_views.permissions.on("input:change", this.on_perm_change, this);
 
-        this.tabs.addTab("Logs", "logs", new PORTAL.Views.Logs());
+        this.tabs.addTab("Logs", "logs", new PORTAL.Views.Logs({
+            component: "account.Member",
+            param_field: null
+        }));
+        
+        this.tabs.addTab("Acitivity", "activity", new PORTAL.Views.Logs());
+
 
         this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
 

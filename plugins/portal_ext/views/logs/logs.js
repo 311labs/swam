@@ -112,6 +112,16 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
         ]
     },
 
+    on_init: function() {
+        // this.options.view = new PORTAL.Views.Device();
+        if (this.options.component && this.options.filters) {
+            let filter = _.findWhere(this.options.filters, {name:"component"});
+            if (filter) this.options.filters.remove(filter);
+        }
+        SWAM.Views.AdvancedTable.prototype.on_init.call(this);
+    },
+
+
     on_item_clicked: function(item) {
         // var opts = {
         //     title: SWAM.renderString("Audit Log - {{when|datetime_tz}} - {{request_path}}", item.model),

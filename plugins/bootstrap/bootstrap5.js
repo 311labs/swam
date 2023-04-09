@@ -202,8 +202,13 @@ class Toast {
      */
     static create(toastOptions) {
         let toastEl = TOAST_TEMPLATE.cloneNode(true);
-        let toastTitle = toastEl.querySelector(".toast-title");
-        toastTitle.innerText = toastOptions.title;
+        if (!toastOptions.title) {
+          let header = toastEl.querySelector(".toast-header");
+          header.classList.add("d-none");
+        } else {
+          let toastTitle = toastEl.querySelector(".toast-title");
+          toastTitle.innerText = toastOptions.title;
+        }
         let toastBody = toastEl.querySelector(".toast-body");
 
         if (toastOptions.close_on_click) {

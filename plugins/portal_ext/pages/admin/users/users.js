@@ -38,7 +38,7 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
 
     on_item_clicked: function(item) {
         this.view.setModel(item.model);
-        SWAM.Dialog.showView(this.view, {size:"md", vsize:"lg", can_dismiss:true, scrollable:true});
+        SWAM.Dialog.showView(this.view, {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true});
     },
 
 });
