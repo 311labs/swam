@@ -5,3 +5,4 @@ pages/**/*.js
 settings/**/*.js
 views/**/*.js
 app.js
+

@@ -118,11 +118,6 @@ PORTAL.Menus.Admin = [
 				icon: "pc-horizontal",
 				page: "admin_cloudwatch"
 			},
-			{
-				label:"Databases",
-				icon: "database-fill",
-				page: "cw_rds"
-			},
 		]
 	},
 	{
@@ -130,11 +125,11 @@ PORTAL.Menus.Admin = [
 		label:"Metrics",
 		page: "admin_metrics"
 	},
-	{
-		icon: "wrench-adjustable-circle-fill",
-		label:"Global",
-		page: "admin_global"
-	},
+	// {
+	// 	icon: "wrench-adjustable-circle-fill",
+	// 	label:"Global",
+	// 	page: "admin_global"
+	// },
 	{
 		icon: "file-earmark-image",
 		label:"Media",

@@ -58,13 +58,13 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	on_logged_in: function() {
 		this.me.fetchDebounced(this.on_logged_in_ready.bind(this));
+	},
+
+	on_logged_in_ready: function() {
 		if (!this.options.disable_ws) {
 			this.ws.connect();
 		}
 		
-	},
-
-	on_logged_in_ready: function() {
 		// check if there is a group is the url params?
 		// check if we have an active group already stored
 		var username = this.me.get("username");
@@ -203,6 +203,17 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}.bind(this));
 	},
 
+	refreshIncidentBadge: function() {
+		SWAM.Rest.GET(
+			"/rpc/incident/incident",
+			{format:"summary", state:0},
+			function(data, status){
+				if (data.data && data.data.count) {
+					app.getChild("title-bar").setBadge("incidents", data.data.count);
+				}
+			});
+	},
+
 	on_sync: function(evt) {
 		if (!app.me) return;
 		if (app.isActivePage(["login", "register"])) return;
@@ -255,6 +266,11 @@ PORTAL.PortalApp = SWAM.App.extend({
 			if (msg.message.name == "message") {
 				SWAM.toast(SWAM.renderString("Message from {{message.from.display_name}}", msg), msg.message.message, null, 20000);
 			}
+		} else {
+			let fname = `on_ws_channel_${msg.channel}`;
+			if (_.isFunction(this[fname])) {
+				this[fname](msg);
+			}
 		}
 	},
 
@@ -263,6 +279,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 		if (msg.channel == "user") {
 			// this means we have authenticated
 			this.on_ws_authenticated(msg);
+		} else if (msg.channel == "incident") {
+			this.refreshIncidentBadge();
 		}
 	},
 
@@ -272,6 +290,10 @@ PORTAL.PortalApp = SWAM.App.extend({
 		if (app.group) {
 			this.ws.subscribe("group", app.group.id);
 		}
+
+		if (app.me.hasSetting("notify.incident_alerts")) {
+			this.ws.subscribe("incident", "all");
+		}
 	},
 
 	on_ws_group_event: function(msg) {
@@ -279,5 +301,9 @@ PORTAL.PortalApp = SWAM.App.extend({
 		evt = msg.message;
 		this.trigger("group_event", evt);
 	},
+
+	on_ws_channel_incident: function(msg) {
+		SWAM.toast(`New Incident`, SWAM.renderTemplate("portal_ext.views.incident.toast", {message:msg.message}), "danger", 120000);
+	}
 
 });

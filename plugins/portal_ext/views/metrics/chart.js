@@ -4,6 +4,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     defaults: {
         title: "Metrics Chart",
+        title_classes: "",
         category: null,
         slugs: null,
         group: null,

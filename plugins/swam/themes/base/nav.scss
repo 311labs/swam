@@ -85,6 +85,17 @@ div#panel-left {
 	}
 }
 
+#title-bar {
+	ul.navbar-nav {
+		li.nav-item {
+			i {
+				padding-right: 0.4rem;
+				font-size: 1.1rem;
+			}
+		}
+	}
+}
+
 
 div.sidebar-container {
     .nav-link-toggle {

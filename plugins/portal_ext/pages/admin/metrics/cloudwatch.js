@@ -116,6 +116,59 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(50, 255, 100, 0.9)",
                 ]
             }));
+
+        this.addChild("redis_cpu",
+            new PORTAL.Views.MetricsChart({
+                url: "/rpc/metrics/aws/redis/cpu",
+                title: "Redis CPU",
+                source: "aws",
+                xaxis_localize: "time",
+                show_refresh: true,
+                granularity: null,
+                ids:["all"],
+                colors:[
+                    "rgba(250, 50, 50, 0.9)",
+                    "rgba(50, 20, 255, 0.9)",
+                    "rgba(200, 80, 20, 0.9)",
+                    "rgba(25, 25, 25, 0.9)",
+                    "rgba(50, 255, 100, 0.9)",
+                ]
+            }));
+
+        this.addChild("redis_mem",
+            new PORTAL.Views.MetricsChart({
+                url: "/rpc/metrics/aws/redis/memory",
+                title: "Redis Memory",
+                source: "aws",
+                xaxis_localize: "time",
+                show_refresh: true,
+                granularity: null,
+                ids:["all"],
+                colors:[
+                    "rgba(250, 50, 50, 0.9)",
+                    "rgba(50, 20, 255, 0.9)",
+                    "rgba(200, 80, 20, 0.9)",
+                    "rgba(25, 25, 25, 0.9)",
+                    "rgba(50, 255, 100, 0.9)",
+                ]
+            }));
+        this.addChild("redis_cons",
+            new PORTAL.Views.MetricsChart({
+                url: "/rpc/metrics/aws/redis/cons",
+                title: "Redis Connections",
+                source: "aws",
+                xaxis_localize: "time",
+                show_refresh: true,
+                granularity: null,
+                ids:["all"],
+                colors:[
+                    "rgba(250, 50, 50, 0.9)",
+                    "rgba(50, 20, 255, 0.9)",
+                    "rgba(200, 80, 20, 0.9)",
+                    "rgba(25, 25, 25, 0.9)",
+                    "rgba(50, 255, 100, 0.9)",
+                ]
+            }));
     },
 
     on_input_change: function(evt) {

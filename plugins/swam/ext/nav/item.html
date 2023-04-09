@@ -18,7 +18,14 @@
 
 {{#options.icon}}{{{ICON(options.icon)}}}{{/options.icon}}
 {{options.label}}
+{{#options.badge}}
+  <span class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-danger" id="badge_{{options.id}}">
+    {{options.badge}}
+  </span>
+{{/options.badge}}
 </a>
+
+
 {{#options.has_submenu}}
 <div id="submenu{{_id_}}" class="collapse">
 	<ul id="submenu"></ul>

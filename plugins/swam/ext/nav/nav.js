@@ -50,7 +50,7 @@ SWAM.Views.Nav = SWAM.View.extend({
 
 SWAM.Views.NavItem = SWAM.View.extend({
 	tagName: "li",
-	classes: "nav-item",
+	classes: "nav-item position-relative",
 	template: "swam.ext.nav.item",
 
 	defaults: {
@@ -70,6 +70,8 @@ SWAM.Views.NavItem = SWAM.View.extend({
 			if (this.options.is_dark) classes += " dropdown-menu-dark";
 			this.addClass("dropdown");
 			this.addChild("dropmenu", new SWAM.Views.Nav({items:this.options.items, type:"dropdown_menu", classes:classes, replaces_el:true}));
+		} else if (this.options.type == "view") {
+			this.appendChild("view", this.options.view);
 		} else if (this.options.items) {
 			this.options.has_submenu = true;
 			this.addChild("submenu", new SWAM.Views.Nav({items:this.options.items, add_classes:"nav-submenu", replaces_el:true}));

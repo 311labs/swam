@@ -51,6 +51,18 @@ SWAM.Models.User = SWAM.Model.extend({
         return false;
     },
 
+    hasSetting: function(setting) {
+        if (_.isArray(setting)) {
+            for (var i = 0; i < setting.length; i++) {
+                if (this.hasSetting(setting[i])) return true;
+            }
+            return false;
+        }
+        var val = this.get("metadata." + setting);
+        if (val == undefined) val = this.get(setting);
+        return ["True", "true", "1", 1, true].indexOf(val) >= 0;
+    },
+
     sendEvent: function(name, message, extra, callback, opts) {
         var payload = {message:message, extra:extra, name:name, action:"send_event", member:this.id};
         SWAM.Rest.POST("/rpc/account/member/action", payload, function(response, status) {
@@ -185,6 +197,13 @@ SWAM.Models.User = SWAM.Model.extend({
             name:"metadata.notify.unknown_incidents",
             label:"Unknown Incidents",
             help: "Get notified of unknown incidents.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.notify.incident_alerts",
+            label:"Incident Alerts",
+            help: "Will notify you in the portal for any incidents.",
             type:"toggle",
             columns: 6
         }

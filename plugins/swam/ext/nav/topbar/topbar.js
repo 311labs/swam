@@ -19,20 +19,35 @@ SWAM.Views.TopBar = SWAM.View.extend({
 			this.addChild(
 				"nav_menu",
 				 new SWAM.Views.Nav({
-				 	classes: "navbar-expand navbar-nav me-auto",
+				 	classes: "navbar-nav me-auto",
 				 	replaces_el:true, 
 				 	items:this.options.nav_menu}));
 		}
+
 		if (this.options.show_usermenu) {
-			this.addChild("right_nav", new SWAM.View({classes: "dropdown", template:"swam.ext.nav.topbar.usermenu"}));
-		} else if (_.isArray(this.options.right_nav)) {
+			this.user_dropdown = new SWAM.View({classes: "dropdown ms-3 mt-1", template:"swam.ext.nav.topbar.usermenu"});
+			if (!this.options.right_nav) this.options.right_nav = [];
+			this.options.right_nav.push({
+				type: "view",
+				view: this.user_dropdown
+			})
+		}
+		if (_.isArray(this.options.right_nav)) {
 			this.addChild(
 				"right_nav",
 				new SWAM.Views.Nav({
-					classes: "navbar-expand navbar-nav",
+					classes: "navbar-nav",
 					replaces_el:true, 
 					items:this.options.right_nav})
 			);
+		}
+	},
+
+	setBadge: function(id, value) {
+		let item = _.findWhere(this.options.right_nav, {"id":id});
+		if (item) {
+			item.badge = value;
+			this.render();
 		}
 	},
 
