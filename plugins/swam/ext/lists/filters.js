@@ -4,6 +4,14 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_init: function() {
         this.appendChild("fb_actions", new SWAM.Form.View({fields:this.options.filter_bar, add_classes: "filter-action-bar"}));
+        this.getChild("fb_actions").on("input:change", function(evt){
+            if (evt.start && evt.end) {
+                this.on_daterange_picker(evt);
+            } else {
+               this.on_input_change(evt.name, evt.value, evt); 
+            }
+            
+        }.bind(this));
         this.appendChild("fb_filters", new SWAM.View({classes:"swam-list-filter-items d-flex flex-row-reverse"}));
     },
 
