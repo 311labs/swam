@@ -122,6 +122,7 @@ SWAM.PubSubClient = SWAM.Object.extend({
     connect: function() {
         if (!this.ws_url) this.ws_url = this.normalizeURL(this.options.url);
         try {
+            this.close();
             this.log("WS Connecting to " + this.ws_url + " ...");
             this.timer = null;
             this.ws = new WebSocket(this.ws_url);
