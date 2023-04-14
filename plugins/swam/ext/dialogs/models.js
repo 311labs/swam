@@ -11,6 +11,17 @@ SWAM.Dialog.showModel = function(model, fields, options) {
     return dlg.show();
 };
 
+SWAM.Dialog.showModelView = function(model, fields, options) {
+
+    options = _.extend({
+        view: new SWAM.Views.ModelView({fields:fields, model:model}),
+        scrollable: true
+    }, options);
+
+    var dlg = new this(options);
+    return dlg.show();
+};
+
 
 SWAM.Dialog.editModel = function(model, opts) {
 	opts = opts || {};

@@ -44,7 +44,7 @@ SWAM.Views.ModelView = SWAM.View.extend({
         if (!fields) {
             _.each(model.attributes, function(value, key){
                 var $fieldbox = $("<div />")
-                    .addClass("col-md-6")
+                    .addClass("col-6")
                     .appendTo($container);
                 var $wrapper = $("<div data-label='" + key + "' />").addClass("swam-field").appendTo($fieldbox);
                 $wrapper.html(value);
@@ -58,7 +58,7 @@ SWAM.Views.ModelView = SWAM.View.extend({
                 if (!obj.field) obj.field = obj.label;
                 if (!obj.columns) obj.columns = 6;
                 var $fieldbox = $("<div />")
-                    .addClass("col-md-" + obj.columns)
+                    .addClass("col-" + obj.columns)
                     .appendTo($container);
                 var $wrapper = $("<div data-label='" + obj.label + "' />").addClass("swam-field").appendTo($fieldbox);
                 if (model) {
