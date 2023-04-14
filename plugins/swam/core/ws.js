@@ -127,12 +127,25 @@ SWAM.PubSubClient = SWAM.Object.extend({
             this.timer = null;
             this.ws = new WebSocket(this.ws_url);
             this.keep_open = true;
-            this.ws.onopen = this.on_open.bind(this);
-            this.ws.onmessage = this.on_message.bind(this);
-            this.ws.onerror = this.on_error.bind(this);
-            this.ws.onclose = this.on_close.bind(this);
+            this._bindWS();
         } catch (err) {
             this.error(err);
+        }
+    },
+
+    _bindWS: function() {
+        this.ws.onopen = this.on_open.bind(this);
+        this.ws.onmessage = this.on_message.bind(this);
+        this.ws.onerror = this.on_error.bind(this);
+        this.ws.onclose = this.on_close.bind(this);
+    },
+
+    _unbindWS: function() {
+        if (this.ws) {
+            this.ws.onopen = function(){};
+            this.ws.onmessage = this.ws.onopen;
+            this.ws.onerror = this.ws.onopen;
+            this.ws.onclose = this.ws.onopen;
         }
     },
 
@@ -140,6 +153,7 @@ SWAM.PubSubClient = SWAM.Object.extend({
         if (this.ws) {
             this.keep_open = false;
             try {
+                this._unbindWS();
                 this.ws.close();
             } catch (err) {
                 this.error(err);
