@@ -160,6 +160,18 @@ SWAM.Localize = {
         return `<span id="${vid}">${value}</span><button type="button" class="btn btn-link btn-clipboard" data-clipboard-target="#${vid}" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="Copy to clipboard" aria-label="Copy to clipboard"><i class="bi bi-clipboard"></i></button>`;
     },
 
+    'tooltip': function(value, attr, fmt) {
+        let tip = "This is toolip";
+        let pos = "right";
+        if (_.isArray(fmt)) {
+            tip = fmt[0];
+            pos = fmt[1];
+        } else {
+            tip = fmt || "not set";
+        }
+        return `<span data-bs-toggle="tooltip" data-bs-placement="${pos}" title="" data-bs-original-title="Copy to clipboard" aria-label="Copy to clipboard">${value}</span>`;
+    },
+
     'yesno_color': function(value, attr, fmt) {
         var v = this.bool(value);
         var color = 'text-success';
