@@ -267,6 +267,8 @@ class SwamFile():
                     continue
                 if line.startswith("/"):
                     rpath = line[1:]
+                elif line.startswith("./"):
+                    rpath = os.path.join(self.root, line[2:])
                 else:
                     rpath = os.path.join(self.root, line)
                 self._addPath(rpath, f)
@@ -286,12 +288,20 @@ class SwamFile():
             return
           
         if "*" in path:
+            if path.startswith("*"):
+                pp(Colors.RED, f"\nINVALID INCLUDE: {path}")
+                pp(Colors.RED, f"'*' prefix not allowed\nlocated in file: {self.path}\n")
+                return
             for spath in glob.glob(path, recursive=True):
                 self._addPath(spath, f)
         elif os.path.exists(path):
             self.children.append(path)
         else:
-            pp(Colors.RED, "not found: {}".format(path))
+            if compile_info.verbose:
+                pp(Colors.HBLUE, self.path)
+                pp(Colors.RED, f"\tnot found: {path}")
+            else:
+                pp(Colors.RED, f"not found: {path}")
 
 
 class JSFile(SwamFile):
