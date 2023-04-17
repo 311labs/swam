@@ -218,6 +218,9 @@ class SwamFile():
     def readAll(self):
         if self.force or self.hasChanged():
             self.compile()
+        if os.path.isdir(self.output_path):
+            pp(Colors.RED, f"CRITICAL ERROR: Trying to read file but file is a directory!\n\tsource:\t{self.path}\n\toutput:\t{self.output_path}")
+            sys.exit(1)
         with open(self.output_path, 'r') as f:
             return f.read()
 
