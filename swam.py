@@ -444,8 +444,12 @@ class HTMLMinifier(HTMLParser):
 class SCSSFile(SwamFile):
     def mergeFile(self, path):
         sf = SCSSFile(path, self.static_folder, force=self.force)
-        self.raw_scss.write("/** {} */\n".format(path))
+        if compile_info.verbose:
+            print(f"\tmerging: {path}")
         lines = sf.readAll().split("\n")
+        ll = len(lines)
+        self.raw_scss.write(f"/** {path} {ll} */\n")
+        
         for line in lines:
             if not line.strip().startswith("//"):
                 self.raw_scss.write(line)
@@ -456,8 +460,25 @@ class SCSSFile(SwamFile):
         self.output = open(self.output_path, "w")
 
     def on_close(self):
+        if not self.info.is_merge_file:
+            self.on_close_scss()
+        elif self.output_path.endswith(".scss"):
+            self.on_close_scss()
+        else:
+            self.on_close_css()
+
+    def on_close_scss(self):
+        raw = self.raw_scss.getvalue()
+        self.output.write(raw)
+        self.output.close()
+
+    def on_close_css(self):
+        raw = self.raw_scss.getvalue()
+        if compile_info.verbose:
+            print(f"compiling: {self.path}")
+            with open(self.output_path + ".debug.scss", "w") as f:
+                f.write(raw)
         try:
-            raw = self.raw_scss.getvalue()
             if len(raw) > 8:
                 if self.minify_flag:
                     self.output.write(rcssmin.cssmin(sass.compile(string=raw)))
@@ -595,12 +616,12 @@ def buildApp(app_path, config, opts):
     css_includes = []
 
     pp(Colors.PINK, app_path)
-    if config.js_files:
-        if buildIncludes(JSFile, app_path, config.js_files, js_includes, config.static_paths, opts):
-            is_dirty = True
-
     if config.mustache_files:
         if buildIncludes(MustacheFile, app_path, config.mustache_files, js_includes, config.static_paths, opts):
+            is_dirty = True
+
+    if config.js_files:
+        if buildIncludes(JSFile, app_path, config.js_files, js_includes, config.static_paths, opts):
             is_dirty = True
 
     if config.css_files:
