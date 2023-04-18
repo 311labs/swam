@@ -66,6 +66,7 @@ def pp(color, msg):
     sys.stdout.write("{}{}{}\n".format(color, msg, Colors.OFF))
     sys.stdout.flush()
 
+
 def readVersion():
     with open("pyproject.toml", "r") as f:
         for line in f.readlines():
