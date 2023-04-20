@@ -17,22 +17,22 @@ import threading
 import shutil
 import configparser
 
-config = objict.fromFile("swam.conf")
+CONFIG = objict.fromFile("swam.conf")
 
 parser = OptionParser()
-parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=config.get("verbose", False))
+parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=CONFIG.get("verbose", False))
 parser.add_option("-a", "--auto_version", action="store_true", dest="auto_version", default=False, help="auto update app versions on change")
 parser.add_option("-f", "--force", action="store_true", dest="force", default=False, help="force the revision")
 parser.add_option("-m", "--minify", action="store_true", dest="minify", default=False, help="minify the revision")
 parser.add_option("-w", "--watch", action="store_true", dest="watch", default=False, help="watch for changes and auto refresh")
 parser.add_option("-s", "--serve", action="store_true", dest="serve", default=False, help="serve for changes and auto refresh")
-parser.add_option("-o", "--output", type="str", dest="output", default=config.get("output_path", "output"), help="static output path")
-parser.add_option("-p", "--port", type="int", dest="port", default=config.get("port", 8081), help="http port")
+parser.add_option("-o", "--output", type="str", dest="output", default=CONFIG.get("output_path", "output"), help="static output path")
+parser.add_option("-p", "--port", type="int", dest="port", default=CONFIG.get("port", 8081), help="http port")
 parser.add_option("-b", "--bump_rev", action="store_true", dest="bump_rev", default=False, help="bump version revision")
 parser.add_option("--bump_minor", action="store_true", dest="bump_minor", default=False, help="bump version minor")
 parser.add_option("--bump_major", action="store_true", dest="bump_major", default=False, help="bump version major")
 parser.add_option("--clear", action="store_true", dest="clear", default=False, help="clear all cache")
-parser.add_option("--app_path", type="str", dest="app_path", default=config.get("app_path", "apps"), help="app path to compile from")
+parser.add_option("--app_path", type="str", dest="app_path", default=CONFIG.get("app_path", "apps"), help="app path to compile from")
 
 version = "0.1.7"
 compile_info = nobjict(is_compiling=False, verbose=False)
@@ -340,15 +340,30 @@ class MustacheFile(SwamFile):
                     if key in self.data:
                         self.data = self.data[key]
         self.data["version"] = version
+        print(CONFIG)
+        if CONFIG.allow_template_merge:
+            print("ALLOW TEMPLATE MERGE!!!!")
+            print(self.output_path)
+            self.write_template_merged()
+        else:
+            self.write_template()
+        self.output.close()
+
+    def write_template(self):
         for key in self.data:
             self.output.write(F"window.template_cache['{key}'] = ")
             self.output.write(json.dumps(self.data[key], indent=2))
             self.output.write(";\n")
-        self.output.close()
+
+    def write_template_merged(self):
+        for key in self.data:
+            self.output.write(F"window.template_cache['{key}'] = Object.assign(window.template_cache['{key}'] || {{}}, ")
+            self.output.write(json.dumps(self.data[key], indent=2))
+            self.output.write(");\n")
 
     def minify(self, value):
         # htmlmin is breaking mustache inside attributes
-        if config.disable_html_minify:
+        if CONFIG.disable_html_minify:
             return value
         tmin = HTMLMinifier()
         return tmin.minify(value)
@@ -611,28 +626,28 @@ def buildIncludes(FileClass, app_path, includes, output, static_paths, opts):
     return is_dirty
 
 
-def buildApp(app_path, config, opts):
+def buildApp(app_path, app_config, opts):
     is_dirty = False
     js_includes = []
     css_includes = []
 
     pp(Colors.PINK, app_path)
-    if config.mustache_files:
-        if buildIncludes(MustacheFile, app_path, config.mustache_files, js_includes, config.static_paths, opts):
+    if app_config.mustache_files:
+        if buildIncludes(MustacheFile, app_path, app_config.mustache_files, js_includes, app_config.static_paths, opts):
             is_dirty = True
 
-    if config.js_files:
-        if buildIncludes(JSFile, app_path, config.js_files, js_includes, config.static_paths, opts):
+    if app_config.js_files:
+        if buildIncludes(JSFile, app_path, app_config.js_files, js_includes, app_config.static_paths, opts):
             is_dirty = True
 
-    if config.css_files:
-        if buildIncludes(SCSSFile, app_path, config.css_files, css_includes, config.static_paths, opts):
+    if app_config.css_files:
+        if buildIncludes(SCSSFile, app_path, app_config.css_files, css_includes, app_config.static_paths, opts):
             is_dirty = True
 
-    if config.static_files:
-        copyStatic(app_path, config.static_files, opts)
+    if app_config.static_files:
+        copyStatic(app_path, app_config.static_files, opts)
 
-    fpath = config.get("index_file", "/plugins/swam/templates/basic.html")
+    fpath = app_config.get("index_file", "/plugins/swam/templates/basic.html")
     if not fpath.startswith("/"):
         fpath = os.path.join(app_path, fpath)
     else:
@@ -642,22 +657,22 @@ def buildApp(app_path, config, opts):
     index = IndexFile(fpath, opts.output, force=True, output_path=output_path)
     if is_dirty or index.hasChanged():
         # load to check for any changes
-        config = objict.fromFile(os.path.join(app_path, "app.json"))
+        app_config = objict.fromFile(os.path.join(app_path, "app.json"))
         if os.name == "nt":
             app_path = app_path.replace("\\", "/")
-        config.template_root = "{}".format(app_path.replace("/", "."))
+        app_config.template_root = "{}".format(app_path.replace("/", "."))
         # bump local version
-        if config.loader_color is None:
-            config.loader_color = "#598A77"
-        if config.version is None:
-            config.version = "1.0.0"
+        if app_config.loader_color is None:
+            app_config.loader_color = "#598A77"
+        if app_config.version is None:
+            app_config.version = "1.0.0"
         if opts.auto_version:
-            major, minor, rev = config.version.split('.')
+            major, minor, rev = app_config.version.split('.')
             rev = int(rev) + 1
-            config.version = "{}.{}.{}".format(major, minor, rev)
-            config.save(os.path.join(app_path, "app.json"))
-        config.root = app_path
-        index.compile(js_includes=js_includes, css_includes=css_includes, app_root=app_path[len("apps"):], **config)
+            app_config.version = "{}.{}.{}".format(major, minor, rev)
+            app_config.save(os.path.join(app_path, "app.json"))
+        app_config.root = app_path
+        index.compile(js_includes=js_includes, css_includes=css_includes, app_root=app_path[len("apps"):], **app_config)
 
 
 APPS = objict()
@@ -731,10 +746,10 @@ def loadAppsFromPath(opts, app_path, parent_folder=None):
                 else:
                     loadAppsFromPath(opts, path, name)
                     continue
-            config = APPS.get(name, None)
-            if config and not config.disable:
+            app_config = APPS.get(name, None)
+            if app_config and not app_config.disable:
                 app_started_at = time.time()
-                buildApp(path, config, opts)
+                buildApp(path, app_config, opts)
                 print("\t{} compile time: {}".format(name, time.time() - app_started_at))
 
 
@@ -899,7 +914,7 @@ def main(opts, args):
     print(F"\tOutput: {opts.output}")
     compile_info.verbose = opts.verbose
     opts.output = os.path.abspath(opts.output)
-    opts.plugins = config.get("plugins", ["plugins"])
+    opts.plugins = CONFIG.get("plugins", ["plugins"])
     print(F"\tAbsolute Output: {opts.output}")
     if not opts.force and (opts.bump_rev or opts.bump_major or opts.bump_minor):
         return bumpVersion(opts.bump_major, opts.bump_minor, opts.bump_rev)
