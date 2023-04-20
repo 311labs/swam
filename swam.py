@@ -340,9 +340,7 @@ class MustacheFile(SwamFile):
                     if key in self.data:
                         self.data = self.data[key]
         self.data["version"] = version
-        print(CONFIG)
         if CONFIG.allow_template_merge:
-            print("ALLOW TEMPLATE MERGE!!!!")
             print(self.output_path)
             self.write_template_merged()
         else:
