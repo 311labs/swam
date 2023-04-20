@@ -31,8 +31,7 @@ PORTAL.Pages.TokenLogin = SWAM.Page.extend({
         var data = SWAM.Form.getData(this.$el.find("form"));
         if (data.validToken) {
             app.showBusy({icon:"lock"});
-            //data.username = this.options.username;
-            data.invite_token = data.validToken;
+            data.username = this.options.username;
             SWAM.Rest.POST("/rpc/account/login", data, function(data, status){
                 app.hideBusy();
                 if (data.error) {
