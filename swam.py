@@ -99,6 +99,18 @@ def bumpVersion(bump_major=False, bump_minor=False, bump_rev=True):
 version = readVersion()
 
 
+def getGitBranch():
+    branch_file = os.path.join(".git", "HEAD")
+    if os.path.exists(branch_file):
+        try:
+            with open(branch_file, "r") as f:
+                line = f.read().strip()
+                return line.split('/')[-1]
+        except Exception:
+            pass
+    return None
+
+
 class FileCache():
     def __init__(self, filename=".swam_cache"):
         self.filename = filename
@@ -575,7 +587,7 @@ class StaticFile(SwamFile):
 
 
 class IndexFile(SwamFile):
-    INDEX_VARS = ["version", "js_includes", "css_includes", "title", "root", "template_root", "app_root", "loader_color", "no_es6_site"]
+    INDEX_VARS = ["version", "branch", "js_includes", "css_includes", "title", "root", "template_root", "app_root", "loader_color", "no_es6_site"]
     JS_INCLUDE_TEMP = """<script type="text/javascript" src="{{path}}?version={{version}}"></script>"""
     CSS_INCLUDE_TEMP = """<link rel="stylesheet" href="{{path}}?version={{version}}">"""
 
@@ -664,6 +676,7 @@ def buildApp(app_path, app_config, opts):
             app_config.loader_color = "#598A77"
         if app_config.version is None:
             app_config.version = "1.0.0"
+        app_config.branch = compile_info.branch
         if opts.auto_version:
             major, minor, rev = app_config.version.split('.')
             rev = int(rev) + 1
@@ -911,6 +924,7 @@ def main(opts, args):
     print("== SWAM COMPILER {} ==".format(version))
     print(F"\tOutput: {opts.output}")
     compile_info.verbose = opts.verbose
+    compile_info.branch = getGitBranch()
     opts.output = os.path.abspath(opts.output)
     opts.plugins = CONFIG.get("plugins", ["plugins"])
     print(F"\tAbsolute Output: {opts.output}")
