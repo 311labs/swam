@@ -351,7 +351,7 @@ class MustacheFile(SwamFile):
                 for key in prefix:
                     if key in self.data:
                         self.data = self.data[key]
-        self.data["version"] = version
+        # self.data["version"] = version
         if CONFIG.allow_template_merge:
             print(self.output_path)
             self.write_template_merged()
@@ -361,12 +361,14 @@ class MustacheFile(SwamFile):
 
     def write_template(self):
         for key in self.data:
+            data = self.data[key]
             self.output.write(F"window.template_cache['{key}'] = ")
-            self.output.write(json.dumps(self.data[key], indent=2))
+            self.output.write(json.dumps(data, indent=2))
             self.output.write(";\n")
 
     def write_template_merged(self):
         for key in self.data:
+            data = self.data[key]
             self.output.write(F"window.template_cache['{key}'] = Object.assign(window.template_cache['{key}'] || {{}}, ")
             self.output.write(json.dumps(self.data[key], indent=2))
             self.output.write(");\n")
