@@ -366,12 +366,24 @@ class MustacheFile(SwamFile):
             self.output.write(json.dumps(data, indent=2))
             self.output.write(";\n")
 
+    def _writeTemplateVar(self, data, tvar, depth=0):
+        if isinstance(data, dict):
+            if depth > CONFIG.allow_template_merge:
+                self.output.write(f'{tvar} =')
+                self.output.write(json.dumps(data, indent=2))
+                self.output.write(";\n")
+                return
+            self.output.write(f"{tvar} = {tvar} || {{}};\n")
+            for key in data:
+                tvar = f"{tvar}.{key}"
+                self._writeTemplateVar(data[key], tvar, depth+1)
+        else:
+            self.output.write(f'{tvar} = "{data}";\n')
+
     def write_template_merged(self):
         for key in self.data:
-            data = self.data[key]
-            self.output.write(F"window.template_cache['{key}'] = Object.assign(window.template_cache['{key}'] || {{}}, ")
-            self.output.write(json.dumps(self.data[key], indent=2))
-            self.output.write(");\n")
+            tvar = F"window.template_cache.{key}"
+            self._writeTemplateVar(self.data[key], tvar, 1)
 
     def minify(self, value):
         # htmlmin is breaking mustache inside attributes
