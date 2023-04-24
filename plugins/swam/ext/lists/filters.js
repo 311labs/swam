@@ -7,6 +7,8 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         this.getChild("fb_actions").on("input:change", function(evt){
             if (evt.start && evt.end) {
                 this.on_daterange_picker(evt);
+            } else if (evt.date) {
+                this.on_datepicker(evt);
             } else {
                this.on_input_change(evt.name, evt.value, evt); 
             }
