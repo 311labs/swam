@@ -39,6 +39,14 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         this.options.list.collection.fetch();
     },
 
+    on_datepicker: function(evt) {
+        this.options.list.collection.params["dr_field"] = evt.name;
+        this.options.list.collection.params["dr_start"] = this.toRangeString(evt.date);
+        this.options.list.collection.params["dr_end"] = this.toRangeString(evt.date);
+        this.options.list.collection.params["dr_offset"] = new Date().getTimezoneOffset();
+        this.options.list.collection.fetch();
+    },
+
     removeParams: function(params) {
         _.each(params, function(p){
             if (this.options.list.collection.params[p] != undefined) {
