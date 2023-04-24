@@ -383,6 +383,13 @@ SWAM.Views.TableBatchPanel = SWAM.View.extend({
         if (!this.actions) {
             this.actions = [];
             _.each(this.options.list.options.batch_actions, function(item){
+                if (item.requires_perm) {
+                    if (!app.me) return;
+                    if (!app.me.hasPerm(item.requires_perm)) return;
+                }
+                if (item.requires_group_setting && app.group) {
+                    if (!app.group.hasSetting(item.requires_group_setting)) return;
+                }
                 var citem = _.clone(item);
                 citem.is_last = false;
                 this.actions.push(citem);
