@@ -19,6 +19,8 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_input_change: function(name, val, evt) {
         evt.stopPropagation();
+        let old_val = this.options.list.collection.params[name];
+        if (old_val == val) return;
         if ((val == null)||(val == "")) {
             delete this.options.list.collection.params[name];
         } else {
