@@ -25,7 +25,7 @@ SWAM.Views.Nav = SWAM.View.extend({
 			menu.link_classes = "dropdown-item";
 		}
 		if (menu.group_kind) {
-			if (!app.group || (app.group.get("kind") != menu.group_kind)) return;
+			if (!app.group || !app.group.isKind(menu.group_kind)) return;
 		}
 		if (menu.group_setting) {
 			if (!app.group || !app.group.checkSetting(menu.group_setting)) return;

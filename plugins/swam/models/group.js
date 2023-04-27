@@ -17,6 +17,17 @@ SWAM.Models.Group = SWAM.Model.extend({
         return _.isTrue(this.get("metadata." + key));
     },
 
+    isKind: function(kind) {
+        if (_.isArray(kind)) {
+            var i=0;
+            for (; i < kind.length; i++) {
+                if (this.isKind(kind[i])) return true;
+            }
+            return false;
+        }
+        return this.get("kind") == kind;
+    },
+
     fetchMembership: function(callback) {
         // this will fetch the membership for the app.me for this group
         if (!this.membership) this.membership = new SWAM.Models.Member();
