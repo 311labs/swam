@@ -308,7 +308,11 @@ class SwamFile():
                 pp(Colors.RED, f"\nINVALID INCLUDE: {path}")
                 pp(Colors.RED, f"'*' prefix not allowed\nlocated in file: {self.path}\n")
                 return
-            for spath in glob.glob(path, recursive=True):
+            files = glob.glob(path, recursive=True)
+            if CONFIG.sort_includes:
+                files = sorted(files)
+
+            for spath in files:
                 self._addPath(spath, f)
         elif os.path.exists(path):
             self.children.append(path)
@@ -374,9 +378,10 @@ class MustacheFile(SwamFile):
                 self.output.write(";\n")
                 return
             self.output.write(f"{tvar} = {tvar} || {{}};\n")
+            lvar = tvar
             for key in data:
-                tvar = f"{tvar}.{key}"
-                self._writeTemplateVar(data[key], tvar, depth+1)
+                lvar = f"{tvar}.{key}"
+                self._writeTemplateVar(data[key], lvar, depth+1)
         else:
             self.output.write(f'{tvar} = "{data}";\n')
 

@@ -155,6 +155,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     loginJWT: function(username, password, callback, opts) {
         var data = {username:username, password:password};
         if (window.app && window.app.app_uuid) data.device_id = app.app_uuid;
+        this.options.auth_method = "jwt";
         SWAM.Rest.POST("/rpc/account/jwt/login", data, function(response, status) {
         	if (response.status) {
         		// credentials get stored in SWAM.Rest
