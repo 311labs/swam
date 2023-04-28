@@ -250,6 +250,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     on_ready: function() {
+        this.options.is_ready = true;
         this.loadRoute();
         if (!this.active_page) {
             let path = this.getPath();

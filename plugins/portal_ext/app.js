@@ -10,7 +10,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	on_started: function() {
 		Toast.setTheme(TOAST_THEME.DARK);
-
+		this.options.is_ready = false;
 		if (!this.options.disable_ws) {
 			this.ws = new SWAM.PubSubClient();
 			this.ws.on("connected", this.on_ws_connected, this);
@@ -92,6 +92,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 				if (this.groups.length) {
 					// set the first one has active
 					this.setGroup(this.groups.getAt(0));
+				} else {
+					if (!this.options.is_ready) this.on_ready();
 				}
 			}.bind(this));
 		} else {
@@ -126,6 +128,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.group = null;
 			this.setProperty("active_group", null);
 			this.trigger("group:change", {group:null});
+			if (!app.options.is_ready) app.on_ready();
 			if (old_group && this.ws) this.ws.unsubscribe("group", old_group.id);
 		} else {
 			if (this.group != group) {
@@ -175,6 +178,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	fetchMS: function() {
 		app.group.fetchMembership(function(){
+			if (!app.options.is_ready) app.on_ready();
 			app.trigger("group:change", {group:app.group});
 		});
 	},
@@ -183,7 +187,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		this.me.fetch(function(model, resp) {
 			if (resp.status) {
 				this.on_logged_in();
-				this.on_ready();
+				// this.on_ready();
 			} else {
 				this.refreshUserToken();
 			}
