@@ -142,6 +142,12 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_init_doughnut: function(config) {
         config.data.labels = this.options.labels;
+        this.chart_config.plugins = [Chart.plugins.centerText];
+
+        if (this.options.centerText) {
+            this.chart_config.options.plugins = this.chart_config.options.plugins || {};
+            this.chart_config.options.plugins.centerText = this.options.centerText;
+        }
     },
 
     on_post_render: function() {
@@ -162,7 +168,8 @@ SWAM.Views.Chart = SWAM.View.extend({
         this.chart = new Chart(this.el, {
             type: this.options.type,
             data: this.chart_config.data,
-            options: this.chart_config.options
+            options: this.chart_config.options,
+            plugins: this.chart_config.plugins
         });
     },
 

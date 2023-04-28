@@ -85,7 +85,7 @@ SWAM.EventSupport = {
         var lhc = _.findWhere(this._event_listeners[event], hc);
         if (lhc != undefined) this._event_listeners[event].remove(lhc);
     },
-    trigger: function(event, data) {
+    trigger: function(event, data, extra) {
         if (!_.isObject(this._event_listeners)) this._event_listeners = {};
         if (!this._event_listeners[event]) return;
         for (var i = 0; i < this._event_listeners[event].length; i++) {
@@ -93,16 +93,16 @@ SWAM.EventSupport = {
                 var cb = this._event_listeners[event][i];
                 var context = this;
                 if (cb.context) context = cb.context;
-                cb.handler.call(context, data);
+                cb.handler.call(context, data, extra);
             } catch (err) {
                 console.error(err);
             }
         }
     },
 
-    triggerAsync: function(event, data) {
+    triggerAsync: function(event, data, extra) {
         setTimeout(function(){
-            this.trigger(event, data);
+            this.trigger(event, data, extra);
         }.bind(this), 100);
     }
 }
