@@ -27,6 +27,14 @@ Number.randomInt = function(min, max) {
     return Math.floor(Math.random() * (+max - +min)) + +min;
 };
 
+Number.prototype.toCents = function() {
+    return parseInt(Math.round(this*100));
+};
+
+String.prototype.toCents = function() {
+    return parseInt(Math.round(parseFloat(this)*100));
+};
+
 
 var __FS_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 var __FS_STEP = 1024;
