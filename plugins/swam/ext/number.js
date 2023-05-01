@@ -32,7 +32,9 @@ Number.prototype.toCents = function() {
 };
 
 String.prototype.toCents = function() {
-    return parseInt(Math.round(parseFloat(this)*100));
+    let val = this;
+    if (val == '') val = 0;
+    return parseInt(Math.round(parseFloat(val)*100));
 };
 
 
