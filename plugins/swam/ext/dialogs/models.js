@@ -19,7 +19,19 @@ SWAM.Dialog.showModelView = function(model, fields, options) {
     }, options);
 
     var dlg = new this(options);
-    return dlg.show();
+    if (options.fetch_first) {
+    	app.showBusy();
+    	model.fetch(function(model, resp) {
+    		app.hideBusy();
+    		if (resp.error) {
+    			SWAM.Dialog.warning({title:"Fetch Failed", message:resp.error})
+    		} else {
+    			dlg.show();
+    		}
+    	});
+    } else {
+    	return dlg.show();
+    }
 };
 
 

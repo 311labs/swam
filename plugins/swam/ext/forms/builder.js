@@ -286,6 +286,7 @@ SWAM.Form.Builder.button = function(fc, form_info) {
 	if (!fc.classes) fc.classes = SWAM.Form.Builder.config.btn_classes;
 	if (fc.full_width) fc.$el.addClass("d-grid");
 	fc.$button.attr("class", fc.classes);
+	if (fc.fake_label) fc.$el.append("<div><label class='form-label'>&nbsp;</label></div>");
 	fc.$el.append(fc.$button);
 }
 
