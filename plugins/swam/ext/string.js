@@ -1,34 +1,9 @@
 
-String.prototype.replaceAll = function(oldVal, newVal) {
-    if (typeof oldVal !== "string" || typeof newVal !== "string" || oldVal === "") {
-        return this;
-    }
-    if (oldVal == newVal) {
-        return this;
-    }
-    try {
-        var returnVal = this;
-        try {
-            var replaceAllRegex = function(str) {
-                return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-            }
-            oldvalue = oldvalue.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-            // var replaceAllRegex = new RegExp(eval("/" + RegExp.escape(oldVal) + "/gm"));
-            return this.replace(oldvalue, newVal);
-        } catch (invalidRegExp) {}
-        var loopCount = 0; /* hit a RegExp exception, do it the old fashioned way */
-        while (returnVal.contains(oldVal) && loopCount < 1000) {
-            returnVal = returnVal.replace(oldVal, newVal);
-            loopCount++;
-        }
-        return returnVal;
-    } catch (exc) {}
-    return this;
-};
-
-String.prototype.removeAll = function(str) {
-    return this.replaceAll(str, "");
-};
+if (!String.prototype.replaceAll) {
+    String.prototype.replaceAll = function(search, replace) {
+        return this.split(search).join(replace);
+    };
+}
 
 String.prototype.slugify = function() {
     // remove non-words and replace consecutive spaces with a underscore

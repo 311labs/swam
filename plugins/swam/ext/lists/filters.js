@@ -66,35 +66,42 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     addFilterTag: function(id, val, filter) {
-        var operator = filter.operator || "contains";
+        let operator = filter.operator || "contains";
         if (filter.type == "daterange") operator = "is";
-        if (_.isString(val) && (val.contains(":"))) {
+        let value_lbl = val;
+        let safe_id = id.replaceAll(".", "__");
+        
+        if (filter.options) {
+            let option = _.findWhere(filter.options, {value:val});
+            value_lbl = option.label || val;
+        } else if (_.isString(value_lbl) && (value_lbl.contains(":"))) {
             // special operators
-            var fields = val.split(":");
+            let fields = value_lbl.split(":");
             if (fields[0] == "__gt") {
                 operator = "is >";
             } else if (fields[0] == "__lt") {
                 operator = "is <";
             }
-            val = fields[1];
+            value_lbl = fields[1];
         }
-
-        var safe_id = id.replaceAll(".", "__");
+        
 
         this.children.fb_filters.appendChild(safe_id, new SWAM.View(_.extend({
             id: safe_id,
             template: "swam.ext.lists.filter_item",
             classes: "swam-filter-item",
             operator: operator,
-            value: val
+            value_label: value_lbl
         }, filter)));
     },
 
     editFilter: function(id, evt) {
         var filter = _.findWhere(this.options.filters, {name:id});
+        let defaults = this.options.list.collection.params;
         SWAM.Dialog.showForm([filter], {
             title: "Add Filter",
             lbl_save: "Apply Filter",
+            defaults: defaults,
             callback: function(dlg) {
                 var val = dlg.getData()[id];
                 this.addFilterTag(id, val, filter);

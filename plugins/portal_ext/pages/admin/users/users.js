@@ -28,6 +28,22 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
             size: 10,
             sort: "-last_activity"
         },
+        filters: [
+            {
+                label: "User",
+                name: "filter",
+                type: "select",
+                options: [
+                    {label:"Active", value:""},
+                    {label: "Disabled", value: "is_active:0"},
+                    {label: "Staff", value: "is_staff:1"},
+                    {label: "Non Staff", value: "is_staff:0"},
+                    {label: "Online", value: "is_online:1"},
+                    {label: "Blocked", value: "is_blocked:1"},
+                ],
+                operator: "is"
+            }
+        ],
         group_filtering: false
     },
 
