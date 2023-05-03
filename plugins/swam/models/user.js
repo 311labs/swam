@@ -5,6 +5,16 @@ SWAM.Models.User = SWAM.Model.extend({
     	url:"/rpc/account/member"
     },
 
+    icons: function () {
+        var icons = "";
+        if (this.get('is_online')) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user is online'><i class='bi bi-globe text-success'></i></span>";
+        if (this.get('is_blocked')) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user is blocked'><i class='bi bi-slash-circle-fill text-danger'></i></span>";
+        if (!this.canNotify()) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='notifications disabled'><i class='bi bi-bell-slash-fill text-secondary'></i></span>";
+        if (this.is_disabled()) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user is disabled'><i class='bi bi-slash-circle-fill text-danger'></i></span>";
+        if (this.get('is_superuser')) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='super user'><i class='bi bi-person-badge text-warning'></i></span>";
+        if (this.hasPerm('manage_users')) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user is admin'><i class='bi bi-people-fill text-info'></i></span>";
+        return icons;
+    },
 
     disable: function(callback) {
         this.save({action:"disable"}, callback);

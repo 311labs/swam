@@ -8,13 +8,42 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
-            {label:"id", field:"id"},
-            {label:"uuid", field:"uuid"},
-            {label:"Created", field:"created|date"},
-            {label:"name", field:"name"},
-            {label:"kind", field:"kind"},
-            {label:"city", field:"location.city", no_sort:true},
-            {label:"state", field:"location.state", no_sort:true},
+            {
+                label:"id", field:"id"
+            },
+            {
+                label: "group",
+                sort: "name",
+                template: "<div>{{model.name}}</div><div class='text-muted'>{{model.kind}}</div>",
+                classes:"d-table-cell d-sm-none"
+            },
+            {
+                label:"uuid", field:"uuid",
+                classes:"d-none d-sm-none d-lg-table-cell"
+            },
+            {
+                label:"Created", field:"created|date",
+                classes:"d-none d-sm-table-cell"
+            },
+            {
+                label:"name", field:"name",
+                classes:"d-none d-sm-table-cell"
+            },
+            {
+                label:"kind", field:"kind",
+                classes:"d-none d-sm-table-cell"
+
+            },
+            {
+                label:"city", field:"location.city",
+                no_sort:true,
+                classes:"d-none d-sm-none d-lg-table-cell"
+            },
+            {
+                label:"state", field:"location.state",
+                no_sort:true,
+                classes:"d-none d-sm-none d-lg-table-cell"
+            },
         ],
         Collection: SWAM.Collections.Group,
         collection_params: {

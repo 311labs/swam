@@ -241,6 +241,11 @@ table.swam-table {
             img {
                 max-height: 32px;
             }
+
+            &.tc-min {
+                width: 1%;
+                white-space: nowrap;
+            }
         }
     }
 
