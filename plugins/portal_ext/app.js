@@ -142,6 +142,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}
 
 		if (group) {
+			if (!app.recent_groups) app.recent_groups = [];
 			if (app.recent_groups.indexOf(group.id) < 0) app.recent_groups.insertAt(group.id, 0);
 			if (app.recent_groups.length > 10) app.recent_groups.pop();
 			app.setProperty("recent_groups", app.recent_groups);
