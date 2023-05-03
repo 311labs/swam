@@ -309,6 +309,37 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	on_ws_channel_incident: function(msg) {
 		SWAM.toast(`New Incident`, SWAM.renderTemplate("portal_ext.views.incident.toast", {message:msg.message}), "danger", 120000);
-	}
+	},
+
+	on_uncaught_error: function(message, url, line, col, error, evt) {
+		this.hideBusy();
+		if (window.isDevToolsOpen()) {
+			if ((evt.lineno == 1) || (evt.lineno == 0)) return; // chrome dev console bugs?
+		}
+		SWAM.Dialog.warning({title:"Uncaught Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
+		let event = new SWAM.Models.IncidentEvent();
+		let stack = stackToMethods(error.stack);
+		let data = {
+			level: 3,
+			category: "uncaught_error",
+			description:`Uncaught Error: '${error.message}'`,
+			details: `Uncaught error:\n${error.message}\n${stack}\n`,
+			metadata: {
+				version: app.version,
+				name: app.options.title,
+				app_url: location.href,
+				api_url: app.options.api_url,
+				stack: error.stack,
+				error: error.message,
+				col: col,
+				line: line,
+				user_agent: navigator.userAgent,
+				error_url: url
+			}
+		};
+		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
+		event.save(data);
+		return false;
+	},
 
 });
