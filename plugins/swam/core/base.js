@@ -13,7 +13,7 @@ window.SWAM = {
     },
     getTemplate: function(tpath, strip_comments) {
         var t;
-        if (tpath[0] == '<' || tpath.call || tpath[0] == "{") {
+        if (tpath[0] == '<' || tpath.call || (tpath.indexOf("{{") >= 0)) {
             t = tpath;
         } else if (tpath[0] == '.') {
             var troot = window.template_cache;
@@ -45,7 +45,7 @@ window.SWAM = {
 
         if (t == undefined) {
             console.warn("[SWAM.render] template not found: " + tpath);
-            return t;
+            return tpath;
         }
 
         if (tpath.indexOf('.') > 0) {

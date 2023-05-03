@@ -24,7 +24,7 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
                 label:"info", no_sort:true, 
                 classes:"page-toc-hide td-wrapped", 
                 field: "icons",
-                classes:"d-none d-sm-table-cell"
+                classes: "d-none d-sm-table-cell"
             },
             {
                 label:"User Name", field:"username",

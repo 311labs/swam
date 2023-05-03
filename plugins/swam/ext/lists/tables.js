@@ -54,7 +54,8 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
     				};
     				this.template += ">" + "{{{" + key + "}}}";
     			} else if (_.isString(col.template)) {
-    				this.template += ">" + col.template;
+                    let template = SWAM.getTemplate(col.template);
+    				this.template += ">" + template;
     			} else if (this["get_column_" + col.field]) {
     				this.template += " data-field='" + col.field + "'>";
     				this.template += this["get_column_" + col.field](col);
