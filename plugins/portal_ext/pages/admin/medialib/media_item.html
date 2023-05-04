@@ -1,0 +1,39 @@
+<div class="swam-card-header position-relative bg-dark text-light">
+  <div class="row g-0">
+    <div class="col-auto">
+      {{#model.thumbnail}}
+      {{{model.thumbnail|lightbox}}}
+      {{/model.thumbnail}}
+    </div>
+    <div class="col">
+      <div class="m-2">
+        <div class="fs-3">{{model.name}}</div>
+        <div class="fst-italic">{{model.description}}</div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<div class="position-absolute top-0 end-0 p-2 text-muted">{{model.created|ago}}</div>
+<table class="table table-hover table-striped mt-4">
+  <thead>
+    <tr>
+      <th scope="col">Rendition</th>
+      <th scope="col">Content Type</th>
+      <th scope="col">Size</th>
+      <th scope="col">Dimensions</th>
+      <th scope="col">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#model.renditions|iter}}
+    <tr>
+      <td><button data-action="lightbox" data-kind="image" data-media="{{.value.url}}" data-title="{{.key}} {{model.name}}" class="btn btn-link btn-sm">{{.key}}</button></td>
+      <td>{{.value.content_type}}</td>
+      <td>{{.value.bytes|bytes}}</td>
+      <td>{{.value.width}} x {{.value.height}}</td>
+      <td><button class="btn btn-link btn-clipboard btn-sm" data-clipboard-text="{{.value.url}}">COPY URL</button></td>
+    </tr>
+    {{/model.renditions|iter}}
+  </tbody>
+</table>

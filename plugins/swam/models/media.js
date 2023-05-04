@@ -4,6 +4,32 @@ SWAM.Models.MediaItem = SWAM.Model.extend({
     defaults: {
     	url:"/rpc/medialib/media/item/"
     },
+}, {
+    EDIT_FORM: [
+        {
+            label: "Name",
+            field: "name"
+        },
+        {
+            label: "Description",
+            field: "description"
+        },
+    ],
+    ADD_FORM: [
+        {
+            label: "Name",
+            field: "name"
+        },
+        {
+            label: "Description",
+            field: "description"
+        },
+        {
+            label: "File",
+            name: "media",
+            type: "file"
+        }
+    ]
 });
 
 SWAM.Collections.MediaItem = SWAM.Collection.extend({

@@ -12,6 +12,7 @@ PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend({
             {label:"id", field:"id"},
             {label:"Created", field:"created|date"},
             {label:"name", field:"name"},
+            {label:"description", field:"description"},
             {label:"kind", field:"kind"},
             {label:"state", field:"state_display"},
         ],
@@ -60,6 +61,11 @@ PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend({
                 ]
             }
         ]
+    },
+
+    on_init: function() {
+        SWAM.Pages.TablePage.prototype.on_init.call(this);
+        this.options.view = new PORTAL.Views.MediaItem();
     },
 });
 

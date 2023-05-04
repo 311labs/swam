@@ -203,6 +203,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			}.bind(this)
 		};
 
+		if (!this.options.add_form && this.collection.options.Model.ADD_FORM) this.options.add_form = this.collection.options.Model.ADD_FORM;
 		if (!this.options.edit_form) this.options.edit_form = this.collection.options.Model.EDIT_FORM;
 		if (!this.options.add_form && this.options.edit_form) this.options.add_form = this.options.edit_form;
 

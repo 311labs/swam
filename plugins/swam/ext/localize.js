@@ -39,25 +39,27 @@ SWAM.Localize = {
         var media_url = value;
         var media_kind = "image";
         var title = null;
-
         if (value && value.attributes) value = value.attributes;
 
         if (value && value.thumbnail) {
             thumb_url = value.thumbnail;
             title = value.name;
-            if (value.kind == "I") {
-                media_kind = "image";
-                if (value.renditions) media_url = value.renditions.large.url;
-            } else if (value.kind == "V") {
-                media_kind = "video";
-                if (value.renditions) media_url = value.renditions.large.url;
-            } else if (value.kind == "*") {
-                media_kind = "download";
-                if (value.renditions) media_url = value.renditions.original.url;
+            if (value.renditions) {
+                if (value.kind == "I") {
+                    media_kind = "image";
+                    if (value.renditions.large) media_url = value.renditions.large.url;
+                } else if (value.kind == "V") {
+                    media_kind = "video";
+                    if (value.renditions.large) media_url = value.renditions.large.url;
+                } else if (value.kind == "*") {
+                    media_kind = "download";
+                    if (value.renditions.original) media_url = value.renditions.original.url;
+                }
             }
+
         } else if (value && value.renditions) {
             media_kind = "download";
-            if (value.renditions) media_url = value.renditions.original.url;
+            if (value.renditions && value.renditions.original) media_url = value.renditions.original.url;
             var output = "<i class='bi bi-cloud-download-fill' data-action='lightbox'";
             if (media_url) output += " data-media='" + media_url + "'";
             if (media_kind) output += " data-kind='" + media_kind + "'";

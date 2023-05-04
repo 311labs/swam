@@ -48,13 +48,20 @@ SWAM.Ext.BS = {
 	},
 
 	on_clipboard_success: function(evt) {
-		evt.trigger.setAttribute("data-bs-original-title", "Copied!");
-		var tooltip = bootstrap.Tooltip.getInstance(evt.trigger);
-		if (tooltip) tooltip.show();
-		$(evt.trigger).one("mouseout", function(){
-			evt.trigger.setAttribute("data-bs-original-title", "Copy to clipboard");
-		});
-		setTimeout(function(){ tooltip.hide(); }, 2000);
+		let has = evt.trigger.getAttribute("data-bs-toggle");
+		if (has == "tooltip") {
+			evt.trigger.setAttribute("data-bs-original-title", "Copied!");
+			var tooltip = bootstrap.Tooltip.getInstance(evt.trigger);
+			if (tooltip) tooltip.show();
+			$(evt.trigger).one("mouseout", function(){
+				evt.trigger.setAttribute("data-bs-original-title", "Copy to clipboard");
+			});
+			setTimeout(function(){ if (tooltip) tooltip.hide(); }, 2000);
+		} else {
+			let old_text = evt.trigger.innerText;
+			evt.trigger.innerText = "COPIED";
+			setTimeout(function(){ evt.trigger.innerText = old_text }, 2000);
+		}
 	},
 
 	enablePops: function() {
