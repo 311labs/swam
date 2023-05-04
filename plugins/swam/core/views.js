@@ -250,9 +250,10 @@ SWAM.View = SWAM.Object.extend({
             window.open(opts.url, '_blank');
             return;
         }
+        if (!opts.title) opts.title = "Lightbox";
         SWAM.Dialog.show({
             add_classes: "bg-dark text-white",
-            size: "xl",
+            fullscreen: true,
             title: opts.title,
             view: view,
             buttons: []
