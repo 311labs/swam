@@ -201,8 +201,13 @@ PORTAL.PortalApp = SWAM.App.extend({
 				this.on_logged_in();
 				this.on_ready();
 			} else {
-				this.trigger("auth_fail", this.me);
-				this.showPage("login");
+				SWAM.toast("AUTH FAILURE", resp.error, "danager", 10000);
+				if (!resp.network_error && !app.me.isAuthenticated()) {
+					this.trigger("auth_fail", this.me);
+					this.showPage("login");
+				} else if (app.me.isAuthenticated()) {
+					this.on_ready();
+				}
 				this.trigger("ready");
 			}
 		}.bind(this));
@@ -228,8 +233,13 @@ PORTAL.PortalApp = SWAM.App.extend({
 			app.me.refreshJWT(function(model, resp) {
 				app.hideBusy();
 				if (!resp.status) {
-					SWAM.toast("Logged Out", "The user is no longer authenticated", "warning", 20000);
-					app.showPage("login");
+					if (!resp.network_error) {
+						SWAM.toast("Logged Out", "The user is no longer authenticated", "warning", 20000);
+						app.showPage("login");
+					} else {
+						SWAM.toast("Network Issue", "Problems connecting to server!", "warning", 0);
+					}
+
 				}
 			});
 		} else if (evt.age > 30000) {
@@ -239,8 +249,12 @@ PORTAL.PortalApp = SWAM.App.extend({
 					app.me.refreshJWT(function(model, resp) {
 						app.hideBusy();
 						if (!resp.status) {
-							SWAM.toast("Logged Out", "The user is no longer authenticated", 20000);
-							app.showPage("login");
+							if (!resp.network_error) {
+								SWAM.toast("Logged Out", "The user is no longer authenticated", "warning", 20000);
+								app.showPage("login");
+							} else {
+								SWAM.toast("Network Issue", "Problems connecting to server!", "warning", 0);
+							}
 						}
 					});
 				} else {
