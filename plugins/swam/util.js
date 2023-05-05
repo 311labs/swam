@@ -320,6 +320,19 @@ window.deepExtend = function(obj) {
 
 if (window._) window._.deepExtend = window.deepExtend;
 
+window.addStylesheet = function(css, id) {
+  const styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  styleEl.id = id;
+  document.head.appendChild(styleEl);
+};
+
+window.removeStylesheet = function(id) {
+  const styleEl = document.getElementById(id);
+  if (styleEl) {
+    styleEl.remove();
+  }
+};
 
 window.__TRUE_VALUES__ = [true, 1, "true", "yes", "True", "1", "Y", "y"];
 
