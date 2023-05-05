@@ -17,18 +17,18 @@ SWAM.Models.MediaItem = SWAM.Model.extend({
     ],
     ADD_FORM: [
         {
-            label: "Name",
-            field: "name"
-        },
-        {
-            label: "Description",
-            field: "description"
-        },
-        {
             label: "File",
             name: "media",
             type: "file"
-        }
+        },
+        {
+            label: "Name (optional)",
+            field: "name"
+        },
+        {
+            label: "Description (optional)",
+            field: "description"
+        },
     ]
 });
 
