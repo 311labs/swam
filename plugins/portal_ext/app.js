@@ -242,7 +242,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 				}
 			});
-		} else if (evt.age > 30000) {
+		} else if (this.options.fetch_on_focus && (evt.age > this.options.fetch_on_focus)) {
 			app.showBusy({icon:"lock"});
 			app.me.fetch(function(model, resp) {
 				if (!resp.status) {
