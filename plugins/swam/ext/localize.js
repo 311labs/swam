@@ -977,6 +977,24 @@ SWAM.Localize = {
         return value.padEnd(pad_len, pad_char);
     },
 
+    "fontsize": function(value, attr, fmt) {
+        if (!value) return value;
+        let base_len = 22;
+        let text_len = value.length;
+        if (_.isArray(fmt)) {
+            base_len = parseInt(fmt[0]);
+            // if (fmt.length > 1) pad_char = fmt[1];
+        } else if (fmt) {
+            base_len = parseInt(fmt);
+        }
+
+        if (text_len >= base_len) {
+            text_len = base_len - 2;
+        }
+        let font_size = base_len - text_len;
+        return `<span style="font-size: ${font_size}vw !important;">${value}</span>`
+    },
+
     ignore_errors: true,
     localize: function(value, attr, fmt, context) {
         try {
