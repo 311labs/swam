@@ -5,9 +5,7 @@ PORTAL.App = SWAM.App.extend({
 	defaults: {
 		title: "EXAMPLES PORTAL HELLO WORLD",
 		root: window.app_path + "/",
-		api_url: "https://test.payauth.io",
 		api_urls: [
-			"https://test.payauth.io",
 			"http://localhost:8000"
 		],
 		home_page: "home"

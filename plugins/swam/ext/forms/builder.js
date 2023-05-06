@@ -386,7 +386,7 @@ SWAM.Form.Builder.select = function(fc, form_info) {
 	if (fc.multiple || fc.multi) {
 		fc.$input.attr("multiple", "multiple");
 	}
-	if (fc.editable) {
+	if (fc.editable || fc.can_edit) {
 		fc.$input.addClass("editable");
 	} else {
 		fc.$input.addClass("normal");

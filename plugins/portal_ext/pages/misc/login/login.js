@@ -105,6 +105,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                 label: "Select API Endpoint",
                 name: "api_url",
                 type: "select",
+                editable: true,
                 options: app.options.api_urls,
                 default: app.options.api_url
             }

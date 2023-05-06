@@ -178,6 +178,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 					label: "API URL",
 					name: "api_url",
 					type: "select",
+					editable: true,
 					options: app.options.api_urls,
 					default: app.options.api_url
 				}
