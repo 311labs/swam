@@ -36,7 +36,11 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
     			if (col.hideIf && col.hideIf()) return;
 
     			this.template += "<td";
-    			if (col.classes) {
+                if (col.td_classes) {
+                    let classes = col.td_classes;
+                    if (col.classes) classes = col.classes + " " + classes;
+                    this.template += " class='" + classes + "'";
+                } else if (col.classes) {
     				this.template += " class='" + col.classes + "'";
     			}
 
