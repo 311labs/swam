@@ -69,7 +69,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     addFilterTag: function(id, val, filter, operator) {
         if (filter.type == "daterange") operator = "is";
         let value_lbl = val;
-        let safe_id = id.replaceAll(".", "__");
+        let safe_id = this.convertParamToKey(id.replaceAll(".", "__"));
         if (operator === undefined) {
             operator = this.getOperatorFromParam(id);
         }
@@ -136,18 +136,16 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     getDefaultFor: function(key) {
         let params = this.options.list.collection.params;
         let value = _.find(params, function(v, k){
-            if (key == k) return true
-            if (k.contains("__")) {
-                k = k.split("__")[0];
-                if (key == k) return true
-            }
-        });
+            if (key == k) return true;
+            let rk = this.convertParamToKey(k);
+            if (key == rk) return true;
+        }.bind(this));
         return value;
     },
 
     getFilterFor: function(key) {
         let rkey = key;
-        if (key.contains("__")) rkey = key.split("__")[0];
+        if (key.contains("__")) rkey = this.convertParamToKey(key);
         return _.find(this.options.filters, function(f) {
             return ((f.name == key) || (f.name == rkey));
         });
@@ -160,29 +158,35 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
                 delete params[k];
                 return true
             }
-            if (k.contains("__")) {
-                let rk = k.split("__")[0];
-                if (key == rk) {
-                    delete params[k];
-                    return true
-                }
+            let rk = this.convertParamToKey(k);
+            if (key == rk) {
+                delete params[k];
+                return true
             }
             return true;
-        });
+        }.bind(this));
+    },
+
+    OPERATORS: ["gt", "lt", "gte", "lte", "icontains"],
+
+    convertParamToKey: function(param) {
+        let key_array = param.split("__");
+        if (key_array.length > 0) {
+            let oper = key_array.pop();
+            if (this.OPERATORS.indexOf(oper) >= 0) {
+                return key_array.join("__");
+            }
+        }
+        return param;
     },
 
     getParamKey: function(key) {
         let params = this.options.list.collection.params;
         let root_key = key;
         let value = _.find(params, function(v, k){
-            if (key == k) return true
-            if (k.contains("__")) {
-                let rk = k.split("__")[0];
-                if (key == rk) {
-                    root_key = k;
-                    return true
-                }
-            }
+            if (key == k) return true;
+            let rk = this.convertParamToKey(k);
+            if (key == rk) return true;
         });
         return root_key;
     },
@@ -324,7 +328,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         this.children.fb_actions.options.model = this.options.model;
         this.children.fb_filters.children = {};
         _.each(this.options.list.collection.params, function(value, key){
-            var filter = this.getFilterFor(key);
+            var filter = this.getFilterFor(this.convertParamToKey(key));
             if (filter) {
                 this.addFilterTag(key, value, filter);
             } else if (key == "dr_start") {

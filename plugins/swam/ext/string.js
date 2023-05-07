@@ -207,6 +207,10 @@ String.prototype.formatSSN = function() {
     return value.substr(0);
 };
 
+String.prototype.count = function(text) {
+    return (this.split(text).length - 1);
+};
+
 String.prototype.formatEveryNth = function(n, delimiter) {
     var value = this;
     delimiter = delimiter || " ";
