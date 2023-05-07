@@ -895,6 +895,23 @@ SWAM.Localize = {
         return value;
     },
 
+    'link': function(value, attr, fmt) {
+        return this.href(value, attr, fmt);
+    },
+
+    'href': function(value, attr, fmt) {
+        var url = "#";
+        if (_.isArray(fmt)) {
+            url = fmt[0];
+        } else {
+            url = fmt;
+        }
+        if (!url.startsWith("http")) {
+            url = `https://${url}`
+        }
+        return `<a href="${url}">${value}</a>`;
+    },
+
     'table': function(value, attr, fmt) {
         if (!value) return null;
         if (value.attributes) value = value.attributes;

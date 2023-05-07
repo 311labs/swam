@@ -10,6 +10,19 @@ String.prototype.slugify = function() {
     return this.toLowerCase().replace(/[^\w ]+/g, '').replace(/[ ]+/g, '_');
 };
 
+String.prototype.capitalize = function() {
+    // remove non-words and replace consecutive spaces with a underscore
+  // split the string into an array of words
+    const words = this.split(' ');
+    // iterate over each word and capitalize the first letter
+    for (let i = 0; i < words.length; i++) {
+        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+    // join the capitalized words back into a single string
+    const capitalized = words.join(' ');
+    return capitalized;
+};
+
 String.prototype.removeAll = function(str) {
     return this.replaceAll(str, "");
 };

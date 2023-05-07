@@ -263,7 +263,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                 this.setActivePage(this.options.not_found, {"path":path});
             }
         }
-        this.trigger("ready", this);        
+        this.trigger("ready", this);  
+        this.delegateEvents();      
     },
 
     getPath: function(ignore_search) {
