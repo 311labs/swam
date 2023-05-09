@@ -38,6 +38,23 @@ div.swam-form-input {
             margin: 0.5rem 0;
         }
     }
+
+    span.char-count {
+        position: absolute;
+        bottom: 12px;
+        right: 8px;
+        border-radius: 5px !important;
+        background: #cccccc;
+        padding: 4px;
+        font-size: 0.8rem;
+        z-index: 40;
+    }
+
+    div.input-group {
+        span.char-count {
+            bottom: 6px;
+        }
+    }
 }
 
 div.form-floating {

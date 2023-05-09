@@ -243,13 +243,14 @@ SWAM.PubSubClient = SWAM.Object.extend({
         }
     },
 
-    on_close: function() {
+    on_close: function(evt) {
         try {
             this.ws.close()
         } catch (err) {
             console.warn(err);
         }
 
+        
         this.log("WS Connection closed!");
         this.trigger("disconnected");
         this.closed_at = Date.now();

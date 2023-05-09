@@ -187,7 +187,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
             if (key == k) return true;
             let rk = this.convertParamToKey(k);
             if (key == rk) return true;
-        });
+        }.bind(this));
         return root_key;
     },
 

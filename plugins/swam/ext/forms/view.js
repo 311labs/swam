@@ -11,6 +11,7 @@ SWAM.Form.View = SWAM.View.extend({
         "change input": "on_input_handler",
         "change select": "on_input_handler",
         "keydown input": "on_stop_submit",
+        "keyup input.watch-length": "on_input_length",
         "click form.search button": "on_submit"
     },
 
@@ -46,6 +47,23 @@ SWAM.Form.View = SWAM.View.extend({
             evt.preventDefault();
             $(evt.currentTarget).change();
             return false;
+        }
+        return true;
+    },
+
+    on_input_length: function(evt) {
+        let $el = $(evt.currentTarget);
+        let ml = $el.prop("maxLength");
+        if (!ml || (ml < 0)) ml = $el.prop("minLength");
+        if (ml) {
+            let val = $el.val();
+            let $cc = $el.parent().find("span.char-count");
+            if ($cc.length == 0) {
+                $cc = $(`<span class='char-count'>${val.length} of ${ml}</span>`);
+                $cc.insertAfter($el);
+            } else {
+                $cc.text(`${val.length} of ${ml}`);
+            }
         }
         return true;
     },

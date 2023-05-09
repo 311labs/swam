@@ -15,19 +15,21 @@ SWAM.Form.Test.Basic = [
         can_clear: true
     },
     {
-        label: "with place holder",
+        label: "with place holder (maxlength)",
         help: "this is a simple tooltip",
         name: "plain2",
         columns: 4,
+        maxlength: 8,
         placeholder: "this is a place holder"
     },
     {
-        label: "Email Address",
+        label: "Email Address (min length)",
         type: "email",
         help: "this is a nice looking left icon",
         name: "left_icon1",
         left_icon: "bi bi-envelope",
         columns: 4,
+        minlength: 8,
         placeholder: "enter email"
     },
     {
