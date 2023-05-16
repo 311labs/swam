@@ -32,72 +32,104 @@
         padding:  0;
         overscroll-behavior-x: none;
       }
+      div.pre-loader #app_title {
+          position: absolute;
+          top: 20vh;
+          color: #484748;
+          text-align: center;
+          text-transform: uppercase;
+          font-size: 24px;
+      }
 
-      div#app_title {
-        position: absolute;
-        bottom: 15px;
-        left: 0;
-        right: 0;
+      div.pre-loader #app_title span {
+          font-size: 12px;
+          color: #7A7C7C;
+          display: block;
+      }
+
+      div.pre-loader .pre-loading-label {
+          margin-top: -90px;
+          display: block;
+          text-align: center;
+          color: white;
+      }
+
+      #pre-loader-frame {
+          color: black;
+          position: absolute;
+          left: 0px;
+          width: 100%;
+          height: 100%;
+          right: 0px;
+          bottom: 0px;
+          top: 0px;
+      }
+
+
+      #pre-loader-frame {
+        margin: 0 auto;
+        padding-top: 40vh;
+        width: 150px;
+      }
+
+      #pre-loader-frame > h1 {
         text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 1em;
+        font-weight: 300;
+        color: #8E8E8E;
+      }
+
+      #pre-loader-frame #load {
+        width: 150px;
+        animation: preloader-loading 3s linear infinite;
+      }
+
+      #pre-loader-frame #load #loading-inner {
+        stroke-dashoffset: 0;
+        stroke-dasharray: 300;
+        stroke-width: 10;
+        stroke-miterlimit: 10;
+        stroke-linecap: round;
+        animation: preloader-loading-circle 2s linear infinite;
+        stroke: {{loader_color}};
+        fill: transparent;
+      }
+
+      @keyframes preloader-loading {
+        0% {
+          transform: rotate(0);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes preloader-loading-circle {
+        0% {
+          stroke-dashoffset: 0;
+        }
+        100% {
+          stroke-dashoffset: -600;
+        }
       }
 
       div.pre-loader-fullscreen {
-        background-color: hsl(223, 90%, 95%);
-        font: 1em/1.5 sans-serif;
+        position: fixed;
+        left:  0; right: 0; top:  0; bottom:  0;
+      }
+
+      div.pre-loader {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAYAAABBV8wuAAAAR0lEQVR42oXOsQkAQQhE0StKRQ20/6o8RjBZcDd40R/ELyIKVLUxc9uDuxfMgIjgEsysQERaZsIlnCdmuId5bwbvcJyYwR5+DGh4DQAjsYAAAAAASUVORK5CYII=);
+        background-repeat: repeat;
+        background-blend-mode: multiply;
         height: 100vh;
-        display: grid;
-        place-items: center;
-      }
-
-      div#pre-loader-errors {
-        display: none;
-        color: white;
-        text-align: center;
-        margin: 20px;
-      }
-
-      div#pre-loader-frame div.text {
-        color: {{loader_color}};
-        display: inline-block;
-        margin-left: 5px;
-      }
-
-
-      .bounceball {
-        position: relative;
-        display: inline-block;
-        height: 37px;
-        width: 15px;
-      }
-
-      .bounceball:before {
-        position: absolute;
-        content: '';
-        display: block;
-        top: 0;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background-color: {{loader_color}};
-        transform-origin: 50%;
-        animation: bounce 500ms alternate infinite ease;
-      }
-
-      @keyframes bounce {
-        0% {
-          top: 30px;
-          height: 5px;
-          border-radius: 60px 60px 20px 20px;
-          transform: scaleX(2);
-        }
-        35% {
-          height: 15px;
-          border-radius: 50%;
-          transform: scaleX(1);
-        }
-        100% {
-          top: 0;
-        }
+        display: flex;
+        background-color: #bbb;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        box-shadow: inset 0px -200px 400px -80px rgba(0, 0, 0, 0.3), inset 0px 150px 300px -200px rgba(255, 255, 255, 0.1);
       }
 
       div#pre-loader-errors {
@@ -115,18 +147,20 @@
     <!-- PRELOADER POPUP -->
     <div class="pre-loader-fullscreen">
         <div class="pre-loader">
+          <div id="app_title">
+              {{title}}
+              <span>{{version}}</span>
+          </div>
           <div id="pre-loader-errors">
             
           </div>
-          <div class="loading" id="pre-loader-frame">
-            <div class="bounceball"></div>
-            <div class="text">LOADING</div>
+          <div id="pre-loader-frame">
+              <svg id="load" x="0px" y="0px" viewBox="0 0 150 150">
+              <circle id="loading-inner" cx="75" cy="75" r="60"/>
+              </svg>
+              <div class="pre-loading-label"><span>LOADING</span></div>
           </div>
         </div>  
-
-        <div id="app_title">
-            {{title}} {{version}}
-        </div>
     </div>
   </div>
 
@@ -134,7 +168,6 @@
     window.template_root = "{{template_root}}";
     window.app_path = "{{app_root}}";
     window.app_version = "{{version}}";
-    window.app_branch = "{{branch}}";
     window.no_es6_site = "{{no_es6_site}}";
     window.isDevToolsOpen = function() {
       var r = /./
