@@ -12,7 +12,7 @@
 <a href='{{options.url}}' target="_blank" class='{{options.link_classes}}'>
 {{/options.url}}
 {{#options.action}}
-<a href='#' data-action="{{options.action}}" class='{{options.link_classes}}'>
+<a href='#' data-action="{{options.action}}" class='{{options.link_classes}}' {{#options.data_id}}data-id='{{options.data_id}}'{{/options.data_id}}>
 {{/options.action}}
 {{/options.items|bool}}
 
