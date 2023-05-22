@@ -56,6 +56,11 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
                     {label: "Non Staff", value: "is_staff:0"},
                     {label: "Online", value: "is_online:1"},
                     {label: "Blocked", value: "is_blocked:1"},
+                    {label: "Super User", value: "is_superuser:1"},
+                    {label: "Manage Users", value: "perm:manage_users"},
+                    {label: "Manage Groups", value: "perm:manage_groups"},
+                    {label: "View Groups", value: "perm:view_groups"},
+                    {label: "View Logs", value: "perm:view_logs"},
                 ],
                 operator: "is"
             }
