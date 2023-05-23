@@ -6,6 +6,10 @@ SWAM.Models.Member = SWAM.Model.extend({
     	url:"/rpc/account/membership"
     },
 
+    isDisabled: function() {
+        return this.get("state") == -25;
+    },
+
     hasPerm: function(perm) {
         if (_.isArray(perm)) {
             var i=0;
