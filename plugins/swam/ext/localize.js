@@ -1012,6 +1012,12 @@ SWAM.Localize = {
         return `<span style="font-size: ${font_size}vw !important;">${value}</span>`
     },
 
+    location: function(value, attr, fmt) {
+        if (!value || !value.city) return "n/a";
+        return `${value.city}, ${value.state}, ${value.country} (${value.lat}, ${value.lng})`;
+    },
+
+
     ignore_errors: true,
     localize: function(value, attr, fmt, context) {
         try {

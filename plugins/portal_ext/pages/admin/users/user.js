@@ -32,6 +32,11 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
                     columns: 12
                 },
                 {
+                    label:"ID",
+                    field:"id",
+                    columns: 12
+                },
+                {
                     label:"Last Login",
                     field:"last_login|ago|ifempty('never')",
                     columns: 12
@@ -39,6 +44,16 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
                 {
                     label:"Last Activity",
                     field:"last_activity|ago|ifempty('never')",
+                    columns: 12
+                },
+                {
+                    label:"Last IP",
+                    field:"metadata.last_ip",
+                    columns: 12
+                },
+                {
+                    label:"Last Location",
+                    field:"metadata.location|location",
                     columns: 12
                 },
                 {
