@@ -86,7 +86,21 @@ SWAM.SendWaitSupport = {
 
 // Hardware Abstraction Layer Singleton
 SWAM.HAL = _.extend({
-    send: function(service, event, data) {
+    postEvent: function(event) {
+        console.log("native.send: " + event.name + ":" + event.action);
+        if (window.broker && window.broker.postEvent) {
+            window.broker.postEvent(JSON.stringify(event));
+        }
+    },
+
+    on_native_event: function(event) {
+        console.log("native.receive: " + event.name + ":" + event.action);
+        window.sleep(10).then(function(){
+            SWAM.HAL.triggerEvent(event.name, event.action, event);
+        });
+    },
+
+    sendToHal: function(service, event, data) {
         console.log("hal.send: " + service + ":" + event);
         if (window.hal && window.hal.sendToHal) {
             if (_.isObject(data)) data = JSON.stringify(data);
@@ -101,16 +115,30 @@ SWAM.HAL = _.extend({
         });
     },
 
+    send: function(service, event, data) {
+        if (window.broker) {
+            data = data || {};
+            data.name = service;
+            data.action = event;
+            this.postEvent(data);
+        } else if (window.hal) {
+            this.sendToHal(service, event, data);
+        }
+    },
+
     triggerEvent: function(service, event, data) {
         SWAM.HAL.trigger(service + ":" + event, data);
     },
+
     setSetting: function(key, value) {
-        if (window.hal) {
-            let new_settings = {};
-            new_settings[key] = value;
-            window.hal.saveSettings(JSON.stringify(new_settings));
+        let new_settings = {};
+        new_settings[key] = value;
+        let root = window.broker || window.hal;
+        if (root) {
+            root.saveSettings(JSON.stringify(new_settings)); 
             setTimeout(this.refreshSettings.bind(this), 200);
         }
+        
     },
     getSetting: function(key, defaultValue) {
         if (!this.config) return  defaultValue;
@@ -118,8 +146,9 @@ SWAM.HAL = _.extend({
         return this.config[key];
     },
     refreshSettings: function() {
-        if (window.hal) {
-            this.config = JSON.parse(hal.getSettings());
+        if (window.hal || window.broker) {
+            let root = window.broker || window.hal;
+            this.config = JSON.parse(root.getSettings());
             if (this.config && this.config.sn) {
                 app.app_uuid = this.config.sn;
             }
@@ -184,6 +213,7 @@ SWAM.HALExt = {
 
 
 // expose to native
+window.onNativeEvent = SWAM.HAL.on_native_event;
 window.onHalEvent = SWAM.HAL.on_event;
 window.HAL = SWAM.HAL;
 
