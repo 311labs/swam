@@ -117,6 +117,7 @@ SWAM.HAL = _.extend({
 
     send: function(service, event, data) {
         if (window.broker) {
+            if (_.isArray(data)) data = {data:data};
             data = data || {};
             data.name = service;
             data.action = event;
@@ -154,7 +155,7 @@ SWAM.HAL = _.extend({
             }
         }
     },
-    toast: function(msg) {this.send("hal", "toast", msg)}
+    toast: function(msg) {}
 }, SWAM.EventSupport, SWAM.SendWaitSupport);
 
 
