@@ -147,7 +147,7 @@ SWAM.HAL = _.extend({
         return this.config[key];
     },
     refreshSettings: function() {
-        if (window.hal || window.broker) {
+        if (window.has_bridge) {
             let root = window.broker || window.hal;
             this.config = JSON.parse(root.getSettings());
             if (this.config && this.config.sn) {
@@ -212,11 +212,8 @@ SWAM.HALExt = {
     },
 };
 
-
 // expose to native
 window.onNativeEvent = SWAM.HAL.on_native_event;
 window.onHalEvent = SWAM.HAL.on_event;
 window.HAL = SWAM.HAL;
-
-
-
+window.HAL.has_bridge = (window.hal != undefined) || (window.broker != undefined);
