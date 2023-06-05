@@ -147,7 +147,7 @@ SWAM.HAL = _.extend({
         return this.config[key];
     },
     refreshSettings: function() {
-        if (window.has_bridge) {
+        if (window.HAL.has_bridge) {
             let root = window.broker || window.hal;
             this.config = JSON.parse(root.getSettings());
             if (this.config && this.config.sn) {
