@@ -134,12 +134,14 @@ SWAM.HAL = _.extend({
     setSetting: function(key, value) {
         let new_settings = {};
         new_settings[key] = value;
-        let root = window.broker || window.hal;
-        if (root) {
-            root.saveSettings(JSON.stringify(new_settings)); 
+        if (window.broker) {
+            this.config[key] = value;
+            window.broker.saveSettings(JSON.stringify(this.config)); 
             setTimeout(this.refreshSettings.bind(this), 200);
-        }
-        
+        } else if (window.hal) {
+            window.hal.saveSettings(JSON.stringify(new_settings)); 
+            setTimeout(this.refreshSettings.bind(this), 200);
+        }        
     },
     getSetting: function(key, defaultValue) {
         if (!this.config) return  defaultValue;
