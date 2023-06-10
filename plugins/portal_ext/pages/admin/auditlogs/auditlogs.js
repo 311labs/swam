@@ -53,7 +53,7 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
             },
             {
                 label: "Username",
-                name: "user.username",
+                name: "user__username",
                 type: "text"
             },
             {
