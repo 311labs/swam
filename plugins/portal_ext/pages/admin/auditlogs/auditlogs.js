@@ -73,7 +73,7 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
             },
             {
                 label: "IP",
-                name: "ip",
+                name: "session__ip",
                 type: "text"
             },
             {

@@ -28,6 +28,11 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
                 type: "daterange"
             },
             {
+                label: "IP",
+                name: "reporter_ip",
+                type: "text"
+            },
+            {
                 label: "Category",
                 name: "category",
                 type: "select",
