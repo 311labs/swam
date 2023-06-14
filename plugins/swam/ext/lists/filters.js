@@ -288,7 +288,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         } else {
             filename += "data";
         }
-        filename + ".csv";
+        filename += ".csv";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
                 format_filename: filename,
@@ -311,7 +311,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         } else {
             filename += "data";
         }
-        filename + ".json";
+        filename += ".json";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
                 format_filename: filename,
