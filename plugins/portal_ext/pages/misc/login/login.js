@@ -4,6 +4,10 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     template: "portal_ext.pages.misc.login",
     classes: "page-view page-fullscreen",
 
+    defaults: {
+        show_api_url: true
+    },
+
     on_action_login: function(evt) {
         evt.stopPropagation();
         var data = SWAM.Form.getData(this.$el.find("form"));

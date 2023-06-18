@@ -57,7 +57,9 @@
           <a class="btn btn-link text-muted" href="/static/privacy.html" target="_blank">Privacy Policy</a>
           <a class="btn btn-link text-muted" href="/static/terms.html" target="_blank">Terms of Use</a>
          </div>
+    {{#options.show_api_url}}
     {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
+    {{/options.show_api_url}}
     </div>
 
   </form>
