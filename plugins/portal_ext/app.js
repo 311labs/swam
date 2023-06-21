@@ -331,6 +331,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			if ((evt.lineno == 1) || (evt.lineno == 0)) return; // chrome dev console bugs?
 		}
 		SWAM.Dialog.warning({title:"Uncaught Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
+		if (location.host.contains("localhost")) return;
 		let event = new SWAM.Models.IncidentEvent();
 		let stack = stackToMethods(error.stack);
 		let data = {

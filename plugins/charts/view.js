@@ -73,6 +73,34 @@ SWAM.Views.Chart = SWAM.View.extend({
                     return SWAM.Localize.localize(value, ylocalizer);
                 }
             }
+
+            if (!config.options.plugins) config.options.plugins = {};
+            if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
+            let callbacks = config.options.plugins.tooltip.callbacks || {};
+            config.options.plugins.tooltip.callbacks = callbacks;
+            callbacks.label = function(context) {
+                return SWAM.Localize.localize(context.parsed.y, ylocalizer);
+            };
+            callbacks.title = function(context) {
+                return context[0].dataset.label;
+            };
+            callbacks.afterTitle = function(context) {
+                return context[0].label;
+            };
+        } else {
+            if (!config.options.plugins) config.options.plugins = {};
+            if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
+            let callbacks = config.options.plugins.tooltip.callbacks || {};
+            config.options.plugins.tooltip.callbacks = callbacks;
+            callbacks.label = function(context) {
+                return context.formattedValue;
+            };
+            callbacks.title = function(context) {
+                return context[0].dataset.label;
+            };
+            callbacks.afterTitle = function(context) {
+                return context[0].label;
+            };
         }
         if (this.options.xaxis_localize) {
             if (!config.options.scales) {
@@ -98,6 +126,7 @@ SWAM.Views.Chart = SWAM.View.extend({
             if (ds.fill == undefined) ds.fill = false;
             if (ds.tension == undefined) ds.tension = 0.1;
         });
+
         if (this.options.yaxis_localize) {
             config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
             var ylocalizer = this.options.yaxis_localize;
@@ -109,10 +138,30 @@ SWAM.Views.Chart = SWAM.View.extend({
 
             if (!config.options.plugins) config.options.plugins = {};
             if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
-            config.options.plugins.tooltip.callbacks = {
-                label: function(context) {
-                    return SWAM.Localize.localize(context.parsed.y, ylocalizer);
-                }
+            let callbacks = config.options.plugins.tooltip.callbacks || {};
+            config.options.plugins.tooltip.callbacks = callbacks;
+            callbacks.label = function(context) {
+                return SWAM.Localize.localize(context.parsed.y, ylocalizer);
+            };
+            callbacks.title = function(context) {
+                return context[0].dataset.label;
+            };
+            callbacks.afterTitle = function(context) {
+                return context[0].label;
+            };
+        } else {
+            if (!config.options.plugins) config.options.plugins = {};
+            if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
+            let callbacks = config.options.plugins.tooltip.callbacks || {};
+            config.options.plugins.tooltip.callbacks = callbacks;
+            callbacks.label = function(context) {
+                return context.formattedValue;
+            };
+            callbacks.title = function(context) {
+                return context[0].dataset.label;
+            };
+            callbacks.afterTitle = function(context) {
+                return context[0].label;
             };
         }
         if (this.options.xaxis_localize) {
@@ -130,6 +179,8 @@ SWAM.Views.Chart = SWAM.View.extend({
                 }
             }
         }
+
+
     },
 
     updateConfig: function() {
