@@ -13,6 +13,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         keys: null,
         url: null,
         duration: null,
+        line_width: 1,
         size: 8
     },
 
@@ -27,6 +28,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
         this.addChild("metrics_chart", new SWAM.Views.Chart({
             type:this.options.chart_type, max_length:12,
+            line_width: this.options.line_width,
             yaxis_localize: this.options.yaxis_localize,
             xaxis_localize: this.options.xaxis_localize,
             hide_tooltips: this.options.hide_tooltips,
@@ -260,7 +262,11 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             
             this.children.metrics_chart.addDataSet(
                 slug, slug_data, 
-                {backgroundColor: color});
+                {
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: this.options.line_width
+                });
         }.bind(this));
 
         this.renderChildren();
@@ -276,7 +282,11 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             let color = colors.pop();
             this.children.metrics_chart.addDataSet(
                 slug, slug_data, 
-                {backgroundColor: color});
+                {
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: this.options.line_width
+                });
         }.bind(this));
 
         this.renderChildren();

@@ -141,28 +141,28 @@ SWAM.Views.Chart = SWAM.View.extend({
             let callbacks = config.options.plugins.tooltip.callbacks || {};
             config.options.plugins.tooltip.callbacks = callbacks;
             callbacks.label = function(context) {
-                return SWAM.Localize.localize(context.parsed.y, ylocalizer);
+                return context.dataset.label + ": " + SWAM.Localize.localize(context.parsed.y, ylocalizer);
             };
-            callbacks.title = function(context) {
-                return context[0].dataset.label;
-            };
-            callbacks.afterTitle = function(context) {
-                return context[0].label;
-            };
+            // callbacks.title = function(context) {
+            //     return context[0].dataset.label;
+            // };
+            // callbacks.afterTitle = function(context) {
+            //     return context[0].label;
+            // };
         } else {
-            if (!config.options.plugins) config.options.plugins = {};
-            if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
-            let callbacks = config.options.plugins.tooltip.callbacks || {};
-            config.options.plugins.tooltip.callbacks = callbacks;
-            callbacks.label = function(context) {
-                return context.formattedValue;
-            };
-            callbacks.title = function(context) {
-                return context[0].dataset.label;
-            };
-            callbacks.afterTitle = function(context) {
-                return context[0].label;
-            };
+            // if (!config.options.plugins) config.options.plugins = {};
+            // if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
+            // let callbacks = config.options.plugins.tooltip.callbacks || {};
+            // config.options.plugins.tooltip.callbacks = callbacks;
+            // callbacks.label = function(context) {
+            //     return context.formattedValue;
+            // };
+            // callbacks.title = function(context) {
+            //     return context[0].dataset.label;
+            // };
+            // callbacks.afterTitle = function(context) {
+            //     return context[0].label;
+            // };
         }
         if (this.options.xaxis_localize) {
             if (!config.options.scales) {
