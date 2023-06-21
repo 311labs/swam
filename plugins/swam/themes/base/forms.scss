@@ -354,6 +354,14 @@ div.swam-month-picker {
     }
 }
 
+div.form-view {
+    &.nopad {
+        div.swam-form-input {
+            padding: 0;
+        }
+    }
+}
+
 
 
 #image-editor {

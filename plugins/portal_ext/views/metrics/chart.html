@@ -6,6 +6,9 @@
             {{#options.filters}}
             <div class="col-auto" id="card_filter"></div>
             {{/options.filters}}
+            {{#options.chart_types}}
+            <div class="col-auto" id="chart_types"></div>
+            {{/options.chart_types}}
             {{{#options.show_refresh}}}
             <div class="col-auto small"><button class="btn btn-light btn-sm" data-action="chart_refresh">{{{ICON('arrow-repeat')}}}</button></div>
             {{{/options.show_refresh}}}

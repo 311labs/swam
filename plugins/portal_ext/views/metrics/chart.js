@@ -36,6 +36,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (this.options.filters) {
             this.enable_filters();
         }
+
+        if (this.options.chart_types) {
+            this.enable_chart_types();
+        }
     },
 
     showBusy: function() {
@@ -99,6 +103,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     enable_filters: function() {
 
         this.addChild("card_filter", new SWAM.Form.View({
+            classes: "form-view nopad",
             fields:[
                 {
                     type: "select",
@@ -106,20 +111,24 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                     size: "sm",
                     options: [
                         {
-                            label: "Monthly",
-                            value: "monthly"
+                            label: "Hourly",
+                            value: "hourly"
                         },
                         {
-                            label: "Yearly",
-                            value: "yearly"
+                            label: "Daily",
+                            value: "daily"
                         },
                         {
                             label: "Weekly",
                             value: "weekly"
                         },
                         {
-                            label: "Daily",
-                            value: "daily"
+                            label: "Monthly",
+                            value: "monthly"
+                        },
+                        {
+                            label: "Yearly",
+                            value: "yearly"
                         },
                     ],
                     columns: 6
@@ -138,8 +147,30 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.children.card_filter.on("input:change", this.on_input_change, this);
     },
 
+    enable_chart_types: function() {
+
+        this.addChild("chart_types", new SWAM.Form.View({
+            classes: "form-view nopad",
+            fields:[
+                {
+                    type: "select",
+                    name: "chart_type",
+                    size: "sm",
+                    options: this.options.chart_types,
+                    columns: 12
+                },
+            ],
+            defaults: this.options
+        }));
+
+        this.children.chart_types.on("input:change", this.on_input_change, this);
+    },
+
     on_input_change: function(evt) {
         this.options[evt.name] = evt.value;
+        if (evt.name == "chart_type") {
+            this.getChild("metrics_chart").options.type = evt.value;
+        }
         this.refresh();
     },
 
@@ -172,6 +203,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 colors.push(`rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.5)`);
             });
             colors.shuffle(); // mix it up
+            this.options.colors = colors;
         } else {
             colors = [...this.options.colors];
         }
@@ -236,6 +268,11 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     },
 
     on_all_metrics: function(data, colors) {
+        if (this.options.filters && this.options.filters.yaxis_localize) {
+            this.options.yaxis_localize = this.options.filters.yaxis_localize[this.options.field];
+            this.getChild("metrics_chart").options.yaxis_localize = this.options.yaxis_localize;
+        }
+        this.options.yaxis_localize = 
         _.each(data.data, function(slug_data, slug) {
             let color = colors.pop();
             this.children.metrics_chart.addDataSet(
