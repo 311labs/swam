@@ -204,9 +204,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             });
             colors.shuffle(); // mix it up
             this.options.colors = colors;
-        } else {
-            colors = [...this.options.colors];
         }
+        colors = [...this.options.colors];
 
         if (this.options.source == "db") {
             this.on_db_metrics(data, colors);
