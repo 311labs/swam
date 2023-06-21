@@ -32,6 +32,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             hide_tooltips: this.options.hide_tooltips,
             hide_legend: this.options.hide_legend
         }));
+
+        if (this.options.filters) {
+            this.enable_filters();
+        }
     },
 
     showBusy: function() {
@@ -67,6 +71,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (this.options.group) {
             params.group = this.options.group;
         }
+
+        if (this.options.field) {
+            params.field = this.options.field;
+        }
         
         this.showBusy();
 
@@ -86,6 +94,53 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     refresh: function() {
         this.refreshDebounced();
+    },
+
+    enable_filters: function() {
+
+        this.addChild("card_filter", new SWAM.Form.View({
+            fields:[
+                {
+                    type: "select",
+                    name: "granularity",
+                    size: "sm",
+                    options: [
+                        {
+                            label: "Monthly",
+                            value: "monthly"
+                        },
+                        {
+                            label: "Yearly",
+                            value: "yearly"
+                        },
+                        {
+                            label: "Weekly",
+                            value: "weekly"
+                        },
+                        {
+                            label: "Daily",
+                            value: "daily"
+                        },
+                    ],
+                    columns: 6
+                },
+                {
+                    type: "select",
+                    name: "field",
+                    size: "sm",
+                    options: this.options.filters.fields,
+                    columns: 6
+                }
+            ],
+            defaults: this.options
+        }));
+
+        this.children.card_filter.on("input:change", this.on_input_change, this);
+    },
+
+    on_input_change: function(evt) {
+        this.options[evt.name] = evt.value;
+        this.refresh();
     },
 
     refreshDebounced: function() {
@@ -125,6 +180,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             this.on_db_metrics(data, colors);
         } else if (this.options.source == "aws") {
             this.on_aws_metrics(data, colors);
+        } else if (this.options.keys == "all") {
+            this.on_all_metrics(data, colors);
         } else {
             this.on_redis_metrics(data, colors);
         }
@@ -170,6 +227,17 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 color = colors.pop();
             }
             
+            this.children.metrics_chart.addDataSet(
+                slug, slug_data, 
+                {backgroundColor: color});
+        }.bind(this));
+
+        this.renderChildren();
+    },
+
+    on_all_metrics: function(data, colors) {
+        _.each(data.data, function(slug_data, slug) {
+            let color = colors.pop();
             this.children.metrics_chart.addDataSet(
                 slug, slug_data, 
                 {backgroundColor: color});
