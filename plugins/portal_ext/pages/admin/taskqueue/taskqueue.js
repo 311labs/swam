@@ -2,8 +2,8 @@
 PORTAL.Views.TaskTabs = SWAM.Views.Tabs.extend({
     on_init: function() {
         SWAM.Views.Tabs.prototype.on_init.call(this)
-        this.addTab("Overview", "overview", new SWAM.View({template:"swamcore.plugins.portal_ext.pages.admin.taskqueue.tasktabs.overview", model: this.options.model}));
-        this.addTab("Data", "data", new SWAM.View({template:"swamcore.plugins.portal_ext.pages.admin.taskqueue.tasktabs.data", model: this.options.model}));
+        this.addTab("Overview", "overview", new SWAM.View({template:"portal_ext.pages.admin.taskqueue.tasktabs.overview", model: this.options.model}));
+        this.addTab("Data", "data", new SWAM.View({template:"portal_ext.pages.admin.taskqueue.tasktabs.data", model: this.options.model}));
         this.addTab("Logs", "logs", new SWAM.Views.Table({
             collection: new SWAM.Collection({url:"/rpc/taskqueue/task/log"}),
             remote_sort: false,
