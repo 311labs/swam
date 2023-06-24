@@ -5,6 +5,10 @@ SWAM.Views.Chart = SWAM.View.extend({
         if (!this.id) this.id = SWAM.Views.Chart.GetNextID(); // charts require unique ids
         if (!this.options.data) this.options.data = {datasets:[]};
         this.options.labels = [];
+        this.options.options = this.options.options || {};
+        if (this.options.aspect_ratio) {
+            this.options.options.aspectRatio = this.options.aspect_ratio;
+        }
     },
 
     setLabels: function(labels) {

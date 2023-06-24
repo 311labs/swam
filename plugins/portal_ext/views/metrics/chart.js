@@ -29,6 +29,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.addChild("metrics_chart", new SWAM.Views.Chart({
             type:this.options.chart_type, max_length:12,
             line_width: this.options.line_width,
+            aspect_ratio: this.options.aspect_ratio,
             yaxis_localize: this.options.yaxis_localize,
             xaxis_localize: this.options.xaxis_localize,
             hide_tooltips: this.options.hide_tooltips,
