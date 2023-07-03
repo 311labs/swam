@@ -51,7 +51,7 @@ PORTAL.Pages.ExampleTables = SWAM.Page.extend({
             ]
         }));
 
-        this.batch_coll = new SWAM.Collection({url:"https://test.payauth.io/rpc/location/ips", size:10});
+        this.batch_coll = new SWAM.Collection({url:"https://example-api.311labs.com/rpc/location/ips", size:10});
         this.children.batch_table.setCollection(this.batch_coll);
         // this.children.batch_table.on("item:clicked", this.on_item_clicked, this);
 

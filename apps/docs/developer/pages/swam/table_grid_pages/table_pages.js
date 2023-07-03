@@ -69,7 +69,7 @@ PORTAL.Pages.ExampleTableGridPages = SWAM.Pages.TablePage.extend({
     },
 
     on_init: function() {
-        this.options.collection = new SWAM.Collection({url:"https://test.payauth.io/rpc/location/ips"});
+        this.options.collection = new SWAM.Collection({url:"https://example-api.311labs.com/rpc/location/ips"});
         this.appendChild("code", new SWAM.View({template:".pages.swam.table_grid_pages.table_pages"}));
         SWAM.Pages.TablePage.prototype.on_init.call(this);
     },

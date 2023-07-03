@@ -97,7 +97,7 @@ PORTAL.Pages.ExampleTableTOC = SWAM.Page.extend({
     },
 
     on_init: function() {
-        this.collection = new SWAM.Collection({url:"https://test.payauth.io/rpc/location/ips", size:20}),
+        this.collection = new SWAM.Collection({url:"https://example-api.311labs.com/rpc/location/ips", size:20}),
         this.appendChild("table_toc", new SWAM.View.TableTOC({
             title: this.options.title,
             filters: this.options.filters,

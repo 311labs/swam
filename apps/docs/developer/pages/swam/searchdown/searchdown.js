@@ -7,7 +7,7 @@ PORTAL.Pages.ExampleSearchDown = SWAM.Page.extend({
     on_init: function() {
         this.collection = new SWAM.Collection({
             debounce_time: 1000,
-            url:"https://test.payauth.io/rpc/location/ips",
+            url:"https://example-api.311labs.com/rpc/location/ips",
             size:20}),
 
         this.addChild("mysearchdown", new SWAM.Views.SearchDown({
