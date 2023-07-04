@@ -480,3 +480,18 @@ window.captureScreen = function(callback) {
 }
 
 
+window.supportsInputEvent = function() {
+    if ('oninput' in document.body) {
+        return true;
+    }
+
+    document.body.setAttribute('oninput', 'return');
+
+    var supports = typeof document.body.oninput === 'function';
+    delete document.body.oninput;
+    return supports;
+}
+
+window.supportsPropertyChangeEvent = function() {
+    return 'onpropertychange' in document.body;
+}
