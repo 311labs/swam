@@ -180,8 +180,14 @@ SWAM.Dialog = SWAM.View.extend({
         dlg.show();
         return dlg;
     },
-    warning: function(opts) {
-        if (_.isString(opts)) opts = {"title": "Alert", "message":opts};
+    warning: function(opts, extra) {
+        if (_.isString(opts)) {
+            if (_.isString(extra)) {
+                opts = {"title": opts, "message": extra};
+            } else {
+                opts = {"title": "Alert", "message":opts};
+            }
+        }
         opts = _.extend({add_classes: "modal-danger", can_dismiss:true, icon: "exclamation-triangle-fill"}, opts);
         var dlg = new this(opts);
         dlg.show();
