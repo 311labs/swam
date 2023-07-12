@@ -4,6 +4,7 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
     defaults: {
         columns: [
             {label:"Created", field:"created|datetime"},
+            {label:"Last Seen", field:"modified|datetime"},
             {label:"Name", field:"name"},
             {label:"Kind", field:"kind"},
             {label:"CM", field:"cm_provider"}
@@ -11,7 +12,7 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
         Collection: SWAM.Collections.MemberDevice,
         collection_params: {
             size: 15,
-            sort: "-created"
+            sort: "-modified"
         },
         filter_bar: null
     },
