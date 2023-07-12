@@ -9,6 +9,8 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		replaces_el: false,
 		only_one: true,
 		menu: null,
+		group_menu_name: "default",
+		default_group_page: null,
 		admin_menu: [
 			{
 				label: "Admin Dashboard",
@@ -57,6 +59,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	},
 
 	showMenu: function(name) {
+		this.options.active_menu_name = name;
 		if (name == "admin") {
 			this.template = "swam.ext.nav.sidebar.adminbar";
 			this.$el.removeClass("bg-dark").addClass("bg-light");
@@ -194,8 +197,67 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			});
 	},
 
+	findMenu: function(page_name, menu) {
+		return _.find(menu, function(item){
+			if (item.page == page_name) return true;
+			if (item.items) {
+				let sub_menu = this.findMenu(page_name, item.items);
+				if (sub_menu) return true;
+			}
+			return false;
+		}.bind(this));
+	},
+
+	getPageMenu: function(page_name) {
+		let menu_items = null; 
+		if (this.options.menu) {
+			menu_items = this.options.menu;
+			if (menu_items.menu) menu_items = menu_items.menu;
+			let menu = this.findMenu(page_name, menu_items);
+			if (menu) return "default";
+		}
+
+		if (this.options.menus) {
+			let name = null;
+			let result = _.find(this.options.menus, function(menu, menu_name) {
+				menu_items = menu;
+				if (menu_items.menu) menu_items = menu_items.menu;
+				let smenu = this.findMenu(page_name, menu_items);
+				name = menu_name;
+				return smenu != null;
+
+			}.bind(this));
+			if (result) return name;
+		}
+
+		if (this.options.admin_menu) {
+			menu_items = this.options.admin_menu;
+			if (menu_items.menu) menu_items = menu_items.menu;
+			let menu = this.findMenu(page_name, menu_items);
+			if (menu) return "admin";
+		}
+		return null;
+	},
+
 	on_action_searchdown: function(evt) {
-		app.setGroup(app.groups.get($(evt.currentTarget).data("id")));
+		let group = app.groups.get($(evt.currentTarget).data("id"));
+		if (!this.options.default_group_page) {
+			app.setGroup(group);
+			return;
+		}
+
+		let menu_name = this.getPageMenu(app.active_page.page_name);
+		if (menu_name != this.options.group_menu_name) {
+			// side bar hack for not double loading
+			app.group = group;
+			app.setActivePage(this.options.default_group_page);
+			window.sleep(500).then(function() {
+				app.group = null;
+				app.setGroup(group);
+			});
+		} else {
+			app.setGroup(group);
+		}
 	},
 
 	on_rendered: function() {
