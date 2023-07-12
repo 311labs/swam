@@ -259,6 +259,7 @@ SWAM.Form.Builder.textarea = function(fc, form_info) {
 	SWAM.Form.Builder.label(fc);
 	fc.$input = $("<textarea />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
 	if (!fc.rows) fc.rows = 3;
+	if (fc.autoheight) fc.$input.addClass("textarea-autoheight");
 	fc.$input.attr("rows", fc.rows);
 	SWAM.Form.Builder.orderLabel(fc, form_info);
 	return fc;

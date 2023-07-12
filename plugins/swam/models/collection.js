@@ -307,6 +307,18 @@ SWAM.Collection = SWAM.Object.extend({
         }
     },
 
+    fetchSummary: function(callback, opts) {
+        SWAM.Rest.GET(
+            this.getUrl(), 
+            _.extend({format:"summary_only"}, this.params),
+            function(data, status) {
+                this._request = null;
+                if (callback) callback(this, status, data);
+            }.bind(this),
+            opts
+        );
+    },
+
     _debounced_callbacks: function(col, status, data) {
         if (this._callbacks) {
             _.each(this._callbacks, function(callback){

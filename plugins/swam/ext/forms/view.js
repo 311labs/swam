@@ -11,6 +11,7 @@ SWAM.Form.View = SWAM.View.extend({
         "change input": "on_input_handler",
         "change select": "on_input_handler",
         "keydown input": "on_stop_submit",
+        "keydown textarea": "on_stop_submit",
         "keyup input.watch-length": "on_input_length",
         "click form.search button": "on_submit"
     },
@@ -43,9 +44,23 @@ SWAM.Form.View = SWAM.View.extend({
 
     on_stop_submit: function(evt) {
         if (evt.keyCode == 13) {
+            let $el = $(evt.currentTarget);
+            if (evt.currentTarget.tagName.lower() == "textarea") {
+                if (!evt.shiftKey) {
+                    let action = $el.data("action");
+                    if (action) {
+                        var ievt = {name:$el.attr("name"), value:$el.val(), event:evt, action:action};
+                        this.trigger("input:submit", ievt);
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            }
             evt.stopPropagation();
             evt.preventDefault();
-            $(evt.currentTarget).change();
+            $el.change();
             return false;
         }
         return true;
@@ -66,6 +81,17 @@ SWAM.Form.View = SWAM.View.extend({
             }
         }
         return true;
+    },
+
+    on_input_autoheight: function(evt) {
+        let $el = $(evt.currentTarget);
+        return true;
+    },
+
+    on_autoresize_textarea: function(evt) {
+        let $textarea = $(evt.currentTarget);
+        let text = $textarea.val();
+        evt.currentTarget.height = evt.currentTarget.scrollHeight;
     },
 
     on_submit: function(evt) {
@@ -180,6 +206,68 @@ SWAM.Form.View = SWAM.View.extend({
         } else {
             this.$el.find("input.thumbnail-picker").InputImage();
         }
+    },
+
+    on_init__textarea_autoheight: function() {
+        var self = this;
+        this.$el.find("textarea.textarea-autoheight").each(function(){
+            var $textarea = $(this).css({
+                    'overflow-y': 'auto',
+                    'resize': 'none'
+                }),
+
+                maxHeight = $(document).height() / 3;
+                minHeight = $textarea.height(),
+                previousHeight = minHeight,
+
+                $slave = (function() {
+                    var $clone = $textarea.clone()
+                        .attr('tabindex', -1)
+                        .removeAttr('id')
+                        .removeAttr('name')
+                        .css({
+                            'position': 'absolute',
+                            'top': 0,
+                            'left': -9999
+                        });
+
+                    return $clone.insertBefore($textarea);
+                })(),
+
+                adjustHeightIfNeeded = function () {
+                    var text = $textarea.val(),
+                        height;
+
+                    $slave
+                        .width($textarea.width())
+                        .height(0)
+                        .val(text)
+                        .scrollTop(9999);
+
+                    height = Math.max(minHeight, $slave.scrollTop() + 15);
+                    height = Math.min(maxHeight, height);
+                    if (height === previousHeight) {
+                        return;
+                    }
+
+                    previousHeight = height;
+                    $textarea.height(height);
+                };
+
+            $textarea.unbind('.resize');
+
+            if (supportsInputEvent()) {
+                $textarea.bind('input.resize', adjustHeightIfNeeded);
+            }
+            else if (supportsPropertyChangeEvent()) {
+                $textarea.bind('propertychange.resize', adjustHeightIfNeeded);
+            }
+            else {
+                $textarea.bind('keypress.resize', adjustHeightIfNeeded);
+            }
+
+            adjustHeightIfNeeded();
+        });
     },
 
     on_init__datepicker: function() {
@@ -333,6 +421,10 @@ SWAM.Form.View = SWAM.View.extend({
             ievt.value = $el.is(":checked");
         }
         this._handle_input_change(ievt);
+    },
+
+    _handle_textarea_autoheight: function(evt, el) {
+
     },
 
     _handle_input_change(ievt) {

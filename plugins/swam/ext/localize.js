@@ -477,6 +477,31 @@ SWAM.Localize = {
         }
         return value;
     },
+
+    'pydict_to_json': function(value, attr, fmt) {
+        try {
+            // Replace single quotes with double quotes 
+            // Use a regular expression to match single quotes that are not inside other quotes
+            let jsonString = dictString.replace(/(\s*?{\s*?|\s*?,\s*?)(('\w+')\s*?:)/g, function(_, $1, $2){
+                return $1 + $2.replace(/'/g, '"');
+            });
+            
+            value = value.replace(/\t/g, '');
+            value = value.replace(/\n/g, '');
+            value = value.replace(/None/g, 'null');
+            value = value.replace(/True/g, 'true');
+            value = value.replace(/False/g, 'false');
+            value = value.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '');
+            // Convert the string to a JSON object
+            let jsonObj = JSON.parse(jsonString);
+            
+            return jsonObj;
+        } catch (error) {
+            console.log(`Error converting string to JSON: ${error}`);
+            return null;
+        }
+    },
+
     'prettyjson': function(value, attr, fmt) {
         if (_.isObject(value)) {
             return window.syntaxHighlight(value);
@@ -487,19 +512,15 @@ SWAM.Localize = {
 
         resp = value.trim();
         if (resp.length && (resp[0] == "{")) {
-            value = resp.replace(/u\'/g, '"');
-            value = value.replace(/\t/g, '');
-            value = value.replace(/\n/g, '');
-            value = value.replace(/\'/g, '"');
-            value = value.replace(/None/g, 'null');
-            value = value.replace(/True/g, 'true');
-            value = value.replace(/False/g, 'false');
-            value = value.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '')
             try {
                 value = JSON.parse(value);
                 return window.syntaxHighlight(value);
                 // return JSON.stringify(value, undefined, 2);
             } catch(err) {
+                value = this.pydict_to_json(value);
+                if (value != null) {
+                    return window.syntaxHighlight(value); 
+                }
                 console.log(err);
             }
         }
