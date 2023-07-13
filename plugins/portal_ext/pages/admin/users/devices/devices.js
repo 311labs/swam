@@ -3,8 +3,9 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
     classes: "swam-paginated-table swam-table-clickable swam-table-tiny",
     defaults: {
         columns: [
-            {label:"Created", field:"created|datetime"},
-            {label:"Last Seen", field:"modified|datetime"},
+            {label:"Created", field:"created|date"},
+            {label:"Last Seen", field:"modified|ago"},
+            {label:"IP", field:"ip"},
             {label:"Name", field:"name"},
             {label:"Kind", field:"kind"},
             {label:"CM", field:"cm_provider"}
