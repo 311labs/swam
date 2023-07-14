@@ -264,6 +264,9 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}
 	},
 
+	setActiveMenu: function(name) {
+		app.getChild("panel-left").showMenu(name);
+	},
 
 	on_ws_connected: function() {
 

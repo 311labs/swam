@@ -406,6 +406,19 @@ div.sidebar-container {
 
 }
 
+div.swam-metrics-chart {
+    div.swam-search-down {
+        button.btn-default {
+            background-color: #f7f7f7;
+            border-color: #ced4da;
+        }
+
+        input#search {
+            border: 1px solid #ced4da;
+        }
+    }
+}
+
 div.sidebar-collapse {
     .nav-link {
         padding-left: 1.8rem;

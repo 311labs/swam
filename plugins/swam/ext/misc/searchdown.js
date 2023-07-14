@@ -36,6 +36,7 @@ SWAM.Views.SearchDown = SWAM.View.extend({
 
     on_init: function() {
         this.collection = this.options.collection;
+        this.collection.params.size = 10;
         this.list = new this.options.List(_.extend({tagName:"div"}, this.options));
         this.list.on("item:clicked", this.on_item_clicked, this);
         this.addChild("searchdown-list", this.list);

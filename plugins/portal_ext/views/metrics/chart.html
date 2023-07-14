@@ -2,7 +2,9 @@
     <div class="card-header d-inline {{options.title_classes}}">
         <div class="row">
             <div class="col h4">{{{options.title}}}</div> 
-            <div class="col-auto text-end small">{{options.period_beg}} - {{options.period_end}}</div>
+            {{#options.group_select}}
+            <div class="col-auto" id="group_select"></div>
+            {{/options.group_select}}
             {{#options.filters}}
             <div class="col-auto" id="card_filter"></div>
             {{/options.filters}}

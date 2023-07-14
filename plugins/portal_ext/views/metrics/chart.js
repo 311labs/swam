@@ -1,6 +1,6 @@
 PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     template: "portal_ext.views.metrics.chart",
-    classes: "position-relative",
+    classes: "position-relative swam-metrics-chart",
 
     defaults: {
         title: "Metrics Chart",
@@ -43,6 +43,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (this.options.chart_types) {
             this.enable_chart_types();
         }
+
+        if (this.options.group_select) {
+            this.enable_group_select();
+        }
     },
 
     showBusy: function() {
@@ -81,6 +85,17 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
         if (this.options.field) {
             params.field = this.options.field;
+        }
+
+        if (this.options.group_select) {
+            let gs = this.getChild("group_select");
+            
+            if (this.options.parent) {
+                gs.collection.params.child_of = this.options.parent;
+                // gs.setActive(this.options.group);
+            }
+
+            gs.collection.fetch();
         }
         
         this.showBusy();
@@ -167,6 +182,26 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }));
 
         this.children.chart_types.on("input:change", this.on_input_change, this);
+    },
+
+    enable_group_select: function() {
+        let collection = new SWAM.Collections.Group();
+
+        this.addChild("group_select", new SWAM.Views.SearchDown({
+            btn_classes: "btn btn-default btn-sm text-decoration-none",
+            remote_search: true,
+            auto_fetch: true,
+            collection: collection, 
+            empty_label: this.options.empty_label
+        }));
+        // this.children.chart_types.on("input:change", this.on_input_change, this);
+    },
+
+    on_action_searchdown: function(evt) {
+        // get the model straight from the component
+        // let model = this.getChild("group_select").active_model;
+        this.options.group = $(evt.currentTarget).data("id");
+        this.refresh();
     },
 
     on_input_change: function(evt) {
