@@ -9,7 +9,6 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_started: function() {
-		Toast.setTheme(TOAST_THEME.DARK);
 		this.options.is_ready = false;
 		if (!this.options.disable_ws) {
 			this.ws = new SWAM.PubSubClient();

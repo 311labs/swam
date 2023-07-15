@@ -14,7 +14,9 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 		if ((field == "")|| (field == " ")) field = {type:"line", columns:12};
 		if (_.isString(field)) field = {label:field, type:"label"};
 		var fc = _.extend({type:"text", columns:12, column_size:"sm"}, _.deepClone(field)); // copy the field so we can manipulate its info
-
+		if (options.config && field.name && options.config[field.name]) {
+			fc = _.extend(fc, options.config[field.name]);
+		}
 
 		if (fc.type == "group") {
 			SWAM.Form.buildGroup(fc, form_info);
@@ -413,6 +415,10 @@ SWAM.Form.Builder.options = function(fc, form_info) {
 
 	if (fc.placeholder) {
 		fc.$input.append($("<option />").text(fc.placeholder).val(""));
+	}
+
+	if (fc.collection && !fc.options) {
+		fc.options = fc.collection;
 	}
 
 	if (fc.options != undefined) {

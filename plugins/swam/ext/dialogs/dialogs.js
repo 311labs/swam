@@ -307,7 +307,7 @@ SWAM.Dialog = SWAM.View.extend({
         
         if (fields) opts.fields = fields;
         opts = _.extend(defaults, opts);
-        var view = new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model});
+        var view = new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model, config:opts.form_config});
         var dlg = new this(opts);
         dlg.addChild(".modal-body", view);
         dlg.show();

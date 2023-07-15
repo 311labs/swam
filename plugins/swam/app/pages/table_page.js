@@ -12,6 +12,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		collection_params: {
 			size: 10
 		},
+		form_config: {
+
+		},
 		table_classes: "swam-table-clickable",
 		add_button: {
 	        type: "button",
@@ -180,6 +183,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 					title:"Edit",
 					size: "md",
 					fields: this.options.edit_form,
+					form_config: this.options.form_config,
 					callback:function(model, resp) {
 						if (resp.status) {
 						// auto saved nothing to do
@@ -195,6 +199,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	    var options = {
 			title:"Add",
 			size: "md",
+			form_config: this.options.form_config,
 			callback:function(model, resp) {
 				if (resp.status) {
 				// auto saved nothing to do

@@ -40,6 +40,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 	var defaults = {
 	    title: "Edit",
 	    padded: true,
+	    form_config: {},
 	    use_app_group: model.id == null, // only use app group on new models?
 	    buttons: [
 	        {
@@ -104,6 +105,6 @@ SWAM.Dialog.editModel = function(model, opts) {
 	};
 
 
-	return this.showView(new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model}), opts);
+	return this.showView(new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model, config:opts.form_config}), opts);
 };
 

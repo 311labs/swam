@@ -32,7 +32,7 @@ SWAM.Form.View = SWAM.View.extend({
     },
 
     on_render: function() {
-        var html = SWAM.Form.build(this.options.fields, this.options.defaults, this.options.model);
+        var html = SWAM.Form.build(this.options.fields, this.options.defaults, this.options.model, {config:this.options.config});
         if (this.options.title) {
             this.$el.empty();
             this.$el.append($("<div class='card-header'>" + this.options.title + "</div>"));
