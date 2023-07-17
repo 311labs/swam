@@ -101,6 +101,8 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
 
         this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
 
+        this.tabs.addTab("Sessions", "sessions", new PORTAL.Views.MemberSessions());
+
         this.tabs.setActiveTab("details");
 
         this.addChild("tabs", this.tabs);
