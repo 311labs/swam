@@ -118,7 +118,10 @@ SWAM.View = SWAM.Object.extend({
         if (lst.has(name)) return;
         lst.push(name);
         this.classes = lst.join(" ");
-        if (this.$el) this.$el.attr("class", this.classes);
+        if (this.$el) {
+            this.$el.attr("class", this.classes);
+            if (this.options.add_classes) this.$el.addClass(this.options.add_classes);
+        }
     },
     removeClass: function(name) {
         var lst = this.classes.split(' ');
