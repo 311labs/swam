@@ -79,6 +79,12 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             }
         }
 
+        if (this.options.samples) {
+            if (this.options.granularity == "daily") {
+                params.since = moment().subtract(this.options.samples, "d").format("YYYY-MM-DD");
+            }
+        }
+
         if (this.options.group) {
             params.group = this.options.group;
         }
