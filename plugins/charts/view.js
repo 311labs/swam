@@ -1,6 +1,11 @@
 SWAM.Views.Chart = SWAM.View.extend({
     tagName: "canvas",
 
+    defaults: {
+        tension: 0.4,
+        fill: false
+    },
+
     on_init: function() {
         if (!this.id) this.id = SWAM.Views.Chart.GetNextID(); // charts require unique ids
         if (!this.options.data) this.options.data = {datasets:[]};
@@ -127,9 +132,9 @@ SWAM.Views.Chart = SWAM.View.extend({
     on_init_line: function(config) {
         config.data.labels = this.options.labels;
         _.each(config.data.datasets, function(ds){
-            if (ds.fill == undefined) ds.fill = false;
-            if (ds.tension == undefined) ds.tension = 0.1;
-        });
+            if (ds.fill == undefined) ds.fill = this.options.fill;
+            if (ds.tension == undefined) ds.tension = this.options.tension;
+        }.bind(this));
 
         if (this.options.yaxis_localize) {
             config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
