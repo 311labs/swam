@@ -48,7 +48,7 @@ PORTAL.Views.EmailMessage = SWAM.Views.Tabs.extend({
         SWAM.Views.Tabs.prototype.on_init.call(this)
 
         this.addTab("Message", "message", 
-            new SWAM.View({template:"swamcore.plugins.portal_ext.pages.admin.email.message"}));
+            new SWAM.View({template:"portal_ext.pages.admin.email.message"}));
         
 
         let collection = new SWAM.Collections.EmailAttachment();
