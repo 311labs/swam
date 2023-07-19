@@ -32,6 +32,11 @@ PORTAL.Menus.Admin = [
 		page: "admin_dashboard"
 	},
 	{
+		icon: "list-check",
+		label:"Task Queue",
+		page: "taskqueue"
+	},
+	{
 		icon: "wrench-adjustable-circle",
 		label: "System",
 		items: [
@@ -49,11 +54,6 @@ PORTAL.Menus.Admin = [
 				icon: "journals",
 				label:"Logs",
 				page: "audit_logs"
-			},
-			{
-				icon: "list-check",
-				label:"Task Queue",
-				page: "taskqueue"
 			}
 		]
 	},
