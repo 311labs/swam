@@ -4,6 +4,12 @@ PORTAL.Pages.EmailMessage = SWAM.Pages.TablePage.extend({
         title: "Email Incoming Messages",
         list_options: {
             add_classes: "swam-table-clickable",
+            batch_select: true,
+            download_prefix: "emails",
+            view_only: true, // don't show edit for on click
+            batch_actions: [
+                {label:"Delete", icon:"trash", action:"batch_delete"},
+            ],
         },
         columns: [
             {label: "Sent", field:"sent_at|datetime"},

@@ -225,6 +225,38 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		SWAM.Dialog.editModel(new this.collection.options.Model(), options);
 	},
 
+	on_action_batch_delete: function(evt) {
+	    let selected = this.getBatchSelected();
+	    let deleted = 0;
+	    SWAM.Dialog.confirm({
+	        title: `Delete ${selected.length} Items?`,
+	        message: "Are you sure you want to remove the selected items?",
+	        callback: function(dlg, value) {
+	            dlg.dismiss();
+	            if (value.lower() == "yes") {
+	                dlg.dismiss();
+	                app.showBusy({icon:"trash"});
+	                _.each(selected, function(item, index){
+	                    item.model.destroy(function(model, resp) {
+	                    	if (index == selected.length-1) {
+	                    		app.hideBusy();
+	                    	}	             
+	                        if (resp.status) {
+	                        	deleted += 1;
+	                            if (index == selected.length-1) {
+	                                SWAM.toast("Items Deleted", `Deleted ${deleted} of ${selected.length}`, "success", 4000);
+	                                this.collection.fetch();
+	                            }
+	                        } else {
+	                            SWAM.toast(`Delete Failed for id = ${model.id}`, resp.error, "danger", 5000, true);
+	                        }
+	                    }.bind(this));
+	                }.bind(this))
+	            }
+	        }.bind(this)
+	    });
+	},
+
 	on_action_download_pdf: function(evt) {
 	    SWAM.toast("Add Group", "Not implemented yet", "warning");
 	},
