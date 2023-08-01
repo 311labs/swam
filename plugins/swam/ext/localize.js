@@ -171,7 +171,7 @@ SWAM.Localize = {
         } else {
             tip = fmt || "not set";
         }
-        return `<span data-bs-toggle="tooltip" data-bs-placement="${pos}" title="" data-bs-original-title="Copy to clipboard" aria-label="Copy to clipboard">${value}</span>`;
+        return `<span data-bs-toggle="tooltip" data-bs-placement="${pos}" title="" data-bs-original-title="${tip}" aria-label="${tip}">${value}</span>`;
     },
 
     'yesno_color': function(value, attr, fmt) {

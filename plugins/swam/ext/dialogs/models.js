@@ -89,7 +89,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 				if (callback) callback(model, {status:true});
 				return;
 			}
-			app.showBusy({icon:"upload", timeout:4000, color:"warning", no_timeout_alert:false});
+			app.showBusy({icon:"upload", timeout:false, color:"warning", no_timeout_alert:true});
 			// FIXME: this is not good, and can cause issues when in admin pages, etc
 			if (opts.use_app_group && app.group && (data.group == undefined)) data.group = app.group.id;
 			model.save(data, function(model, resp) {

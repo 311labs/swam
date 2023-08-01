@@ -322,7 +322,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_busy_timeout: function(opts) {
         if (SWAM.active_dialog && !SWAM.active_dialog.options.no_timeout_alert) {
-            SWAM.Dialog.warning("timed out");
+            SWAM.toast("Warning", "The busy indicator timed out!", "danger", 10000, true);
         }
         this.cancelBusy();
     },
@@ -347,7 +347,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     showBusy: function(opts) {
         options = _.extend({timeout:12000}, opts);
         this.cancelBusy();
-        if (_.isNumber(options.timeout)) {
+        if (_.isNumber(options.timeout) && (options.timeout > 0)) {
             this._busy_info = options;
             this._busy_dlg = SWAM.Dialog.showLoading(options);
             this._wait_timer = setTimeout(function(evt){

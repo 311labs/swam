@@ -321,6 +321,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		// successul subscription
 		evt = msg.message;
 		this.trigger("group_event", evt);
+		if (app.active_page.on_ws_group_event) app.active_page.on_ws_group_event(evt);
 	},
 
 	on_ws_channel_incident: function(msg) {
