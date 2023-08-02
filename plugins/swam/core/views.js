@@ -38,8 +38,9 @@ SWAM.View = SWAM.Object.extend({
         this.setElement(document.createElement(this.tagName));
         if (this.options.parent) this.options.$parent = $(this.options.parent);
         if (this.options.$parent) {
-            delete this.options.$parent;
-            this.addToDOM(opts.$parent);
+            let $el = this.options.$parent;
+            this.options.$parent = null;
+            this.addToDOM($el);
         }
         this.on_init();
     },

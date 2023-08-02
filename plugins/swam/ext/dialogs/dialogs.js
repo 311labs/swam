@@ -252,7 +252,6 @@ SWAM.Dialog = SWAM.View.extend({
             opts.template = "swam.ext.dialogs.inline_loader";
             opts.classes = "swam-view inline-modal";
             var dlg = new SWAM.View(opts);
-            dlg.addToDOM(opts.parent);
             return dlg;
         }
         var dlg = new this(opts);
