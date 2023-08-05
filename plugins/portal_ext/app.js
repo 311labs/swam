@@ -355,6 +355,11 @@ PORTAL.PortalApp = SWAM.App.extend({
 				error_url: url
 			}
 		};
+		if (app.member) {
+			data.metadata.username = app.member.get("username");
+			data.component = "account.Member";
+			data.component_id = app.member.id;
+		}
 		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
 		event.save(data);
 		return false;

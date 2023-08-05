@@ -170,6 +170,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_item_clicked: function(item, evt) {
+		this.on_item_edit(item, evt);
+	},
+
+	on_item_edit: function(item, evt) {
 		if (!this.options.edit_form) {
 			this.options.edit_form = this.collection.options.Model.EDIT_FORM;
 		}
