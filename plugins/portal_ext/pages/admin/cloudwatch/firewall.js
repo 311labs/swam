@@ -10,7 +10,7 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
         },
         columns: [
             {label:"When", field:"created|datetime"},
-            {label:"IP", field:"reporter_ip"},
+            {label:"IP", field:"metadata.ip"},
             {label:"ISP", field:"metadata.isp"},
             {label:"City", field:"metadata.city"},
             {label:"State", field:"metadata.province"},
@@ -23,7 +23,6 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
             category: "firewall",
             size: 10
         },
-        add_button: false,
         search_field: "reporter_ip__icontains",
         group_filtering: false,
         filters: [
@@ -44,6 +43,35 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
         // this.view.setModel(item.model);
         SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
     },
+
+    on_action_add: function(evt) {
+        SWAM.Dialog.showForm([
+                {
+                    label: "IP",
+                    name: "ip"
+                }
+            ], {
+                title: "Block IP Address",
+                can_dismiss: true,
+                callback: function(dlg) {
+                    let data = dlg.getData();
+                    data.action = "block";
+                    dlg.dismiss();
+                    if (data.ip && data.ip.isIPV4()) {
+                        SWAM.Rest.POST(
+                            "/rpc/incident/firewall", data,
+                            function(resp, status) {
+                                if (resp.status) {
+                                    SWAM.toast("FIREWALL", `IP '${data.ip}' is now blocked`, "success", 5000, true);
+                                } else {
+                                    SWAM.toast("FIREWALL", `IP '${data.ip}' block FAILED`, "danger", 5000, true);
+                                }
+                            });
+                    }
+                    
+                }
+            });
+    }
 
 });
 

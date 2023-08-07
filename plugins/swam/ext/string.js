@@ -199,6 +199,12 @@ String.prototype.isSSN = function() {
     return this.length == 9 && this.match(/^\d+$/) && true;
 };
 
+window.IPV4PATTERN = /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})$/;
+
+String.prototype.isIPV4 = function() {
+    return IPV4PATTERN.test(this);
+};
+
 String.prototype.formatSSN = function() {
     // return this.replace(/^(\d{3})(\d{3})(\d)+$/, "($1)$2-$3");
     var value = this;
