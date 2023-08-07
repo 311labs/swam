@@ -11,6 +11,10 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
         columns: [
             {label:"When", field:"created|datetime"},
             {label:"IP", field:"reporter_ip"},
+            {label:"ISP", field:"metadata.isp"},
+            {label:"City", field:"metadata.city"},
+            {label:"State", field:"metadata.province"},
+            {label:"Country", field:"metadata.country"},
             {label:"Server", field:"hostname"},
             {label:"Action", field:"metadata.action"},
         ],

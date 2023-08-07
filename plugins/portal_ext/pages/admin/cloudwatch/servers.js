@@ -18,6 +18,9 @@ PORTAL.Pages.ServerInfo = SWAM.Pages.TablePage.extend({
         Collection: SWAM.Collections.ServerInfo,
         add_button: false,
         group_filtering: false,
+        collection_params: {
+            graph: "detailed",
+        },
     },
 
     on_init: function() {
