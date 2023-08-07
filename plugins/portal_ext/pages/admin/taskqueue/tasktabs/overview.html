@@ -18,7 +18,7 @@
         <div class="col">
             <div class="swam-field" data-label="Created">
                 {{#options.model.created}}
-                {{options.model.created|datetime_utc}}
+                {{options.model.created|datetime_tz}}
                 {{/options.model.created}}
                 {{^options.model.created}}
                     n/a
@@ -28,7 +28,7 @@
         <div class="col">
             <div class="swam-field" data-label="Modified">
                 {{#options.model.state}}
-                {{options.model.state|datetime_utc}}
+                {{options.model.state|datetime_tz}}
                 {{/options.model.state}}
                 {{^options.model.state}}
                     n/a
@@ -39,26 +39,28 @@
     
     <div class="row">
         <div class="col">
-            <div class="swam-field" data-label="Started At"">
-                {{#options.model.started_at}}
-                {{options.model.started_at|datetime_utc}}
-                {{/options.model.started_at}}
-                {{^options.model.started_at}}
+            <div class="swam-field" data-label="Schedule For">
+                {{#options.model.scheduled_for}}
+                {{options.model.scheduled_for|datetime_tz}}
+                {{/options.model.scheduled_for}}
+                {{^options.model.scheduled_for}}
                     n/a
-                {{/options.model.started_at}}
+                {{/options.model.scheduled_for}}
             </div>
         </div>
         <div class="col">
-            <div class="swam-field" data-label="Completed At"">
-                {{#options.model.completed_at}}
-                {{options.model.completed_at|datetime_utc}}
-                {{/options.model.completed_at}}
-                {{^options.model.completed_at}}
+            <div class="swam-field" data-label="Stale At">
+                {{#options.model.stale_after}}
+                {{options.model.stale_after|datetime_tz}}
+                {{/options.model.stale_after}}
+                {{^options.model.stale_after}}
                     n/a
-                {{/options.model.completed_at}}
+                {{/options.model.stale_after}}
             </div>
         </div>
     </div>
+
+
     
     <div class="swam-field" data-label="Reason">
         {{#options.model.reason}}
