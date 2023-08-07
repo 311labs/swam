@@ -100,12 +100,17 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			app.on("group:change", this.on_group_change, this);
 		}
 
-		if (this.options.no_search) {
+		if (this.options.no_search || this.options.search_field) {
 			var searchfield = _.find(this.options.filter_bar[0].fields, function(field) {
 				return (field.name == "search");
 			});
 			if (searchfield) {
-				this.options.filter_bar[0].fields.remove(searchfield);
+				if (this.options.no_search) {
+					this.options.filter_bar[0].fields.remove(searchfield);
+				} else if (this.options.search_field) {
+					searchfield.name = this.options.search_field;
+				}
+				
 			}
 		}
 

@@ -24,7 +24,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
             param_name = this.getParamFromOperator(name, evt.operator);
         }
         this.removeParam(name);
-        if ((val != undefined)&&(val != null)) {
+        if ((val != undefined)&&(val != null)&&(val != "")) {
             this.options.list.collection.params[param_name] = val;
         }
         this.options.list.collection.resetPager();

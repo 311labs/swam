@@ -160,22 +160,51 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
     },
 
     on_init_bar: function(){
-        this.addChild("barchart_cmpltd", new SWAM.Views.Chart({type:"bar", max_length:6}));
-        this.addChild("barchart_failed", new SWAM.Views.Chart({type:"bar", max_length:6}));
-        this.addChild("barchart_lngst", new SWAM.Views.Chart({type:"bar", max_length:6}));
+        this.addChild("table_workers", new SWAM.Views.Table({
+            collection: new SWAM.Collection({url:"/rpc/taskqueue/workers", params:{graph:"detailed"}}),
+            remote_sort: false,
+            add_classes: "swam-table-clickable",
+            columns: [
+                {label:"Host", field: "hostname"},
+                {label:"Up", field: "uptime|prettytimer"},
+                {label: "Running", field: "running"},
+                {label:"Pending", field: "pending"},
+                {label:"Scheduled", field: "scheduled"}
+            ],
+            pagination: false,
+        }));
+        this.children.table_workers.on("item:clicked", this.on_worker_clicked, this);
+
+
+        this.addChild("barchart_cmpltd", new SWAM.Views.Chart({
+            type:"bar",
+            height: "200px",
+            max_length:6
+        }));
         this.children.barchart_cmpltd.setLabels(this.dayLabels);
-        this.children.barchart_failed.setLabels(this.dayLabels);
-        this.children.barchart_lngst.setLabels(this.dayLabels);
         this.children.barchart_cmpltd.addDataSet("Completed", this.daily_cmpltd, {backgroundColor: 'green'});
-        this.children.barchart_failed.addDataSet("Failed", this.daily_fails, {backgroundColor: 'red'});
-        this.children.barchart_lngst.addDataSet("Longest", this.daily_lngst, {backgroundColor: 'blue'});
+        this.children.barchart_cmpltd.addDataSet("Failed", this.daily_fails, {backgroundColor: 'red'});
+        // this.children.barchart_failed.addDataSet("Failed", this.daily_fails, {backgroundColor: 'red'});
+        // this.children.barchart_lngst.addDataSet("Longest", this.daily_lngst, {backgroundColor: 'blue'});
 
         //this.collection = new SWAM.Collection({url:"/rpc/taskqueue/task"});
         SWAM.Pages.TablePage.prototype.on_init.call(this);
     },
 
+    on_worker_clicked: function(item) {
+        SWAM.Dialog.show({
+            title: item.model.get("hostname"),
+            json: item.model.attributes
+        });
+    },
+
+    on_action_refresh: function() {
+        this.refresh();
+    },
+
     refresh: function() {
         this.collection.fetch();
+        this.getChild("table_workers").collection.fetch();
         SWAM.Rest.GET("/rpc/taskqueue/task/stats", null, function(resp, status) {
             if (resp.status) {
                 this.stats = resp.data.stats;
@@ -198,7 +227,6 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             this.dayLabels.push(SWAM.Localize.moment(element.day,"", null, "MM/DD"));
             this.daily_cmpltd.push(element.completed);
             this.daily_fails.push(element.failed);
-            this.daily_lngst.push(element.longest);
         });
         this.renderChildren();
     },

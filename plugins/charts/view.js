@@ -11,6 +11,9 @@ SWAM.Views.Chart = SWAM.View.extend({
         if (!this.options.data) this.options.data = {datasets:[]};
         this.options.labels = [];
         this.options.options = this.options.options || {};
+        if (this.options.height) {
+            this.options.aspect_ratio = true;
+        }
         if (this.options.aspect_ratio) {
             this.options.options.aspectRatio = this.options.aspect_ratio;
         }
@@ -212,6 +215,7 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_post_render: function() {
         this.$el.attr("id", this.id);
+        if (this.options.height) this.$el.css("height", this.options.height);
         this.chart_config = {data:this.options.data, options: this.options.options || {}};
         var fname = "on_init_" + this.options.type;
         if (_.isFunction(this[fname])) this[fname](this.chart_config);

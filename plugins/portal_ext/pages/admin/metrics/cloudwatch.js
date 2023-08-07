@@ -9,7 +9,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 {
                     type: "select",
                     name: "duration",
-                    default: 1800,
+                    default: 43200,
                     size: "sm",
                     options: [
                         {label: "30m", value: 1800},

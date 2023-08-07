@@ -19,6 +19,9 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
 	app.addPage("admin_metrics", new PORTAL.Pages.Metrics(), ["admin/metrics"]);
 	app.addPage("admin_cloudwatch", new PORTAL.Pages.CloudWatch(), ["admin/cloudwatch"]);
+	app.addPage("admin_firewall", new PORTAL.Pages.FirewallEvents(), ["admin/firewall"]);
+	app.addPage("admin_servers", new PORTAL.Pages.ServerInfo(), ["admin/servers"]);
+	app.addPage("admin_domains", new PORTAL.Pages.DomainWatch(), ["admin/domains"]);
 
 	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
 	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({group_filtering:false}), ["admin/incident/events"]);
@@ -114,9 +117,24 @@ PORTAL.Menus.Admin = [
 		label: "Cloud Watch",
 		items: [
 			{
-				label:"Servers",
+				label:"AWS Monitor",
 				icon: "pc-horizontal",
 				page: "admin_cloudwatch"
+			},
+			{
+				label:"Firewall",
+				icon: "lock",
+				page: "admin_firewall"
+			},
+			{
+				label:"Server Info",
+				icon: "info-circle-fill",
+				page: "admin_servers"
+			},
+			{
+				label:"Domain Watch",
+				icon: "info-circle-fill",
+				page: "admin_domains"
 			},
 		]
 	},
