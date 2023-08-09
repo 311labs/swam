@@ -75,10 +75,6 @@ SWAM.Dialog.editModel = function(model, opts) {
 		opts.fields = _.clone(opts.fields).concat(opts.extra_fields);
 	}
 
-	if (!opts.callback) {
-		opts.callback = function() {};
-	}
-
 	var callback = opts.callback;
 	opts.callback = function(dlg, choice) {
 		if (choice == "save") {

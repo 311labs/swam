@@ -273,7 +273,9 @@ SWAM.View = SWAM.Object.extend({
         let has_changed = this.model == model;
         this.model = model;
         this.options.model = model;
-        this.model.on("change", this.on_model_change, this);
+        if (this.model) {
+            this.model.on("change", this.on_model_change, this);
+        }
         _.each(this.children, function(child){
             child.setModel(model);
         });
