@@ -916,6 +916,17 @@ SWAM.Localize = {
         return value;
     },
 
+    'truncate_front': function(value, attr, fmt) {
+        fmt = fmt || 14;
+        fmt = parseInt(fmt, 10);
+        if (!value) return value;
+
+        if (value.length > fmt) {
+            return "..." + value.slice(value.length - fmt, value.length);
+        }
+        return value;
+    },
+
     'link': function(value, attr, fmt) {
         return this.href(value, attr, fmt);
     },
