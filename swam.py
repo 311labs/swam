@@ -11,11 +11,8 @@ import sass
 import rcssmin
 import rjsmin
 from objict import nobjict, objict
-from datetime import datetime
-import time
 import threading
 import shutil
-import configparser
 
 CONFIG = objict(
     output_path="output",
