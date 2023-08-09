@@ -17,7 +17,13 @@ import threading
 import shutil
 import configparser
 
-CONFIG = objict.fromFile("swam.conf")
+CONFIG = objict(
+    output_path="output",
+    port=8080,
+    disable_html_minify=False,
+    plugins=["swamcore/plugins", "plugins"]
+)
+CONFIG.update(objict.fromFile("swam.conf"))
 
 parser = OptionParser()
 parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=CONFIG.get("verbose", False))

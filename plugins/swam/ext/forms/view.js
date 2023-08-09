@@ -125,7 +125,7 @@ SWAM.Form.View = SWAM.View.extend({
 
     getData: function() {
         var $form = this.$el.find("form");
-        var data = expandObject(SWAM.Form.getData($form));
+        var data = expandObject(SWAM.Form.getData($form, {defaults:this.options.defaults}));
         var files = SWAM.Form.getFiles($form);
         if (files) {
             var has_real_files = false;

@@ -82,7 +82,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 	var callback = opts.callback;
 	opts.callback = function(dlg, choice) {
 		if (choice == "save") {
-			var data = _.extend({}, opts.defaults, dlg.getData());
+			var data = dlg.getData();
 			if (_.isEmpty(data)) {
 				console.warn("save called, but nothing to save");
 				dlg.dismiss();
