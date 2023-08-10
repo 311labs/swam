@@ -10,7 +10,19 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		has_sidebar: false,
 		nav_menu: [],
 		container_class: "container-fluid",
-		navbar_classes: "navbar-dark"
+		navbar_classes: "navbar-dark",
+		user_menu: [
+			{
+				icon: "key",
+				label: "Change Password",
+				action: "change_password"
+			},
+			{
+				icon: "pencil",
+				label: "Edit Profile",
+				action: "edit_profile"
+			}
+		]
 	},
 
 	on_init: function() {
@@ -25,7 +37,10 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		}
 
 		if (this.options.show_usermenu) {
-			this.user_dropdown = new SWAM.View({classes: "dropdown ms-3 mt-1", template:"swam.ext.nav.topbar.usermenu"});
+			this.user_dropdown = new SWAM.View({
+				classes: "dropdown ms-3 mt-1",
+				user_menu: this.options.user_menu,
+				template:"swam.ext.nav.topbar.usermenu"});
 			if (!this.options.right_nav) this.options.right_nav = [];
 			this.options.right_nav.push({
 				type: "view",
@@ -65,6 +80,31 @@ SWAM.Views.TopBar = SWAM.View.extend({
                 SWAM.toast("Profile Saved", "Your profile succesfully updated");
             }
         }.bind(this)});
+	},
+
+	on_action_change_password: function(evt) {
+        SWAM.Dialog.editModel(app.me, {
+        	title:"Change Password",
+        	fields: [
+	        	{
+	        		label: "Old Password",
+	        		name: "oldpassword",
+	        		type: "password",
+	        		can_view: true
+	        	},
+	        	{
+	        		label: "New Password",
+	        		name: "newpassword",
+	        		type: "password",
+	        		can_view: true
+	        	},
+        	],
+        	callback:function(model, resp){
+	            if (resp.status) {
+	                SWAM.toast("Profile Saved", "Your profile succesfully updated");
+	            }
+        	}.bind(this)}
+        );
 	},
 
 	on_action_toggle_sidebar: function() {

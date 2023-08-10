@@ -5,6 +5,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	template: "<div id='list'></div>",
 	defaults: {
 		dialog_options: {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true},
+		edit_dialog_options: {size:"lg", can_dismiss:false, scrollable:true},
 		list_options: {
 			download_prefix: "download",
 			download_group_prefix: true
@@ -187,18 +188,15 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			this.options.view.setModel(item.model);
 			SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
 		} else if (!this.options.view_only && this.options.edit_form) {
-			SWAM.Dialog.editModel(item.model, 
-				{
-					title:"Edit",
-					size: "md",
-					fields: this.options.edit_form,
-					form_config: this.options.form_config,
-					callback:function(model, resp) {
-						if (resp.status) {
-						// auto saved nothing to do
-						}
-					}.bind(this)
-				});
+			let dlg_opts = _.extend({}, this.options.edit_dialog_options, {Title: "Edit"});
+			dlg_opts.fields = this.options.edit_form;
+			dlg_opts.form_config = this.options.form_config;
+			dlg_opts.callback = function(model, resp) {
+				if (resp.status) {
+				// auto saved nothing to do
+				}
+			}.bind(this);
+			SWAM.Dialog.editModel(item.model, dlg_opts);
 		} else {
 			SWAM.Dialog.showModel(item.model, null, {size:"md"});
 		}

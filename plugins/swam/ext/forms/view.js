@@ -208,6 +208,19 @@ SWAM.Form.View = SWAM.View.extend({
         }
     },
 
+    on_init__mde: function() {
+        var self = this;
+        this.$el.find("textarea.textarea-mde").each(function(){
+            const easyMDE = new EasyMDE({
+                element: this,
+                toolbar: [
+                    "bold", "italic", "heading", "|", 
+                    "quote", "unordered-list", "ordered-list", "|",
+                    "link", "image", "|", "table", "preview", "size-by-side", "fullscreen"]
+            });
+        });
+    },
+
     on_init__textarea_autoheight: function() {
         var self = this;
         this.$el.find("textarea.textarea-autoheight").each(function(){

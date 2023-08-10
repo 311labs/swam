@@ -30,8 +30,27 @@
         </div>
     </div>
     <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="#" data-action="reset_password"><i class="bi bi-key me-3"></i>Change Password</a>
-    <a class="dropdown-item" href="#" data-action="edit_profile"><i class="bi bi-pencil me-3"></i>Edit profile</a>
+    {{#options.ext_menu}}
+    {{#.divider}}
+    <div class="dropdown-divider"></div>
+    {{/.divider}}
+    {{^.divider}}
+    <a class="dropdown-item" href='#' {{#.action}}data-action="{{..action}}"{{/.action}} class='{{.link_classes}}' {{#.id}}data-id='{{..id}}'{{/.id}}>
+        {{#.icon}}<i class="bi bi-{{..icon}} me-3"></i>{{/.icon}}{{{.label}}}
+    </a>
+    {{/.divider}}
+    {{/options.ext_menu}}
+    {{#options.user_menu}}
+    {{#.divider}}
+    <div class="dropdown-divider"></div>
+    {{/.divider}}
+    {{^.divider}}
+    <a class="dropdown-item" href='#' {{#.action}}data-action="{{..action}}"{{/.action}} class='{{.link_classes}}' {{#.id}}data-id='{{..id}}'{{/.id}}>
+        {{#.icon}}<i class="bi bi-{{..icon}} me-3"></i>{{/.icon}}{{{.label}}}
+    </a>
+    {{/.divider}}
+    {{/options.user_menu}}
+
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="#" data-action="logout"><i class="bi bi-person me-3"></i>Logout</a>
 </div>

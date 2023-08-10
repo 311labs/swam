@@ -263,6 +263,7 @@ SWAM.Form.Builder.textarea = function(fc, form_info) {
 	if (!fc.rows) fc.rows = 3;
 	if (fc.autoheight) fc.$input.addClass("textarea-autoheight");
 	fc.$input.attr("rows", fc.rows);
+	if (fc.markdown) fc.$input.addClass("textarea-mde");
 	SWAM.Form.Builder.orderLabel(fc, form_info);
 	return fc;
 }
