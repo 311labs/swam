@@ -211,6 +211,10 @@ SWAM.Collection = SWAM.Object.extend({
         return output;
     },
 
+    each: function(callback) {
+        _.each(this.models, callback);
+    },
+
     parseResponse: function(resp) {
         this.set(resp.data, this.options.append);
         this.count = resp.count;

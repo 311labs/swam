@@ -38,7 +38,7 @@ SWAM.Model = SWAM.Object.extend({
     set: function(key, value) {
         if (_.isObject(key)) {
             this._prev_attributes = _.deepClone(this.attributes);
-            this.attributes = _.extend({}, this.attributes, key);
+            this.attributes = window.expandObject(_.extend({}, this.attributes, key));
             if (!_.isEqual(this._prev_attributes, this.attributes)) {
                 // console.log("model changed");
                 this.trigger("change", this);

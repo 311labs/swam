@@ -213,6 +213,7 @@ SWAM.Form.View = SWAM.View.extend({
         this.$el.find("textarea.textarea-mde").each(function(){
             const easyMDE = new EasyMDE({
                 element: this,
+                forceSync: true,
                 toolbar: [
                     "bold", "italic", "heading", "|", 
                     "quote", "unordered-list", "ordered-list", "|",

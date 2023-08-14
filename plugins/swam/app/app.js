@@ -92,7 +92,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                 this.active_page.on_page_exit();
             }
             // check for topbar
-            if (page.classes && (page.classes.indexOf("has-topbar") >= 0)) {
+            if (page.classes && (page.classes.indexOf("-topbar") >= 0)) {
                 this.showTopBar();
             } else {
                 this.hideTopBar();
@@ -315,8 +315,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         }
 
         _.each(routes, function(route) {
-            if (!_.isRegExp(route)) route = this._routeToRegExp(route);
-            this._routes.unshift({route:route, callback:handler});
+            if (!_.isRegExp(route)) re_route = this._routeToRegExp(route);
+            this._routes.unshift({route:re_route, callback:handler, orig_route:route});
         }.bind(this));
     },
 
@@ -427,7 +427,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         return _.some(this._routes, function(handler) {
             if (handler.route.test(route)) {
                 console.log("loadRoute: " + route);
-                handler.callback(path);
+                handler.callback(path, handler.orig_route);
                 return;
             }
         })

@@ -291,7 +291,9 @@ SWAM.View = SWAM.Object.extend({
         var page_name = $el.data("showpage");
         var params = $el.data("params");
         var anchor = $el.data("anchor");
-        if (params && params.startsWith("?")) params = {url_params:window.decodeSearchParams(params)};
+        if (_.isString(params)) {
+            if (params.startsWith("?")) params = {url_params:window.decodeSearchParams(params)};
+        }
         if (!page_name) return;
         var func_name = "on_showpage_" + page_name;
         if (_.isFunction(this[func_name])) {

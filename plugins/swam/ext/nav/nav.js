@@ -82,6 +82,12 @@ SWAM.Views.NavItem = SWAM.View.extend({
 		}
 	},
 
+	on_post_render: function() {
+		if (this.options.params) {
+			let $el = this.$el.find("a").first().data("params", this.options.params);
+		}
+	},
+
 });
 
 

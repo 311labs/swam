@@ -457,6 +457,7 @@ SWAM.Form.Builder.options_array = function(fc, form_info) {
 
 SWAM.Form.Builder.options_collection = function(fc, form_info) {
 
+	if (fc.label_field) fc.display_field = fc.label_field;
 	if (!fc.value_field) fc.value_field = "id";
 	if (!fc.display_field) fc.display_field = fc.value_field;
 	_.each(fc.options.models, function(model){

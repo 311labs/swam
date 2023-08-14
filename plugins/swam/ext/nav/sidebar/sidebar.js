@@ -59,6 +59,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	},
 
 	showMenu: function(name) {
+		let has_changed = (this.options.active_menu_name != name)
 		this.options.active_menu_name = name;
 		if (name == "admin") {
 			this.template = "swam.ext.nav.sidebar.adminbar";
@@ -83,7 +84,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 				menu = this.options.menus["default"];
 			}
 
-			if (menu.menu) {
+			if (_.isArray(menu.menu)) {
 				this.nav.options.items = menu.menu;
 				if (menu.template) {
 					this.template = menu.template;
@@ -105,7 +106,12 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			}
 			
 			this.render();
+			this.trigger("menu:change", this);
 		}
+	},
+
+	setMenuItems: function(items) {
+		this.nav.options.items = items;
 	},
 
 	showAdmin: function() {
@@ -122,7 +128,13 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 	setActivePage: function(name) {
 		this.$el.find(".active").removeClass("active");
-		var $active = this.$el.find('[data-showpage="' + name + '"]');
+		let $active;
+		if (this.options.active_menu && this.options.active_menu.match_on_id) {
+			$active = this.on_match_on_id(name);
+		} else {
+			$active = this.on_match_on_page(name);
+		}
+
 		if ($active) {
 			$active.addClass("active");
 			var $parent = $active.parents(".collapse");
@@ -133,6 +145,27 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 						.attr("aria-expanded", "true");
 			}
 		}
+	},
+
+	on_match_on_page: function(name) {
+		var $active = this.$el.find('[data-showpage="' + name + '"]');
+		if ($active.length) {
+			if ($active.length > 1) {
+				$active = $active.first();
+			}
+		}
+		return $active;
+	},
+
+	on_match_on_id: function(name) {
+		let page = app.getPage(name);
+		console.log("on_match_on_id");
+		console.log(page.page_name);
+		console.log(page.page_id);
+		if (page && page.page_id) {
+			return this.$el.find('[data-id="' + page.page_id + '"]');
+		}
+		return null;
 	},
 
 	on_menu_change: function(item) {
@@ -258,6 +291,19 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		} else {
 			app.setGroup(group);
 		}
+	},
+
+	showBusy: function() {
+	    this.busy_dlg = SWAM.Dialog.showLoading({
+	        parent:this.$el
+	    });
+	},
+
+	hideBusy: function() {
+	    if (this.busy_dlg) {
+	        this.busy_dlg.removeFromDOM();
+	        this.busy_dlg = null;
+	    }
 	},
 
 	on_rendered: function() {

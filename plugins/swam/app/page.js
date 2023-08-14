@@ -3,10 +3,14 @@ SWAM.Pages = {};
 SWAM.Page = SWAM.View.extend({
 	classes: "page-view",
 	
-	on_route: function(path) {
+	on_route: function(path, route) {
 		// this is only called for an initial route loaded by the app
-		console.log("on_route: " + this.page_name);
-		var params = {url_params:app.getSearchParams()};
+		console.log(`on_route: ${this.page_name}  route: ${route}   path: ${path}`);
+		let params = {};
+		if (route && route.indexOf(":")) {
+			params = this.extractPathVariables(route, path);
+		}
+		params.url_params = app.getSearchParams();
 		app.setActivePage(this.page_name, params);
 	},
 
@@ -28,6 +32,31 @@ SWAM.Page = SWAM.View.extend({
 
 	isActivePage: function() {
 		return app.active_page == this;
+	},
+
+	extractPathVariables: function(template, str) {
+	    const matches = [...template.matchAll(/:([a-zA-Z0-9_]+)(\/|\?|$)/g)];
+	    
+	    if (matches.length === 0) return null;
+
+	    // Create a regex pattern from the template.
+	    let pattern = template;
+	    matches.forEach(match => {
+	        pattern = pattern.replace(match[0], '([^\/\?]+)'+match[2]);
+	    });
+
+	    const regex = new RegExp(pattern);
+	    const inputMatch = str.match(regex);
+
+	    if (!inputMatch) return null;
+
+	    // Construct the result object using the matches.
+	    const result = {};
+	    matches.forEach((match, index) => {
+	        result[match[1]] = inputMatch[index + 1];
+	    });
+
+	    return result;
 	},
 
 	updateURL: function(url_params) {
@@ -70,6 +99,8 @@ SWAM.Page = SWAM.View.extend({
 		    }
 		});
 		if (best_route) {
+			console.log("best route");
+			console.log(params);
 		    _.each(params, function(v, p){
 		        best_route = best_route.replace(":" + p, v);
 		    });

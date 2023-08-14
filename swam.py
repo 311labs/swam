@@ -612,6 +612,7 @@ class IndexFile(SwamFile):
     INDEX_VARS = ["version", "branch", "js_includes", "css_includes", "title", "root", "template_root", "app_root", "loader_color", "no_es6_site"]
     JS_INCLUDE_TEMP = """<script type="text/javascript" src="{{path}}?version={{version}}"></script>"""
     CSS_INCLUDE_TEMP = """<link rel="stylesheet" href="{{path}}?version={{version}}">"""
+    JS_MODULE_TEMP = """<script type="module" src="{{path}}?version={{version}}"></script>"""
 
     def copyFile(self):
         with open(self.path, "r") as f:
@@ -623,6 +624,9 @@ class IndexFile(SwamFile):
                             output = []
                             for item in self.meta.get(key):
                                 output.append(IndexFile.JS_INCLUDE_TEMP.replace("{{path}}", item).replace("{{version}}", self.meta.version))
+                            if "js_modules" in self.meta:
+                                for item in self.meta.get("js_modules"):
+                                    output.append(IndexFile.JS_MODULE_TEMP.replace("{{path}}", item).replace("{{version}}", self.meta.version))
                             value = "\n".join(output)
                         elif key == "css_includes":
                             output = []
@@ -679,6 +683,9 @@ def buildApp(app_path, app_config, opts):
     if app_config.static_files:
         copyStatic(app_path, app_config.static_files, opts)
 
+    if app_config.js_modules:
+        copyStatic(app_path, app_config.js_modules, opts)
+
     fpath = app_config.get("index_file", "/plugins/swam/templates/basic.html")
     if not fpath.startswith("/"):
         fpath = os.path.join(app_path, fpath)
@@ -705,7 +712,11 @@ def buildApp(app_path, app_config, opts):
             app_config.version = "{}.{}.{}".format(major, minor, rev)
             app_config.save(os.path.join(app_path, "app.json"))
         app_config.root = app_path
-        index.compile(js_includes=js_includes, css_includes=css_includes, app_root=app_path[len("apps"):], **app_config)
+        index.compile(
+            js_includes=js_includes,
+            css_includes=css_includes,
+            app_root=app_path[len("apps"):], 
+            **app_config)
 
 
 APPS = objict()

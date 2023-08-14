@@ -6,7 +6,7 @@
 {{/options.has_submenu}}
 {{^options.items|bool}}
 {{#options.page}}
-<a href='#' data-showpage="{{options.page}}" class='{{options.link_classes}}' {{{get_tooltip}}}>
+<a href='#' data-showpage="{{options.page}}" class='{{options.link_classes}}' {{#options.data_id}}data-id='{{options.data_id}}' {{/options.data_id}}{{{get_tooltip}}}>
 {{/options.page}}
 {{#options.url}}
 <a href='{{options.url}}' target="_blank" class='{{options.link_classes}}'>
@@ -24,7 +24,6 @@
   </span>
 {{/options.badge}}
 </a>
-
 
 {{#options.has_submenu}}
 <div id="submenu{{_id_}}" class="collapse">
