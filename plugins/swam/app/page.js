@@ -10,6 +10,7 @@ SWAM.Page = SWAM.View.extend({
 		if (route && route.indexOf(":")) {
 			params = this.extractPathVariables(route, path);
 		}
+		
 		params.url_params = app.getSearchParams();
 		app.setActivePage(this.page_name, params);
 	},
@@ -36,8 +37,9 @@ SWAM.Page = SWAM.View.extend({
 
 	extractPathVariables: function(template, str) {
 	    const matches = [...template.matchAll(/:([a-zA-Z0-9_]+)(\/|\?|$)/g)];
-	    
-	    if (matches.length === 0) return null;
+	    const result = {};
+
+	    if (matches.length === 0) return result;
 
 	    // Create a regex pattern from the template.
 	    let pattern = template;
@@ -48,10 +50,9 @@ SWAM.Page = SWAM.View.extend({
 	    const regex = new RegExp(pattern);
 	    const inputMatch = str.match(regex);
 
-	    if (!inputMatch) return null;
+	    if (!inputMatch) return result;
 
 	    // Construct the result object using the matches.
-	    const result = {};
 	    matches.forEach((match, index) => {
 	        result[match[1]] = inputMatch[index + 1];
 	    });

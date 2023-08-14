@@ -30,12 +30,12 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.setToastGlobals({placement: this.options.toast_placement, theme: this.options.toast_theme});
     },
     on_prop_change: function(evt) {
-        console.log("on_prop_change");
-        console.log(evt);
+        // console.log("on_prop_change");
+        // console.log(evt);
         if (_.isFunction(this["on_prop_" + evt.key])) this["on_prop_" + evt.key](evt.value);
     },
     on_route: function(view, params) {
-        console.log(params);
+        // console.log(params);
         view.on_route.apply(view, params);
     },
     addPage: function(name, view, routes) {

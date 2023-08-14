@@ -128,6 +128,14 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 	setActivePage: function(name) {
 		this.$el.find(".active").removeClass("active");
+		if (this.options.menu_by_url) {
+			// this will check to make sure we are in right menu
+			let root = app.getRootPath();
+			let is_root = ((root == "admin")&&(this.options.active_menu_name != root)) 
+			if (is_root || (this.options.menus[root] && (this.options.active_menu_name != root))) {
+				this.showMenu(root);
+			}
+		}
 		let $active;
 		if (this.options.active_menu && this.options.active_menu.match_on_id) {
 			$active = this.on_match_on_id(name);
@@ -307,7 +315,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	},
 
 	on_rendered: function() {
-		if (app.active_page) {
+		if (app.active_page && !this.options.menu_by_url) {
 			this.setActivePage(app.active_page.page_name);
 		}
 	}

@@ -48,13 +48,17 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
         }
 
         this.page_id = this.params.path;
-
-        if (this.params) {
-            this.setModel(new SWAM.Models.WikiPage(this.params));
-        } 
+        this.params.slug = this.params.page;
+        if (this.params.slug) {
+            this.params.title = this.params.slug.replace("_", " ").capitalize();
+        }
+        
+        this.setModel(new SWAM.Models.WikiPage(this.params));
 
         if (!this.model.id) {
-            this.model.fetchByPath();
+            this.model.fetchByPath(function(model, resp){
+                
+            }.bind(this));
 
         } else {
             this.model.fetch();
@@ -72,5 +76,10 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
 
     on_post_render: function() {
         this.$el.find("button.btn-wiki").data("params", this.params);
-    }
+    },
+
+    createPage: function() {
+        // hack for now rely on app
+        app.on_action_new_wiki_page();
+    },
 });
