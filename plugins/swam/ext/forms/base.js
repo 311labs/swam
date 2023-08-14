@@ -67,7 +67,7 @@ SWAM.Form.getData = function($form, options) {
 
 	if (data.fkuser != undefined) delete data.fkuser;
 	if (data.fkpassword != undefined) delete data.fkpassword;
-	if (opts.defaults) data = _.extend(data, opts.defaults);
+	if (opts.defaults) data = _.extend(opts.defaults, data);
 	return data;
 };
 
