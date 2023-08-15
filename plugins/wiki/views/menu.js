@@ -9,12 +9,18 @@ SWAM.WikiMenu = SWAM.Object.extend({
 			url:"/rpc/wiki/page", 
 			params:{
 				graph:"toc",
-				size:1000,
-				parent: "null"
+				sort: "-order",
+				size:1000
 			}
 		});
-		if (opts.menu) {
-			opts.menu.on("menu:change", this.on_menu_change, this);
+
+		if (this.options.wiki) {
+			this.collection.params.parent__path = this.options.wiki;
+		} else {
+			this.collection.params.parent = "null";
+		}
+		if (this.options.menu) {
+			this.options.menu.on("menu:change", this.on_menu_change, this);
 		}
 	},
 
@@ -33,7 +39,6 @@ SWAM.WikiMenu = SWAM.Object.extend({
 					label: "Parent",
 					name: "parent",
 					type: "select",
-					placeholder: "Select Parent",
 					options: this.collection,
 					label_field: "title"
 				},
@@ -49,6 +54,29 @@ SWAM.WikiMenu = SWAM.Object.extend({
 				app.showPage("wiki_page", {path:model.get("path"), id:model.id});
 			}.bind(this)
 		})
+	},
+
+	createSection: function() {
+		let model = new SWAM.Models.WikiPage();
+		SWAM.Dialog.editModel(model, {
+			title: "Add Help Section",
+			fields: [
+				{
+				    name:"title",
+				    label:"Section Title",
+				    placeholder: "Enter Section Title"
+				},
+			],
+			defaults: {parent:this.options.wiki},
+			callback: function(model, resp) {
+				this.refresh();
+			}.bind(this)
+		})
+	},
+
+	getFirst: function() {
+		let first = this.collection.getAt(0);
+		return new SWAM.Models.WikiPage(first.attributes.children[0]);
 	},
 
 	refresh: function() {
@@ -83,6 +111,11 @@ SWAM.WikiMenu = SWAM.Object.extend({
 				label: "New Page",
 				icon: "file-earmark-plus",
 				action: "new_wiki_page"
+			});
+			items.push({
+				label: "New Section",
+				icon: "file-earmark-plus",
+				action: "new_wiki_section"
 			});
 			this.options.menu.hideBusy();
 			this.options.menu.items = items;

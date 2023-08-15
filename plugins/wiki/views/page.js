@@ -14,12 +14,12 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
         console.log(this.params);
         if (!this.params.wiki && this.params.path) {
             let paths = this.params.path.split("/");
-            this.params.wiki = paths[0];
-            this.params.page = paths[1];
+            this.params.wiki = paths[1];
+            this.params.page = paths[2];
         }
 
         if (!this.params.path && this.params.wiki) {
-            this.params.path = `${this.params.wiki}/${this.params.page}`;
+            this.params.path = `${this.options.root}/${this.params.wiki}/${this.params.page}`;
         }
 
         if (this.params) {
@@ -54,7 +54,7 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
         evt.preventDefault();
         let href = $(evt.currentTarget).attr("href");
         this.params.parent = this.model.get("parent.id");
-        this.params.path = `${this.model.get("parent.slug")}/${href}`;
+        this.params.path = `${this.options.root}/${this.model.get("parent.slug")}/${href}`;
         this.params.wiki = this.model.get("parent.slug");
         this.params.page = href;
         this.params.id = null;
@@ -101,6 +101,64 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
 
     on_post_render: function() {
         this.$el.find("#wiki_edit_btn").data("params", this.params);
+    },
+
+    on_action_wiki_settings: function() {
+        let fields = [
+            {
+                label: "Section Name",
+                field: "title"
+            },
+            {
+                label: "Section Slug",
+                field: "slug"
+            },
+            {
+                label: "Section Order",
+                field: "order",
+                type: "select",
+                start: 0,
+                end: 100
+            },
+        ];
+        let model = new SWAM.Models.WikiPage(this.model.get("parent"));
+        SWAM.Dialog.editModel(model, {
+                title: "Edit Section Settings",
+                fields: fields,
+                callback: function(model, resp, dlg) {
+                    this.options.wiki_menu.refresh();
+                }.bind(this)
+            })
+    },
+
+    on_action_wiki_delete: function() {
+        SWAM.Dialog.confirm({
+            title: `Delete '${this.model.get("title")}' Page?`,
+            message: "Are you sure you want to delete this page?",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.lower() == "yes") {
+                    dlg.dismiss();
+                    app.showBusy({icon:"trash"});
+                    this.model.destroy(function(model, resp) {
+                        app.hideBusy();
+                        if (resp.status) {
+                            SWAM.toast(`Deleted Page`, "Succesfully deleted the page.", "success", 4000);
+                            if (this.options.wiki_menu) {
+                                let first = this.options.wiki_menu.getFirst();
+                                if (first) {
+                                    this.setModel(first); 
+                                    this.model.fetch();
+                                }
+                                this.options.wiki_menu.refresh();
+                            }
+                        } else {
+                            SWAM.Dialog.warning("Request Failed", resp.error);
+                        }
+                    }.bind(this));
+                }
+            }.bind(this)
+        });
     }
 });
 

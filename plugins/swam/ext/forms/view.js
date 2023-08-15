@@ -217,9 +217,20 @@ SWAM.Form.View = SWAM.View.extend({
                 toolbar: [
                     "bold", "italic", "heading", "|", 
                     "quote", "unordered-list", "ordered-list", "|",
-                    "link", "image", "|", "table", "preview", "size-by-side", "fullscreen"]
+                    "code", "link", 
+                    {
+                        name: "custom",
+                        action: self.on_mde_insert_image.bind(self),
+                        className: "fa fa-image",
+                        title: "Custom Button",
+                    },
+                    "|", "table", "preview", "size-by-side", "fullscreen"]
             });
         });
+    },
+
+    on_mde_insert_image: function(editor) {
+        this.trigger("mde:insert_image", editor);
     },
 
     on_init__textarea_autoheight: function() {

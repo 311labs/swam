@@ -8,14 +8,25 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
             {
                 name:"title",
                 label:"Title",
-                columns: 6,
+                columns: 4,
                 placeholder: "Enter Page Title"
             },
             {
                 name:"slug",
                 label:"Slug",
-                columns: 6,
+                columns: 4,
                 placeholder: "Enter Page Slug"
+            },
+            {
+                name:"order",
+                label:"Page Order",
+                help: "Set the page order, the higher number shows up first",
+                type: "select",
+                start: 0,
+                step: 1,
+                end: 100,
+                columns: 4,
+                placeholder: "Select Page Order"
             },
             {
                 name:"body",
@@ -30,6 +41,7 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
 
     on_init: function() {
         this.addChild("edit_form", new SWAM.Form.View(this.defaults));
+        this.getChild("edit_form").on("mde:insert_image", this.on_mde_insert_image, this);
     },
 
     on_params: function() {
@@ -39,12 +51,12 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
         console.log(this.params);
         if (!this.params.wiki && this.params.path) {
             let paths = this.params.path.split("/");
-            this.params.wiki = paths[0];
-            this.params.page = paths[1];
+            this.params.wiki = paths[1];
+            this.params.page = paths[2];
         }
 
         if (!this.params.path && this.params.wiki) {
-            this.params.path = `${this.params.wiki}/${this.params.page}`;
+            this.params.path = `${this.options.root}/${this.params.wiki}/${this.params.page}`;
         }
 
         this.page_id = this.params.path;
@@ -70,6 +82,7 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
         app.showBusy();
         this.model.save(data, function(){
             app.hideBusy();
+            if (this.options.wiki_menu) this.options.wiki_menu.refresh();
             app.showPage("wiki_page", this.params);
         }.bind(this));
     },
@@ -81,5 +94,54 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
     createPage: function() {
         // hack for now rely on app
         app.on_action_new_wiki_page();
+    },
+
+    on_mde_insert_image: function(editor) {
+        // SWAM.toast(null, "NOT IMPLEMENTED", "danger", 4000, true);
+        let view = new SWAM.Views.Table({
+            remote_sort: false,
+            add_classes: "swam-table-clickable",
+            Collection: SWAM.Collections.WikiMedia,
+            columns: [
+                {label:"thumb", template:"{{{model.media|lightbox}}}", no_sort:true},
+                {label: "Name", field: "media.name"},
+                {label: "Kind", field: "media.kind"},
+            ],
+        });
+        let buttons = [
+            {
+                label: "Upload New",
+                action: "choice",
+                id: "new"
+            },
+            {
+                label: "Close",
+                action: "close"
+            },
+        ]
+        view.collection.fetch();
+        let dlg = SWAM.Dialog.showView(view, {
+            title:"Select Media",
+            buttons: buttons,
+            callback: function(dlg, choice) {
+                let model = new SWAM.Models.WikiMedia();
+                SWAM.Dialog.editModel(model, {
+                    defaults: {entry: this.model.get("parent.id")},
+                    callback: function(model, resp, dlg) {
+                        dlg.remove();
+                        view.collection.fetch();
+                    }
+                })
+            }.bind(this)
+        });
+
+        view.on("item:clicked", 
+            function(item){
+                dlg.dismiss();
+                view.off("item:clicked");
+                var pos = editor.codemirror.getCursor();
+                editor.codemirror.setSelection(pos, pos);
+                editor.codemirror.replaceSelection(`![${item.model.get("media.name")}](${item.model.getMediaURL()})`);
+            }, this);
     },
 });

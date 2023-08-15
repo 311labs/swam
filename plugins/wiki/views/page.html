@@ -3,7 +3,11 @@
 	{{#app.me.hasPerm("edit_wiki")}}
 	<div>
 		<div class="position-absolute top-0 end-0">
-			<button id="wiki_edit_btn" class="btn btn-link" data-showpage="wiki_edit">EDIT</button>
+			<button id="wiki_edit_btn" class="btn btn-link" data-showpage="wiki_edit">{{{ICON('pencil')}}} EDIT PAGE</button>
+
+			<button id="wiki_edit_btn" class="btn btn-link" data-action="wiki_settings">{{{ICON('gear')}}} SETTINGS</button>
+
+			<button id="wiki_edit_btn" class="btn btn-link" data-action="wiki_delete">{{{ICON('trash')}}} DELETE</button>
 		</div>
 	</div>
 	{{/app.me.hasPerm("edit_wiki")}}
