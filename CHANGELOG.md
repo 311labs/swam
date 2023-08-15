@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.12
+
+ * NEW: Wiki sub system
+ * NEW: SideBar support for dynamic menus from a collection
+ * NEW: Wiki Image insert support
+
 ## v0.2.11
 
  * FIXED: bug when clearing param it still is in filters
