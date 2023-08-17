@@ -123,6 +123,7 @@ SWAM.Form.Builder.getValue = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.value = function(fc, form_info) {
+	if (fc.type == "file") return;
 	fc.$input.val(fc.value);
 	if (fc.is_checkbox) {
 		if (fc.value == undefined) fc.value = 0;

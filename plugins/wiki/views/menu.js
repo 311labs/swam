@@ -123,4 +123,60 @@ SWAM.WikiMenu = SWAM.Object.extend({
 			this.options.menu.render();
 		}.bind(this))
 	}
+}, {
+	SIDE_BAR_MENU: {
+		title: "Help",
+		classes: "bg-light text-dark",
+		template: "swam.ext.nav.sidebar.adminbar",
+		match_on_id: true, // instead of page name
+		menu: []
+	},
+	ADMIN_MENU_ITEM: {
+		label: "Help",
+		icon: "question-circle-fill",
+		id: "help"
+	},
+
+	TOP_BAR_ITEM: {
+		id: "wiki_menu",
+	    icon: "question-circle-fill",
+	    page: "wiki_page",
+	    add_classes: "me-3",
+	    params: {wiki:"faq", page:"home"},
+	    data_id: "faq/home",
+	    requires_perm: ["view_wiki"],
+	},
+
+	init_wiki: function() {
+		app.getChild("title-bar").options.right_nav.insertAt(this.TOP_BAR_ITEM, 0);
+		app.sidebar.options.menus.help = this.SIDE_BAR_MENU;
+		app.sidebar.options.admin_menus.insertAt(this.ADMIN_MENU_ITEM, 0);
+		app.help_menu = new SWAM.WikiMenu({menu:app.sidebar, wiki:"help"});
+		
+		app.addPage("wiki_page", new PORTAL.Pages.WikiPage({
+			wiki_menu:app.help_menu, 
+			root:"help"}), ["help", "help/:wiki/:page"]);
+
+		app.addPage("wiki_edit", new PORTAL.Pages.EditWikiPage({
+			wiki_menu:app.help_menu, 
+			root:"help"}), ["help/:wiki/:page/edit"]);
+		
+		app.addPage("global_wiki", new PORTAL.Pages.WikiList({group_filtering:false}), ["global/wikis"]);
+
+		app.addPage("wiki_404", new SWAM.Page({template:"wiki.views.not_found"}), ["help/:wiki/:page/404"]);
+		app.getPage("wiki_404").on_action_create_page = function(evt) {
+			app.showPage("wiki_edit", this.params);
+		};
+
+		app.on_action_new_wiki_page = function(evt) {
+			this.help_menu.createPage();
+		};
+
+		app.on_action_new_wiki_section = function(evt) {
+			this.help_menu.createSection();
+		};
+
+
+	}
 });
+

@@ -35,7 +35,8 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
         if (!this.model.id) {
             this.model.fetchByPath(function(model, resp){
                 if (!model.id) {
-                    this.createPage();
+                    app.showPage("wiki_404", this.params);
+                    // this.createPage();
                 }
             }.bind(this));
 
@@ -53,12 +54,15 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
     on_action_local_page: function(evt, id) {
         evt.preventDefault();
         let href = $(evt.currentTarget).attr("href");
+        this.params = _.extend({}, this.params);
         this.params.parent = this.model.get("parent.id");
         this.params.path = `${this.options.root}/${this.model.get("parent.slug")}/${href}`;
         this.params.wiki = this.model.get("parent.slug");
         this.params.page = href;
         this.params.id = null;
+        this.model = null;
         this.on_params();
+        this.updateURL();
     },
 
     showBusy: function() {

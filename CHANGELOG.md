@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.14
+
+ * Improved: Wiki system more robust
+ * Added: Now more abstract to add wiki support to portal
+ * Added: Audit Log default datetime param
+
 ## v0.2.12
 
  * NEW: Wiki sub system

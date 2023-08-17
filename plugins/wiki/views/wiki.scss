@@ -3,6 +3,25 @@ div#page_wiki_page {
 	div.container {
 		max-width: 56rem;
 	}
+
+	li.task-list-item {
+		list-style-type: none;
+		input {
+			// margin: 0 10px 0 -10px;
+			font: inherit;
+			color: currentColor;
+			width: 1.15em;
+			height: 1.15em;
+			border: 0.15em solid currentColor;
+			border-radius: 0.15em;
+			transform: translateX(-0.5em) translateY(0.2em);
+
+			&:disabled {
+				color: #0d6efd;
+				border: 0.15em solid #0d6efd;
+			}
+		}
+	}
 }
 
 div.wiki-page {

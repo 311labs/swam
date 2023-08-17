@@ -234,7 +234,7 @@ SWAM.Model = SWAM.Object.extend({
     getUrl: function() {
         var url = this.options.url;
         if (_.isFunction(this.options.url)) {
-            url = this.options.url();
+            return this.options.url(this);
         }
         if (this.options.no_url_id || !this.id) return url;
         if (url.endsWith("/")) return url + this.id;

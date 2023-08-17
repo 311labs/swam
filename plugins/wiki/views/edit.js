@@ -128,7 +128,7 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
                 SWAM.Dialog.editModel(model, {
                     defaults: {entry: this.model.get("parent.id")},
                     callback: function(model, resp, dlg) {
-                        dlg.remove();
+                        if (dlg) dlg.dismiss();
                         view.collection.fetch();
                     }
                 })
