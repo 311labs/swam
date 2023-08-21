@@ -1,20 +1,19 @@
 
 SWAM.Models.WikiPage = SWAM.Model.extend({
     defaults: {
-        url_path: "/rpc/wiki/page",
-        url: function(model) {
-            let url = model.options.url_path;
-            if (model.id) {
-                if (url.endsWith("/")) return url + model.id;
-                return url + "/" + model.id;
-            } else if (!model.attributes.path) {
-                return url;
-            }
-            return `/rpc/wiki/path/${model.attributes.path}`
-        }
+        url: "/rpc/wiki/page",
     },
 
-
+    getUrl: function() {
+        var url = this.options.url;
+        if (this.id) {
+            if (url.endsWith("/")) return url + this.id;
+            return url + "/" + this.id;
+        } else if (!this.attributes.path) {
+            return url;
+        }
+        return `/rpc/wiki/path/${this.attributes.path}`
+    },
 
     fetchByPath: function(callback, opts) {
         if ((opts == undefined) && (window.isDict(callback))) {
