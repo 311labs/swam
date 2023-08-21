@@ -1,6 +1,6 @@
 
 <div class="container position-relative">
-	{{#app.me.hasPerm("edit_wiki")}}
+	{{#app.me|hasperm("edit_wiki")}}
 	<div class="d-none d-sm-none d-md-block">
 		<div class="position-absolute top-0 end-0">
 			<button id="wiki_edit_btn" class="btn btn-link" data-showpage="wiki_edit">{{{ICON('pencil')}}} EDIT PAGE</button>
@@ -10,7 +10,7 @@
 			<button id="wiki_edit_btn" class="btn btn-link" data-action="wiki_delete">{{{ICON('trash')}}} DELETE</button>
 		</div>
 	</div>
-	{{/app.me.hasPerm("edit_wiki")}}
+	{{/app.me|hasperm("edit_wiki")}}
 
 	<div class="text-muted">HELP {{{ICON('chevron-double-right')}}} {{model.parent.title}} {{{ICON('chevron-double-right')}}} {{model.title}}</div>
 
