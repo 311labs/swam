@@ -84,6 +84,14 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
                     label: "Not Set"
                 },
                 {
+                    value: 4,
+                    label: "IP"
+                },
+                {
+                    value: 5,
+                    label: "IP and Component"
+                },
+                {
                     value: 1,
                     label: "Hostname"
                 },
