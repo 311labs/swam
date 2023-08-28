@@ -474,5 +474,18 @@ SWAM.Collection = SWAM.Object.extend({
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    }
+    },
+
+    download: function(filename, format, callback) {
+        SWAM.Rest.DOWNLOAD(this.getRawUrl(
+            {
+                format_filename: filename,
+                format:format,
+            }), null,
+            function(status, state){
+                // do nothing?
+                if (callback) callback(status, state);
+            }.bind(this), {filename:filename});
+        SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
+    },
 });
