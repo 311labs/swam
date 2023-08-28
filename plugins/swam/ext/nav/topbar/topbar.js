@@ -9,6 +9,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		auto_sick: true,
 		has_sidebar: false,
 		nav_menu: [],
+		logo_height: 24,
 		container_class: "container-fluid",
 		navbar_classes: "navbar-dark",
 		user_menu: [
