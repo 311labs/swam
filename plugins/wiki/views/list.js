@@ -3,7 +3,7 @@ PORTAL.Pages.WikiList = SWAM.Pages.TablePage.extend({
     classes: "page-view page-padded has-topbar",
 
     defaults: {
-        icon: "currency-dollar",
+        icon: "book",
         title: "Wiki Pages",
         table_options: {
             add_classes: "swam-table small table-sm swam-table-clickable",

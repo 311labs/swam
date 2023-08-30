@@ -112,7 +112,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         batch_select: false,
         batch_select_label: 'Rows Selected',
         batch_actions: [
-            {label:"Delete", icon:"trash", action:"delete"}
+            {label:"Delete", icon:"trash", action:"batch_delete"}
         ],
         pagination: false,
         empty_html: "<tr><td colspan='100' class='text-center p-3 text-muted'>No items returned</td>",
