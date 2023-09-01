@@ -181,8 +181,31 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
     //     SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
     // },
 
-    on_item_clicked: function(item) {
-        SWAM.toast("oops", "nope");
-    }
+    on_item_clicked: function(item, evt) {
+        this.on_item_edit(item, evt);
+    },
+
+    on_item_edit: function(item, evt) {
+        if (!this.options.edit_form) {
+            this.options.edit_form = this.collection.options.Model.EDIT_FORM;
+        }
+
+        if (this.options.view) {
+            this.options.view.setModel(item.model);
+            SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
+        } else if (!this.options.view_only && this.options.edit_form) {
+            let dlg_opts = _.extend({}, this.options.edit_dialog_options, {Title: "Edit"});
+            dlg_opts.fields = this.options.edit_form;
+            dlg_opts.form_config = this.options.form_config;
+            dlg_opts.callback = function(model, resp) {
+                if (resp.status) {
+                // auto saved nothing to do
+                }
+            }.bind(this);
+            SWAM.Dialog.editModel(item.model, dlg_opts);
+        } else {
+            SWAM.Dialog.showModel(item.model, null, {size:"md"});
+        }
+    },
 
 });
