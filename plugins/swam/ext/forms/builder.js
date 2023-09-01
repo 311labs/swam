@@ -253,7 +253,11 @@ SWAM.Form.Builder.password = function(fc, form_info) {
 		});
 	}
 	if (fc.random && !fc.value) {
-		fc.value = String.Random(fc.random);
+		let possible = null;
+		if (fc.digits_only) {
+			possible = "123567890";
+		}
+		fc.value = String.Random(fc.random, possible);
 	}
 	return fc;
 }
