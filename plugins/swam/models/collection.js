@@ -444,20 +444,20 @@ SWAM.Collection = SWAM.Object.extend({
                 if (f.label) label = f.label;
                 field_names.push(field);
                 field_labels.push(label);
-            } else {
-                field_names.push(field);
-                field_labels.push(field);
+            } else if (_.isString(f)) {
+                field_names.push(f);
+                field_labels.push(f);
             }
         });
         output.push(field_labels.join(','));
         _.each(this.models, function (model) {
-            var row = [];
-            for (var i = 0; i < field_names.length; i++) {
+            let row = [];
+            for (let i = 0; i < field_names.length; i++) {
                 let name = field_names[i];
                 if (field_templates[name]) {
-                    row.push(SWAM.renderString(field_templates[name], {model: model}));
+                    row.push('"' + SWAM.renderString(field_templates[name], {model: model}) + '"');
                 } else if (field_localize[name]) {
-                    row.push(model.get(field_names[i] + "|" + field_localize[name]));
+                    row.push('"' + model.get(field_names[i] + "|" + field_localize[name]) + '"');
                 } else {
                     row.push(model.get(field_names[i]));
                 }
@@ -465,8 +465,8 @@ SWAM.Collection = SWAM.Object.extend({
         
             output.push(row.join(","));
         }.bind(this));
-        var blob = new Blob([output.join("\n")]);
-        var a = window.document.createElement("a");
+        let blob = new Blob([output.join("\n")]);
+        let a = window.document.createElement("a");
         a.href = window.URL.createObjectURL(blob, {
           type: "text/csv"
         });

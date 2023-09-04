@@ -14,7 +14,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         url: null,
         duration: null,
         line_width: 1,
-        size: 8
+        size: 8,
+        show_table: true
     },
 
     on_init: function(opts) {
@@ -336,6 +337,35 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     on_action_chart_refresh: function(evt, id) {
         this.refresh();
+    },
+
+    on_action_show_table: function(evt, id) {
+        this.showTable();
+    },
+
+    showTable: function() {
+        let collection = new SWAM.Collection();
+        let data = this.children.metrics_chart.options.data;
+        let columns = [{label:"Label", field:"label"}];
+        for (let i=0; i<data.labels.length-1; i++) {
+            let obj = {id:i, label:data.labels[i]};
+            for (let x = 0; x < data.datasets.length; x++) {
+                if ((columns.length-2) < x) {
+                    columns.push({
+                        label:data.datasets[x].label,
+                        field:data.datasets[x].label
+                    });
+                }
+                obj[data.datasets[x].label] = data.datasets[x].data[i];
+            }
+            collection.add(obj);
+        }
+        let view = new SWAM.Views.Table({
+            remote_sort: false,
+            collection:collection,
+            columns: columns
+        });
+        SWAM.Dialog.showView(view, {title:this.options.title, padded: true});
     },
 
     on_pre_render: function() {

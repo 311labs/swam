@@ -1,5 +1,12 @@
 # SWAMCORE
 
+
+## v0.2.15
+
+ * ADDED: Charts can now show popup table of data
+ * FIXED: Collection local download not handling currency commas
+
+
 ## v0.2.14
 
  * Improved: Wiki system more robust
