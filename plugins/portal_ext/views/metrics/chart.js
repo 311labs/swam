@@ -365,7 +365,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             collection:collection,
             columns: columns
         });
-        SWAM.Dialog.showView(view, {title:this.options.title, padded: true});
+        SWAM.Dialog.showView(view, {
+            title:this.options.title, 
+            scrollable: true,
+            padded: true});
     },
 
     on_pre_render: function() {
