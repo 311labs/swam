@@ -5,7 +5,9 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     classes: "page-view page-fullscreen",
 
     defaults: {
-        show_api_url: true
+        show_api_url: true,
+        terms_path: "/static/terms.html",
+        privacy_path: "/static/privacy.html"
     },
 
     on_action_login: function(evt) {

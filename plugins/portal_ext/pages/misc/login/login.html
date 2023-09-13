@@ -33,7 +33,7 @@
         {{/app.options.allow_google_login}}
 
         {{#options.agree_terms}}
-        <p class="text-muted fs-7 mt-3">Please read these <a href="/static/terms.html" target="_blank">Terms of Use</a> carefully before accessing or using our website.  By using our website you are agreeing to these <a href="/static/terms.html" target="_blank">terms</a>.</p>
+        <p class="text-muted fs-7 mt-3">Please read these <a href="{{options.terms_path}}" target="_blank">Terms of Use</a> carefully before accessing or using our website.  By using our website you are agreeing to these <a href="{{options.terms_path}}" target="_blank">terms</a>.</p>
         {{/options.agree_terms}}
 
         <div class="row">
@@ -54,8 +54,8 @@
           <div class="mt-5 text-muted text-center">© 2023</div>
          <div class="text-center text-muted">{{{app.options.title}}} {{app.version}}</div> 
          <div>
-          <a class="btn btn-link text-muted" href="/static/privacy.html" target="_blank">Privacy Policy</a>
-          <a class="btn btn-link text-muted" href="/static/terms.html" target="_blank">Terms of Use</a>
+          <a class="btn btn-link text-muted" href="{{options.privacy_path}}" target="_blank">Privacy Policy</a>
+          <a class="btn btn-link text-muted" href="{{options.terms_path}}" target="_blank">Terms of Use</a>
          </div>
     {{#options.show_api_url}}
     {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
