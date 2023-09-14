@@ -76,6 +76,7 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_init_bar: function(config) {
         config.data.labels = this.options.labels;
+        if (!config.options.scales) config.options.scales = null;
         config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
         if (this.options.yaxis_localize) {
             config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
@@ -116,6 +117,7 @@ SWAM.Views.Chart = SWAM.View.extend({
         }
         if (this.options.xaxis_localize) {
             if (!config.options.scales) {
+                config.options.scales = null;
                 config.options = _.extend({scales:{x:{beginAtZero: true}}}, config.options);
             } else {
                 config.options.scales.x = {beginAtZero: true};
@@ -133,6 +135,7 @@ SWAM.Views.Chart = SWAM.View.extend({
     },
 
     on_init_line: function(config) {
+
         config.data.labels = this.options.labels;
         _.each(config.data.datasets, function(ds){
             if (ds.fill == undefined) ds.fill = this.options.fill;
@@ -140,7 +143,12 @@ SWAM.Views.Chart = SWAM.View.extend({
         }.bind(this));
 
         if (this.options.yaxis_localize) {
-            config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+            if (!config.options.scales) {
+                config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+            } else {
+                config.options.scales.y = {beginAtZero: true};
+            }
+
             var ylocalizer = this.options.yaxis_localize;
             config.options.scales.y.ticks = {
                 callback: function(value, index, ticks) {
