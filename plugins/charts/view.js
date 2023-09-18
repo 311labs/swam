@@ -76,8 +76,12 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_init_bar: function(config) {
         config.data.labels = this.options.labels;
-        if (!config.options.scales) config.options.scales = null;
-        config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+        if (!config.options.scales) {
+            config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
+        } else {
+            config.options.scales.y = {beginAtZero: true};
+        }
+
         if (this.options.yaxis_localize) {
             config.options = _.extend({scales:{y:{beginAtZero: true}}}, config.options);
             var ylocalizer = this.options.yaxis_localize;
