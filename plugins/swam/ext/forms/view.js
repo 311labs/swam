@@ -42,6 +42,14 @@ SWAM.Form.View = SWAM.View.extend({
         }
     },
 
+    setModel: function(model) {
+        this.model = model;
+    },
+
+    on_model_change: function(model) {
+        // do nothing to prevent weird rendering on saves
+    },
+
     on_stop_submit: function(evt) {
         if (evt.keyCode == 13) {
             let $el = $(evt.currentTarget);

@@ -110,6 +110,9 @@ SWAM.Dialog = SWAM.View.extend({
             menu.callback(this, menu);
         }
     },
+    on_model_change: function(model) {
+        // do nothing to prevent weird rendering on saves
+    },
     on_post_render: function() {
         if (this.options.size) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_sizes[this.options.size]);
         if (this.options.vsize) this.$el.find(".modal-dialog").addClass("modal-"+this.dialog_vsizes[this.options.vsize]);

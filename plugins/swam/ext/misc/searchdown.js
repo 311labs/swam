@@ -118,7 +118,7 @@ SWAM.Views.SearchDown = SWAM.View.extend({
         }
         if (this.options.auto_fetch && !this.collection.length) {
             // if (this.options.recent_ids) this.collection.params.pk__in = this.options.recent_ids;
-            this.collection.fetch();
+            this.collection.fetchIfStale();
         }
         if (this.active_model) {
             this.setActive(this.active_model);
