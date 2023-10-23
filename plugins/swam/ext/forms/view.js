@@ -114,17 +114,18 @@ SWAM.Form.View = SWAM.View.extend({
             }
         }
             
-        // this.on_init__image_editor();
-        // this.on_init__datepicker();
-        // this.on_init__daterangepicker();
-        // this.on_init__es();
-        // this.on_init__searchdown();
         this.enablePops();
         this.enableClear();
     },
 
     getData: function() {
         var $form = this.$el.find("form");
+        $form.find("input").each(function(){
+            let format = $(this).data("format");
+            if (format == "trim") {
+               this.value = $(this).val().trim(); 
+            }
+        });
         var data = expandObject(SWAM.Form.getData($form, {defaults:this.options.defaults}));
         var files = SWAM.Form.getFiles($form);
         if (files) {

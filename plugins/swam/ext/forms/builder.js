@@ -81,6 +81,10 @@ SWAM.Form.buildField = function(fc, form_info) {
 		fc.$el.addClass("optional");
 	}
 
+	if (fc.trim) {
+		fc.$input.attr("data-format", "trim");
+	}
+
 	if (fc.help) {
 		if (fc.$label) {
 			fc.$label.after(SWAM.Form.Builder.help(fc, form_info));
