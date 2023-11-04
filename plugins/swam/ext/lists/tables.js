@@ -302,8 +302,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                 var col_span = 0;
                 _.each(this.options.columns, function(col, i) {
                     let field_name, localize;
+                    let td_classes = null;
                     if (_.isObject(col)) {
                         field_name = col.field;
+                        td_classes = col.classes;
                     } else {
                         field_name = col;
                     }
@@ -325,6 +327,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                             $el.text(this.totals[field_name])
                         }
                         $el.addClass("td-totals");
+                        if (td_classes) $el.addClass(td_classes);
                         $tr.append($el);
                         col_span = -1;
                     }
