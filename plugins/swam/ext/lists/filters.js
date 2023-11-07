@@ -225,7 +225,13 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
                 let val = data[id];
                 this.addFilterTag(id, val, filter, data.operator);
                 if (filter.type == "daterange") {
-                    this.on_daterange_picker(dlg.options.view.date_fields[id]);
+                    if (dlg.options.view && dlg.options.view.date_fields) {
+                        this.on_daterange_picker(dlg.options.view.date_fields[id]);
+                    } else {
+                        SWAM.Dialog.warning("No Dates Selected!");
+                        return;
+                    }
+                    
                 } else {
                     evt.operator = data.operator || filter.operator;
                     this.on_input_change(id, val, evt);
