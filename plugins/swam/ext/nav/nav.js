@@ -64,7 +64,9 @@ SWAM.Views.NavItem = SWAM.View.extend({
 	},
 
 	on_init: function() {
-		if (this.options.type == "dropdown") {
+		if (this.options.template) {
+			
+		} else if (this.options.type == "dropdown") {
 			this.options.has_dropmenu = true;
 			var classes = "dropdown-menu p-2";
 			if (this.options.is_dark) classes += " dropdown-menu-dark";
