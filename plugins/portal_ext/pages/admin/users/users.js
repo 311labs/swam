@@ -36,6 +36,7 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
             },
             {
                 label:"Last Activity", field:"last_activity|ago",
+                sort_field: "last_activity",
                 classes:"d-none d-sm-table-cell"
             },
         ],

@@ -12,6 +12,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		logo_height: 24,
 		container_class: "container-fluid",
 		navbar_classes: "navbar-dark",
+		user_menu_template: "swam.ext.nav.topbar.usermenu",
 		user_menu: [
 			{
 				icon: "key",
@@ -41,7 +42,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 			this.user_dropdown = new SWAM.View({
 				classes: "dropdown ms-3 mt-1",
 				user_menu: this.options.user_menu,
-				template:"swam.ext.nav.topbar.usermenu"});
+				template: this.options.user_menu_template});
 			if (!this.options.right_nav) this.options.right_nav = [];
 			this.options.right_nav.push({
 				type: "view",

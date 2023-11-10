@@ -593,6 +593,8 @@ SWAM.Form.Builder._dropdownmenu = function(fc, form_info) {
 			$li.append($('<hr class="dropdown-divider">'));
 			return;
 		}
+
+		if ((item.requires_perm) && (!app.me || !app.me.hasPerm(item.requires_perm))) return;
 		var $item = $("<a href='#' />").addClass("dropdown-item").appendTo($li);
 		if (item.action) $item.attr("data-action", item.action);
 		if (item.id) {
