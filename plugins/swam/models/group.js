@@ -121,6 +121,9 @@ SWAM.Models.Group = SWAM.Model.extend({
                             var value = form_info.model.get(fc.name);
                             if (_.isDict(value)) {
                                 col.active_model = new SWAM.Model(value);
+                            } else  if (_.isNumeric(value)) {
+                                col.active_model = new SWAM.Model({id:value});
+                                col.fetch();
                             }
                         }
                         return col;
