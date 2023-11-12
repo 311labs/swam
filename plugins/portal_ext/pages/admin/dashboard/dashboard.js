@@ -8,12 +8,14 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
             new PORTAL.Views.MetricsChart({
                 title: "Rest Metrics",
                 slugs:["rest_calls", "rest_errors"],
+                parse_slug: "_",
                 colors:["rgba(50, 250, 50, 0.9)", "rgba(250, 50, 50, 0.9)"]
             }));
         this.addChild("email_metrics",
             new PORTAL.Views.MetricsChart({
                 title: "Email Metrics",
                 slugs:["email_errors", "emails_sent", "email_complaints", "emails_bounced", "emails_received"],
+                parse_slug: "_",
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -26,11 +28,13 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
         this.addChild("incident_events",
             new PORTAL.Views.MetricsChart({
                 title: "Events",
+                parse_slug: "_",
                 category: "incident_events"
             }));
         this.addChild("incidents",
             new PORTAL.Views.MetricsChart({
                 title: "Incidents",
+                parse_slug: "_",
                 category: "incidents"
             }));
     },

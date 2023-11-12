@@ -7,6 +7,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         title_classes: "",
         category: null,
         slugs: null,
+        parse_slug: null,
         group: null,
         chart_type: "line",
         granularity: "daily",
@@ -285,8 +286,13 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 color = colors.pop();
             }
 
+            let key = slug_data.slug;
+            if (this.options.parse_slug) {
+                key = key.split(this.options.parse_slug).pop();
+            }
+
             this.children.metrics_chart.addDataSet(
-                slug_data.slug, slug_data.values, 
+                key, slug_data.values, 
                 {backgroundColor: color});
         }.bind(this));
 
