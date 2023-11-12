@@ -85,6 +85,9 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             if (this.options.granularity == "daily") {
                 params.since = moment().subtract(this.options.samples, "d").format("YYYY-MM-DD");
             }
+            if (this.options.source != "db") {
+                params.samples = this.options.samples;
+            }
         }
 
         if (this.options.group) {
@@ -127,46 +130,54 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     },
 
     enable_filters: function() {
+        let fields = [
+            {
+                type: "select",
+                name: "granularity",
+                size: "sm",
+                options: [
+                    {
+                        label: "Hourly",
+                        value: "hourly"
+                    },
+                    {
+                        label: "Daily",
+                        value: "daily"
+                    },
+                    {
+                        label: "Weekly",
+                        value: "weekly"
+                    },
+                    {
+                        label: "Monthly",
+                        value: "monthly"
+                    },
+                    {
+                        label: "Yearly",
+                        value: "yearly"
+                    },
+                ]
+            }
+        ];
 
-        this.addChild("card_filter", new SWAM.Form.View({
-            classes: "form-view nopad",
-            fields:[
-                {
-                    type: "select",
-                    name: "granularity",
-                    size: "sm",
-                    options: [
-                        {
-                            label: "Hourly",
-                            value: "hourly"
-                        },
-                        {
-                            label: "Daily",
-                            value: "daily"
-                        },
-                        {
-                            label: "Weekly",
-                            value: "weekly"
-                        },
-                        {
-                            label: "Monthly",
-                            value: "monthly"
-                        },
-                        {
-                            label: "Yearly",
-                            value: "yearly"
-                        },
-                    ],
-                    columns: 6
-                },
-                {
+        if (this.options.support_minutes) {
+            fields[0].options.insertAt({label:"Minutes", value:"minutes"}, 0);
+        }
+
+        if (_.isDict(this.options.filters) && this.options.filters.fields) {
+            fields[0].columns = 6;
+            fields.push({
                     type: "select",
                     name: "field",
                     size: "sm",
                     options: this.options.filters.fields,
                     columns: 6
-                }
-            ],
+                });
+        }
+
+        this.addChild("card_filter", new SWAM.Form.View({
+            classes: "form-view nopad",
+            fields: fields,
             defaults: this.options
         }));
 
