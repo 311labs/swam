@@ -8,8 +8,31 @@
     </div>
 
     <h4>Rule #{{model.id}} - {{model.name}}</h4>
-    <div>Priority: {{model.priority}}</div>
-    <div>Bundle: {{model.bundle|mintosecs|prettytimer}}</div>
+    <div class="row">
+      <div class="col-auto">
+          <div><div class="text-muted fs-7">Priority: </div>{{model.priority}}</div>
+          
+      </div>
+      <div class="col-auto">
+          <div><div class="text-muted fs-7">Bundle By: </div>{{model.bundle_by}}</div>
+          
+      </div>
+      <div class="col">
+          <div><div class="text-muted fs-7">Action: </div>Action: {{model.action}}</div>
+          
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-auto">
+        <div><div class="text-muted fs-7">Category: </div>{{model.category}}</div>
+      </div>
+      <div class="col-auto">
+        <div><div class="text-muted fs-7">Bundle: </div>Bundle: {{model.bundle|mintosecs|prettytimer}}</div>
+      </div>
+      <div class="col">
+        <div><div class="text-muted fs-7">Action Count: </div>Action Count: {{model.action_after}}</div>
+      </div>
+    </div>
   </div>
 </div>
 

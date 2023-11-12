@@ -12,13 +12,15 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
             {label:"when", field:"created|datetime"},
             {label:"name", field:"name"},
             {label:"priority", field:"priority"},
+            {label:"action", field:"action"},
             {label:"bundle", field:"bundle|mintosecs|prettytimer"},
         ],
         Collection: SWAM.Collections.IncidentRule,
         collection_params: {
+            sort: "priority",
             size: 10
         },
-        group_filtering: true,
+        group_filtering: false,
     },
 
     on_init: function() {

@@ -220,6 +220,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		if (!this.options.add_form && this.options.edit_form) this.options.add_form = this.options.edit_form;
 
 		if (this.options.add_form) options.fields = this.options.add_form;
+		if (!this.options.group_filtering) {
+			options.use_app_group = false;
+		}
 		if (this.collection.params.group) {
 			options.extra_fields = [
 				{
