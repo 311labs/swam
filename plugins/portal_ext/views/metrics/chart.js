@@ -253,12 +253,12 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         }
         colors = [...this.options.colors];
 
-        if (this.options.source == "db") {
+        if ((this.options.keys == "all")||(this.options.field)) {
+            this.on_all_metrics(data, colors);
+        } else if (this.options.source == "db") {
             this.on_db_metrics(data, colors);
         } else if (this.options.source == "aws") {
             this.on_aws_metrics(data, colors);
-        } else if (this.options.keys == "all") {
-            this.on_all_metrics(data, colors);
         } else {
             this.on_redis_metrics(data, colors);
         }
@@ -329,6 +329,9 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.options.yaxis_localize = 
         _.each(data.data, function(slug_data, slug) {
             let color = colors.pop();
+            if (this.options.parse_slug) {
+                slug = slug.split(this.options.parse_slug).pop();
+            }
             this.children.metrics_chart.addDataSet(
                 slug, slug_data, 
                 {
