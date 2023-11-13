@@ -49,6 +49,16 @@ SWAM.Models.Group = SWAM.Model.extend({
                     type:"image",
                     columns: 12
                 },
+                {
+                    type: "line"
+                },
+                {
+                    label: "Is Active",
+                    name: "is_active",
+                    help: "Enable/Disable this group.",
+                    type: "toggle",
+                    default: 1
+                }
             ]
         },
         {

@@ -66,6 +66,13 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
                 ]
             },
             {
+                label: "Disabled",
+                name: "is_active",
+                type: "select",
+                placeholder: "Select Status",
+                options: [{label:"Disabled", value: 0}, {label:"Enabled", value:1}]
+            },
+            {
                 label: "Created",
                 name: "created",
                 type: "daterange"
@@ -79,9 +86,15 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
                 label: "State",
                 name: "state",
                 type: "select",
+                editable: true,
                 options: "us_states"
             }
-        ]
+        ],
+        // batch_select: true,
+        // batch_actions: [
+        //     {label:"Delete", icon:"trash", action:"delete"},
+        //     {label:"Refresh", icon:"recycle", action:"refresh"}
+        // ]
     },
 
     on_group_change: function() {
