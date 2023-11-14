@@ -16,7 +16,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         duration: null,
         line_width: 1,
         size: 8,
-        show_table: true
+        show_table: true,
+        max_colors: 20,
+        start_color: [255, 0, 0],
+        end_color: [0, 0, 255]
     },
 
     on_init: function(opts) {
@@ -255,7 +258,10 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.children.metrics_chart.setLabels(this.options.labels);
         var colors = [];
         if (!this.options.colors) {
-            var rgb_colors = SWAM.Views.Chart.GenerateColors([255, 0, 0], [0,0,255], 20);
+            var rgb_colors = SWAM.Views.Chart.GenerateColors(
+                this.options.start_color,
+                this.options.end_color, 
+                this.options.max_colors);
             _.each(rgb_colors, function(c) {
                 colors.push(`rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.5)`);
             });
