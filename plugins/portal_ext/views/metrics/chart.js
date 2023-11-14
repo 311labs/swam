@@ -258,13 +258,51 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.children.metrics_chart.setLabels(this.options.labels);
         var colors = [];
         if (!this.options.colors) {
-            var rgb_colors = SWAM.Views.Chart.GenerateColors(
-                this.options.start_color,
-                this.options.end_color, 
-                this.options.max_colors);
-            _.each(rgb_colors, function(c) {
-                colors.push(`rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.5)`);
-            });
+            let rgb_colors;
+            if (this.options.max_colors > 10) {
+                for (var i = 0; i < this.options.max_colors; i+=10) {
+                    let mi = i % 3;
+                    let r1, g1, b1, r2, g2, b2;
+                    if (mi == 1) {
+                        r1 = Math.min(255, i*3);
+                        g1 = i;
+                        b1 = i;
+                        r2 = i;
+                        g2 = Math.max(0, 255-(i*2));
+                        b2 = Math.max(0, 255-(i*3));
+                    } else if (mi == 2) {
+                        r1 = i;
+                        g1 = Math.min(255, i*3);
+                        b1 = i;
+                        r2 = 255;
+                        g2 = i;
+                        b2 = 255;
+                    } else if (mi == 0) {
+                        r1 = i;
+                        g1 = i;
+                        b1 = Math.min(255, i*3);
+                        r2 = 255;
+                        g2 = 255;
+                        b2 = i;
+                    }
+                    rgb_colors = SWAM.Views.Chart.GenerateColors(
+                                    [r1, g1, b1],
+                                    [r2, g2, b2], 
+                                    10);
+                    _.each(rgb_colors, function(c) {
+                        colors.push(`rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.5)`);
+                    });
+                }
+            } else {
+                rgb_colors = SWAM.Views.Chart.GenerateColors(
+                                this.options.start_color,
+                                this.options.end_color, 
+                                this.options.max_colors);
+                _.each(rgb_colors, function(c) {
+                    colors.push(`rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.5)`);
+                });
+            }
+
             colors.shuffle(); // mix it up
             this.options.colors = colors;
         }
