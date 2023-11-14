@@ -4,6 +4,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	classes: "page-view table-page-view page-padded has-topbar",
 	template: "<div id='list'></div>",
 	defaults: {
+		update_url: true,
 		dialog_options: {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true},
 		edit_dialog_options: {size:"lg", can_dismiss:false, scrollable:true},
 		list_options: {
@@ -166,7 +167,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_loading_begin: function() {
-		this.updateURL(this.collection.params);
+		if (this.options.update_url) {
+			this.updateURL(this.collection.params);
+		}
 	},
 
 	on_pre_render: function() {
