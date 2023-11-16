@@ -98,6 +98,7 @@ SWAM.Rest = {
             data = _.extend({}, opts.params, data);
         }
         if (window.app && window.app.options.send_buid) {
+            if (data == null) data = {};
             data.__buid__ = window.getBrowserUID();
         }
         if (data != null) {
