@@ -1,4 +1,4 @@
-
+// 
 PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
     classes: "swam-paginated-table swam-table-clickable swam-table-tiny",
     defaults: {
@@ -8,7 +8,8 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
             {label:"IP", field:"ip"},
             {label:"Name", field:"name"},
             {label:"Kind", field:"kind"},
-            {label:"CM", field:"cm_provider"}
+            {label:"CM", field:"cm_provider"},
+            {label: "Signature", field: "buid"}
         ],
         Collection: SWAM.Collections.MemberDevice,
         collection_params: {
@@ -34,7 +35,16 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
     },
 
     on_item_clicked: function(item) {
-        SWAM.toast("Device Token", item.model.get("cm_token"), "info", 10000);
+        let cm_token = item.model.get("cm_token");
+        if (cm_token) {
+            this.sendCloudMessage();
+        } else {
+
+        }
+    },
+
+    sendCloudMessage: function() {
+        // SWAM.toast("Device Token", item.model.get("cm_token"), "info", 10000);
         SWAM.Dialog.showForm([
             {
                 label: "Kind",

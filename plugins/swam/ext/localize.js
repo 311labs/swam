@@ -480,22 +480,26 @@ SWAM.Localize = {
 
     'pydict_to_json': function(value, attr, fmt) {
         try {
-            // Replace single quotes with double quotes 
-            // Use a regular expression to match single quotes that are not inside other quotes
-            let jsonString = dictString.replace(/(\s*?{\s*?|\s*?,\s*?)(('\w+')\s*?:)/g, function(_, $1, $2){
-                return $1 + $2.replace(/'/g, '"');
-            });
-            
             value = value.replace(/\t/g, '');
             value = value.replace(/\n/g, '');
             value = value.replace(/None/g, 'null');
             value = value.replace(/True/g, 'true');
             value = value.replace(/False/g, 'false');
             value = value.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '');
+            return value;
             // Convert the string to a JSON object
-            let jsonObj = JSON.parse(jsonString);
-            
-            return jsonObj;
+            // Replace single quotes with double quotes 
+            // Use a regular expression to match single quotes that are not inside other quotes
+            // let jsonString = value.replace(/(\s*?{\s*?|\s*?,\s*?)(('\w+')\s*?:)/g, function(_, $1, $2){
+            //     return $1 + $2.replace(/'/g, '"');
+            // });
+            // or another version
+            // let jsonString = pythonDictString.replace(/\'/g, "\"")
+            //                                       .replace(/True/g, "true")
+            //                                       .replace(/False/g, "false")
+            //                                       .replace(/None/g, "null");
+            // let jsonObj = JSON.parse(jsonString);
+            // return jsonObj;
         } catch (error) {
             console.log(`Error converting string to JSON: ${error}`);
             return null;

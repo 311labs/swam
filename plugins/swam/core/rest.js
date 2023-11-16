@@ -97,6 +97,9 @@ SWAM.Rest = {
         if (opts.params) {
             data = _.extend({}, opts.params, data);
         }
+        if (window.app && window.app.options.send_buid) {
+            data.__buid__ = window.getBrowserUID();
+        }
         if (data != null) {
             if (method == "POST") {
                 if (data.__mpf) {

@@ -153,8 +153,10 @@ window.expandObject = function(obj) {
 };
 
 window.getBrowserUID = function() {
+    if (window.buid) return window.buid;
     var data = window.getBrowserHash();
-    return data.toString().toHex();
+    window.buid = data.toString().toHex();
+    return window.buid;
 };
 
 window.getBrowserHash = function() {

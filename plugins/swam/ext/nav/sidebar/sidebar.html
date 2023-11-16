@@ -22,7 +22,7 @@
     
   </div>
 
-{{#app.me|hasperm('manage_users', 'manage_groups')}}
+{{#app.me|hasperm('manage_users', 'manage_groups', 'view_global')}}
 <ul class="nav nav-pills flex-column px-2">
 {{#options.admin_menus}}
 <li>
@@ -31,7 +31,7 @@
 {{/options.admin_menus}}
 </ul>
 <hr>
-{{/app.me|hasperm('manage_users', 'manage_groups')}}
+{{/app.me|hasperm('manage_users', 'manage_groups', 'view_global')}}
 
 
 {{#options.logo}}

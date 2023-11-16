@@ -16,7 +16,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         sync_debounce_ms: 5000,
         toast_placement: "top_right",
         track_page_views: false,
-        toast_theme: "dark"
+        toast_theme: "dark",
+        send_buid: true // sends a __buid__ with every requires to the server, this is a browser id
     },
     on_init: function() {
         // turn on smart parameter parsing ('sss', 22, model.name) where model.name value is passed into localize

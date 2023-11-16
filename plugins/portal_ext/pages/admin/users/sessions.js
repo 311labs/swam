@@ -9,7 +9,8 @@ PORTAL.Views.MemberSessions = SWAM.Views.AdvancedTable.extend({
             {label:"Location", template:"{{model.location.city}}, {{model.location.state}}"},
             {label:"Browser", field:"browser"},
             {label:"OS", field:"os"},
-            {label:"Device", field:"device"}
+            {label:"Device", field:"device"},
+            {label:"Signature", field:"signature"}
         ],
         Collection: SWAM.Collections.MemberSession,
         collection_params: {

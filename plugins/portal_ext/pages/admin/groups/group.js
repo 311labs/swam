@@ -1,114 +1,74 @@
 
-PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
-    template: "portal_ext.pages.admin.users.user",
-    classes: "acs-member",
-    tagName: "div",
+PORTAL.Views.AdminGroup = SWAM.View.extend(SWAM.Ext.BS).extend({
+    // template: "<div id='tabs'></div>",
+    classes: "swam-group py-1 px-4",
 
     defaults: {
         title: ""
     },
 
     on_init: function() {
-        this.tabs = new SWAM.Views.Tabs();
-        this.tabs.addTab("Details", "details", new SWAM.Views.ModelView({inline:true, fields:[
+        let tabs = new SWAM.Views.Tabs({
+            tabs_classes: "my-3 pt-1"
+        });
+
+        this.appendChild("tabs", tabs);
+        tabs.addTab("Details", "details", new SWAM.Views.ModelView({inline:false, fields:[
                 {
-                    label:"Display Name",
-                    field:"display_name",
-                    columns: 12
+                    label:"Name",
+                    field:"name",
+                    columns: 6
                 },
                 {
-                    label:"User Name",
-                    field:"username",
-                    columns: 12
+                    label:"Kind",
+                    field:"kind",
+                    columns: 6
                 },
                 {
-                    label:"Email",
-                    field:"email|clipboard",
-                    columns: 12
-                },
-                {
-                    label:"Phone",
-                    field:"phone|ifempty",
-                    columns: 12
+                    label:"Short Name",
+                    field:"short_name",
+                    columns: 6
                 },
                 {
                     label:"ID",
                     field:"id",
-                    columns: 12
+                    columns: 6
                 },
                 {
-                    label:"Last Login",
-                    field:"last_login|ago|ifempty('never')",
-                    columns: 12
+                    label:"UUID",
+                    field:"uuid",
+                    columns: 6
                 },
                 {
-                    label:"Last Activity",
-                    field:"last_activity|ago|ifempty('never')",
-                    columns: 12
+                    label:"Parent",
+                    field:"parent.name",
+                    columns: 6
                 },
                 {
-                    label:"Last IP",
-                    field:"metadata.last_ip",
-                    columns: 12
+                    label:"Timezone",
+                    field:"timezone",
+                    columns: 6
                 },
                 {
-                    label:"Last Location",
-                    field:"metadata.location|location",
-                    columns: 12
-                },
-                {
-                    label:"Super User",
-                    field:"is_superuser|yesno_icon",
-                    columns: 12
-                },
-                {
-                    label:"Two Factor Auth",
-                    field:"has_topt|yesno_icon",
-                    columns: 12
-                },
-                {
-                    label:"Auth Token",
-                    field:"auth_token|ifempty|clipboard",
-                    columns: 12
-                },
+                    label:"End of Day",
+                    field:"metadata.eod",
+                    columns: 6
+                }
             ]}));
 
+        tabs.addTab("Members", "members", new PORTAL.Views.Memberships({
+            group_members:true}));
 
-        // if (app.options.user_permissions) {
-        //     _.each(app.options.user_permissions, function(info){
-        //         let view = new SWAM.Form.View({
-        //             fields:info.fields
-        //         });
-        //         this.tabs.addTab(info.title, info.slugify(), view);
-        //         view.on("input:change", this.on_perm_change, this);
-        //     }.bind(this));
-        // }
-
-        this.tabs.addTab("Permissions", "permissions", new SWAM.Form.View({
-            fields: SWAM.Models.User.PERMISSIONS_FORM,
-        }));
-
-        this.tabs.tab_views.permissions.on("input:change", this.on_perm_change, this);
-
-        this.tabs.addTab("Groups", "groups", new PORTAL.Views.MemberGroups());
-
-        this.tabs.addTab("Logs", "logs", new PORTAL.Views.Logs({
-            component: "account.Member",
+        tabs.addTab("Logs", "logs", new PORTAL.Views.Logs({
+            component: "account.Group",
             param_field: null
         }));
         
-        this.tabs.addTab("Acitivity", "activity", new PORTAL.Views.Logs({
-            param_field: "user"
+        tabs.addTab("Activity", "activity", new PORTAL.Views.Logs({
+            param_field: "group"
         }));
-
-        this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
-
-        this.tabs.addTab("Sessions", "sessions", new PORTAL.Views.MemberSessions());
-
-        this.tabs.setActiveTab("details");
-
-        this.addChild("tabs", this.tabs);
-
+        
+        tabs.setActiveTab("details");
     },
 
     on_perm_change: function(ievt) {

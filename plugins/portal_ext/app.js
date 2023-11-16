@@ -347,6 +347,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				name: app.options.title,
 				app_url: location.href,
 				api_url: app.options.api_url,
+				browser_id: window.getBrowserUID(),
 				stack: error.stack,
 				error: error.message,
 				col: col,

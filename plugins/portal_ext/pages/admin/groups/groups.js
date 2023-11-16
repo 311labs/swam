@@ -33,17 +33,7 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
                 label:"kind", field:"kind",
                 classes:"d-none d-sm-table-cell"
 
-            },
-            {
-                label:"city", field:"location.city",
-                no_sort:true,
-                classes:"d-none d-sm-none d-lg-table-cell"
-            },
-            {
-                label:"state", field:"location.state",
-                no_sort:true,
-                classes:"d-none d-sm-none d-lg-table-cell"
-            },
+            }
         ],
         Collection: SWAM.Collections.Group,
         collection_params: {
@@ -106,6 +96,30 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
         if (this.isActivePage()) {
             this.collection.fetch();
         }
+    },
+
+    on_init: function() {
+        SWAM.Pages.TablePage.prototype.on_init.call(this);
+        this.view = new PORTAL.Views.AdminGroup();
+    },
+
+    on_item_clicked: function(item) {
+        this.view.setModel(item.model);
+        SWAM.Dialog.showView(this.view, {
+            title: item.model.get("name"),
+            size:"lg", vsize:"lg",
+            add_classes: "modal-primary",
+            context_menu: [
+                {
+                    icon: "pencil",
+                    label: "Edit",
+                    action: "edit_group",
+                    callback: function(dlg, menu) {
+                        this.on_item_edit(item);
+                    }.bind(this)
+                }
+            ],
+            can_dismiss:true, scrollable:true});
     },
 });
 
