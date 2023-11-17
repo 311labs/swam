@@ -6,7 +6,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         icon: "exclamation-diamond-fill",
         title: "Incidents",
         list_options: {
-            add_classes: "swam-table-clickable",
+            add_classes: "swam-table-clickable swam-table-tiny",
             batch_select: true,
             batch_actions: [
                 {label:"Ignore", icon:"shield-fill-x", action:"ignore"},
@@ -163,71 +163,74 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
 
     on_item_clicked: function(item) {
         this.view.setModel(item.model);
-        var title = item.model.get("description") + " on " + item.model.get("component"); 
+        let state = item.model.get("state");
+        let state_display = item.model.get("state_display");
+        let description = item.model.get("description");
+        let component = item.model.get("component"); 
+
+        let context_menu = [
+            {
+                label: "Edit",
+                icon: "pencil",
+                callback: function(dlg, menu) {
+                    this.on_item_edit(item);
+                }.bind(this)
+            }
+        ];
+
+        let menu_state = {};
+        if (state < 3) {
+            if (state == 0) {
+                context_menu.push({
+                    label: "Open",
+                    icon: "inbox-fill",
+                    callback: function(dlg, menu) {
+                        app.showBusy();
+                        item.model.save({state:1}, function(){
+                            app.hideBusy();
+                            this.collection.fetch();
+                        }.bind(this));
+                    }.bind(this)
+                });
+            }
+
+            context_menu.push({
+                label: "Ignore",
+                icon: "trash2",
+                callback: function(dlg, menu) {
+                    app.showBusy();
+                    item.model.save({state:3}, function(){
+                        app.hideBusy();
+                        this.collection.fetch();
+                    }.bind(this));
+                }.bind(this)
+            });
+
+            context_menu.push({
+                label: "Resolved",
+                icon: "check-square",
+                callback: function(dlg, menu) {
+                    app.showBusy();
+                    item.model.save({state:4}, function(){
+                        app.hideBusy();
+                        this.collection.fetch();
+                    }.bind(this));
+                }.bind(this)
+            });
+        }
         SWAM.Dialog.showView(this.view, {
-            title: `Incident: ${title}`,
+            title: `<div>${description}</div><div class='row fs-7'><div class='col'>state: ${state_display}</div><div class='col'>category: ${component}</div></div>`,
             kind: "primary",
             can_dismiss: true,
             padded: true,
             scrollable: true,
             size: 'lg',
             height: 'md',
-            // "context_menu": context_menu
+            "context_menu": context_menu
         });
     },
 
 });
 
-
-PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
-    on_init: function() {
-        SWAM.Views.Tabs.prototype.on_init.call(this)
-        let collection = new SWAM.Collections.IncidentEvent();
-        collection.params.incident = -1;
-        this.addTab("Events", "events", new SWAM.Views.Table({
-            collection: collection,
-            remote_sort: false,
-            add_classes: "swam-table-clickable",
-            columns: [
-                {label:"when", field:"created|datetime"},
-                {label:"description", field:"description"},
-                {label:"hostname", field:"hostname"},
-                {label:"category", field:"category"},
-                {label:"level", field:"level"},
-            ],
-            pagination: true,
-        }));
-
-        this.getTab("events").on("item:clicked", function(item){
-            SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
-        }.bind(this));
-
-        collection = new SWAM.Collections.IncidentHistory();
-        collection.params.parent = -1;
-        this.addTab("History", "history", new SWAM.Views.Table({
-            collection: collection,
-            remote_sort: false,
-            add_classes: "swam-table-clickable",
-            columns: [
-                {label:"when", field:"created|datetime"},
-                {label:"component", field:"component"},
-                {label:"description", field:"description"},
-                {label:"priority", field:"priority"},
-                {label:"state", field:"state_display"},
-            ],
-            pagination: true,
-        }));
-
-        this.setActiveTab("events");
-    },
-
-    setModel: function(model) {
-        // filter the collection models to pertain only to the views model id
-        SWAM.Views.Tabs.prototype.setModel.call(this, model);
-        this.options.model = model;
-        this.getTab("events").collection.params.incident = this.options.model.get("id");
-        this.getTab("history").collection.params.parent = this.options.model.get("id");
-    }
-});
 
 

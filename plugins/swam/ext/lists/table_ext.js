@@ -25,6 +25,7 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
         collection_params: {
             size: 10
         },
+        fetch_on_tab: true,
         filter_bar: [
             {
                 type: "group",
@@ -208,4 +209,7 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
         }
     },
 
+    on_tab_focus: function() {
+        if (this.isInDOM() && this.options.fetch_on_tab) this.collection.fetchIfStale();
+    }
 });

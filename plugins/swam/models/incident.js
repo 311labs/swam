@@ -274,12 +274,43 @@ SWAM.Models.IncidentHistory = SWAM.Model.extend({
         url:"/rpc/incident/incident/history"
     },
 }, {
+    ADD_FORM: [
+        {
+            name:"kind",
+            label:"Kind",
+            type:"select",
+            options: [
+                "note", "history", "file"
+            ],
+            columns: 12
+        },
+        {
+            name:"note",
+            label:"Note",
+            type:"textarea",
+            columns: 12
+        },
+        {
+            name:"media",
+            label:"File (optional media)",
+            type:"file",
+            columns: 12
+        },
+    ],
     EDIT_FORM: [
         {
-            name:"date_tine",
-            label:"Date",
-            type:"text",
-            placeholder:"Enter Date",
+            name:"kind",
+            label:"Kind",
+            type:"select",
+            options: [
+                "note", "history", "file"
+            ],
+            columns: 12
+        },
+        {
+            name:"note",
+            label:"Note",
+            type:"textarea",
             columns: 12
         },
     ]
