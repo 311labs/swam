@@ -26,7 +26,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         Collection: SWAM.Collections.Incident,
         collection_params: {
             size: 10,
-            state: "__lt:3"
+            state: "0"
         },
         group_filtering: true,
         filters: [
