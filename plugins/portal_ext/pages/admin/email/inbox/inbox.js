@@ -6,9 +6,10 @@ PORTAL.Pages.EmailInbox = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
-            {label:"User Name", field:"username"},
-            {label:"Display Name", field:"display_name"},
-            {label:"Last Activity", field:"last_activity|ago"},
+            {label:"Email", field:"email"},
+            {label:"App", field:"tq_app"},
+            {label:"Handler", field:"tq_handler"},
+            {label:"Channel", field:"tq_channel"},
         ],
         Collection: SWAM.Collections.EmailInbox,
         collection_params: {
@@ -19,9 +20,5 @@ PORTAL.Pages.EmailInbox = SWAM.Pages.TablePage.extend({
 
     on_init: function() {
         SWAM.Pages.TablePage.prototype.on_init.call(this);
-    },
-
-    on_item_clicked: function(item_view, evt) {
-
     }
 });

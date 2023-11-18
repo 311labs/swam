@@ -2,6 +2,43 @@ SWAM.Models.EmailInbox = SWAM.Model.extend({
     defaults: {
         url:"/rpc/inbox/inbox"
     },
+}, {
+
+    EDIT_FORM: [
+        {
+            name:"state",
+            label:"Is Active",
+            type: "toggle",
+            default: "1",
+            columns: 12
+        },
+        {
+            name:"email",
+            label:"Email",
+            columns: 12,
+            placeholder: "Enter incoming email address"
+        },
+        {
+            name:"tq_app",
+            label:"App Name",
+            help: "Name of the DJANGO App to handle incoming emails",
+            columns: 12,
+        },
+        {
+            name:"tq_handler",
+            label:"Handler Method",
+            help: "Name of the handler method in the tq.py for the application.",
+            default: "on_incoming_email",
+            columns: 12,
+        },
+        {
+            name:"tq_channel",
+            label:"Task Channel Name",
+            help: "Name of the task channel to publish the email task to.",
+            default: "tq_app_handler",
+            columns: 12,
+        },
+    ],
 });
 
 SWAM.Collections.EmailInbox = SWAM.Collection.extend({

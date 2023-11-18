@@ -56,6 +56,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                             {label:"Active", value:"__lt:3"},
                             {label:"New", value:"0"},
                             {label:"Opened", value:"1"},
+                            {label:"Paused", value:"2"},
                             {label:"Ignored", value:"3"},
                             {label:"Resolved", value:"4"}
                         ],
@@ -192,6 +193,18 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         }.bind(this));
                     }.bind(this)
                 });
+            } else if (state == 1) {
+                context_menu.push({
+                    label: "Pause",
+                    icon: "inbox-fill",
+                    callback: function(dlg, menu) {
+                        app.showBusy();
+                        item.model.save({state:2}, function(){
+                            app.hideBusy();
+                            this.collection.fetch();
+                        }.bind(this));
+                    }.bind(this)
+                });
             }
 
             context_menu.push({
@@ -219,7 +232,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             });
         }
         SWAM.Dialog.showView(this.view, {
-            title: `<div>${description}</div><div class='row fs-7'><div class='col'>state: ${state_display}</div><div class='col'>category: ${component}</div></div>`,
+            title: `<div>#${item.model.id} ${description}</div><div class='row fs-7'><div class='col'>state: ${state_display}</div><div class='col'>category: ${component}</div></div>`,
             kind: "primary",
             can_dismiss: true,
             padded: true,
