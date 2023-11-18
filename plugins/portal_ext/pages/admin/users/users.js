@@ -7,6 +7,7 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
         list_options: {
             add_classes: "swam-table-clickable",
         },
+        item_url_param: "item",
         columns: [
             {
                 label: "Avatar",
@@ -76,7 +77,9 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
 
     on_item_clicked: function(item) {
         this.view.setModel(item.model);
-        SWAM.Dialog.showView(this.view, {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true});
+        let dlg = SWAM.Dialog.showView(
+            this.view, {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true});
+        this.on_item_dlg(item, dlg);
     },
 
 });

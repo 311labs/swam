@@ -325,7 +325,21 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_ws_channel_incident: function(msg) {
-		SWAM.toast(`New Incident`, SWAM.renderTemplate("portal_ext.views.incident.toast", {message:msg.message}), "danger", 120000);
+		let title = "New Incident";
+		let body = SWAM.renderTemplate(
+			"portal_ext.views.incident.toast",
+			{message:msg.message});
+		setTimeout(function(){
+			Toast.create({
+				title: title, 
+				message: body,
+				status: TOAST_STATUS["danger"],
+				timeout: null,
+				on_click: function(evt, t, opts) {
+					app.showPage("incidents", {url_params:{incident:msg.message.pk}});
+				}
+			});
+		}, 100);
 	},
 
 	on_uncaught_error: function(message, url, line, col, error, evt) {

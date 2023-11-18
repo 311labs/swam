@@ -96,6 +96,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		if (this.collection) {
 			this.collection.on("loading:begin", this.on_loading_begin, this);
 			if (this.options.collection_params) this.collection.params = _.extend({}, this.collection.params, this.options.collection_params);
+			if (this.options.item_url_param) this.collection.options.item_url_param = this.options.item_url_param;
 		}
 
 		if (this.options.group_filtering) {
@@ -134,6 +135,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			list_options: this.options.list_options
 		}));
 		this.children["list"].list.on("item:clicked", this.on_item_clicked, this);
+
+		if (_.isString(this.options.item_url_param) && !this.collection.options.ignore_params) {
+			this.collection.options.ignore_params = [this.options.item_url_param];
+		}
 	},
 
 	getBatchSelected: function() {
@@ -147,7 +152,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	setParams: function(params) {
 		this.params = params || {};
 		if (this.params.url_params) {
-			this.collection.params = _.extend({}, this.collection.params, this.params.url_params);
+			this.collection.params = _.extend({}, this.collection.params, this.params.url_params)
 		}
 		if (!this.options.group_filtering && this.collection.params.group) {
 			delete this.collection.params.group;
@@ -186,10 +191,11 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		if (!this.options.edit_form) {
 			this.options.edit_form = this.collection.options.Model.EDIT_FORM;
 		}
+		let dlg = null;
 
 		if (this.options.view) {
 			this.options.view.setModel(item.model);
-			SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
+			dlg = SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
 		} else if (!this.options.view_only && this.options.edit_form) {
 			let dlg_opts = _.extend({}, this.options.edit_dialog_options, {Title: "Edit"});
 			dlg_opts.fields = this.options.edit_form;
@@ -199,9 +205,26 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 				// auto saved nothing to do
 				}
 			}.bind(this);
-			SWAM.Dialog.editModel(item.model, dlg_opts);
+			dlg = SWAM.Dialog.editModel(item.model, dlg_opts);
 		} else {
-			SWAM.Dialog.showModel(item.model, null, {size:"md"});
+			dlg = SWAM.Dialog.showModel(item.model, null, {size:"md"});
+		}
+
+		this.on_item_dlg(item, dlg);
+	},
+
+	on_item_dlg: function(item, dlg) {
+		let item_url_param = this.options.item_url_param;
+		if (dlg && _.isString(item_url_param)) {
+			this.collection.params[item_url_param] = item.model.id;
+			this.updateURL(this.collection.params);
+			dlg.on("dialog:closed", function(d){
+			    dlg.off("dialog:closed");
+			    if (this.collection.params[item_url_param]) {
+			        delete this.collection.params[item_url_param];
+			        this.updateURL(this.collection.params);
+			    }
+			}.bind(this));
 		}
 	},
 
@@ -273,4 +296,20 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	on_action_download_pdf: function(evt) {
 	    SWAM.toast("Add Group", "Not implemented yet", "warning");
 	},
+
+	on_page_reenter: function() {
+	    this.on_page_enter();
+	},
+
+	on_page_enter: function() {
+		if (_.isString(this.options.item_url_param)) {
+			if (this.params && this.params.url_params && this.params.url_params[this.options.item_url_param]) {
+			    let pk = this.params.url_params[this.options.item_url_param];
+			    let model = new this.collection.options.Model({id:pk});
+			    model.fetch(function(){
+			        this.on_item_clicked({model:model});
+			    }.bind(this));
+			}
+		}
+	}
 });

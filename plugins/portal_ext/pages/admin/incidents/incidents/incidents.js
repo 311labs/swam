@@ -14,6 +14,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 {label:"Resolved", icon:"shield-check", action:"resolved"},
             ],
         },
+        item_url_param: "incident",
         columns: [
             {label:"state", field:"state_display"},
             {label:"when", field:"created|datetime"},
@@ -231,7 +232,8 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 }.bind(this)
             });
         }
-        SWAM.Dialog.showView(this.view, {
+        
+        let dlg = SWAM.Dialog.showView(this.view, {
             title: `<div>#${item.model.id} ${description}</div><div class='row fs-7'><div class='col'>state: ${state_display}</div><div class='col'>category: ${component}</div></div>`,
             kind: "primary",
             can_dismiss: true,
@@ -241,6 +243,8 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             height: 'md',
             "context_menu": context_menu
         });
+
+        this.on_item_dlg(item, dlg);
     },
 
 });

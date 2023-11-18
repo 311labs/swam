@@ -264,7 +264,8 @@ SWAM.Models.Incident = SWAM.Model.extend({
 
 SWAM.Collections.Incident = SWAM.Collection.extend({
     defaults: {
-        Model: SWAM.Models.Incident
+        Model: SWAM.Models.Incident,
+        ignore_params: ["incident"]
     }
 });
 

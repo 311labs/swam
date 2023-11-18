@@ -8,6 +8,7 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
         list_options: {
             add_classes: "swam-table-clickable",
         },
+        item_url_param: "item",
         columns: [
             {label:"when", field:"created|datetime"},
             {label:"description", field:"description"},
@@ -72,7 +73,9 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
 
     on_item_clicked: function(item) {
         // this.view.setModel(item.model);
-        SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+        let dlg = SWAM.Dialog.showModel(
+            item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+        this.on_item_dlg(item, dlg);
     },
 
 });

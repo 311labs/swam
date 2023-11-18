@@ -7,6 +7,7 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
         list_options: {
             add_classes: "swam-table-clickable",
         },
+        item_url_param: "item",
         columns: [
             {
                 label:"id", field:"id"
@@ -105,7 +106,7 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
 
     on_item_clicked: function(item) {
         this.view.setModel(item.model);
-        SWAM.Dialog.showView(this.view, {
+        let dlg = SWAM.Dialog.showView(this.view, {
             title: item.model.get("name"),
             size:"lg", vsize:"lg",
             add_classes: "modal-primary",
@@ -120,6 +121,7 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
                 }
             ],
             can_dismiss:true, scrollable:true});
+        this.on_item_dlg(item, dlg);
     },
 });
 

@@ -345,7 +345,12 @@ SWAM.Collection = SWAM.Object.extend({
             }
         }
         this.trigger('loading:begin', this);
-        this._request = SWAM.Rest.GET(this.getUrl(), this.params, function(data, status) {
+        let params = this.params;
+        if (this.options.ignore_params) {
+            params = _.extend({}, params);
+            this.options.ignore_params.forEach(e => delete params[e]);
+        }
+        this._request = SWAM.Rest.GET(this.getUrl(), params, function(data, status) {
             this._request = null;
             this._on_fetched(data, status);
             if (callback) callback(this, status, data);
