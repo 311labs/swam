@@ -218,6 +218,7 @@ class Toast {
         if (_.isFunction(toastOptions.on_click)) {
           $(toastBody).on("click", function(evt) {
             var t = bootstrap.Toast.getInstance(toastEl)
+            t.hide();
             toastOptions.on_click(evt, t, toastOptions);
           });
         }
