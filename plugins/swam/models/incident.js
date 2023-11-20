@@ -88,10 +88,6 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
                     label: "IP"
                 },
                 {
-                    value: 5,
-                    label: "IP and Component"
-                },
-                {
                     value: 1,
                     label: "Hostname"
                 },
@@ -102,6 +98,22 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
                 {
                     value: 3,
                     label: "Component and Hostname"
+                },
+                {
+                    value: 5,
+                    label: "Component and IP"
+                },
+                {
+                    value: 6,
+                    label: "Category"
+                },
+                {
+                    value: 7,
+                    label: "Category and Hostname"
+                },
+                {
+                    value: 8,
+                    label: "Category and IP"
                 },
             ],
             columns: 6
@@ -119,7 +131,7 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             name:"action_after",
             label:"Action After Count",
             type:"text",
-            help: "If bundled this will trigger the action after X number of events.",
+            help: "If bundled this will trigger the action after X number of events. If number is negative then it will trigger every x number of events.  IE -1 triggers every time, -4 triggers every 4.",
             default: 0,
             columns: 6
         },

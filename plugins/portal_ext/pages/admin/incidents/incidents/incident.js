@@ -3,10 +3,65 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
     on_init: function() {
         SWAM.Views.Tabs.prototype.on_init.call(this);
 
-        this.init_history_tab();
+        this.init_details_tab();
         this.init_events_tab();
-        
-        this.setActiveTab("history");
+        this.init_history_tab();   
+        this.setActiveTab("details");
+    },
+
+    init_details_tab: function() {
+        this.addTab("Details", "details", new SWAM.Views.ModelView({inline:false, fields:[
+            {
+                label:"Created",
+                field:"created|datetime",
+                columns: 6
+            },
+            {
+                label:"Category",
+                field:"category",
+                columns: 6
+            },
+            {
+                label:"Rule",
+                field:"rule.name",
+                columns: 6
+            },
+            {
+                label:"Rule Action",
+                field:"rule.action",
+                columns: 6
+            },
+            {
+                label:"Component",
+                field:"component",
+                columns: 6
+            },
+            {
+                label:"Component ID",
+                field:"component_id",
+                columns: 6
+            },
+            {
+                label:"Assigned TO",
+                field:"assigned_to.username",
+                columns: 6
+            },
+            {
+                label:"Notify Sent",
+                field:"action_sent|datetime",
+                columns: 6
+            },
+            {
+                label:"Reporter",
+                field:"reporter_ip",
+                columns: 6
+            },
+            {
+                label:"Host",
+                field:"hostname",
+                columns: 6
+            }
+        ]}));
     },
 
     init_events_tab: function() {
@@ -18,10 +73,8 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             add_classes: "swam-table-clickable",
             columns: [
                 {label:"when", field:"created|datetime"},
-                {label:"description", field:"description"},
                 {label:"hostname", field:"hostname"},
-                {label:"category", field:"category"},
-                {label:"level", field:"level"},
+                {label:"description", field:"description"},
             ],
             pagination: true,
         }));

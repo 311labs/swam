@@ -12,13 +12,13 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 {label:"Ignore", icon:"shield-fill-x", action:"ignore"},
                 {label:"Accept", icon:"eye-fill", action:"accept"},
                 {label:"Resolved", icon:"shield-check", action:"resolved"},
-            ],
+            ]
         },
         item_url_param: "incident",
         columns: [
             {label:"state", field:"state_display"},
             {label:"when", field:"created|datetime"},
-            {label:"component", field:"component"},
+            {label:"category", field:"category"},
             {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id", classes:"d-none d-lg-table-cell"},
             {label:"description", field:"description", classes:"d-none d-lg-table-cell"},
             {label:"priority", field:"priority"},
@@ -64,11 +64,19 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         columns: 3
                     },
                     {
-                        name: "component",
+                        name: "category",
                         type: "select",
                         editable: true,
-                        placeholder: "Select Component",
+                        placeholder: "Select category",
                         options: SWAM.Models.Incident.COMPONENTS,
+                        columns: 3,
+                    },
+                    {
+                        name: "component",
+                        columns: 3,
+                    },  
+                    {
+                        name: "component_id",
                         columns: 3,
                     },
                     {
@@ -163,6 +171,13 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         this.reload();
     },
 
+    on_rule_edit: function(item) {
+        let model = new SWAM.Models.IncidentRuleCheck(item.model.get("rule"));
+        let view = new PORTAL.Views.Rule();
+        view.setModel(model);
+        let dlg = SWAM.Dialog.showView(view, {size:"lg", vsize:"lg", can_dismiss:true});
+    },
+
     on_item_clicked: function(item) {
         this.view.setModel(item.model);
         let state = item.model.get("state");
@@ -172,7 +187,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
 
         let context_menu = [
             {
-                label: "Edit",
+                label: "Edit Incident",
                 icon: "pencil",
                 callback: function(dlg, menu) {
                     this.on_item_edit(item);
@@ -180,6 +195,17 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             }
         ];
 
+        if (item.model.get("rule")) {
+            context_menu.push({
+                    label: "Edit Rule",
+                    icon: "pencil",
+                    callback: function(dlg, menu) {
+                        this.on_rule_edit(item);
+                    }.bind(this)
+                });
+        }
+
+        context_menu.push({divider:true});
         let menu_state = {};
         if (state < 3) {
             if (state == 0) {
@@ -232,9 +258,9 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 }.bind(this)
             });
         }
-        
+        let header = SWAM.renderTemplate("portal_ext.pages.admin.incidents.incidents.header", {model:item.model});
         let dlg = SWAM.Dialog.showView(this.view, {
-            title: `<div>#${item.model.id} ${description}</div><div class='row fs-7'><div class='col'>state: ${state_display}</div><div class='col'>category: ${component}</div></div>`,
+            title: header,
             kind: "primary",
             can_dismiss: true,
             padded: true,
