@@ -74,7 +74,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             columns: [
                 {label:"when", field:"created|datetime"},
                 {label:"hostname", field:"hostname"},
-                {label:"description", field:"description"},
+                {label:"description", field:"description", td_classes:"td-pre"}
             ],
             pagination: true,
         }));
@@ -100,7 +100,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             add_classes: "swam-table-clickable",
             columns: [
                 {label:"When", template:"<div>{{model.by.display_name}}</div><div>{{model.created|datetime}}</div>"},
-                {label:"Note", template:"<div>{{{model.note}}}</div>"}
+                {label:"Note", template:"<div>{{{model.note}}}</div>", td_classes:"td-pre"}
             ],
             pagination: true,
         }));

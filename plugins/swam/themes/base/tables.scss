@@ -246,6 +246,10 @@ table.swam-table {
                 width: 1%;
                 white-space: nowrap;
             }
+
+            &.td-pre {
+                white-space: pre;
+            }
         }
     }
 
