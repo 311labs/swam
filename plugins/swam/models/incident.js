@@ -4,6 +4,21 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
     defaults: {
         url:"/rpc/incident/rule"
     },
+
+    bundle_by_display: function() {
+        let b = this.get("bundle_by");
+        let field = _.findWhere(SWAM.Models.IncidentRule.EDIT_FORM, {name:"bundle_by"});
+        let opt = _.findWhere(field.options, {value:b});
+        if (opt) return opt.label;
+        return "";
+    },
+    bundle_time_display: function() {
+        let b = this.get("bundle");
+        let field = _.findWhere(SWAM.Models.IncidentRule.EDIT_FORM, {name:"bundle"});
+        let opt = _.findWhere(field.options, {value:b});
+        if (opt) return opt.label;
+        return "Disabled";
+    },
 }, {
     EDIT_FORM: [
         {
@@ -65,6 +80,10 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
                 {
                     label: "24 hours",
                     value: 1440,
+                },
+                {
+                    label: "1 week",
+                    value: 10080,
                 },
                 {
                     label: "1 week",

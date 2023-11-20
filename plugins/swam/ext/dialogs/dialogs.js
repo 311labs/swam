@@ -55,6 +55,10 @@ SWAM.Dialog = SWAM.View.extend({
         if (this.options.fullscreen) {
             this.options.add_classes = "modal-fullscreen";
         }
+
+        if (!this.options.add_classes) {
+            this.options.add_classes = app.options.dialog_theme;
+        }
         if (!this.options.stack && SWAM.active_dialog) {
             SWAM.active_dialog.dismiss();
         } else if (this.options.stack) {

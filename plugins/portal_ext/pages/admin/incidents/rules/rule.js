@@ -6,6 +6,40 @@ PORTAL.Views.Rule = SWAM.View.extend({
     tagName: "div",
 
     on_init: function() {
+
+        this.addChild("details", new SWAM.Views.ModelView({inline:false, fields:[
+            {
+                label:"Priority",
+                field:"priority",
+                columns: 4
+            },
+            {
+                label:"Category",
+                field:"category",
+                columns: 4
+            },
+            {
+                label:"Action After",
+                field:"action_after",
+                columns: 4
+            },
+            {
+                label:"Bundle By",
+                field:"bundle_by_display",
+                columns: 4
+            },
+            {
+                label:"Bundle Time",
+                field:"bundle_time_display",
+                columns: 4
+            },
+            {
+                label:"Action",
+                field:"action",
+                columns: 4
+            }
+        ]}));
+
         this.checks = new SWAM.Collections.IncidentRuleCheck({params:{size:100, sort:"index"}});
         this.addChild("list", new SWAM.Views.Table({
             remote_sort: false,
@@ -36,24 +70,31 @@ PORTAL.Views.Rule = SWAM.View.extend({
     },
 
     setModel: function(model) {
-        this.model = model;
+        SWAM.View.prototype.setModel.call(this, model);
         this.checks.params.parent = model.id;
         this.checks.fetch();
     },
 
-    on_action_edit: function(evt) {
+    on_action_edit_rule: function(evt, id) {
         SWAM.Dialog.editModel(this.model, {
             callback: function(model, resp, dlg) {
                 // nothing to do?
             },
             stack: true,
+            title: "Edit Rule",
+            context_menu: [
+                {
+                    label: "Edit Rule",
+                    icon: "pencil"
+                }
+            ]
         });
     },
 
     on_action_remove: function(evt) {
         SWAM.Dialog.confirm({
             title: "Remove Rule",
-            message: "Are you sure you want to remove this rule from the current group?",
+            message: "Are you sure you want to remove this rule?",
             callback: function(dlg, value) {
                 dlg.dismiss();
                 if (value.upper() == "YES") {
@@ -62,7 +103,7 @@ PORTAL.Views.Rule = SWAM.View.extend({
                     this.model.destroy(function(model, resp) {
                         app.hideBusy();
                         if (resp.status) {
-                            SWAM.toast("Rule delete", "Succesfully removed reule from group", "success", 4000);
+                            SWAM.toast("Rule delete", "Succesfully removed rule", "success", 4000);
                             SWAM.Dialog.dismissAll();
                             app.active_page.reload();
                         } else {
@@ -125,5 +166,6 @@ PORTAL.Views.Rule = SWAM.View.extend({
             }.bind(this)
         });
     },
+
 });
 

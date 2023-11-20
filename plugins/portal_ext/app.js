@@ -325,7 +325,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_ws_channel_incident: function(msg) {
-		let title = "New Incident";
+		let title = `New Incident #${msg.message.pk}`;
 		let body = SWAM.renderTemplate(
 			"portal_ext.views.incident.toast",
 			{message:msg.message});

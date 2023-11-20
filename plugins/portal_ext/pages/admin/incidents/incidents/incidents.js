@@ -172,10 +172,23 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
     },
 
     on_rule_edit: function(item) {
-        let model = new SWAM.Models.IncidentRuleCheck(item.model.get("rule"));
+        let model = new SWAM.Models.IncidentRule(item.model.get("rule"));
         let view = new PORTAL.Views.Rule();
         view.setModel(model);
-        let dlg = SWAM.Dialog.showView(view, {size:"lg", vsize:"lg", can_dismiss:true});
+        let dlg = SWAM.Dialog.showView(view, {
+            title: SWAM.renderString("Rule #{{model.id}} - {{model.name}}", {model:model}),
+            size:"lg", vsize:"lg",
+            can_dismiss:true,
+            context_menu: [
+                {
+                    label: "Edit",
+                    icon: "pencil",
+                    callback: function(d, menu) {
+                        SWAM.Dialog.editModel(model, {});
+                    }
+                }
+            ]
+        });
     },
 
     on_item_clicked: function(item) {
@@ -228,6 +241,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         app.showBusy();
                         item.model.save({state:2}, function(){
                             app.hideBusy();
+                            dlg.dismiss();
                             this.collection.fetch();
                         }.bind(this));
                     }.bind(this)
@@ -241,6 +255,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                     app.showBusy();
                     item.model.save({state:3}, function(){
                         app.hideBusy();
+                        dlg.dismiss();
                         this.collection.fetch();
                     }.bind(this));
                 }.bind(this)
@@ -253,6 +268,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                     app.showBusy();
                     item.model.save({state:4}, function(){
                         app.hideBusy();
+                        dlg.dismiss();
                         this.collection.fetch();
                     }.bind(this));
                 }.bind(this)
