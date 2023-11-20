@@ -6,7 +6,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         icon: "exclamation-diamond-fill",
         title: "Incidents",
         list_options: {
-            add_classes: "swam-table-clickable swam-table-tiny",
+            add_classes: "swam-table-clickable swam-table-tiny small table-sm",
             batch_select: true,
             batch_actions: [
                 {label:"Ignore", icon:"shield-fill-x", action:"ignore"},
@@ -16,13 +16,14 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         },
         item_url_param: "incident",
         columns: [
-            {label:"state", field:"state_display"},
+            {label:"state", template:"{{model.state_display}} #{{model.id}}", sort_field:"state"},
+            {label:"events", field:"metadata.event_count"},
             {label:"when", field:"created|datetime"},
-            {label:"category", field:"category"},
+            {label:"cat", field:"category"},
             {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id", classes:"d-none d-lg-table-cell"},
             {label:"description", field:"description", classes:"d-none d-lg-table-cell"},
-            {label:"priority", field:"priority"},
-
+   
+        
         ],
         Collection: SWAM.Collections.Incident,
         collection_params: {
@@ -41,6 +42,16 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 labe: "Search",
                 name: "search",
                 type: "text",
+            },
+            {
+                name: "component",
+                type: "text",
+                columns: 3,
+            },  
+            {
+                name: "component_id",
+                type: "text",
+                columns: 3,
             },
         ],
         filter_bar: [
@@ -69,14 +80,6 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         editable: true,
                         placeholder: "Select category",
                         options: SWAM.Models.Incident.COMPONENTS,
-                        columns: 3,
-                    },
-                    {
-                        name: "component",
-                        columns: 3,
-                    },  
-                    {
-                        name: "component_id",
                         columns: 3,
                     },
                     {

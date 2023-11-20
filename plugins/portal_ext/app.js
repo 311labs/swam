@@ -340,6 +340,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				}
 			});
 		}, 100);
+		this.refreshIncidentBadge();
 	},
 
 	on_uncaught_error: function(message, url, line, col, error, evt) {
