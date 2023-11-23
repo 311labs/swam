@@ -13,7 +13,7 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
          ],
         Collection: SWAM.Collections.AuditLog,
         collection_params: {
-            size: 15
+            size: 10
         },
         filter_bar: [
             {
@@ -114,9 +114,16 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
 
     on_init: function() {
         // this.options.view = new PORTAL.Views.Device();
-        if (this.options.component && this.options.filters) {
-            let filter = _.findWhere(this.options.filters, {name:"component"});
-            if (filter) this.options.filters.remove(filter);
+        if (this.options.component) {
+            if (this.options.filters) {
+                let filter = _.findWhere(this.options.filters, {name:"component"});
+                if (filter) this.options.filters.remove(filter);
+            }
+
+            if (this.options.columns) {
+                let filter = _.findWhere(this.options.columns, {field:"component"});
+                if (filter) this.options.columns.remove(filter);
+            }
         }
         SWAM.Views.AdvancedTable.prototype.on_init.call(this);
     },

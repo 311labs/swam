@@ -201,9 +201,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			dlg_opts.fields = this.options.edit_form;
 			dlg_opts.form_config = this.options.form_config;
 			dlg_opts.callback = function(model, resp) {
-				if (resp.status) {
-				// auto saved nothing to do
-				}
+				this.on_model_saved(model, resp);
 			}.bind(this);
 			dlg = SWAM.Dialog.editModel(item.model, dlg_opts);
 		} else {
@@ -228,6 +226,14 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		}
 	},
 
+	on_model_added: function(model, resp) {
+		this.collection.fetch();
+	},
+
+	on_model_saved: function(model, resp) {
+
+	},
+
 	on_action_add: function(evt) {
 	    var options = {
 			title:"Add",
@@ -236,7 +242,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			callback:function(model, resp) {
 				if (resp.status) {
 				// auto saved nothing to do
-					this.collection.fetch();
+					this.on_model_added(model, resp);
 				}
 			}.bind(this)
 		};

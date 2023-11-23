@@ -108,10 +108,17 @@ SWAM.Dialog = SWAM.View.extend({
         }
     },
     on_action_context_menu: function(evt) {
-        var id = $(evt.currentTarget).data("id");
-        var menu = _.findWhere(this.options.context_menu, {action: id});
+        let id = $(evt.currentTarget).data("id");
+        let menu = _.findWhere(this.options.context_menu, {action: id});
         if (menu && menu.callback) {
             menu.callback(this, menu);
+        } else if (this.options.view) {
+            let func_name = "on_action_" + id;
+            let view = this.options.view;
+            if (_.isFunction(view[func_name])) {
+                return view[func_name](evt, view.model.id);
+            }
+            this.options.view.on_action_click(evt);
         }
     },
     on_model_change: function(model) {

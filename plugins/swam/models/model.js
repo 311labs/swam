@@ -124,11 +124,24 @@ SWAM.Model = SWAM.Object.extend({
         return mc.lookup(key);
     },
 
+    on_fetched: function(data, status) {
+        this.on_updated();
+    },
+
+    on_saved: function(data, status) {
+        this.on_updated();
+    },
+
+    on_updated: function() {
+
+    },
+
     _on_fetched: function(data, status) {
         if (data && data.data) {
             this.set(data.data);
             this.last_fetched_at = Date.now();
             this.trigger("fetched", this);
+            this.on_fetched(data, status);
         }
     },
 
@@ -136,6 +149,7 @@ SWAM.Model = SWAM.Object.extend({
         if (data && data.data) {
             this.set(data.data);
             this.trigger("saved", this);
+            this.on_saved(data, status);
         }
     },
 

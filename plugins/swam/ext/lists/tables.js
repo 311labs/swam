@@ -358,7 +358,11 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                     if (_.isUndefined(totals[field])) {
                         totals[field] = 0;
                     }
-                    totals[field] += item.model.get(field);
+                    let v = item.model.get(field);
+                    if (v != undefined) {
+                        totals[field] += v;
+                    }
+                    
                 }, this));
             }
         }

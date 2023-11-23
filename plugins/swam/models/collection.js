@@ -304,6 +304,7 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     fetch: function(callback, opts) {
+        if (this.options.no_fetch) return;
         if (this.options.fetch_debounced) {
             this.fetchDebounced(callback, opts);
         } else {

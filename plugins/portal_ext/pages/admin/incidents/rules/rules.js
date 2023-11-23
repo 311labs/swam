@@ -53,6 +53,15 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
                 },
             ]
         });
+    },
+
+    on_model_added: function(model, resp) {
+        this.collection.fetch();
+        this.on_item_clicked({model:model});
+    },
+
+    on_model_saved: function(model, resp) {
+
     }
 
 });
