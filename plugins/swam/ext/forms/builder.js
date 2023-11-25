@@ -305,6 +305,12 @@ SWAM.Form.Builder.button = function(fc, form_info) {
 	if (fc.full_width) fc.$el.addClass("d-grid");
 	fc.$button.attr("class", fc.classes);
 	if (fc.fake_label) fc.$el.append("<div><label class='form-label'>&nbsp;</label></div>");
+	if (fc.tooltip) {
+		fc.$button
+			.attr("data-bs-toggle", "tooltip")
+			.attr("data-bs-placement", "bottom")
+			.attr("title", fc.tooltip);
+	}
 	fc.$el.append(fc.$button);
 }
 

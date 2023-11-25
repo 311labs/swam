@@ -37,6 +37,10 @@ SWAM.Views.Tabs = SWAM.View.extend({
         this.trigger("tab:change", {id:tab_id, view:view});
     },
 
+    getActiveTab: function() {
+        return this.options.active_tab;
+    },
+
     setModel: function(model) {
         SWAM.View.prototype.setModel.call(this, model);
         _.each(this.tab_views, function(child){

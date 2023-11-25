@@ -116,6 +116,14 @@ SWAM.Form.View = SWAM.View.extend({
             
         this.enablePops();
         this.enableClear();
+        this.enableTooltips();
+    },
+
+    enableTooltips: function() {
+        var tooltipTriggerList = [].slice.call(this.$el[0].querySelectorAll('[data-bs-toggle="tooltip"]'))
+        this._bs_tips = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     },
 
     getData: function() {
