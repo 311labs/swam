@@ -107,16 +107,26 @@ SWAM.Views.List = SWAM.View.extend({
         return _.findWhere(this.items, {id:id});
     },
 
-    add: function(model, silent) {
+    add: function(model, silent, at_top) {
         var item = this.get(model.id);
         if (!item) {
             var opts = _.extend({model:model, list:this}, this.options.item_options);
             if (this.options.item_template) opts.template = this.options.item_template;
             item = new this.options.ItemView(opts);
-            this.items.push(item);
+            if (at_top) {
+                this.items.insertAt(item, 0);
+            } else {
+                this.items.push(item);
+            }
             if (!silent) this.trigger("add", model);
         }
         return item;
+    },
+
+    addModel: function(model, at_top) {
+        this.add(model, false, at_top);
+        this.collection.add(model, at_top);
+        this.render();
     },
 
     remove: function(model) {
@@ -137,7 +147,6 @@ SWAM.Views.List = SWAM.View.extend({
 
     on_add: function(model) {
         this.add(model);
-
     },
 
     on_remove: function(model) {

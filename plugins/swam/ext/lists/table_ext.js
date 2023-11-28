@@ -16,6 +16,10 @@ SWAM.Views.PaginatedTable = SWAM.Views.PaginatedList.extend({
         SWAM.Views.PaginatedList.prototype.on_init.apply(this, arguments);
     },
 
+    addModel: function(model, at_top) {
+        this.getChild("list").addModel(model, at_top);
+    },
+
 });
 
 SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
@@ -164,23 +168,9 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
         this.collection.fetch();
     },
 
-    // on_action_download_csv: function(evt) {
-    //     var filename = "download.csv";
-    //     window.location.assign(this.collection.getRawUrl({
-    //         format_filename: filename,
-    //         format:"csv",
-    //     }));
-    //     SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
-    // },
-
-    // on_action_download_json: function(evt) {
-    //     var filename = "download.json";
-    //     window.location.assign(this.collection.getRawUrl({
-    //         format_filename: filename,
-    //         format:"json",
-    //     }));
-    //     SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
-    // },
+    addModel: function(model, at_top) {
+        this.getChild("list").addModel(model, at_top);
+    },
 
     on_item_clicked: function(item, evt) {
         this.on_item_edit(item, evt);

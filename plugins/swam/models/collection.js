@@ -172,13 +172,18 @@ SWAM.Collection = SWAM.Object.extend({
         if (!silent) this.trigger("reset", this);
     },
 
-    add: function(model) {
+    add: function(model, at_top) {
         if (!_.isDict(model.attributes) && _.isDict(model)) {
             // support for adding just a dictionary
             model = new this.options.Model(model);
         }
         if (!this.get(model)) {
-            this.models.push(model);
+            if (!at_top) {
+                this.models.push(model);
+            } else {
+                this.models.insertAt(model, 0);
+            }
+            
             this.length = this.models.length;
             this.trigger("add", model);
         }
