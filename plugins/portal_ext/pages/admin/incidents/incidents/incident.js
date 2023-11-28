@@ -74,6 +74,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             columns: [
                 {label:"when", field:"created|datetime"},
                 {label:"hostname", field:"hostname"},
+                {label:"ip", field:"reporter_ip"},
                 {label:"description", field:"description", td_classes:"td-pre"}
             ],
             pagination: true,

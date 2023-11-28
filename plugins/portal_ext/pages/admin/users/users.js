@@ -65,6 +65,10 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
                     {label: "View Logs", value: "perm:view_logs"},
                 ],
                 operator: "is"
+            },
+            {
+                label: "IP",
+                name: "ip"
             }
         ],
         group_filtering: false
