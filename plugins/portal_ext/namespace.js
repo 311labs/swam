@@ -10,18 +10,24 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("groups", new PORTAL.Pages.Groups(), ["admin/groups", "groups"]);
 	app.addPage("audit_logs", new PORTAL.Pages.AuditLogs(), ["admin/logs", "logs"]);
 	app.addPage("taskqueue", new PORTAL.Pages.TaskQueue(), ["admin/taskqueue", "taskqueue"]);
+	
 	app.addPage("email_inbox", new PORTAL.Pages.EmailInbox(), ["admin/email/inbox"]);
 	app.addPage("email_message", new PORTAL.Pages.EmailMessage(), ["admin/email/messages"]);
 	app.addPage("email_outbox", new PORTAL.Pages.EmailOutgoing(), ["admin/email/outbox"]);
 	app.addPage("email_bounced", new PORTAL.Pages.EmailBounced(), ["admin/email/bounced"]);
 	app.addPage("email_complaint", new PORTAL.Pages.EmailComplaint(), ["admin/email/complaints"]);
 	app.addPage("email_template", new PORTAL.Pages.EmailTemplate(), ["admin/email/templates"]);
+	
+	app.addPage("phone_sms", new PORTAL.Pages.TextMessages(), ["admin/phone/sms"]);
+	app.addPage("phone_info", new PORTAL.Pages.PhoneInfo(), ["admin/phone/info"]);
+	
 	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
 	app.addPage("admin_metrics", new PORTAL.Pages.Metrics(), ["admin/metrics"]);
 	app.addPage("admin_cloudwatch", new PORTAL.Pages.CloudWatch(), ["admin/cloudwatch"]);
 	app.addPage("admin_firewall", new PORTAL.Pages.FirewallEvents(), ["admin/firewall"]);
 	app.addPage("admin_servers", new PORTAL.Pages.ServerInfo(), ["admin/servers"]);
 	app.addPage("admin_domains", new PORTAL.Pages.DomainWatch(), ["admin/domains"]);
+	app.addPage("admin_ips", new PORTAL.Pages.GeoIPs(), ["admin/geo/ips"]);
 
 	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
 	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({group_filtering:false}), ["admin/incident/events"]);
@@ -62,7 +68,7 @@ PORTAL.Menus.Admin = [
 	},
 	{
 		icon: "mailbox",
-		label: "Email",
+		label: "EMail",
 		items: [
 			{
 				icon: "mailbox",
@@ -92,7 +98,23 @@ PORTAL.Menus.Admin = [
 		]
 	},
 	{
-		icon: "mailbox",
+		icon: "phone",
+		label: "Telephony",
+		items: [
+			{
+				icon: "chat",
+				label: "SMS",
+				page: "phone_sms"
+			},
+			{
+				icon: "info-circle-fill",
+				label: "Lookup",
+				page: "phone_info"
+			},
+		]
+	},
+	{
+		icon: "bullseye",
 		label: "Incidents",
 		items: [
 			{
@@ -136,6 +158,11 @@ PORTAL.Menus.Admin = [
 				icon: "info-circle-fill",
 				page: "admin_domains"
 			},
+			{
+				label:"Geo IPs",
+				icon: "globe",
+				page: "admin_ips"
+			}
 		]
 	},
 	{

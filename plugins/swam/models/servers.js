@@ -21,3 +21,24 @@ SWAM.Collections.DomainWatch = SWAM.Collection.extend({
         Model: SWAM.Models.DomainWatch
     }
 });
+
+
+SWAM.Models.GeoIP = SWAM.Model.extend({
+    defaults: {
+        url:"/rpc/location/geo/ip"
+    },
+}, {
+    ADD_FORM: [
+        {
+            name:"ip",
+            label:"IP Address",
+            columns: 12
+        }
+    ],
+});
+
+SWAM.Collections.GeoIP = SWAM.Collection.extend({
+    defaults: {
+        Model: SWAM.Models.GeoIP
+    }
+});

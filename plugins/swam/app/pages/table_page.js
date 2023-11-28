@@ -7,6 +7,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		update_url: true,
 		dialog_options: {size:"lg", vsize:"lg", can_dismiss:true, scrollable:true},
 		edit_dialog_options: {size:"lg", can_dismiss:false, scrollable:true},
+		dlg_add_title: "Add",
+		show_on_add: false,
 		list_options: {
 			download_prefix: "download",
 			download_group_prefix: true
@@ -205,10 +207,20 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			}.bind(this);
 			dlg = SWAM.Dialog.editModel(item.model, dlg_opts);
 		} else {
-			dlg = SWAM.Dialog.showModel(item.model, null, {size:"md"});
+			dlg = this.showItem(item);
 		}
 
 		this.on_item_dlg(item, dlg);
+	},
+
+	showItem: function(item) {
+		let fields = this.collection.options.Model.VIEW_FIELDS;
+		return SWAM.Dialog.showModelView(item.model, fields, {
+			title: `Item #${item.model.id}`,
+			inline: true,
+			padded: true,
+			size:"md"
+		});
 	},
 
 	on_item_dlg: function(item, dlg) {
@@ -228,6 +240,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 
 	on_model_added: function(model, resp) {
 		this.collection.fetch();
+		if (this.options.show_on_add) {
+			this.showItem({model:model});
+		}
 	},
 
 	on_model_saved: function(model, resp) {
@@ -236,7 +251,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 
 	on_action_add: function(evt) {
 	    var options = {
-			title:"Add",
+			title: this.options.dlg_add_title,
 			size: "md",
 			form_config: this.options.form_config,
 			callback:function(model, resp) {

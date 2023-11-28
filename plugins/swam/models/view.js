@@ -46,6 +46,7 @@ SWAM.Views.ModelView = SWAM.View.extend({
                 var $fieldbox = $("<div />")
                     .addClass("col-md-6")
                     .appendTo($container);
+                if (["modified", "created", "when", "last_activity", "last_login"].has(key)) value = SWAM.Localize.datetime(value);
                 var $wrapper = $("<div data-label='" + key + "' />").addClass("swam-field").appendTo($fieldbox);
                 $wrapper.html(value);
             });
@@ -54,6 +55,7 @@ SWAM.Views.ModelView = SWAM.View.extend({
                 if (_.isString(obj)) {
                     obj = {field:obj};
                 }
+                if (!obj.field && obj.name) obj.field = obj.name;
                 if (!obj.label) obj.label = obj.field;
                 if (!obj.field) obj.field = obj.label;
                 if (!obj.columns) obj.columns = 6;
