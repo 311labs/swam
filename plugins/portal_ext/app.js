@@ -106,6 +106,55 @@ PORTAL.PortalApp = SWAM.App.extend({
 		} else {
 			this.hideLeftPanel();
 		}
+
+		if (app.me.requires_totp() && !app.me.totp_ready()) {
+			console.log("fetching totp");
+			SWAM.Rest.GET(
+				"/rpc/account/totp/qrcode", 
+				{
+					format:"base64",
+					force_reset:true
+				}, 
+				function(data, status, xhr){
+					this.configureTOTP(data.content);
+				}.bind(this));
+			// this.configureTOTP(totp_img);
+		}
+	},
+
+	configureTOTP: function(totp_image) {
+		SWAM.Dialog.show({
+			title: "Setup MFA", 
+			view: new SWAM.View({
+				template:"portal_ext.pages.admin.users.totp",
+				totp_image: totp_image
+			}),
+			can_dismiss: false,
+			buttons: [
+				{
+					label: "Verify",
+					action: "choice"
+				}
+			],
+			callback: function(dlg, choice){
+				let data = dlg.getData();
+				if (data.totp_value.length != 6) {
+					SWAM.toast("MFA Error", "Invalid Length", "danger", 3000, true);
+					return;
+				}
+				app.showBusy();
+				app.me.verifyTOTP(data.totp_value, function(resp, status, xhr) {
+					app.hideBusy();
+					if (resp.status) {
+						dlg.dismiss()
+						SWAM.toast("MFA Ready", "Thank You!", "success", 3000, true);
+					} else {
+						SWAM.toast("MFA Error", resp.error, "danger", 3000, true);
+					}
+					console.log(resp);
+				});
+			}.bind(this)
+		});
 	},
 
 	setGroup: function(group, no_) {

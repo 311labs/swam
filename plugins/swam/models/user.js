@@ -13,6 +13,7 @@ SWAM.Models.User = SWAM.Model.extend({
         if (this.is_disabled()) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user is disabled'><i class='bi bi-slash-circle-fill text-danger'></i></span>";
         if (this.get('is_superuser')) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='super user'><i class='bi bi-person-badge text-warning'></i></span>";
         if (this.hasPerm('manage_users')) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user is admin'><i class='bi bi-people-fill text-info'></i></span>";
+        if (this.get("has_totp")) icons += "<span data-bs-toggle='tooltip' data-bs-placement='right' title='user has mfa'><i class='bi bi-shield-lock-fill text-info'></i></span>";
         return icons;
     },
 
@@ -44,6 +45,10 @@ SWAM.Models.User = SWAM.Model.extend({
 
     isStaff: function() {
         return this.attributes.is_staff;
+    },
+
+    totp_ready: function() {
+        return this.get("metadata.totp_verified");
     },
 
     hasPerm: function(perm) {
@@ -160,6 +165,13 @@ SWAM.Models.User = SWAM.Model.extend({
             name:"metadata.permissions.view_logs",
             label:"View Logs",
             help: "Allow this user to view all system logs",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"requires_totp",
+            label:"Requires MFA",
+            help: "Requires the user to use a 'time based one time passwords' through an app like authy or SMS code to phone.",
             type:"toggle",
             columns: 6
         },

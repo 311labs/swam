@@ -168,8 +168,12 @@ SWAM.Rest = {
 
     on_success: function(callback, xhr, status) {
         var j = xhr.responseJSON;
-        if (!j) j = {error:"nothing returned"}; // avoid empty responses
-        callback(j, xhr.status);
+        if (!j) {
+            j = {error:"nothing returned"}; // avoid empty responses
+            j.content_type = xhr.getResponseHeader("content-type") || "";
+            j.content = xhr.responseText;
+        }
+        callback(j, xhr.status, xhr);
     },
 
     on_error: function(callback, xhr, status) {
@@ -207,7 +211,7 @@ SWAM.Rest = {
             resp.error = "Internal Server Error";
             resp.network_error = true;
         }
-        callback(resp, xhr.status);
+        callback(resp, xhr.status, xhr);
     },
 
     on_emulate_recv: function(callback, xhr, status) {

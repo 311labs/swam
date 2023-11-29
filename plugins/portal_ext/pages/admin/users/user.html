@@ -26,6 +26,9 @@
             <li><a class="dropdown-item" href="#" data-action="unblock">{{{ICON("shield-fill-check")}}} Unblock</a></li>
             {{/model.is_blocked}}
             <li><a class="dropdown-item" href="#" data-action="authtoken">{{{ICON("lock")}}} Generate AuthToken</a></li>
+            {{#model.totp_ready}}
+            <li><a class="dropdown-item" href="#" data-action="clear_mfa">{{{ICON("shield-slash")}}} Clear MFA</a></li>
+            {{/model.totp_ready}}
           </ul>
         </div>
       </div>

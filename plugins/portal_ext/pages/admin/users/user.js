@@ -10,61 +10,58 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     on_init: function() {
         this.tabs = new SWAM.Views.Tabs();
-        this.tabs.addTab("Details", "details", new SWAM.Views.ModelView({inline:true, fields:[
+        this.tabs.addTab("Details", "details", new SWAM.Views.ModelView({
+            inline:false, 
+            fields:[
+                {
+                    label:"ID",
+                    field:"id",
+                    columns: 6
+                },
+                {
+                    label:"Flags",
+                    field:"icons",
+                    columns: 6
+                },
                 {
                     label:"Display Name",
                     field:"display_name",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"User Name",
                     field:"username",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Email",
                     field:"email|clipboard",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Phone",
                     field:"phone|ifempty",
-                    columns: 12
-                },
-                {
-                    label:"ID",
-                    field:"id",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Last Login",
                     field:"last_login|ago|ifempty('never')",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Last Activity",
                     field:"last_activity|ago|ifempty('never')",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Last IP",
                     field:"metadata.last_ip",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Last Location",
                     field:"metadata.location|location",
-                    columns: 12
-                },
-                {
-                    label:"Super User",
-                    field:"is_superuser|yesno_icon",
-                    columns: 12
-                },
-                {
-                    label:"Two Factor Auth",
-                    field:"has_topt|yesno_icon",
-                    columns: 12
+                    columns: 6
                 },
                 {
                     label:"Auth Token",
@@ -190,6 +187,19 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
                 dlg.dismiss();
                 if (value.upper() == "YES") {
                     this.generateAuthToken();
+                }
+            }.bind(this)
+        });
+    },
+
+    on_action_clear_mfa: function() {
+        SWAM.Dialog.confirm({
+            title: "Clear MFA Secrets",
+            message: "This will reset MFA, and require user to setup again!<div>Are you sure?</div>",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.model.save({"metadata.totp_verified": ""});
                 }
             }.bind(this)
         });

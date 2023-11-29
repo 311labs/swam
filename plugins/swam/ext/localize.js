@@ -523,6 +523,7 @@ SWAM.Localize = {
             } catch(err) {
                 value = this.pydict_to_json(value);
                 if (value != null) {
+                    value = JSON.parse(value);
                     return window.syntaxHighlight(value); 
                 }
                 console.log(err);

@@ -11,15 +11,45 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     },
 
     on_action_login: function(evt) {
-        evt.stopPropagation();
-        var data = SWAM.Form.getData(this.$el.find("form"));
+        if (evt) evt.stopPropagation();
+        let data = SWAM.Form.getData(this.$el.find("form"));
         if (data.signin_username && data.signin_password) {
+            if (data.signin_totp && (data.signin_totp.length == 6)) {
+                this.options.login_opts = {params:{totp_code:data.signin_totp}};
+            }
+            app.setProperty("username", data.signin_username);
             app.showBusy({icon:'<i class="bi bi-key"></i>'});
             app.me.login(data.signin_username.trim(), data.signin_password, function(model, resp){
                 app.hideBusy();
                 if (!resp.status) {
-                    this.$el.find("#err_box").addClass("show");
-                    this.$el.find("#err_msg").text(resp.error);
+                    if (resp.error_code == 455) {
+                        app.setProperty("requires_totp", true);
+                        this.options.requires_totp = true;
+                        SWAM.Dialog.showForm([{
+                            name: "totp_code",
+                            maxlength: 6,
+                            minlength: 6
+                        }], {
+                            title: "Enter 6 Digit MFA Code",
+                            add_classes: "modal-white",
+                            size: "sm",
+                            lbl_save: "Login",
+                            callback: function(dlg) {
+                                let params = dlg.getData();
+                                if (params.totp_code.length != 6) {
+                                    return;
+                                }
+                                dlg.dismiss();
+                                this.options.login_opts = {params:params};
+                                this.on_action_login();
+                            }.bind(this)
+                        })
+                    } else {
+                        this.render();
+                        this.$el.find("#err_box").addClass("show");
+                        this.$el.find("#err_msg").text(resp.error);
+                    }
+
                 } else {
                     if (app.me.isAuthenticated()) {
                         app.on_logged_in();
@@ -29,7 +59,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                         this.$el.find("#err_msg").text("unknown error");
                     }
                 }
-            }.bind(this));
+            }.bind(this), this.options.login_opts);
         }
         return false;
     },
@@ -163,6 +193,17 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         const urlParams = new URLSearchParams(params).toString();
         // console.log(`${googleAuthUrl}?${urlParams}`)
         window.location = `${googleAuthUrl}?${urlParams}`;
+    },
+
+    on_pre_render: function() {
+        this.options.requires_totp = app.getProperty("requires_totp");
+    },
+
+    on_post_render: function() {
+        let uname = app.getProperty("username");
+        if (uname) {
+            this.$el.find("#signin_username").val(uname);
+        }
     }
 
 });

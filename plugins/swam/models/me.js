@@ -230,6 +230,14 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             }
             if (callback) callback(this, response);
         }.bind(this), opts);
+    },
+
+    requires_totp: function() {
+        return this.attributes.requires_totp;
+    },
+
+    verifyTOTP: function(code, callback) {
+        SWAM.Rest.POST("/rpc/account/totp/verify", {code:code}, callback);
     }
 }, {
     EDIT_FORM: [

@@ -297,6 +297,9 @@ SWAM.Dialog = SWAM.View.extend({
             opts = fields;
             fields = opts.fields;
         }
+        if (opts == undefined) {
+            opts = {};
+        }
         var defaults = {
             title: "Edit",
             padded: true,

@@ -18,7 +18,7 @@
         </div>
         {{/params.url_params.error}}
         <div class="form-floating">
-          <input type="username" class="form-control" name="signin_username" placeholder="name@example.com">
+          <input type="username" class="form-control" name="signin_username" placeholder="name@example.com" id="signin_username">
           <label for="signin_username">Email address</label>
         </div>
         <div class="form-floating">
@@ -26,7 +26,12 @@
           <label for="signin_password">Password</label>
           <button type="button" class="btn-icon" data-action="show_password">{{{ICON('eye-fill')}}}</button>
         </div>
-
+        {{#options.requires_totp}}
+        <div class="form-floating">
+          <input type="text" class="form-control" name="signin_totp" placeholder="Six-Digit Code">
+          <label for="signin_totp">MFA Six-Digit Code</label>
+        </div>
+        {{/options.requires_totp}}
         <button class="mt-3 w-100 btn btn-lg btn-primary" data-action="login">Sign in</button>
         {{#app.options.allow_google_login}}
             <button type="button" class="mt-3 w-100 btn btn-lg btn-google-signin" data-action="google_login">{{{ICON('google')}}} Google Sign in</button>
