@@ -10,7 +10,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	on_started: function() {
 		setTimeout(this.detectDevTools, 500);
-		
+
 		this.options.is_ready = false;
 		if (!this.options.disable_ws) {
 			this.ws = new SWAM.PubSubClient();
@@ -58,7 +58,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 
 	on_logged_in: function() {
-		this.me.fetchDebounced(this.on_logged_in_ready.bind(this));
+		this.me.fetch(this.on_logged_in_ready.bind(this));
 	},
 
 	on_logged_in_ready: function() {

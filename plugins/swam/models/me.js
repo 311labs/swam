@@ -241,6 +241,8 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     requiresTerms: function() {
+        // FIXME: somereason not fetch clean user everytime
+        if (!_.isDict(this.attributes.metadata)) return false;
         let when = this.get("metadata.agreed_on");
         if (when == undefined) return true;
         let now = new Date();
