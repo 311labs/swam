@@ -511,11 +511,13 @@ window.DevTools = {
   is_open: false,
   detect: function() {
     if (this.detect_only_open && this.is_open) return true;
-    this.is_open = this.detect_by_performance();
+    if (this.detect_by_performance()) {
+        this.is_open = this.detect_by_performance(true);
+    }
     return this.is_open;
   },
 
-  detect_by_performance: function() {
+  detect_by_performance: function(max_time) {
     if (window.DevTools.largeObjectArray == undefined) {
       window.DevTools.largeObjectArray = window.DevTools.createLargeObjectArray();
     }
@@ -530,8 +532,8 @@ window.DevTools = {
     // console.log(`delta: ${delta}`);
     if (tablePrintTime === 0) return false;
     if (maxPrintTime === 0) return false;
-    return delta > 10;
-    // return tablePrintTime > maxPrintTime * 10;
+    if (!max_time) return delta > 10;
+    return tablePrintTime > maxPrintTime * 10;
   },
 
   createLargeObject: function() {

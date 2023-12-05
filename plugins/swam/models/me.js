@@ -248,6 +248,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         return (now.getTime() - when.getTime()) > 31536000;
     },
     requiresLegal: function() {
+        // return true;
         let when = this.get("metadata.agreed_legal_on");
         if (when == undefined) return true;
         let now = new Date();
