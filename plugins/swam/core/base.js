@@ -143,7 +143,7 @@ _.extend(SWAM.Object.prototype, {
         init_options: function(opts) {
             var super_defaults = this.constructor.__super__.defaults || {};
             super_defaults = _.deepClone(super_defaults);
-            if (this.constructor.globals) super_defaults = _.extend({}, super_defaults, this.constructor.globals);
+            if (this.constructor.globals) super_defaults = _.deepExtend({}, super_defaults, _.deepClone(this.constructor.globals));
             this.options = _.extend({}, super_defaults, _.deepClone(this.defaults), opts);
             this._id_ = window.getNextSwamIndex();
         }

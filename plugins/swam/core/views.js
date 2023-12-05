@@ -229,7 +229,11 @@ SWAM.View = SWAM.Object.extend({
         if (!action) return true;
         var func_name = "on_action_" + action;
         if (_.isFunction(this[func_name])) {
+            // evt.stopPropagation();
             return this[func_name](evt, $el.data("id"));
+        } else if (this.options.action_context && _.isFunction(this.options.action_context[func_name])) {
+            // evt.stopPropagation();
+            return this.options.action_context[func_name](evt, $el.data("id"));
         }
         return true;
     },

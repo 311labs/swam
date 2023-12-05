@@ -44,14 +44,19 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 type: "text",
             },
             {
+                label: "Component",
                 name: "component",
-                type: "text",
-                columns: 3,
+                type: "text"
             },  
             {
+                label: "Component ID",
                 name: "component_id",
-                type: "text",
-                columns: 3,
+                type: "text"
+            },
+            {
+                label: "IP",
+                name: "reporter_ip",
+                type: "text"
             },
         ],
         filter_bar: [

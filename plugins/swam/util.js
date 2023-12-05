@@ -497,3 +497,75 @@ window.supportsInputEvent = function() {
 window.supportsPropertyChangeEvent = function() {
     return 'onpropertychange' in document.body;
 }
+
+window.now = function() {
+  if (typeof performance !== 'undefined') {
+    return performance.now();
+  } else {
+    return Date.now();
+  }
+}
+
+window.DevTools = {
+  detect_only_open: true,  // only detect if open, not closed
+  is_open: false,
+  detect: function() {
+    if (this.detect_only_open && this.is_open) return true;
+    this.is_open = this.detect_by_performance();
+    return this.is_open;
+  },
+
+  detect_by_performance: function() {
+    if (window.DevTools.largeObjectArray == undefined) {
+      window.DevTools.largeObjectArray = window.DevTools.createLargeObjectArray();
+    }
+
+    const tablePrintTime = window.DevTools.calcTablePrintTime();
+    const logPrintTime = window.DevTools.calcLogPrintTime();
+    let maxPrintTime = Math.max(0, logPrintTime);
+    let delta = Math.abs(tablePrintTime - logPrintTime);
+    console.clear();
+    // console.log(`table_print_time: ${tablePrintTime}`);
+    // console.log(`log_print_time: ${logPrintTime}`);
+    // console.log(`delta: ${delta}`);
+    if (tablePrintTime === 0) return false;
+    if (maxPrintTime === 0) return false;
+    return delta > 10;
+    // return tablePrintTime > maxPrintTime * 10;
+  },
+
+  createLargeObject: function() {
+    const largeObject = {};
+    for (let i = 0; i < 500; i++) {
+      largeObject[`${i}`] = `${i}`;
+    }
+    return largeObject;
+  },
+
+  createLargeObjectArray: function() {
+    const largeObject = window.DevTools.createLargeObject();
+    const largeObjectArray = [];
+
+    for (let i = 0; i < 50; i++) {
+      largeObjectArray.push(largeObject);
+    }
+
+    return largeObjectArray;
+  },
+
+  calcTablePrintTime: function() {
+    const start = now();
+
+    console.table(window.DevTools.largeObjectArray);
+
+    return now() - start;
+  },
+
+  calcLogPrintTime: function() {
+    const start = now();
+
+    console.log(window.DevTools.largeObjectArray);
+
+    return now() - start;
+  }
+};

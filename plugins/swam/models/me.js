@@ -238,6 +238,14 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     verifyTOTP: function(code, callback) {
         SWAM.Rest.POST("/rpc/account/totp/verify", {code:code}, callback);
+    },
+
+    requiresTerms: function() {
+        let when = this.get("metadata.agreed_on");
+        if (when == undefined) return true;
+        let now = new Date();
+        when = new Date(when*1000)
+        return (now.getTime() - when.getTime()) > 31536000;
     }
 }, {
     EDIT_FORM: [

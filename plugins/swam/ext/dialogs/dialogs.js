@@ -79,6 +79,19 @@ SWAM.Dialog = SWAM.View.extend({
             this.options.show_context_menu = true;
         }
 
+        if (this.options.btn_label && this.options.buttons) {
+            let btn = _.extend({}, this.options.buttons[0], {
+                label: this.options.btn_label,
+            });
+
+            if (this.options.buttons.length == 1) {
+                if (_.isFunction(this.options.callback)) {
+                    btn.action = "choice";
+                }
+            }
+            this.options.buttons[0] = btn;
+        }
+
         this.addToDOM($("body"));
         this.$el.show();
     },
@@ -189,7 +202,7 @@ SWAM.Dialog = SWAM.View.extend({
     },
     alert: function(opts) {
         if (_.isString(opts)) opts = {"title": "Alert", "message":opts};
-        opts = _.extend({can_dismiss:true}, opts);
+        opts = _.deepExtend({can_dismiss:true}, opts);
         var dlg = new this(opts);
         dlg.show();
         return dlg;

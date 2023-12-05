@@ -9,6 +9,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_started: function() {
+		setTimeout(this.detectDevTools, 500);
+		
 		this.options.is_ready = false;
 		if (!this.options.disable_ws) {
 			this.ws = new SWAM.PubSubClient();
@@ -272,7 +274,46 @@ PORTAL.PortalApp = SWAM.App.extend({
 			});
 	},
 
+	showLegalDisclaimer: function() {
+
+	},
+
+	on_window_blur: function(evt) {
+	    this.has_focus = false;
+	    this.trigger("background");
+	    setTimeout(this.detectDevTools, 500);
+	},
+
+	detectDevTools: function() {
+		let dt_detected = window.isDevToolsOpen();
+		if (dt_detected) {
+			if (!app.dev_tools_detected) {
+				app.dev_tools_detected = true;
+				app.showLegalDisclaimer();
+				if (app.me && app.me.get("username")) {
+					let username = app.me.get("username");
+					app.reportIncident(
+						"devtools",
+						`${username} is using Browser DevTools`,
+						`${username} is using Browser DevTools\n${navigator.userAgent}`,
+						3,
+						true);
+				} else {
+					app.reportIncident(
+						"devtools",
+						"Browser DevTools Usage Detected",
+						`Browser DevTools Usage Detected\n${navigator.userAgent}`,
+						3,
+						true);
+				}
+			}
+		} else {
+			app.dev_tools_detected = false;
+		}
+	},
+
 	on_sync: function(evt) {
+		this.detectDevTools();
 		if (!app.me) return;
 		if (app.isActivePage(["login", "register"])) return;
 		if (app.me.isAuthExpiring()) {
@@ -420,7 +461,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				error_url: url
 			}
 		};
-		if (app.me) {
+		if (app.me && app.me.get("username")) {
 			data.metadata.username = app.me.get("username");
 			data.component = "account.Member";
 			data.component_id = app.me.id;
@@ -428,6 +469,32 @@ PORTAL.PortalApp = SWAM.App.extend({
 		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
 		event.save(data);
 		return false;
+	},
+
+	reportIncident: function(category, description, details, level, ip_lookup) {
+		if (app.options.api_url.contains("localhost")) return;
+		let event = new SWAM.Models.IncidentEvent();
+		let buid = window.getBrowserUID();
+		let data = {
+			level: level,
+			category: category,
+			description: description,
+			details: details,
+			ip_lookup: ip_lookup,
+			metadata: {
+				version: app.version,
+				name: app.options.title,
+				app_url: location.href,
+				api_url: app.options.api_url,
+				user_agent: navigator.userAgent,
+				browser_id: buid
+			}
+		};
+		if (app.me) {
+			data.metadata.username = app.me.get("username");
+		}
+		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
+		event.save(data);
 	},
 
 });
