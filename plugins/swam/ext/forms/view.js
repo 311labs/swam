@@ -126,6 +126,93 @@ SWAM.Form.View = SWAM.View.extend({
         });
     },
 
+    on_validate_email: function($field, value) {
+        return value.isEmail();
+    },
+
+    on_validate_length: function($field, value) {
+        if ($field.attr("fixed_length") != undefined) {
+            let fl = parseInt($field.attr("fixed_length"));
+            if (value.length != fl) return false;
+        }
+        
+        if ($field.attr("min_length") != undefined) {
+            let minLen = parseInt($field.attr("min_length"));
+            if (value.length < minLen) return false;
+        }
+
+        if ($field.attr("max_length") != undefined) {
+            let maxLen = parseInt($field.attr("max_length"));
+            if (value.length > maxLen) return false;
+        }
+        return true;
+    },
+
+    on_validate_range: function($field, value) {
+        if (!value || !_.isNumeric(value)) return false;
+        value = parseInt(value);
+        if ($field.attr("min_value") != undefined) {
+            let min_value = parseInt($field.attr("min_value"));
+            if (value < min_value) return false;
+        }
+        if ($field.attr("max_value") != undefined) {
+            let max_value = parseInt($field.attr("max_value"));
+            if (value > max_value) return false;
+        }
+        return true;
+    },
+
+    validateField: function($field, highlight) {
+        $field.removeClass("is-valid").removeClass("is-invalid");
+        let is_valid = true;
+        let v = $field[0].value.trim();
+        let validator = $field.data("validator");
+        if (validator != undefined) {
+            let k = `on_validate_${validator}`
+            if (_.isFunction(this[k]) && !this[k]($field, v)) {
+                v = "";
+            }
+        }
+
+        if (!v) {
+            is_valid = false;
+            if (highlight) {
+                $field.addClass("is-invalid");
+            }
+        } else if (highlight) {
+            $field.addClass("is-valid");
+        }
+        return is_valid;
+    },
+
+    hasRequiredData: function(highlight) {
+        let is_valid = true;
+        let self = this;
+        this.$el.find(':input[required]').each(function() {
+            if (!self.validateField($(this), highlight)) {
+                is_valid = false;
+            }
+        });
+        return is_valid;
+    },
+
+    highlightRequired: function() {
+        let self = this;
+        this.$el.find(':input[required]').each(function() {
+            self.validateField($(this), highlight);
+        });
+    },
+
+    highlightField: function(name, is_valid) {
+        let $el = this.$el.find(`input#${name}`);
+        $el.removeClass("is-valid").removeClass("is-invalid");
+        if (is_valid) {
+            $el.addClass("is-valid");
+        } else {
+            $el.addClass("is-invalid");
+        }
+    },
+
     getData: function() {
         var $form = this.$el.find("form");
         $form.find("input").each(function(){

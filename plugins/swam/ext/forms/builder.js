@@ -57,10 +57,12 @@ SWAM.Form.buildField = function(fc, form_info) {
 		if (fc.required) fc.$input.prop("required", true);
 		if (fc.disabled) fc.$input.attr("disabled", "disabled");
 		if (fc.readonly) fc.$input.prop("readonly", true);
+		if (fc.fixedlength) fc.$input.prop("fixedLength", fc.fixedlength);
 		if (fc.minlength) fc.$input.prop("minLength", fc.minlength).addClass("watch-length");
 		if (fc.maxlength) fc.$input.prop("maxLength", fc.maxlength).addClass("watch-length");
 		if (fc.placeholder) fc.$input.attr("placeholder", fc.placeholder);
 		if (fc.action) fc.$input.attr("data-action", fc.action);
+		if (fc.validator) fc.$input.attr("data-validator", fc.validator);
 		if (fc.attributes) {
 			for (var attr in fc.attributes) {
 				fc.$input.attr(attr, fc.attributes[attr]);

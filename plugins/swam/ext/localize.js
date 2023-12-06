@@ -364,7 +364,7 @@ SWAM.Localize = {
         } else if (_.isString(value)) {
             // assume is date string
             dt = Date.parse(value);
-            if (dt) value = dt.getTime();
+            if (dt) value = dt;
         } else if (_.isFunction(value.getMonth)) {
             value = value.getTime();
         } else if ((value.attributes != undefined)&&(value.attributes.hour != undefined)) {
@@ -842,6 +842,9 @@ SWAM.Localize = {
     },
     'date': function(value, attr, fmt) {
         return this.moment(value, attr, fmt, "M/DD/YYYY");
+    },
+    'pretty_date': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "MMMM Do YYYY");
     },
     'datetime': function(value, attr, fmt) {
         return this.moment(value, attr, fmt, "M/DD/YYYY h:mm:ss A");
