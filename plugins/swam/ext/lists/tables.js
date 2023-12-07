@@ -34,7 +34,10 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
     	_.each(this.options.list.options.columns, _.bind(function(col){
     		if (_.isObject(col)) {
     			if (col.hideIf && col.hideIf()) return;
-
+                if (col.requires_perm) {
+                    if (!app.me) return;
+                    if (!app.me.hasPerm(col.requires_perm)) return;
+                }
     			this.template += "<td";
                 if (col.td_classes) {
                     let classes = col.td_classes;
@@ -241,6 +244,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     on_render_column: function(column) {
     	if (_.isObject(column)) {
     		if (column.hideIf && column.hideIf()) return;
+            if (column.requires_perm) {
+                if (!app.me) return;
+                if (!app.me.hasPerm(column.requires_perm)) return;
+            }
     		var $el = $("<th></th>");
             if (column.context_menu) {
                 this.$header.append($el);
@@ -301,6 +308,11 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                 var columns = [];
                 var col_span = 0;
                 _.each(this.options.columns, function(col, i) {
+                    if (col.hideIf && col.hideIf()) return;
+                    if (col.requires_perm) {
+                        if (!app.me) return;
+                        if (!app.me.hasPerm(col.requires_perm)) return;
+                    }
                     let field_name, localize;
                     let td_classes = null;
                     if (_.isObject(col)) {

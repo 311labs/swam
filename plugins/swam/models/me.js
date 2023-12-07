@@ -247,15 +247,18 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         if (when == undefined) return true;
         let now = new Date();
         when = new Date(when*1000)
-        return (now.getTime() - when.getTime()) > 31536000;
+        let delta = (now.getTime() - when.getTime()) / 1000;
+        return delta > 31536000;
     },
+
     requiresLegal: function() {
         if (!_.isDict(this.attributes.metadata)) return false;
         let when = this.get("metadata.agreed_legal_on");
         if (when == undefined) return true;
         let now = new Date();
         when = new Date(when*1000)
-        return (now.getTime() - when.getTime()) > 31536000;
+        let delta = (now.getTime() - when.getTime()) / 1000;
+        return delta > 31536000;
     },
 }, {
     EDIT_FORM: [
