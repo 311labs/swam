@@ -134,7 +134,8 @@ SWAM.WikiMenu = SWAM.Object.extend({
 	ADMIN_MENU_ITEM: {
 		label: "Help",
 		icon: "question-circle-fill",
-		id: "help"
+		id: "help",
+		requires_perm: "view_wiki",
 	},
 
 	TOP_BAR_ITEM: {
@@ -144,7 +145,7 @@ SWAM.WikiMenu = SWAM.Object.extend({
 	    add_classes: "me-3",
 	    params: {wiki:"faq", page:"home"},
 	    data_id: "faq/home",
-	    requires_perm: ["view_wiki"],
+	    requires_perm: "view_wiki",
 	},
 
 	init_wiki: function() {

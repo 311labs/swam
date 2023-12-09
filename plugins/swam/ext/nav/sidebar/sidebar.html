@@ -22,16 +22,16 @@
     
   </div>
 
-{{#app.me|hasperm('manage_users', 'manage_groups', 'view_global')}}
+{{#hasAdminMenus}}
 <ul class="nav nav-pills flex-column px-2">
-{{#options.admin_menus}}
+{{#getAdminMenus}}
 <li>
 <a class="nav-link" aria-current="page" href="#" data-action="show_menu" data-id="{{.id}}">{{{ICON(.icon)}}} {{.label}}</a>
 </li>
-{{/options.admin_menus}}
+{{/getAdminMenus}}
 </ul>
 <hr>
-{{/app.me|hasperm('manage_users', 'manage_groups', 'view_global')}}
+{{/hasAdminMenus}}
 
 
 {{#options.logo}}

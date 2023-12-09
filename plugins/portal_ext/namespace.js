@@ -43,32 +43,38 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "list-check",
 		label:"Task Queue",
-		page: "taskqueue"
+		page: "taskqueue",
+		requires_perm: "sys.view_logs"
 	},
 	{
 		icon: "wrench-adjustable-circle",
 		label: "System",
+		requires_perm: ["sys.manage_users", "sys.manage_groups", "sys.view_logs"],
 		items: [
 			{
 				icon: "person-circle",
 				label:"Users",
-				page: "users"
+				page: "users",
+				requires_perm: "sys.manage_users",
 			},
 			{
 				icon: "people-fill",
 				label:"Groups",
-				page: "groups"
+				page: "groups",
+				requires_perm: "sys.manage_groups",
 			},
 			{
 				icon: "journals",
 				label:"Logs",
-				page: "audit_logs"
+				page: "audit_logs",
+				requires_perm: "sys.view_logs",
 			}
 		]
 	},
 	{
 		icon: "mailbox",
 		label: "EMail",
+		requires_perm: "sys.view_logs",
 		items: [
 			{
 				icon: "mailbox",
@@ -100,6 +106,7 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "phone",
 		label: "Telephony",
+		requires_perm: "sys.view_logs",
 		items: [
 			{
 				icon: "chat",
@@ -116,6 +123,7 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "bullseye",
 		label: "Incidents",
+		requires_perm: "sys.view_incidents",
 		items: [
 			{
 				icon: "exclamation-diamond-fill",
@@ -168,7 +176,8 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "wrench-adjustable",
 		label:"Metrics",
-		page: "admin_metrics"
+		page: "admin_metrics",
+		requires_perm: "sys.reporting"
 	},
 	// {
 	// 	icon: "wrench-adjustable-circle-fill",
@@ -178,7 +187,8 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "file-earmark-image",
 		label:"Media",
-		page: "admin_media"
+		page: "admin_media",
+		requires_perm: "view_groups",
 	},
 	{
 		icon: "book",

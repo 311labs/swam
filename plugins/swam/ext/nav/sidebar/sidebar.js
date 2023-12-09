@@ -110,6 +110,22 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		}
 	},
 
+	hasAdminMenus: function() {
+		return (_.isArray(this.getAdminMenus()) && (this._admin_menus.length > 0));
+	},
+
+	getAdminMenus: function() {
+		if (this.options.admin_menus && (this._admin_menus == undefined)) {
+			let admin_menus = [];
+			_.each(this.options.admin_menus, function(menu){
+				if ((menu.requires_perm) && (!app.me.hasPerm(menu.requires_perm))) return;
+				admin_menus.push(menu);
+			})
+			this._admin_menus = admin_menus;
+		}
+		return this._admin_menus;
+	},
+
 	setMenuItems: function(items) {
 		this.nav.options.items = items;
 	},

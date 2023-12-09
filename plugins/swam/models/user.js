@@ -169,6 +169,27 @@ SWAM.Models.User = SWAM.Model.extend({
             columns: 6
         },
         {
+            name:"metadata.permissions.view_incidents",
+            label:"View Incidents",
+            help: "Allow this user to view system incidents",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_admin",
+            label:"View Admin",
+            help: "Allow this user to view admin menu.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_global",
+            label:"View Global",
+            help: "Allow this user to global menu.",
+            type:"toggle",
+            columns: 6
+        },
+        {
             name:"requires_totp",
             label:"Requires MFA",
             help: "Requires the user to use a 'time based one time passwords' through an app like authy or SMS code to phone.",
