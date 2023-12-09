@@ -112,6 +112,7 @@ SWAM.Views.SearchDown = SWAM.View.extend({
     on_post_render: function() {
         this.$button = this.$el.find("button#searchdown");
         this.$input = this.$el.find("input#search");
+        if (!app.me || !app.me.isAuthed()) return;
         if (this.options.inline) {
             this.options.on_top = false;
             this.$el.addClass("searchdown-on-top");
