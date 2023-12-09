@@ -9,6 +9,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         slugs: null,
         parse_slug: null,
         group: null,
+        requires_group: false,
         chart_type: "line",
         granularity: "daily",
         keys: null,
@@ -71,6 +72,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         // slugs are sorted automatically, so metrics data values will be arranged accordingly
         var params = {granularity:this.options.granularity};
         if (this.options.no_refresh) return; // this assume data is coming from somewhere else
+        if (this.options.requires_group && !this.options.group) return;
         if (this.options.category) {
             params.category = this.options.category
         } else if (this.options.slugs) {

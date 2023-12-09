@@ -9,7 +9,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_started: function() {
-		setTimeout(this.detectDevTools, 500);
+		setTimeout(this.detectDevTools, 2000);
 
 		this.options.is_ready = false;
 		if (!this.options.disable_ws) {
@@ -281,7 +281,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 	on_window_blur: function(evt) {
 	    this.has_focus = false;
 	    this.trigger("background");
-	    setTimeout(this.detectDevTools, 500);
+	    setTimeout(this.detectDevTools, 1500);
 	},
 
 	detectDevTools: function() {
