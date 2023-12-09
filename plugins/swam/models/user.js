@@ -183,9 +183,37 @@ SWAM.Models.User = SWAM.Model.extend({
             columns: 6
         },
         {
+            name:"metadata.permissions.tq_view",
+            label:"View TaskQueue",
+            help: "Allow this user to view TaskQueue.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.tq_publish",
+            label:"Pubish Tasks",
+            help: "Allow this to publish/create tasks in the TaskQueue.",
+            type:"toggle",
+            columns: 6
+        },
+        {
             name:"metadata.permissions.view_global",
             label:"View Global",
             help: "Allow this user to global menu.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_email",
+            label:"View EMails",
+            help: "Allow this user to view system mail.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.view_telephony",
+            label:"View Telephony",
+            help: "Allow this user to view SMS and Phone Book.",
             type:"toggle",
             columns: 6
         },

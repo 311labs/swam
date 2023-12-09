@@ -74,7 +74,7 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "mailbox",
 		label: "EMail",
-		requires_perm: "sys.view_logs",
+		requires_perm: ["sys.view_logs", "sys.view_email"],
 		items: [
 			{
 				icon: "mailbox",
@@ -106,7 +106,7 @@ PORTAL.Menus.Admin = [
 	{
 		icon: "phone",
 		label: "Telephony",
-		requires_perm: "sys.view_logs",
+		requires_perm: ["sys.view_logs", "sys.view_telephony"],
 		items: [
 			{
 				icon: "chat",
