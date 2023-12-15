@@ -238,8 +238,14 @@ PORTAL.PortalApp = SWAM.App.extend({
 			if (resp.status) {
 				app.trigger("group:change", {group:app.group});
 			} else {
-				SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
-				app.showPage("not_found");
+				if (app.me.hasPerm(["sys.manage_users", "sys.view_all_groups", "sys.manage_groups"])) {
+					app.trigger("group:change", {group:app.group});
+				} else {
+					SWAM.Dialog.warning(
+						"Permission Denied",
+						"You do not have access to this group.  Please check with your administrator.");
+					app.showPage("not_found");
+				}
 			}
 		});
 	},
