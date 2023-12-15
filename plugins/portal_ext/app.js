@@ -166,8 +166,13 @@ PORTAL.PortalApp = SWAM.App.extend({
 			group = this.groups.get(id);
 			if (!group) {
 				this.group = new SWAM.Models.Group({id:id});
-				this.group.fetch(function(){
-					this.fetchMS();
+				this.group.fetch(function(model, resp){
+					if (resp.status) {
+						this.fetchMS();
+					} else {
+						SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
+						app.showPage("not_found");
+					}
 				}.bind(this));
 				this.wsChangeGroup(old_group);
 			} else {
@@ -228,9 +233,14 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	fetchMS: function() {
-		app.group.fetchMembership(function(){
+		app.group.fetchMembership(function(model, resp){
 			if (!app.options.is_ready) app.on_ready();
-			app.trigger("group:change", {group:app.group});
+			if (resp.status) {
+				app.trigger("group:change", {group:app.group});
+			} else {
+				SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
+				app.showPage("not_found");
+			}
 		});
 	},
 
