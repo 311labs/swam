@@ -267,7 +267,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_action_add: function(evt) {
-	    var options = {
+	    let defaults = {
 			title: this.options.dlg_add_title,
 			size: "md",
 			form_config: this.options.form_config,
@@ -275,6 +275,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 				this.on_model_added(model, resp, dlg);
 			}.bind(this)
 		};
+
+		let options = _.extend({}, defaults, this.options.edit_dialog_options);
 
 		if (!this.options.add_form && this.collection.options.Model.ADD_FORM) this.options.add_form = this.collection.options.Model.ADD_FORM;
 		if (!this.options.edit_form) this.options.edit_form = this.collection.options.Model.EDIT_FORM;
