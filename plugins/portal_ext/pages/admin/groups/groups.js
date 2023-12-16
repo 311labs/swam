@@ -69,6 +69,11 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
                 type: "daterange"
             },
             {
+                label: "ID",
+                name: "id",
+                type: "text"
+            },
+            {
                 label: "City",
                 name: "city",
                 type: "text"

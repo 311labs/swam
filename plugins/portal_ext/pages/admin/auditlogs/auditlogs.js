@@ -22,6 +22,7 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
             size: 10,
             level: "__gt:5"
         },
+        default_dr_range: 3,
         filters: [
             {
                 label: "Date Range",
@@ -98,6 +99,17 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
         var view = new PORTAL.Views.AuditLog();
         view.setModel(item.model);
         SWAM.Dialog.showView(view, opts);
+    },
+
+    on_page_pre_enter: function() {
+        if (this.options.default_dr_range) {
+            if (!this.params.url_params || !this.params.url_params.dr_start) {
+                this.collection.params.dr_end = moment().add(4, "days").format('YYYY-MM-DD');
+                this.collection.params.dr_start = moment().subtract(this.options.default_dr_range, 'days').format('YYYY-MM-DD');
+                this.collection.params.dr_field = "modified";
+                
+            }
+        }
     }
 
 
