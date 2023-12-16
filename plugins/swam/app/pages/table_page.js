@@ -9,6 +9,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		edit_dialog_options: {size:"lg", can_dismiss:false, scrollable:true},
 		dlg_add_title: "Add",
 		show_on_add: false,
+		fetch_on_click: false,
+		item_graph: "detailed",
 		list_options: {
 			download_prefix: "download",
 			download_group_prefix: true
@@ -186,7 +188,16 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_item_clicked: function(item, evt) {
-		this.on_item_edit(item, evt);
+		if (!this.options.fetch_on_click) {
+			this.on_item_edit(item, evt);
+		} else {
+			app.showBusy();
+			item.model.params.graph = this.options.item_graph;
+			item.model.fetch(function(model, resp){
+				app.hideBusy();
+				this.on_item_edit(item, evt);
+			}.bind(this));
+		}
 	},
 
 	on_item_edit: function(item, evt) {
@@ -203,7 +214,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			dlg_opts.fields = this.options.edit_form;
 			dlg_opts.form_config = this.options.form_config;
 			dlg_opts.callback = function(model, resp) {
-				this.on_model_saved(model, resp);
+				this.on_model_saved(model, resp, dlg);
 			}.bind(this);
 			dlg = SWAM.Dialog.editModel(item.model, dlg_opts);
 		} else {
@@ -238,15 +249,21 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		}
 	},
 
-	on_model_added: function(model, resp) {
-		this.collection.fetch();
-		if (this.options.show_on_add) {
-			this.showItem({model:model});
+	on_model_added: function(model, resp, dlg) {
+		if (resp.error) {
+			SWAM.Dialog.warning("Error Saving", resp.error);
+		} else {
+			this.collection.fetch();
+			if (this.options.show_on_add) {
+				this.showItem({model:model});
+			}
 		}
 	},
 
-	on_model_saved: function(model, resp) {
-
+	on_model_saved: function(model, resp, dlg) {
+		if (resp.error) {
+			SWAM.Dialog.warning("Error Saving", resp.error);
+		}
 	},
 
 	on_action_add: function(evt) {
@@ -254,11 +271,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			title: this.options.dlg_add_title,
 			size: "md",
 			form_config: this.options.form_config,
-			callback:function(model, resp) {
-				if (resp.status) {
-				// auto saved nothing to do
-					this.on_model_added(model, resp);
-				}
+			callback:function(model, resp, dlg) {
+				this.on_model_added(model, resp, dlg);
 			}.bind(this)
 		};
 

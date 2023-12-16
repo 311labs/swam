@@ -75,6 +75,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 		opts.fields = _.clone(opts.fields).concat(opts.extra_fields);
 	}
 
+	var mdlg = null;
 	var callback = opts.callback;
 	opts.callback = function(dlg, choice) {
 		if (choice == "save") {
@@ -91,16 +92,21 @@ SWAM.Dialog.editModel = function(model, opts) {
 			model.save(data, function(model, resp) {
 				app.hideBusy();
 				if (resp.error) {
+					dlg.options.changes_only = false;
 					if (!callback) SWAM.Dialog.warning(resp.error);
 				} else {
 					dlg.dismiss();
 				}
-				if (callback) callback(model, resp);
+				if (callback) callback(model, resp, dlg);
 			});
 		}
 	};
 
 
-	return this.showView(new SWAM.Form.View({fields:opts.fields, defaults:opts.defaults, model:opts.model, config:opts.form_config}), opts);
+	mdlg = this.showView(
+		new SWAM.Form.View({
+			fields:opts.fields, defaults:opts.defaults,
+			model:opts.model, config:opts.form_config}), opts);
+	return mdlg;
 };
 

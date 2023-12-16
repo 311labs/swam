@@ -130,6 +130,10 @@ SWAM.Form.View = SWAM.View.extend({
         return value.isEmail();
     },
 
+    on_validate_hex: function($field, value) {
+        return value.isHex();
+    },
+
     on_validate_length: function($field, value) {
         if ($field.attr("fixed_length") != undefined) {
             let fl = parseInt($field.attr("fixed_length"));

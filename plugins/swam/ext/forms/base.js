@@ -66,11 +66,11 @@ SWAM.Form.getData = function($form, options) {
 		data[v.name] = val;
 	});
 
-	$form.find('input[data-localize]').each(function(k, v){
+	$form.find('input[data-transorm]').each(function(k, v){
 		let $field = $(v);
-		let localize = $field.data("localize");
-		if (SWAM.Form.unlocalize[localize]) {
-			data[v.name] = SWAM.Form.unlocalize[localize](data[v.name]);
+		let transorm = $field.data("transorm");
+		if (SWAM.Form.transorm[transorm]) {
+			data[v.name] = SWAM.Form.transorm[transorm](data[v.name]);
 		}
 	});
 
@@ -80,3 +80,13 @@ SWAM.Form.getData = function($form, options) {
 	return data;
 };
 
+SWAM.Form.transorm = {
+	uppercase: function(value) {
+		if (!_.isString(value)) return value;
+		return value.upper();
+	},
+	lowercase: function(value) {
+		if (!_.isString(value)) return value;
+		return value.lower();
+	},
+};
