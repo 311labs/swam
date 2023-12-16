@@ -102,11 +102,10 @@ SWAM.Dialog = SWAM.View.extend({
             this.prev_dialog = null;
             this.removeFromDOM();
         }.bind(this));
-
+        this.trigger("dialog:closed", this);
     },
     on_action_close: function(evt) {
         this.dismiss();
-        this.trigger("dialog:closed", this);
     },
     on_action_choice: function(evt) {
         this.choice = $(evt.currentTarget).data("id");
