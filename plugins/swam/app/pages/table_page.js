@@ -11,6 +11,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		show_on_add: false,
 		fetch_on_click: false,
 		item_graph: "detailed",
+		item_url_param: null,
 		list_options: {
 			download_prefix: "download",
 			download_group_prefix: true
