@@ -43,23 +43,32 @@ SWAM.Form.getData = function($form, options) {
 	});
 
 	$form.find('input[type="checkbox"]').each(function(k, v){
-		var $field = $(v);
+		let $field = $(v);
 		data[v.name] = $field.is(":checked");
 	});
 
 	$form.find('input[data-role="tagsinput"]').each(function(k, v){
-		var $field = $(v);
+		let $field = $(v);
 		data[v.name] = $field.tagsinput('items_mapped');
 	});
 
 	$form.find('button.thumbnail-media-picker').each(function(k, v){
-		var $field = $(v);
+		let $field = $(v);
 		data[v.name] = $field.data('image-data');
 	});
 
+	$form.find('input.form-control-color').each(function(k, v){
+		let $field = $(v);
+		let val = $field.val();
+		if (val.upper() == "#D3C5C5") {
+			val = ""
+		}
+		data[v.name] = val;
+	});
+
 	$form.find('input[data-localize]').each(function(k, v){
-		var $field = $(v);
-		var localize = $field.data("localize");
+		let $field = $(v);
+		let localize = $field.data("localize");
 		if (SWAM.Form.unlocalize[localize]) {
 			data[v.name] = SWAM.Form.unlocalize[localize](data[v.name]);
 		}

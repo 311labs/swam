@@ -118,6 +118,21 @@ div.text-input-group {
     }
 }
 
+div.color-input-group {
+    input.form-control-color {
+        display: inline-block;
+    }
+    div.color-display {
+        display: inline-block;
+        padding: 0.475rem 1.2rem;
+        vertical-align: top;
+        text-transform: uppercase;
+    }
+    button.btn-clear {
+        vertical-align: top;
+        color: #6c757d;
+    }
+}
 
 .inputimage-wrapper {
   // required

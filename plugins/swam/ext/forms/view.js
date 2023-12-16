@@ -540,6 +540,8 @@ SWAM.Form.View = SWAM.View.extend({
         if (!ievt.name) return;
         if (ievt.currentTarget && ievt.currentTarget.type == "checkbox") {
             ievt.value = $el.is(":checked");
+        } else if (ievt.currentTarget.type == "color") {
+            if (ievt.value.upper() == "#D3C5C5") ievt.value = "";
         }
         this._handle_input_change(ievt);
     },
@@ -607,7 +609,12 @@ SWAM.Form.View = SWAM.View.extend({
     on_action_clear_field: function(evt) {
         var $parent = $(evt.currentTarget).parent();
         var $input = $parent.find("input");
-        $input.val("").change();
+        if ($input.hasClass("form-control-color")) {
+            $input.val("#D3C5C5").change();
+        } else {
+            $input.val("").change();
+        }
+        
         // $parent.removeClass("input-clearable");
         // var ievt = {name:$input.attr("name"), value:"", event:evt, type:$input.attr("type")};
         // ievt.$el = $input;

@@ -233,7 +233,6 @@ SWAM.Form.Builder.text = function(fc, form_info) {
 		fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
 		fc.$input.prop("type", fc.type);
 		SWAM.Form.Builder.orderLabel(fc, form_info);
-
 	}
 
 	if (fc.can_clear) {
@@ -264,6 +263,30 @@ SWAM.Form.Builder.password = function(fc, form_info) {
 			possible = "123567890";
 		}
 		fc.value = String.Random(fc.random, possible);
+	}
+	return fc;
+}
+
+SWAM.Form.Builder.color = function(fc, form_info) {
+	SWAM.Form.Builder.label(fc);
+	fc.$input = $("<input />").addClass("form-control form-control-" + fc.type).addClass("input-" + fc.type);
+	fc.$input.prop("type", fc.type);
+	fc.$el.append(fc.$label);
+	if (fc.show_value) {
+		let $wrapper = $("<div />")
+			.append(fc.$input)
+			.append($(`<div class='color-display' id='display_${fc.name}'>${fc.value}</div>`));
+		fc.$el.append($wrapper);
+		if (fc.can_clear) {
+			SWAM.Form.Builder.button({
+				$el: $wrapper,
+				classes: "btn-clear btn btn-link",
+				action: "clear_field",
+				icon: "x-circle-fill"
+			});
+		}
+	} else {
+		SWAM.Form.Builder.orderLabel(fc, form_info);
 	}
 	return fc;
 }
