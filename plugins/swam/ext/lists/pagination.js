@@ -59,7 +59,7 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.collection = this.options.collection;
         if (!this.collection) {
             console.error("cannot init PaginatedList without collection set!", this);
-            return;
+            throw new Error("PaginatedList requires a collection");
         }
         var list_opts = _.extend({collection:this.collection}, this.options.list_options);
         this.list = new this.options.List(list_opts);
