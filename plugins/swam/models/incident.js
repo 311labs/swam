@@ -2,7 +2,7 @@
 
 SWAM.Models.IncidentRule = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/incident/rule"
+        url:"/api/incident/rule"
     },
 
     bundle_by_display: function() {
@@ -165,7 +165,7 @@ SWAM.Collections.IncidentRule = SWAM.Collection.extend({
 
 SWAM.Models.IncidentRuleCheck = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/incident/rule/check"
+        url:"/api/incident/rule/check"
     },
 }, {
     EDIT_FORM: [
@@ -231,7 +231,7 @@ SWAM.Collections.IncidentRuleCheck = SWAM.Collection.extend({
 
 SWAM.Models.IncidentEvent = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/incident/event"
+        url:"/api/incident/event"
     },
 });
 
@@ -243,7 +243,7 @@ SWAM.Collections.IncidentEvent = SWAM.Collection.extend({
 
 SWAM.Models.IncidentEventHistory = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/incident/event/history"
+        url:"/api/incident/event/history"
     },
 });
 
@@ -255,7 +255,7 @@ SWAM.Collections.IncidentEventHistory = SWAM.Collection.extend({
 
 SWAM.Models.Incident = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/incident/incident"
+        url:"/api/incident/incident"
     },
 }, {
     COMPONENTS: [
@@ -303,7 +303,7 @@ SWAM.Collections.Incident = SWAM.Collection.extend({
 
 SWAM.Models.IncidentHistory = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/incident/incident/history"
+        url:"/api/incident/incident/history"
     },
 }, {
     ADD_FORM: [

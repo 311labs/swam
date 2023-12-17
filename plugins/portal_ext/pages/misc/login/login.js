@@ -89,7 +89,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                     SWAM.toast("Reset Password", "Request sent to reset password!");
                     app.showBusy({icon:"lock"});
                     data.use_code = 1; // use a 6 digit code vs a link
-                    SWAM.Rest.POST("/rpc/account/forgot", data, function(data, status){
+                    SWAM.Rest.POST("/api/account/forgot", data, function(data, status){
                         app.hideBusy();
                         if (data.error) {
                             SWAM.Dialog.warning(data.error);
@@ -116,7 +116,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                     if ((!data.code)||(!data.new_password)) return;
                     app.showBusy({icon:"lock"});
                     data.username = this.options.username;
-                    SWAM.Rest.POST("/rpc/account/login", data, function(data, status){
+                    SWAM.Rest.POST("/api/account/login", data, function(data, status){
                         app.hideBusy();
                         if (data.error) {
                             SWAM.toast("Error", data.error, "error");
@@ -172,7 +172,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
 
     on_action_google_login: function() {
         const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-        const redirectUri = '/rpc/account/oauth/google/login';
+        const redirectUri = '/api/account/oauth/google/login';
         let state_token = JSON.stringify({url:location.href, token:String.Random(16)}).toHex();
 
         const scope = [

@@ -1,6 +1,6 @@
 SWAM.Models.Task= SWAM.Model.extend({
     defaults: {
-        url:"/rpc/taskqueue/task"
+        url:"/api/taskqueue/task"
     },
 
     isScheduled: function() {

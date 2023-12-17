@@ -11,7 +11,7 @@ PORTAL.Pages.TokenLogin = SWAM.Page.extend({
             SWAM.toast("Email sent", "Login token has been sent to given email address.");
             app.showBusy({icon:"lock"});
             data.use_code = 1;          
-            SWAM.Rest.POST("/rpc/account/forgot", data, function(data, status){
+            SWAM.Rest.POST("/api/account/forgot", data, function(data, status){
                 app.hideBusy();
                 if (data.error) {
                     SWAM.Dialog.warning(data.error);
@@ -32,7 +32,7 @@ PORTAL.Pages.TokenLogin = SWAM.Page.extend({
         if (data.validToken) {
             app.showBusy({icon:"lock"});
             data.username = this.options.username;
-            SWAM.Rest.POST("/rpc/account/login", data, function(data, status){
+            SWAM.Rest.POST("/api/account/login", data, function(data, status){
                 app.hideBusy();
                 if (data.error) {
                     SWAM.toast("Error", data.error, "error");

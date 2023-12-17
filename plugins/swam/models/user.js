@@ -2,7 +2,7 @@
 
 SWAM.Models.User = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/account/member"
+    	url:"/api/account/member"
     },
 
     icons: function () {
@@ -80,7 +80,7 @@ SWAM.Models.User = SWAM.Model.extend({
 
     sendEvent: function(name, message, extra, callback, opts) {
         var payload = {message:message, extra:extra, name:name, action:"send_event", member:this.id};
-        SWAM.Rest.POST("/rpc/account/member/action", payload, function(response, status) {
+        SWAM.Rest.POST("/api/account/member/action", payload, function(response, status) {
             if (callback) callback(this, response);
         }.bind(this), opts);
     }

@@ -6,7 +6,7 @@ SWAM.WikiMenu = SWAM.Object.extend({
 	initialize: function(opts) {
 		this.init_options(opts);
 		this.collection = new SWAM.Collection({
-			url:"/rpc/wiki/page", 
+			url:"/api/wiki/page", 
 			params:{
 				graph:"toc",
 				sort: "-order",

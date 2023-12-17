@@ -2,7 +2,7 @@
 
 SWAM.Models.MemberDevice = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/account/member/device"
+    	url:"/api/account/member/device"
     },
 });
 
@@ -14,7 +14,7 @@ SWAM.Collections.MemberDevice = SWAM.Collection.extend({
 
 SWAM.Models.MemberSession = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/account/session"
+        url:"/api/account/session"
     },
 });
 

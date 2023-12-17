@@ -1,7 +1,7 @@
 
 SWAM.Models.WikiPage = SWAM.Model.extend({
     defaults: {
-        url: "/rpc/wiki/page",
+        url: "/api/wiki/page",
     },
 
     getUrl: function() {
@@ -12,7 +12,7 @@ SWAM.Models.WikiPage = SWAM.Model.extend({
         } else if (!this.attributes.path) {
             return url;
         }
-        return `/rpc/wiki/path/${this.attributes.path}`
+        return `/api/wiki/path/${this.attributes.path}`
     },
 
     fetchByPath: function(callback, opts) {
@@ -28,7 +28,7 @@ SWAM.Models.WikiPage = SWAM.Model.extend({
             }
         }
         this.trigger("fetch:started", this);
-        this._request = SWAM.Rest.GET(`/rpc/wiki/path/${this.attributes.path}`, this.params, function(response, status) {
+        this._request = SWAM.Rest.GET(`/api/wiki/path/${this.attributes.path}`, this.params, function(response, status) {
             this._request = null;
             this._on_fetched(response, status);
             if (callback) callback(this, response);

@@ -1,7 +1,7 @@
 
 SWAM.Models.WikiMedia = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/wiki/media/"
+        url:"/api/wiki/media/"
     },
 
     getMediaURL: function() {

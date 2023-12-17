@@ -26,9 +26,9 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     on_init: function(opts) {
         if (!this.options.url) {
             if (this.options.source == "db") {
-                this.options.url = "/rpc/metrics/db/metrics"
+                this.options.url = "/api/metrics/db/metrics"
             } else {
-                this.options.url = "/rpc/metrics/metrics"
+                this.options.url = "/api/metrics/metrics"
             }
         }
 

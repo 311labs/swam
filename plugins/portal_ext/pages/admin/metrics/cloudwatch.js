@@ -27,7 +27,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("ec2_cpu",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/ec2/cpu",
+                url: "/api/metrics/aws/ec2/cpu",
                 title: "EC2 CPU",
                 source: "aws",
                 xaxis_localize: "time",
@@ -45,7 +45,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("ec2_network",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/ec2/network/out",
+                url: "/api/metrics/aws/ec2/network/out",
                 title: "EC2 Network Out",
                 source: "aws",
                 yaxis_localize: "bytes",
@@ -64,7 +64,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("rds_cpu",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/rds/cpu",
+                url: "/api/metrics/aws/rds/cpu",
                 title: "RDS CPU",
                 source: "aws",
                 xaxis_localize: "time",
@@ -82,7 +82,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("rds_memory",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/rds/memory",
+                url: "/api/metrics/aws/rds/memory",
                 title: "RDS Memory",
                 source: "aws",
                 yaxis_localize: "bytes",
@@ -101,7 +101,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("rds_cons",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/rds/cons",
+                url: "/api/metrics/aws/rds/cons",
                 title: "RDS Connections",
                 source: "aws",
                 xaxis_localize: "time",
@@ -119,7 +119,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("redis_cpu",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/redis/cpu",
+                url: "/api/metrics/aws/redis/cpu",
                 title: "Redis CPU",
                 source: "aws",
                 xaxis_localize: "time",
@@ -137,7 +137,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
         this.addChild("redis_mem",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/redis/memory",
+                url: "/api/metrics/aws/redis/memory",
                 title: "Redis Memory",
                 source: "aws",
                 xaxis_localize: "time",
@@ -154,7 +154,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
             }));
         this.addChild("redis_cons",
             new PORTAL.Views.MetricsChart({
-                url: "/rpc/metrics/aws/redis/cons",
+                url: "/api/metrics/aws/redis/cons",
                 title: "Redis Connections",
                 source: "aws",
                 xaxis_localize: "time",

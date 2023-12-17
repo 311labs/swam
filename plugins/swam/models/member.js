@@ -3,7 +3,7 @@
 
 SWAM.Models.Member = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/account/membership"
+    	url:"/api/account/membership"
     },
 
     isDisabled: function() {

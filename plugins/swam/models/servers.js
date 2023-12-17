@@ -1,6 +1,6 @@
 SWAM.Models.ServerInfo = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/metrics/restit/servers"
+    	url:"/api/metrics/restit/servers"
     },
 });
 
@@ -12,7 +12,7 @@ SWAM.Collections.ServerInfo = SWAM.Collection.extend({
 
 SWAM.Models.DomainWatch = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/metrics/restit/domains"
+        url:"/api/metrics/restit/domains"
     },
 });
 
@@ -25,7 +25,7 @@ SWAM.Collections.DomainWatch = SWAM.Collection.extend({
 
 SWAM.Models.GeoIP = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/location/geo/ip"
+        url:"/api/location/geo/ip"
     },
 }, {
     ADD_FORM: [

@@ -59,7 +59,7 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
                     dlg.dismiss();
                     if (data.ip && data.ip.isIPV4()) {
                         SWAM.Rest.POST(
-                            "/rpc/incident/firewall", data,
+                            "/api/incident/firewall", data,
                             function(resp, status) {
                                 if (resp.status) {
                                     SWAM.toast("FIREWALL", `IP '${data.ip}' is now blocked`, "success", 5000, true);

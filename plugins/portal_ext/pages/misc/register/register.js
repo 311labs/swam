@@ -32,7 +32,7 @@ PORTAL.Pages.RegisterUser = SWAM.Page.extend({
     	app.showBusy({icon:"lock"});
     	data.username = this.params.token.username;
     	data.auth_code = this.params.token.auth_token;
-    	SWAM.Rest.POST("/rpc/account/login", data, function(data, status){
+    	SWAM.Rest.POST("/api/account/login", data, function(data, status){
     	    app.hideBusy();
     	    if (data.error) {
     	        SWAM.Dialog.warning(data.error);

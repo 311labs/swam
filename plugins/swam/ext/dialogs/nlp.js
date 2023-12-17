@@ -63,7 +63,7 @@ SWAM.Dialog.NLP.address = function(options) {
 
 
 SWAM.NLP.address = function(text, callback) {
-    SWAM.Rest.POST("/rpc/restai/parse/address", {text:text}, function(data, resp){
+    SWAM.Rest.POST("/api/restai/parse/address", {text:text}, function(data, resp){
         callback(data.data);
     });
 };

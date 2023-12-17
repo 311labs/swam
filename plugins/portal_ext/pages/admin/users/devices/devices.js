@@ -68,7 +68,7 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
         ], {size:"sm", title: "Send Cloud Message", lbl_save:"Send", callback: function(dlg){
             app.showBusy();
             var data = dlg.getData();
-            SWAM.Rest.POST("/rpc/account/member/device/notify", {payload:data, device_id:item.model.get("uuid")}, function(resp) {
+            SWAM.Rest.POST("/api/account/member/device/notify", {payload:data, device_id:item.model.get("uuid")}, function(resp) {
                 if (resp.status) {
                     dlg.dismiss();
                 } else {

@@ -134,7 +134,7 @@ PORTAL.Views.Memberships = SWAM.Views.AdvancedTable.extend({
                         data.powered_by = false;
                     }
                     app.showBusy("envelope");
-                    SWAM.Rest.POST("/rpc/account/group/invite", data, function(resp, status){
+                    SWAM.Rest.POST("/api/account/group/invite", data, function(resp, status){
                         app.hideBusy();
                         if (resp.error) {
                             SWAM.Dialog.warning(resp.error);

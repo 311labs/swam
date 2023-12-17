@@ -1,6 +1,6 @@
 SWAM.Models.EmailInbox = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/inbox/inbox"
+        url:"/api/inbox/inbox"
     },
 }, {
 
@@ -49,7 +49,7 @@ SWAM.Collections.EmailInbox = SWAM.Collection.extend({
 
 SWAM.Models.EmailMessage = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/inbox/message"
+        url:"/api/inbox/message"
     },
 });
 
@@ -62,7 +62,7 @@ SWAM.Collections.EmailMessage = SWAM.Collection.extend({
 
 SWAM.Models.EmailAttachment = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/inbox/message/attachment"
+        url:"/api/inbox/message/attachment"
     },
 });
 
@@ -76,7 +76,7 @@ SWAM.Collections.EmailAttachment = SWAM.Collection.extend({
 
 SWAM.Models.EmailBounced = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/inbox/bounced"
+        url:"/api/inbox/bounced"
     },
 });
 
@@ -88,7 +88,7 @@ SWAM.Collections.EmailBounced = SWAM.Collection.extend({
 
 SWAM.Models.EmailComplaint = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/inbox/complaint"
+        url:"/api/inbox/complaint"
     },
 });
 
@@ -100,7 +100,7 @@ SWAM.Collections.EmailComplaint = SWAM.Collection.extend({
 
 SWAM.Models.EmailOutgoing = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/account/notifications/"
+        url:"/api/account/notifications/"
     },
 });
 
@@ -112,7 +112,7 @@ SWAM.Collections.EmailOutgoing = SWAM.Collection.extend({
 
 SWAM.Models.EmailTemplate = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/inbox/template"
+        url:"/api/inbox/template"
     },
 }, {
     EDIT_FORM: [

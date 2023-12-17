@@ -1,7 +1,7 @@
 
 SWAM.Models.TextMessage = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/telephony/sms/msg"
+        url:"/api/telephony/sms/msg"
     },
 }, {
     EDIT_FORM: [
@@ -67,7 +67,7 @@ SWAM.Collections.TextMessage = SWAM.Collection.extend({
 
 SWAM.Models.PhoneInfo = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/telephony/info"
+        url:"/api/telephony/info"
     },
 }, {
     ADD_FORM: [

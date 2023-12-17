@@ -11,7 +11,7 @@ SWAM.Metrics.trackView = function(page_name, geolocate) {
 }
 
 SWAM.Metrics.track = function(slug, category, geolocate) {
-	SWAM.Rest.POST("/rpc/metrics/metric", {
+	SWAM.Rest.POST("/api/metrics/metric", {
 		"slug": slug,
 		"category": category,
 		"geolocate": geolocate
@@ -19,13 +19,13 @@ SWAM.Metrics.track = function(slug, category, geolocate) {
 }
 
 SWAM.Metrics.getChartFor = function(slugs, callback) {
-	SWAM.Rest.GET("/rpc/metrics/metrics", {
+	SWAM.Rest.GET("/api/metrics/metrics", {
 		"slugs": slugs
 	}, callback, {no_auth:true});
 }
 
 SWAM.Metrics.getCategoryChart = function(category, callback) {
-	SWAM.Rest.GET("/rpc/metrics/metrics", {
+	SWAM.Rest.GET("/api/metrics/metrics", {
 		"category": category
 	}, callback, {no_auth:true});
 }
@@ -44,7 +44,7 @@ SWAM.Metrics.getRestMetrics = function(callback) {
 
 SWAM.Models.Metrics = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/metrics/db/metrics/objects"
+    	url:"/api/metrics/db/metrics/objects"
     },
 
     getMetrics: function() {

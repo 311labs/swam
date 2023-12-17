@@ -142,7 +142,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     loginWithCode: function(username, code, callback, opts) {
-        SWAM.Rest.POST("/rpc/account/login", {username:username, auth_code:code}, function(response, status){
+        SWAM.Rest.POST("/api/account/login", {username:username, auth_code:code}, function(response, status){
             if (response.status) {
                 // credentials get stored in SWAM.Rest
                 this.setJWT(response.data);
@@ -161,7 +161,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         var data = {username:username, password:password};
         if (window.app && window.app.app_uuid) data.device_id = app.app_uuid;
         this.options.auth_method = "jwt";
-        SWAM.Rest.POST("/rpc/account/jwt/login", data, function(response, status) {
+        SWAM.Rest.POST("/api/account/jwt/login", data, function(response, status) {
         	if (response.status) {
         		// credentials get stored in SWAM.Rest
         		this.setJWT(response.data);
@@ -182,7 +182,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     loginBASIC: function(username, password, callback, opts) {
         var data = {username:username, password:password};
         if (window.app && window.app.app_uuid) data.device_id = app.app_uuid;
-        SWAM.Rest.POST("/rpc/account/login", data, function(response, status) {
+        SWAM.Rest.POST("/api/account/login", data, function(response, status) {
             if (response.status) {
                 // credentials get stored in SWAM.Rest
                 this.setBASIC(response.data);
@@ -193,7 +193,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     logoutBASIC: function(callback, opts) {
-        SWAM.Rest.POST("/rpc/account/logout", {}, function(response, status) {
+        SWAM.Rest.POST("/api/account/logout", {}, function(response, status) {
             if (response.status) {
                 // credentials get stored in SWAM.Rest
                 this.attributes = {};
@@ -223,7 +223,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             return;
         }
 
-        SWAM.Rest.POST("/rpc/account/jwt/refresh", {refresh_token:this.credentials.refresh}, function(response, status) {
+        SWAM.Rest.POST("/api/account/jwt/refresh", {refresh_token:this.credentials.refresh}, function(response, status) {
             if (response.status) {
                 // credentials get stored in SWAM.Rest
                 this.setJWT(response.data);
@@ -242,7 +242,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     verifyTOTP: function(code, callback) {
-        SWAM.Rest.POST("/rpc/account/totp/verify", {code:code}, callback);
+        SWAM.Rest.POST("/api/account/totp/verify", {code:code}, callback);
     },
 
     requiresTerms: function() {

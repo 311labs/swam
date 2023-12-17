@@ -1,6 +1,6 @@
 SWAM.Models.AdminGlobal = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/content/jdata"
+    	url:"/api/content/jdata"
     },
 });
 
@@ -121,7 +121,7 @@ PORTAL.Pages.AdminGlobal = SWAM.Pages.TablePage.extend({
         //         callback:function(dlg)
         //         {
         //             var data = dlg.getData();
-        //             this.collection.add(new SWAM.Models.AdminGlobal({url:"/rpc/content/jdata", uid: data.uid}));
+        //             this.collection.add(new SWAM.Models.AdminGlobal({url:"/api/content/jdata", uid: data.uid}));
         //             console.log(this);
         //             // this.model.save(data, function(model, resp) {
         //             //     app.hideBusy();

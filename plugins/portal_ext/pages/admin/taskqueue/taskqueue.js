@@ -5,7 +5,7 @@ PORTAL.Views.TaskTabs = SWAM.Views.Tabs.extend({
         this.addTab("Overview", "overview", new SWAM.View({template:"portal_ext.pages.admin.taskqueue.tasktabs.overview", model: this.options.model}));
         this.addTab("Data", "data", new SWAM.View({template:"portal_ext.pages.admin.taskqueue.tasktabs.data", model: this.options.model}));
         this.addTab("Logs", "logs", new SWAM.Views.Table({
-            collection: new SWAM.Collection({url:"/rpc/taskqueue/task/log"}),
+            collection: new SWAM.Collection({url:"/api/taskqueue/task/log"}),
             remote_sort: false,
             add_classes: "swam-table-clickable",
             columns: [
@@ -161,7 +161,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
 
     on_init_bar: function(){
         this.addChild("table_workers", new SWAM.Views.Table({
-            collection: new SWAM.Collection({url:"/rpc/taskqueue/workers", params:{graph:"detailed"}}),
+            collection: new SWAM.Collection({url:"/api/taskqueue/workers", params:{graph:"detailed"}}),
             remote_sort: false,
             add_classes: "swam-table-clickable",
             columns: [
@@ -187,7 +187,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
         // this.children.barchart_failed.addDataSet("Failed", this.daily_fails, {backgroundColor: 'red'});
         // this.children.barchart_lngst.addDataSet("Longest", this.daily_lngst, {backgroundColor: 'blue'});
 
-        //this.collection = new SWAM.Collection({url:"/rpc/taskqueue/task"});
+        //this.collection = new SWAM.Collection({url:"/api/taskqueue/task"});
         SWAM.Pages.TablePage.prototype.on_init.call(this);
     },
 
@@ -205,7 +205,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
     refresh: function() {
         this.collection.fetch();
         this.getChild("table_workers").collection.fetch();
-        SWAM.Rest.GET("/rpc/taskqueue/task/stats", null, function(resp, status) {
+        SWAM.Rest.GET("/api/taskqueue/task/stats", null, function(resp, status) {
             if (resp.status) {
                 this.stats = resp.data.stats;
                 if (resp.data.status) {
@@ -329,7 +329,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             lbl_yes:"Ok", lbl_no:"Cancel",
             callback: function(dlg, choice) {
                 dlg.dismiss();
-                SWAM.Rest.POST("/rpc/taskqueue/test", {"test_count":5, "sleep_time":20.0});
+                SWAM.Rest.POST("/api/taskqueue/test", {"test_count":5, "sleep_time":20.0});
                 SWAM.toast("Running Test", "running 5 tests");
             }
         });
@@ -344,7 +344,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             lbl_yes:"Ok", lbl_no:"Cancel",
             callback: function(dlg, choice) {
                 dlg.dismiss();
-                SWAM.Rest.POST("/rpc/taskqueue/restart", {key:"yesplease"});
+                SWAM.Rest.POST("/api/taskqueue/restart", {key:"yesplease"});
                 SWAM.toast("Running Test", "attempting to restart task engine");
             }
         });

@@ -20,7 +20,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}
 
 		// get the api version
-		SWAM.Rest.GET("/rpc/version", {}, function(resp, status) {
+		SWAM.Rest.GET("/api/version", {}, function(resp, status) {
 			if (resp.status) {
 				app.api_version = resp.data;
 				app.getChild("panel-left").render();
@@ -37,7 +37,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				auth_code: app.starting_params.oauth_code,
 				username: app.starting_params.username
 			};
-			SWAM.Rest.POST("/rpc/account/login", data, function(data, status){
+			SWAM.Rest.POST("/api/account/login", data, function(data, status){
 			    app.hideBusy();
 			    if (data.error) {
 			        SWAM.toast("Error", data.error, "error");
@@ -112,7 +112,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		if (app.me.requires_totp() && !app.me.totp_ready()) {
 			console.log("fetching totp");
 			SWAM.Rest.GET(
-				"/rpc/account/totp/qrcode", 
+				"/api/account/totp/qrcode", 
 				{
 					format:"base64",
 					force_reset:true
@@ -281,7 +281,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	refreshIncidentBadge: function() {
 		SWAM.Rest.GET(
-			"/rpc/incident/incident",
+			"/api/incident/incident",
 			{format:"summary", state:0},
 			function(data, status){
 				if (data.data && data.data.count) {

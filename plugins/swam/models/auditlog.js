@@ -2,7 +2,7 @@
 
 SWAM.Models.AuditLog = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/auditlog/plog"
+    	url:"/api/auditlog/plog"
     },
 
     who: function() {

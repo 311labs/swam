@@ -2,7 +2,7 @@
 
 SWAM.Models.MediaItem = SWAM.Model.extend({
     defaults: {
-    	url:"/rpc/medialib/media/item/"
+    	url:"/api/medialib/media/item/"
     },
 }, {
     EDIT_FORM: [
@@ -41,7 +41,7 @@ SWAM.Collections.MediaItem = SWAM.Collection.extend({
 
 SWAM.Models.MediaItemRef = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/medialib/media/ref/"
+        url:"/api/medialib/media/ref/"
     },
 });
 
@@ -53,7 +53,7 @@ SWAM.Collections.MediaItemRef = SWAM.Collection.extend({
 
 SWAM.Models.MediaLibrary = SWAM.Model.extend({
     defaults: {
-        url:"/rpc/medialib/library/"
+        url:"/api/medialib/library/"
     },
 });
 
