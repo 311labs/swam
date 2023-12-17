@@ -806,7 +806,7 @@ Mustache.Context.prototype.ext_include = function(name) {
         param = param.trim();
         if ((param.indexOf('"') === 0) || (param.indexOf("'") === 0)) {
             // string path
-            param = param.removeAll('"').removeAll("'");
+            param = param.slice(1, param.length-1);
             if (param[0] === '.') {
                 template_path += window.last_template_path + param;
             } else {
@@ -827,7 +827,7 @@ Mustache.Context.prototype.ext_icon = function(name) {
     if (!keys.length) return null;
     var value = keys[0].params;
     if (value.startsWith("'") || value.startsWith('"')) {
-        value = value.removeAll('"').removeAll("'");
+        value = value.slice(1, value.length-1);
     } else {
         value = this.findValue(value);
         if (!value) value = keys[0].params;
@@ -942,13 +942,20 @@ Mustache.Context.prototype.getValueForContext = function(key, context) {
     // looks through the context for the given key to find the value
     if (_.isUndefined(context)) return undefined;
     if (_.isNull(context)) return null;
-    if (!_.isUndefined(context[key])) {
-        var value = context[key];
+    if (!_.isUndefined(context[key.key])) {
+        var value = context[key.key];
         // handle functions
-        if (_.isFunction(value)) return value.call(context);
+        if (_.isFunction(value)) {
+          if (_.isString(key.params)) {
+            let params = this.parseFilterParams(key.params);
+            return value.call(context, ...params);
+          } else {
+            return value.call(context);
+          }
+        }
         return value;
     } else if (_.isFunction(context.get)) {
-        return context.get(key);
+        return context.get(key.key);
     }
     return undefined;
 }
@@ -994,24 +1001,37 @@ Mustache.Context.prototype.parseFilterParams = function(params) {
             p = "";
         } else if (params[i] == ' ') {
             p += params[i];
+        } else if (params[i] == '[') {
+            // this is an array
+            p = params.slice(i);
+            let ei = p.indexOf(']');
+            p = this.parseFilterParams(p.slice(1, ei));
+            output.push(p);
+            p = ""
+            i += ei;
         } else {
             can_quote = false;
             p += params[i];
         }
     }
     if (p) {
-        p = p.trim();
-        // this is not quoted, lets try and find a context value
-        cv = this.findValue(p);
-        // this is where we need to force not quoted to context lookup
-        // but for legacy support we will fallback
-        if (Mustache.smart_params_require_quotes) {
-            output.push(cv);
-        } else if (cv) {
-            output.push(cv);
+        if (_.isString(p)) {
+          p = p.trim();
+          // this is not quoted, lets try and find a context value
+          cv = this.findValue(p);
+          // this is where we need to force not quoted to context lookup
+          // but for legacy support we will fallback
+          if (Mustache.smart_params_require_quotes) {
+              output.push(cv);
+          } else if (cv) {
+              output.push(cv);
+          } else {
+              output.push(p);
+          }
         } else {
             output.push(p);
         }
+
     }
     return output;
 };
@@ -1075,13 +1095,13 @@ Mustache.Context.prototype.findValue = function(name) {
     var obj_tree = this.parseValueName(name);
     var key = obj_tree.shift();
     while (key) {
-        value = this.getValueForContext(key.key, view);
+        value = this.getValueForContext(key, view);
         if (!is_explicit && _.isUndefined(value) && context.parent) {
             // try the parent context
             while (context.parent && _.isUndefined(value)) {
                 context = context.parent;
                 view = context.view;
-                value = this.getValueForContext(key.key, view);
+                value = this.getValueForContext(key, view);
             }
         }
 
