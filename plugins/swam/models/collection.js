@@ -292,6 +292,9 @@ SWAM.Collection = SWAM.Object.extend({
                 this.parseResponse(resp);
                 this.trigger("fetched", this);
             }
+        } else if (resp.error_code == 420) {
+            // ignore aborted requests?
+            return;
         } else {
             this.trigger("error", this. resp);
         }
@@ -339,8 +342,8 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     _fetch: function(callback, opts) {
-        this.is_loading = true;
         this.abort();
+        this.is_loading = true;
         if (opts && opts.if_stale) {
             if (!this.isStale()) {
                 if (callback) callback(this, 200);
