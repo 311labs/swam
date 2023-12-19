@@ -163,7 +163,7 @@ SWAM.Rest = {
             return;
         }
 
-        $.ajax(request);
+        return $.ajax(request);
     },
 
     on_success: function(callback, xhr, status) {
