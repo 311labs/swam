@@ -9,24 +9,19 @@ PORTAL.Views.Rule = SWAM.View.extend({
 
         this.addChild("details", new SWAM.Views.ModelView({inline:false, fields:[
             {
+                label:"Match",
+                field:"match_by_display",
+                columns: 2
+            },
+            {
                 label:"Priority",
                 field:"priority",
-                columns: 4
+                columns: 2
             },
             {
                 label:"Category",
                 field:"category",
-                columns: 4
-            },
-            {
-                label:"Action After",
-                field:"action_after",
-                columns: 4
-            },
-            {
-                label:"Bundle By",
-                field:"bundle_by_display",
-                columns: 4
+                columns: 8
             },
             {
                 label:"Bundle Time",
@@ -34,10 +29,21 @@ PORTAL.Views.Rule = SWAM.View.extend({
                 columns: 4
             },
             {
+                label:"Bundle By",
+                field:"bundle_by_display",
+                columns: 8
+            },
+            {
+                label:"Action After",
+                field:"action_after",
+                columns: 4
+            },
+            {
                 label:"Action",
                 field:"action",
-                columns: 4
-            }
+                columns: 8
+            },
+
         ]}));
 
         this.checks = new SWAM.Collections.IncidentRuleCheck({params:{size:100, sort:"index"}});

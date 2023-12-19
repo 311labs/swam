@@ -19,6 +19,14 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
         if (opt) return opt.label;
         return "Disabled";
     },
+
+    match_by_display: function() {
+        let b = this.get("match_by");
+        let field = _.findWhere(SWAM.Models.IncidentRule.EDIT_FORM, {name:"match_by"});
+        let opt = _.findWhere(field.options, {value:b});
+        if (opt) return opt.label;
+        return "All";
+    }
 }, {
     EDIT_FORM: [
         {
@@ -26,7 +34,7 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             label:"Name",
             type:"text",
             placeholder:"Enter Name",
-            columns: 12
+            columns: 6
         },
         {
             name:"category",
@@ -35,6 +43,23 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             help: "The category is something the event will match on",
             editable: true,
             options: ["ossec", "account"],
+            columns: 6
+        },
+        {
+            name:"match_by",
+            label:"Match By",
+            type:"select",
+            help: "Define how the rule check should match.  All when all the rules must match, Any for when just one rule needs to match.",
+            options: [
+                {
+                    value: 0,
+                    label: "All"
+                },
+                {
+                    value: 4,
+                    label: "Any"
+                },
+            ],
             columns: 6
         },
         {
