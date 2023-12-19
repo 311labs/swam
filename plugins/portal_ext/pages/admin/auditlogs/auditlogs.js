@@ -106,7 +106,7 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
             if (!this.params.url_params || !this.params.url_params.dr_start) {
                 this.collection.params.dr_end = moment().add(4, "days").format('YYYY-MM-DD');
                 this.collection.params.dr_start = moment().subtract(this.options.default_dr_range, 'days').format('YYYY-MM-DD');
-                this.collection.params.dr_field = "modified";
+                this.collection.params.dr_field = "when";
                 
             }
         }
