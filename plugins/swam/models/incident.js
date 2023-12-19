@@ -243,6 +243,13 @@ SWAM.Models.IncidentRuleCheck = SWAM.Model.extend({
             help: "the order in which the check runs, lower runs first",
             columns: 6
         },
+        {
+            label: "Is Required",
+            name: "is_required",
+            columns: 6,
+            type: "toggle",
+            help: "Only used for when match is any, then this field is required to match."
+        },
     ]
 });
 
@@ -286,7 +293,9 @@ SWAM.Models.Incident = SWAM.Model.extend({
     COMPONENTS: [
         "taskqueue_errors",
         "rest_errors",
-        "ossec"
+        "ossec",
+        "rest_denied",
+        "devtools"
     ],
     EDIT_FORM: [
         {

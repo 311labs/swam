@@ -9,9 +9,10 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
             add_classes: "swam-table-clickable",
         },
         columns: [
+            {label:"p", field:"priority"},
             {label:"when", field:"created|datetime"},
             {label:"name", field:"name"},
-            {label:"priority", field:"priority"},
+            {label:"category", field:"category"},
             {label:"action", field:"action"},
             {label:"bundle", field:"bundle|mintosecs|prettytimer"},
         ],
@@ -20,6 +21,16 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
             sort: "priority",
             size: 10
         },
+        filters: [
+            {
+                label: "category",
+                name: "category",
+                type: "select",
+                editable: true,
+                placeholder: "Select category",
+                options: SWAM.Models.Incident.COMPONENTS
+            }
+        ],
         group_filtering: false,
     },
 
