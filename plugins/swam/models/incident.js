@@ -292,7 +292,7 @@ SWAM.Models.Incident = SWAM.Model.extend({
 }, {
     COMPONENTS: [
         "taskqueue_errors",
-        "rest_errors",
+        "rest_error",
         "ossec",
         "rest_denied",
         "devtools"
