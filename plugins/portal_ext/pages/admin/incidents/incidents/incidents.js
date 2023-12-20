@@ -12,6 +12,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 {label:"Ignore", icon:"shield-fill-x", action:"ignore"},
                 {label:"Accept", icon:"eye-fill", action:"accept"},
                 {label:"Resolved", icon:"shield-check", action:"resolved"},
+                {label:"Merge", icon:"sign-merge-left", action:"merge"},
             ]
         },
         item_url_param: "incident",
@@ -177,6 +178,48 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         SWAM.toast("Incident System", `${selected.length} Incidents Resolved`);
         app.hideBusy();
         this.reload();
+    },
+
+    on_action_merge: function(evt) {
+        SWAM.Dialog.confirm({
+            title: "Merge Incidents",
+            message: "Are you sure you want to merge the selected incidents?",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.mergeSelected(evt);
+                }
+            }.bind(this)
+        });
+    },
+    
+    mergeSelected: function(evt) {
+        app.showBusy();
+        let selected = this.getBatchSelected();
+        let last_index = selected.length-1;
+        let merge_to = selected.pop();
+        let ids = [];
+        _.each(selected, function(item, index){
+            ids.push(item.model.id);
+        });
+        if (ids.length == 0) {
+            app.hideBusy();
+            SWAM.Dialog.warning("requires at least 2 items selected");
+            returns;
+        }
+        merge_to.model.save({
+            action: "merge",
+            merge_ids: ids
+        }, function(model, resp){
+            SWAM.toast("Incident System", `${selected.length} Incidents Merged`);
+            app.hideBusy();
+            if (resp.status) {
+                this.reload();
+            } else {
+                SWAM.Dialog.warning(resp.error);
+            }
+            
+        }.bind(this));
     },
 
     on_rule_edit: function(item) {
