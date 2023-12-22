@@ -146,8 +146,10 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             }
         });
         SWAM.toast("Incident System", `${selected.length} Incidents Ignored`);
-        app.hideBusy();
-        this.reload();
+        setTimeout(function(){
+            app.hideBusy();
+            this.reload();
+        }.bind(this), 2000);
     },
 
     on_action_accept: function(evt) {
@@ -161,8 +163,10 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             }
         });
         SWAM.toast("Incident System", `${selected.length} Incidents Accepted`);
-        app.hideBusy();
-        this.reload();
+        setTimeout(function(){
+            app.hideBusy();
+            this.reload();
+        }.bind(this), 2000);
     },
 
     on_action_resolved: function(evt) {
@@ -176,9 +180,10 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
             }
         });
         SWAM.toast("Incident System", `${selected.length} Incidents Resolved`);
-        app.hideBusy();
-        this.reload();
-    },
+        setTimeout(function(){
+            app.hideBusy();
+            this.reload();
+        }.bind(this), 2000);    },
 
     on_action_merge: function(evt) {
         SWAM.Dialog.confirm({
