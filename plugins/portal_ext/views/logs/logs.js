@@ -198,7 +198,7 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
                 this.collection.params.dr_end += this.options.date_range.padding;
             }
         } else if (this.options.dr_start_days) {
-            this.collection.params.dr_end = moment().add(1, "days").format('YYYY-MM-DD');
+            this.collection.params.dr_end = moment().add(4, "days").format('YYYY-MM-DD');
             this.collection.params.dr_start = moment().subtract(this.options.dr_start_days, 'days').format('YYYY-MM-DD');
         }
 
