@@ -10,20 +10,19 @@ SWAM.Views.Dropdown = SWAM.View.extend({
         empty_label: "Select Item"
     },
 
-    on_init: function() {
-        var normalized = [];
+    get_menu_items: function() {
+        let normalized = [];
         _.each(this.options.menu_items, function(item){
             if (_.isString(item)) {
                 normalized.push({id:item, label:item});
-            } else if (item.divider) {
-                normalized.push(item);
             } else {
+                if (item.requires_perm && app.me && !app.me.hasPerm(item.requires_perm)) return;
                 if (item.action) item.id = item.action;
-                if (_.isUndefined(item.id)) item.id = item.label.lower();
+                if (_.isUndefined(item.id) && item.label) item.id = item.label.lower();
                 normalized.push(item);
             }
         });
-        this.options.menu_items = normalized;
+        return normalized;
     },
 
     active_label: function() {
