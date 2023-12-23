@@ -3,14 +3,19 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
 
     defaults: {
         download_prefix: "incidents",
-        icon: "exclamation-diamond-fill",
+        icon: "exclamation-circle-fill",
         title: "Events",
         list_options: {
             add_classes: "swam-table-clickable",
+            batch_select: true,
+            batch_actions: [
+                {label:"Assign", icon:"exclamation-diamond-fill", action:"assign"},
+            ]
         },
         item_url_param: "item",
         columns: [
             {label:"when", field:"created|datetime"},
+            {label:"i#", field:"incident"},
             {label:"description", field:"description"},
             {label:"hostname", field:"hostname"},
             {label:"category", field:"category"},
@@ -77,6 +82,26 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
             item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
         this.on_item_dlg(item, dlg);
     },
+
+    on_action_assign: function(evt, id) {
+        if (!app.me.hasPerm("sys.manage_users")) return;
+        SWAM.Dialog.showInput({
+            title: "Enter Incident ID #",
+            callback: function(dlg, choice){
+                dlg.dismiss();
+                this.assignToIncident(dlg.getData().input);
+            }.bind(this)});
+    },
+
+    assignToIncident: function(id) {
+        app.showBusy();
+        let selected = this.getBatchSelected();
+        _.each(selected, function(item, index){
+            item.model.save({incident:id});
+        });
+        this.clearBatchSelected();
+        SWAM.toast("Added to " + id, "done", "success");
+    }
 
 });
 

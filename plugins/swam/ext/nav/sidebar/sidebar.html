@@ -26,7 +26,7 @@
 <ul class="nav nav-pills flex-column px-2">
 {{#getAdminMenus}}
 <li>
-<a class="nav-link" aria-current="page" href="#" data-action="show_menu" data-id="{{.id}}">{{{ICON(.icon)}}} {{.label}}</a>
+<a class="nav-link" aria-current="page" href="#" data-action="{{.action}}" data-id="{{.id}}">{{{ICON(.icon)}}} {{.label}}</a>
 </li>
 {{/getAdminMenus}}
 </ul>

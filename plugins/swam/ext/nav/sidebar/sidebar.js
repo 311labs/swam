@@ -119,6 +119,7 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			let admin_menus = [];
 			_.each(this.options.admin_menus, function(menu){
 				if ((menu.requires_perm) && (!app.me.hasPerm(menu.requires_perm))) return;
+				if (menu.action == undefined) menu.action = "show_menu";
 				admin_menus.push(menu);
 			})
 			this._admin_menus = admin_menus;
