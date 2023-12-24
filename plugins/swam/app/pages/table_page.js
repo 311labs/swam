@@ -12,6 +12,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		fetch_on_click: false,
 		item_graph: "detailed",
 		item_url_param: null,
+		requires_group: false,
 		list_options: {
 			download_prefix: "download",
 			download_group_prefix: true
@@ -92,6 +93,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 
 	reload: function() {
 		this.collection.params.start = 0; // reset the page to 0
+		if (this.options.requires_group && !this.collection.params.group) return;
 		this.collection.fetch();
 	},
 
@@ -172,7 +174,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		}
 		this.collection.params.start = 0; // reset the page to 0
 		if (this.isActivePage()) {
-			this.collection.fetch();
+			this.reload();
 		}
 	},
 
@@ -184,7 +186,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 
 	on_pre_render: function() {
 		if (this.isActivePage()) {
-			this.collection.fetch();
+			this.reload();
 		}
 	},
 
@@ -254,7 +256,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		if (resp.error) {
 			SWAM.Dialog.warning("Error Saving", resp.error);
 		} else {
-			this.collection.fetch();
+			this.reload();
 			if (this.options.show_on_add) {
 				this.showItem({model:model});
 			}
@@ -319,7 +321,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	                        	deleted += 1;
 	                            if (index == selected.length-1) {
 	                                SWAM.toast("Items Deleted", `Deleted ${deleted} of ${selected.length}`, "success", 4000);
-	                                this.collection.fetch();
+	                                this.reload();
 	                            }
 	                        } else {
 	                            SWAM.toast(`Delete Failed for id = ${model.id}`, resp.error, "danger", 5000, true);
