@@ -9,7 +9,7 @@ PORTAL.Views.IncidentList = SWAM.Views.AdvancedTable.extend({
         ],
         Collection: SWAM.Collections.IncidentEvent,
         collection_params: {
-            size: 10,
+            size: 5,
         },
         component: "account.Member",
         filters: [

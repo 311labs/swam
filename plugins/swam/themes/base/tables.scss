@@ -13,6 +13,12 @@ div.swam-list {
     }
 }
 
+div.swam-paginated-list {
+    nav.swam-paginated-list-footer {
+        padding: 1rem!important;
+    }
+}
+
 div.swam-paginated-list.compact, div.swam-paginated-table.compact {
     background-color: white;
     box-shadow: 0 0 1px rgba(0,0,0,0.1),  0 1px 3px rgba(0,0,0,0.2);

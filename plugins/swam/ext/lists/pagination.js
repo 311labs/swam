@@ -56,13 +56,18 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
     },
     
     on_init: function() {
-        this.collection = this.options.collection;
+        var list_opts = _.extend({
+            collection: this.options.collection,
+            item_template: this.options.item_template,
+            Collection: this.options.Collection,
+        }, this.options.list_options);
+        this.list = new this.options.List(list_opts);
+        this.collection = this.list.collection;
         if (!this.collection) {
             console.error("cannot init PaginatedList without collection set!", this);
             throw new Error("PaginatedList requires a collection");
         }
-        var list_opts = _.extend({collection:this.collection}, this.options.list_options);
-        this.list = new this.options.List(list_opts);
+
         this.collection.on("loading:end", this.on_loading_end, this);
         this.addChild("list", this.list);
         this.pager = new SWAM.Views.ListPagination({list:this.list});
@@ -70,6 +75,12 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.counter = new SWAM.Views.ListPaginationCount({list:this.list});
         this.addChild("counter", this.counter);
         if (this.options.filter_bar) {
+            if (this.options.add_button) {
+                this.options.filter_bar.unshift(this.options.add_button);
+            } else {
+                this.options.filter_bar[0].columns = 12;
+            }
+            
             this.filters = new SWAM.Views.ListFilters({
                 list: this.list, 
                 filter_bar: this.options.filter_bar,

@@ -1,6 +1,6 @@
 
-PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
-    template: "portal_ext.pages.admin.users.user",
+PORTAL.Views.Me = SWAM.View.extend(SWAM.Ext.BS).extend({
+    template: "portal_ext.pages.admin.users.me",
     classes: "acs-member",
     tagName: "div",
 
@@ -10,7 +10,6 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     on_init: function() {
         this.tabs = new SWAM.Views.Tabs();
-        
         this.tabs.addTab("Details", "details", new SWAM.Views.ModelView({
             inline:false,
             fields:[
@@ -74,50 +73,33 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
                 {
                     label:"Auth Token",
                     field:"auth_token|ifempty|clipboard",
-                    columns: 7
-                },
-                {
-                    label:"ID#",
-                    field:"id|clipboard",
-                    columns: 5
+                    columns: 12
                 },
             ]}));
 
-
-        // if (app.options.user_permissions) {
-        //     _.each(app.options.user_permissions, function(info){
-        //         let view = new SWAM.Form.View({
-        //             fields:info.fields
-        //         });
-        //         this.tabs.addTab(info.title, info.slugify(), view);
-        //         view.on("input:change", this.on_perm_change, this);
-        //     }.bind(this));
-        // }
-
-        this.tabs.addTab("Permissions", "permissions", new SWAM.Form.View({
-            fields: SWAM.Models.User.PERMISSIONS_FORM,
+        this.tabs.addTab("Passkeys", "passkeys", new PORTAL.Views.UserPassKeys({
+            filter_bar: [],
+            add_button: {
+                type: "button",
+                action: "add_passkey",
+                label: "<i class='bi bi-shield-plus'></i> Add a passkey",
+                classes: "btn btn-primary",
+                columns:6
+            },
+            list_options: {
+                empty_html: "<div class='card text-center text-muted p-3'>Passkeys are a new way to sign in to apps and websites without using a password!</div>"
+            }
         }));
-
-        this.tabs.tab_views.permissions.on("input:change", this.on_perm_change, this);
 
         this.tabs.addTab("Groups", "groups", new PORTAL.Views.MemberGroups());
 
-        this.tabs.addTab("Logs", "logs", new PORTAL.Views.Logs({
-            component: "account.Member",
-            param_field: null
+        // this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
+
+        // this.tabs.addTab("Sessions", "sessions", new PORTAL.Views.MemberSessions());
+
+        this.tabs.addTab("Events", "events", new PORTAL.Views.IncidentList({
+            filter_bar: null
         }));
-        
-        this.tabs.addTab("Acitivity", "activity", new PORTAL.Views.Logs({
-            param_field: "user"
-        }));
-
-        this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
-
-        this.tabs.addTab("Sessions", "sessions", new PORTAL.Views.MemberSessions());
-
-        this.tabs.addTab("Events", "events", new PORTAL.Views.IncidentList());
-
-        this.tabs.addTab("Passkeys", "passkeys", new PORTAL.Views.UserPassKeys());
 
         this.tabs.setActiveTab("details");
 
@@ -129,6 +111,10 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
         var data = {};
         data[ievt.name] = ievt.value;
         this.model.save(data);
+    },
+
+    on_action_change_password: function(evt, id) {
+        app.on_action_change_password(evt, id);
     },
 
     on_action_edit: function(evt) {

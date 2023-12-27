@@ -84,31 +84,6 @@ SWAM.Views.TopBar = SWAM.View.extend({
         }.bind(this)});
 	},
 
-	on_action_change_password: function(evt) {
-        SWAM.Dialog.editModel(app.me, {
-        	title:"Change Password",
-        	fields: [
-	        	{
-	        		label: "Old Password",
-	        		name: "oldpassword",
-	        		type: "password",
-	        		can_view: true
-	        	},
-	        	{
-	        		label: "New Password",
-	        		name: "newpassword",
-	        		type: "password",
-	        		can_view: true
-	        	},
-        	],
-        	callback:function(model, resp){
-	            if (resp.status) {
-	                SWAM.toast("Profile Saved", "Your profile succesfully updated");
-	            }
-        	}.bind(this)}
-        );
-	},
-
 	on_action_toggle_sidebar: function() {
 		app.toggleLeftPanel();
 	},

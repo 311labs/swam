@@ -110,21 +110,23 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}
 
 		if (app.me.requires_totp() && !app.me.totp_ready()) {
-			console.log("fetching totp");
-			SWAM.Rest.GET(
-				"/api/account/totp/qrcode", 
-				{
-					format:"base64",
-					force_reset:true
-				}, 
-				function(data, status, xhr){
-					this.configureTOTP(data.content);
-				}.bind(this));
-			// this.configureTOTP(totp_img);
+			this.configureTOTP();
 		}
 	},
 
-	configureTOTP: function(totp_image) {
+	configureTOTP: function() {
+		SWAM.Rest.GET(
+			"/api/account/totp/qrcode", 
+			{
+				format:"base64",
+				force_reset:true
+			}, 
+			function(data, status, xhr){
+				this.on_configureTOTP(data.content);
+			}.bind(this));
+	},
+
+	on_configureTOTP: function(totp_image) {
 		SWAM.Dialog.show({
 			title: "Setup MFA", 
 			view: new SWAM.View({
@@ -511,6 +513,31 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}
 		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
 		event.save(data);
+	},
+
+	on_action_change_password: function(evt) {
+        SWAM.Dialog.editModel(app.me, {
+        	title:"Change Password",
+        	fields: [
+	        	{
+	        		label: "Old Password",
+	        		name: "oldpassword",
+	        		type: "password",
+	        		can_view: true
+	        	},
+	        	{
+	        		label: "New Password",
+	        		name: "newpassword",
+	        		type: "password",
+	        		can_view: true
+	        	},
+        	],
+        	callback:function(model, resp){
+	            if (resp.status) {
+	                SWAM.toast("Profile Saved", "Your profile succesfully updated");
+	            }
+        	}.bind(this)}
+        );
 	},
 
 });

@@ -5,7 +5,7 @@
     <div class="modal-header border-bottom-1 user-select-none">
       <h5 class="modal-title">{{#options.icon}}{{{ICON(options.icon)}}} {{/options.icon}}{{{options.title}}}</h5>
       {{#options.show_close}}
-      <button type="button" class="btn-close" data-action="close"></button>
+      <button type="button" class="{{options.btn_close}}" data-action="close"></button>
       {{/options.show_close}}
       {{#options.show_context_menu}}
       <div class="modal-context-menu"></div>

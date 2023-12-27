@@ -188,6 +188,7 @@ SWAM.Dialog = SWAM.View.extend({
     globals: {
         btn_primary: "btn btn-link",
         btn_secondary: "btn btn-link color-secondary",
+        btn_close: "btn-close",
         buttons: [
             {
                 action:"close",

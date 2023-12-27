@@ -15,33 +15,20 @@
         <div class="dropdown position-absolute top-0 end-0">
           <button class="btn btn-link text-light p-3" data-bs-toggle="dropdown" role="button">{{{ICON("bi bi-three-dots-vertical")}}}</button>
           <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#" data-action="edit">{{{ICON("pencil-fill")}}} Edit Member</a></li>
-            {{#model.is_active}}
-            <li><a class="dropdown-item" href="#" data-action="disable">{{{ICON("person-x-fill")}}} Disable Member</a></li>
-            {{/model.is_active}}
-            {{^model.is_active}}
-            <li><a class="dropdown-item" href="#" data-action="enable">{{{ICON("person-plus-fill")}}} Enable Member</a></li>
-            {{/model.is_active}}
-            {{#model.is_blocked}}
-            <li><a class="dropdown-item" href="#" data-action="unblock">{{{ICON("shield-fill-check")}}} Unblock</a></li>
-            {{/model.is_blocked}}
-            <li><a class="dropdown-item" href="#" data-action="authtoken">{{{ICON("lock")}}} Generate AuthToken</a></li>
+            <li><a class="dropdown-item" href="#" data-action="edit">{{{ICON("pencil-fill")}}} Edit Profile</a></li>
+            <li><a class="dropdown-item" href="#" data-action="change_password">{{{ICON("key-fill")}}} Change Password</a></li>
             {{#model.totp_ready}}
             <li><a class="dropdown-item" href="#" data-action="clear_mfa">{{{ICON("shield-slash")}}} Clear MFA</a></li>
+            {{/model.totp_ready}}
+            {{^model.totp_ready}}
+            <li><a class="dropdown-item" href="#" data-action="setup_mfa">{{{ICON("shield-plus")}}} Setup MFA</a></li>
             {{/model.totp_ready}}
           </ul>
         </div>
       </div>
     </div>
   </div>
-  {{#model.is_blocked}}
-  <h5 class="bg-danger text-center p-2">{{{ICON("shield-slash-fill")}}}  Temporary Lock Out</h5>
-  {{/model.is_blocked}}
-  {{^model.is_active}}
-  <h5 class="text-danger text-center p-2">{{{ICON("slash-circle-fill")}}} Account Disabled</h5>
-  {{/model.is_active}}
 </div>
-
 
 <div class="m-3" id="tabs">
   

@@ -29,9 +29,23 @@ body.app {
 	        }
 	    }
 
+	    div.modal-brand div.modal-header {
+	    	background: $brand-primary;
+	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
+	    	button.btn {
+	    		color: white;
+	    	}
+	    }
+
 	    div.modal-primary div.modal-header {
 	    	background: $primary;
 	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
 	    	button.btn {
 	    		color: white;
 	    	}
@@ -40,6 +54,9 @@ body.app {
 	    div.modal-success div.modal-header {
 	    	background: $brand-success;
 	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
 	    	button.btn {
 	    		color: white;
 	    	}
@@ -48,6 +65,9 @@ body.app {
 	    div.modal-secondary div.modal-header {
 	    	background: $brand-secondary;
 	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
 	    	button.btn {
 	    		color: white;
 	    	}
@@ -56,6 +76,9 @@ body.app {
 	    div.modal-warning div.modal-header {
 	    	background: $brand-warning;
 	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
 	    	button.btn {
 	    		color: white;
 	    	}
@@ -64,6 +87,9 @@ body.app {
 	    div.modal-danger div.modal-header {
 	    	background: $brand-danger;
 	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
 	    	button.btn {
 	    		color: white;
 	    	}
@@ -139,7 +165,7 @@ body.app {
 		}
 
 		div.swam-card-header {
-			background-color: white;
+			background-color: $swam-card-header;
 		    border-top-left-radius: 4px;
 		    border-top-right-radius: 4px;
 		}

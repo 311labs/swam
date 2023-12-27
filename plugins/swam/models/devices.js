@@ -23,3 +23,16 @@ SWAM.Collections.MemberSession = SWAM.Collection.extend({
         Model: SWAM.Models.MemberSession
     }
 });
+
+
+SWAM.Models.UserPassKey = SWAM.Model.extend({
+    defaults: {
+        url:"/api/account/passkey"
+    },
+});
+
+SWAM.Collections.UserPassKey = SWAM.Collection.extend({
+    defaults: {
+        Model: SWAM.Models.UserPassKey
+    }
+});

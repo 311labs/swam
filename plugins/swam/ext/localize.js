@@ -905,6 +905,7 @@ SWAM.Localize = {
     },
 
     'ago': function(value, attr, fmt) {
+        if (!value) return "never";
         return this.fromnow(value, attr, fmt);
     },
 
@@ -993,6 +994,10 @@ SWAM.Localize = {
             return value.capitalize();
         }
         return value;
+    },
+
+    'caps': function(value, attr, fmt) {
+        return this.capitalize(value, attr, fmt);
     },
 
     'upper': function(value, attr, fmt) {

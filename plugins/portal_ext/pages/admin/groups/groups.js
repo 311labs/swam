@@ -114,7 +114,6 @@ PORTAL.Pages.Groups = SWAM.Pages.TablePage.extend({
         let dlg = SWAM.Dialog.showView(this.view, {
             title: item.model.get("name"),
             size:"lg", vsize:"lg",
-            add_classes: "modal-primary",
             context_menu: [
                 {
                     icon: "pencil",

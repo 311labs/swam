@@ -139,14 +139,14 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
                     items: menu
                 });
             }
-            if (this.options.add_button) {
-                this.options.filter_bar.unshift(this.options.add_button);
-            } else {
-                this.options.filter_bar[0].columns = 12;
-                // don't bother with grouping
-                // this.options.filter_bar = [this.options.filter_bar[0].fields];
-                // this.options.filter_bar.unshift({columns:3, type:"hidden"}); // need this to make view look clean
-            }
+            // if (this.options.add_button) {
+            //     this.options.filter_bar.unshift(this.options.add_button);
+            // } else {
+            //     this.options.filter_bar[0].columns = 12;
+            //     // don't bother with grouping
+            //     // this.options.filter_bar = [this.options.filter_bar[0].fields];
+            //     // this.options.filter_bar.unshift({columns:3, type:"hidden"}); // need this to make view look clean
+            // }
         }
 
         if (!this.options.list_options || !this.options.list_options.columns) {

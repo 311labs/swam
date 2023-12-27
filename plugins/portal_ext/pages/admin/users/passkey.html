@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col-auto">
+		{{{ICON('key-fill')}}}
+	</div>
+	<div class="col">
+		<div class="fw-bold">
+			Passkey for {{model.platform}}
+		</div>
+		<div class="fs-7">
+			<div>For {{model.rp_id}}</div>
+			<div>Last used {{model.last_used|ago}}</div>
+			<div>Created {{model.created|ago}}</div>
+		</div>
+
+	</div>
+	<div class="col-auto">
+		<button class="btn btn-danger" data-action="delete_passkey" data-id="{{model.id}}">{{{ICON('trash')}}}</button>
+	</div>
+</div>

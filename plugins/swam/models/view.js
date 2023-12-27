@@ -2,7 +2,10 @@
 
 SWAM.Views.ModelView = SWAM.View.extend({
     tagName: "div",
-    classes: "swam-model-view mt-1",
+    classes: "swam-model-view",
+    defaults: {
+        add_classes: "m-3",
+    },
 
     on_render: function() {
         this.$el.html(SWAM.Views.ModelView.build(this.options.model, this.options.fields, this.options));

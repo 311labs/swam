@@ -130,15 +130,18 @@ body.app {
         color: rgba(var(--bs-white-rgb),var(--bs-text-opacity))!important;
     }
 
+    .bg-brand {
+        background-color: $brand-primary;
+    }
 
     .bg-success {
         --bs-bg-opacity: 1;
         background-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity))!important;
     }
 
-    .bg-parimary {
+    .bg-primary {
         --bs-bg-opacity: 1;
-        background-color: rgba(var(--bs-parimary-rgb),var(--bs-bg-opacity))!important;
+        background-color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important;
     }
 
     .bg-danger {
