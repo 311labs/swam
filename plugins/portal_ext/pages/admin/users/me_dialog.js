@@ -206,5 +206,9 @@ PORTAL.Views.Me = SWAM.View.extend(SWAM.Ext.BS).extend({
                 }
             }.bind(this)
         });
+    },
+
+    on_action_setup_mfa: function() {
+        app.configureTOTP();
     }
 });
