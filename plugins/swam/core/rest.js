@@ -60,6 +60,8 @@ SWAM.Rest = {
             } else {
                 request.setRequestHeader('Authorization', SWAM.Rest.credentials.kind + " " + SWAM.Rest.credentials.token);
             }
+        } else if (SWAM.Rest.session_key) {
+            request.setRequestHeader('Authorization', SWAM.Rest.session_key);
         }
 
         request.send();
@@ -135,6 +137,9 @@ SWAM.Rest = {
             } else {
                 request.headers['Authorization'] = SWAM.Rest.credentials.kind + " " + SWAM.Rest.credentials.token;
             }
+        } else if (SWAM.Rest.session_key) {
+            if (!request.headers) request.headers = {};
+            request.headers['Authorization'] = `session ${SWAM.Rest.session_key}`;
         }
         
         if (!url.startsWith("http")) {

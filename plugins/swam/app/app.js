@@ -32,8 +32,19 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         if (this.options.enable_swipe) this.enableTouch();
         this.on("property:change", this.on_prop_change, this);
         this.initWindowEvents();
+        this.on_init_session_key();
         this.setToastGlobals({placement: this.options.toast_placement, theme: this.options.toast_theme});
     },
+
+    on_init_session_key: function() {
+        // these are only used for non secure session keys, no auth
+        SWAM.Rest.session_key = this.getProperty("tmp_session_key");
+        if (!SWAM.Rest.session_key) {
+            SWAM.Rest.session_key = crypto.randomUUID();
+            this.setProperty("tmp_session_key", SWAM.Rest.session_key);
+        }
+    },
+
     on_prop_change: function(evt) {
         // console.log("on_prop_change");
         // console.log(evt);
