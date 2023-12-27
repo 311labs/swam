@@ -210,19 +210,21 @@ PORTAL.Pages.Login = SWAM.Page.extend({
             uname = null;
         }
 
-        // Availability of `window.PublicKeyCredential` means WebAuthn is usable.  
-        WebAuthnClient.isConditionalMediationAvailable(function(isCMA){
-            if (isCMA) {
-                WebAuthnClient.authenticate(function(resp, options){
-                    if (resp.status) {
-                        app.me.setJWT(resp.data);
-                        if (app.me.isAuthenticated()) app.me.trigger("logged_in", app.me);
-                    } else {
-                        SWAM.Dialog.warning(resp.error);
-                    }
-                }, uname);
-            }
-        });
+        if (app.options.allow_webauthn) {
+            // Availability of `window.PublicKeyCredential` means WebAuthn is usable.  
+            WebAuthnClient.isConditionalMediationAvailable(function(isCMA){
+                if (isCMA) {
+                    WebAuthnClient.authenticate(function(resp, options){
+                        if (resp.status) {
+                            app.me.setJWT(resp.data);
+                            if (app.me.isAuthenticated()) app.me.trigger("logged_in", app.me);
+                        } else {
+                            SWAM.Dialog.warning(resp.error);
+                        }
+                    }, uname);
+                }
+            });
+        }
     }
 
 });

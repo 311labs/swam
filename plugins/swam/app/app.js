@@ -18,6 +18,9 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         track_page_views: false,
         toast_theme: "dark",
         dialog_theme: "modal-brand",
+        allow_webauthn: false,
+        allow_google_login: false,
+        google_client_id: null,
         send_buid: true // sends a __buid__ with every requires to the server, this is a browser id
     },
     on_init: function() {

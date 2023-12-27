@@ -72,12 +72,16 @@ window.WebAuthnClient = {
     authenticate: function(callback, username) {
         this.init();
         WebAuthnClient.getPublicKeyRequestOptions(function(resp, options){
-            console.log(options);
-            navigator.credentials
-                .get({publicKey:options, mediation:"conditional"})
-                .then((assertion) => {
-                    WebAuthnClient.sendSignedChallenge(assertion, callback);
-                });
+            if (resp.status) {
+                console.log(options);
+                navigator.credentials
+                    .get({publicKey:options, mediation:"conditional"})
+                    .then((assertion) => {
+                        WebAuthnClient.sendSignedChallenge(assertion, callback);
+                    });
+            } else {
+                callback(resp, false);
+            }
         }, username)
     },
 
