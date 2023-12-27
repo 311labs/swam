@@ -18,11 +18,11 @@
         </div>
         {{/params.url_params.error}}
         <div class="form-floating">
-          <input type="username" class="form-control" name="signin_username" placeholder="name@example.com" id="signin_username">
+          <input type="username" class="form-control" name="signin_username" placeholder="name@example.com" id="signin_username" autocomplete="username webauthn">
           <label for="signin_username">Email address</label>
         </div>
         <div class="form-floating">
-          <input type="password" class="form-control" name="signin_password" placeholder="Password">
+          <input type="password" class="form-control" name="signin_password" placeholder="Password" autocomplete="current-password webauthn">
           <label for="signin_password">Password</label>
           <button type="button" class="btn-icon" data-action="show_password">{{{ICON('eye-fill')}}}</button>
         </div>

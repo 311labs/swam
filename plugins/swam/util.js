@@ -518,6 +518,7 @@ window.DevTools = {
   },
 
   detect_by_performance: function(max_time) {
+    if (location.host.contains("localhost")) return false;
     if (window.DevTools.largeObjectArray == undefined) {
       window.DevTools.largeObjectArray = window.DevTools.createLargeObjectArray();
     }

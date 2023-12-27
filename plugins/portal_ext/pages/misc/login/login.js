@@ -204,6 +204,25 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         if (uname) {
             this.$el.find("#signin_username").val(uname);
         }
+
+        if (!WebAuthnClient.options.require_username) {
+            // removing the username allows any passkeys for this host to be used
+            uname = null;
+        }
+
+        // Availability of `window.PublicKeyCredential` means WebAuthn is usable.  
+        WebAuthnClient.isConditionalMediationAvailable(function(isCMA){
+            if (isCMA) {
+                WebAuthnClient.authenticate(function(resp, options){
+                    if (resp.status) {
+                        app.me.setJWT(resp.data);
+                        if (app.me.isAuthenticated()) app.me.trigger("logged_in", app.me);
+                    } else {
+                        SWAM.Dialog.warning(resp.error);
+                    }
+                }, uname);
+            }
+        });
     }
 
 });
