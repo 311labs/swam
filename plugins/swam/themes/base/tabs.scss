@@ -27,12 +27,17 @@ body.app {
 	        div.tabs {
 	            display: none;
 	        }
+
+	        div.tab-dropdown {
+	        	padding-left: 1rem;
+	        }
 	    }
 	}
 
 	div.tabs {
 	    border-bottom: 1px solid #ececec;
 	    margin-top: 0;
+	    padding-left: 1rem;
 	    > ul {
 	        position: relative;
 	        list-style-type: none;
