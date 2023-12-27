@@ -27,7 +27,7 @@ PORTAL.Views.UserPassKeys = SWAM.Views.PaginatedList.extend({
             callback: function(dlg, value) {
                 dlg.dismiss();
                 if (value.upper() == "YES") {
-                    WEBAUTHN.register(this.on_passkey.bind(this));
+                    WebAuthnClient.register(this.on_passkey.bind(this));
                 }
             }.bind(this)
         });

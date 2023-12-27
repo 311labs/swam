@@ -28,9 +28,16 @@ window.WebAuthnClient = {
                 options = resp.publicKey;
                 options.challenge = WebAuthnClient.base64ToArrayBuffer(options.challenge);
                 options.user.id = WebAuthnClient.base64ToArrayBuffer(options.user.id);
+                let create_args = {publicKey:options};
+                if (resp.excludeCredentials) {
+                    resp.excludeCredentials.forEach(cred => {
+                        cred.id = WebAuthnClient.base64ToArrayBuffer(cred.id);
+                    });
+                    create_args.excludeCredentials = resp.excludeCredentials;
+                }
                 console.log(options);
                 navigator.credentials
-                    .create({publicKey:options})
+                    .create(create_args)
                     .then((newCredential) => {
                         console.log("----");
                         console.log(newCredential.response);
@@ -43,7 +50,7 @@ window.WebAuthnClient = {
                                     attestationObject: WebAuthnClient.arrayBufferToBase64(newCredential.response.attestationObject),
                                     clientDataJSON: WebAuthnClient.arrayBufferToBase64(newCredential.response.clientDataJSON)
                                 }
-                            }
+                            },
                         }, callback);
                     });
             }
