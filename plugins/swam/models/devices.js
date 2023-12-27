@@ -16,6 +16,11 @@ SWAM.Models.MemberSession = SWAM.Model.extend({
     defaults: {
         url:"/api/account/session"
     },
+
+    browser_icon: function() {
+        let browser = this.get("browser").lower();
+        return `browser-${browser}`;
+    }
 });
 
 SWAM.Collections.MemberSession = SWAM.Collection.extend({

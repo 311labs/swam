@@ -130,6 +130,10 @@ body.app {
         color: rgba(var(--bs-white-rgb),var(--bs-text-opacity))!important;
     }
 
+    .text-brand {
+        color: $brand-primary;
+    }
+
     .bg-brand {
         background-color: $brand-primary;
     }

@@ -27,7 +27,6 @@ PORTAL.Views.MemberSessions = SWAM.Views.AdvancedTable.extend({
       } else {
           this.collection.reset();
       }
-      
     },
 
     on_tab_focus: function() {
@@ -39,7 +38,46 @@ PORTAL.Views.MemberSessions = SWAM.Views.AdvancedTable.extend({
             title: "Session Info",
             json: item.model.attributes
         });
-
     }
 
 });
+
+
+
+
+
+PORTAL.Views.MemberSessionList = SWAM.Views.List.extend({
+    defaults: {
+        add_classes: "p-3",
+        item_template: "portal_ext.pages.admin.users.session",
+        Collection: SWAM.Collections.MemberSession,
+
+        collection_params: {
+            size: 5
+        }
+    },
+
+    setModel: function(model) {
+      this.model = model;
+      this.collection.params.member = model.id;
+      if (this.isInViewport()) {
+          this.collection.fetch();
+      } else {
+          this.collection.reset();
+      }
+    },
+
+    on_tab_focus: function() {
+        this.collection.fetchIfStale();
+    },
+
+    on_item_clicked: function(item) {
+        SWAM.Dialog.show({
+            title: "Session Info",
+            json: item.model.attributes
+        });
+    }
+});
+
+
+

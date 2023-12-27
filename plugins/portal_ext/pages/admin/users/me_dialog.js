@@ -95,11 +95,11 @@ PORTAL.Views.Me = SWAM.View.extend(SWAM.Ext.BS).extend({
 
         // this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
 
-        // this.tabs.addTab("Sessions", "sessions", new PORTAL.Views.MemberSessions());
+        this.tabs.addTab("Sessions", "sessions", new PORTAL.Views.MemberSessionList());
 
-        this.tabs.addTab("Events", "events", new PORTAL.Views.IncidentList({
-            filter_bar: null
-        }));
+        // this.tabs.addTab("Events", "events", new PORTAL.Views.IncidentList({
+        //     filter_bar: null
+        // }));
 
         this.tabs.setActiveTab("details");
 
