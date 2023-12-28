@@ -52,7 +52,11 @@ window.WebAuthnClient = {
                                 }
                             },
                         }, callback);
-                    });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        SWAM.toast("Unexpected Error", error.message, "danger");
+                    }); 
             }
             
         });
@@ -67,10 +71,15 @@ window.WebAuthnClient = {
         this.init();
         if (window.PublicKeyCredential &&  
             PublicKeyCredential.isConditionalMediationAvailable) {  
-          // Check if conditional mediation is available.  
-          PublicKeyCredential.isConditionalMediationAvailable().then((isCMA) => {
-             callback(isCMA);
-          });  
+            // Check if conditional mediation is available.  
+            PublicKeyCredential.isConditionalMediationAvailable()
+                .then((isCMA) => {
+                    callback(isCMA);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    SWAM.toast("Unexpected Error", error.message, "danger");
+                });  
         } else {
             callback(false);
         }
@@ -85,6 +94,10 @@ window.WebAuthnClient = {
                     .get({publicKey:options, mediation:"conditional"})
                     .then((assertion) => {
                         WebAuthnClient.sendSignedChallenge(assertion, callback);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        SWAM.toast("Unexpected Error", error.message, "danger");
                     });
             } else {
                 callback(resp, false);
