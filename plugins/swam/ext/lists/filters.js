@@ -17,6 +17,23 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         this.appendChild("fb_filters", new SWAM.View({classes:"swam-list-filter-items d-flex flex-row-reverse"}));
     },
 
+    unlocalizer: function(evt, val) {
+        if (!evt.localize) return val;
+        if (evt.localize == "cents") {
+            return parseInt(val * 100);
+        }
+        return val;
+    },
+
+    localizer: function(evt, val) {
+        if (!evt.localize) return val;
+        if (evt.localize == "cents") {
+            if (!val) return "";
+            return parseFloat(val / 100);
+        }
+        return val;
+    },
+
     on_input_change: function(name, val, evt) {
         evt.stopPropagation();
         let param_name = name;
@@ -25,7 +42,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         }
         this.removeParam(name);
         if ((val != undefined)&&(val != null)&&(val != "")) {
-            this.options.list.collection.params[param_name] = val;
+            this.options.list.collection.params[param_name] = this.unlocalizer(evt, val);
         }
         this.options.list.collection.resetPager();
         this.options.list.collection.fetch();
@@ -72,6 +89,10 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         let safe_id = this.convertParamToKey(id.replaceAll(".", "__"));
         if (operator === undefined) {
             operator = this.getOperatorFromParam(id);
+        }
+
+        if (filter.localize) {
+            value_lbl = this.localizer(filter, val);
         }
         
         if (filter.options) {
@@ -195,6 +216,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         if (id === undefined) return;
         let filter = _.findWhere(this.options.filters, {name:id});
         let dv = this.getDefaultFor(id);
+        if (filter.localize) dv = this.localizer(filter, dv);
         let defaults = {};
         if (dv != undefined) {
             defaults[id] = dv;
@@ -222,7 +244,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
             defaults: defaults,
             callback: function(dlg) {
                 let data = dlg.getData();
-                let val = data[id];
+                let val = this.unlocalizer(filter, data[id]);
                 this.addFilterTag(id, val, filter, data.operator);
                 if (filter.type == "daterange") {
                     if (dlg.options.view && dlg.options.view.date_fields) {
@@ -234,7 +256,8 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
                     
                 } else {
                     evt.operator = data.operator || filter.operator;
-                    this.on_input_change(id, val, evt);
+                    if (filter.localize) evt.localize = filter.localize;
+                    this.on_input_change(id, data[id], evt);
                 }
                 dlg.dismiss();
             }.bind(this)

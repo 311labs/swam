@@ -232,6 +232,7 @@ window.b64ToDict = function(base64Url) {
 };
 
 window.stackToMethods = function(stackTrace) {
+  if (!stackTrace) return "";
   return stackTrace.split('\n')
                    .filter(line => line.trim().startsWith("at "))
                    .map(line => line.trim().substring(3, line.trim().indexOf("(")))
