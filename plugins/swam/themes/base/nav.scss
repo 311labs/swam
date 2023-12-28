@@ -149,3 +149,21 @@ div.sidebar-collapse {
         font-size: 0.9rem;
     }
 }
+
+
+
+@media (max-width: 920px) {
+	#app_body {
+		li.nav-hide-label-sm {
+			span.nav-label {
+				display: none;
+			}
+		}
+	}
+
+	#title-bar {
+		span.logo-title {
+			display: none;
+		}
+	}
+}

@@ -142,14 +142,13 @@ SWAM.WikiMenu = SWAM.Object.extend({
 		id: "wiki_menu",
 	    icon: "question-circle-fill",
 	    page: "wiki_page",
-	    add_classes: "me-3",
 	    params: {wiki:"faq", page:"home"},
 	    data_id: "faq/home",
 	    requires_perm: "view_wiki",
 	},
 
 	init_wiki: function() {
-		app.getChild("title-bar").options.right_nav.insertAt(this.TOP_BAR_ITEM, 0);
+		// app.getChild("title-bar").options.right_nav.insertAt(this.TOP_BAR_ITEM, 0);
 		app.sidebar.options.menus.help = this.SIDE_BAR_MENU;
 		app.sidebar.options.admin_menus.insertAt(this.ADMIN_MENU_ITEM, 0);
 		app.help_menu = new SWAM.WikiMenu({menu:app.sidebar, wiki:"help"});
