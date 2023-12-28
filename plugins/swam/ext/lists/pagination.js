@@ -78,7 +78,10 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
             if (this.options.add_button) {
                 this.options.filter_bar.unshift(this.options.add_button);
             } else {
-                this.options.filter_bar[0].columns = 12;
+                let fitem = this.options.filter_bar[0];
+                if (fitem.type != "button") {
+                    fitem.columns = 12;
+                }
             }
             
             this.filters = new SWAM.Views.ListFilters({
