@@ -40,7 +40,11 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         // these are only used for non secure session keys, no auth
         SWAM.Rest.session_key = this.getProperty("tmp_session_key");
         if (!SWAM.Rest.session_key) {
-            SWAM.Rest.session_key = crypto.randomUUID();
+            if (window.crypto && window.crypto.randomUUID) {
+                SWAM.Rest.session_key = crypto.randomUUID();
+            } else {
+                SWAM.Rest.session_key = String.Random(64);
+            }
             this.setProperty("tmp_session_key", SWAM.Rest.session_key);
         }
     },
