@@ -44,6 +44,16 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                                 this.on_action_login();
                             }.bind(this)
                         })
+                    } else if (resp.error_code == 410) {
+                        SWAM.Dialog.warning({
+                            title: "Account Disabled",
+                            message: "<div style='font-size:4rem;'><i class='text-danger bi bi-person-slash'></i></div>Your account has been disabled.  Please contact your administator."
+                        });
+                    } else if (resp.error_code == 411) {
+                        SWAM.Dialog.warning({
+                            title: "Account Locked Out",
+                            message: "<div style='font-size:4rem;'><i class='text-danger bi bi-person-lock'></i></div><div>Your account has been temporarly locked out.</div><div class='fs-3 pt-3'>This happens when multiple incorrect credentials have been entered.  Please try again in 15 minutes.</div>"
+                        });
                     } else {
                         this.render();
                         this.$el.find("#err_box").addClass("show");
@@ -210,10 +220,11 @@ PORTAL.Pages.Login = SWAM.Page.extend({
             uname = null;
         }
 
-        if (app.options.allow_webauthn) {
+        if (app.options.allow_webauthn && !this.options.webauthn_started) {
             // Availability of `window.PublicKeyCredential` means WebAuthn is usable.  
             WebAuthnClient.isConditionalMediationAvailable(function(isCMA){
                 if (isCMA) {
+                    this.options.webauthn_started = true;
                     WebAuthnClient.authenticate(function(resp, options){
                         if (resp.status) {
                             app.me.setJWT(resp.data);
@@ -223,7 +234,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                         }
                     }, uname);
                 }
-            });
+            }.bind(this));
         }
     }
 

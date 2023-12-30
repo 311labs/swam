@@ -192,7 +192,7 @@ SWAM.Dialog = SWAM.View.extend({
         buttons: [
             {
                 action:"close",
-                label:"Ok",
+                label:"OK",
                 classes: "btn btn-link"
             }
         ],
@@ -215,15 +215,15 @@ SWAM.Dialog = SWAM.View.extend({
                 opts = {"title": "Alert", "message":opts};
             }
         }
-        opts = _.extend({add_classes: "modal-danger", can_dismiss:true, icon: "exclamation-triangle-fill"}, opts);
+        opts = _.extend({add_classes: "modal-danger modal-text-lg modal-text-center", can_dismiss:true, icon: "lightning-charge-fill"}, opts);
         var dlg = new this(opts);
         dlg.show();
         return dlg;
     },
     yesno: function(opts) {
         opts = _.extend({}, opts);
-        opts.lbl_no = opts.lbl_no || "no";
-        opts.lbl_yes = opts.lbl_yes || "yes";
+        opts.lbl_no = opts.lbl_no || "NO";
+        opts.lbl_yes = opts.lbl_yes || "YES";
         opts.buttons = [
             {
                 id: opts.lbl_no.lower(),
@@ -302,7 +302,7 @@ SWAM.Dialog = SWAM.View.extend({
         return dlg;
     },
     showInput: function(opts) {
-        opts = _.extend({lbl_save: "Ok", title:"Input Value", type:"text"}, opts);
+        opts = _.extend({lbl_save: "OK", title:"Input Value", type:"text"}, opts);
         return this.showForm([{type:opts.type, name:"input", rows:4}], opts);
     },
     showForm: function(fields, opts) {

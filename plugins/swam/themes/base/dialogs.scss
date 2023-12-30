@@ -29,6 +29,18 @@ body.app {
 	        }
 	    }
 
+	    div.modal-text-lg {
+	    	div.modal-header {
+	    		.modal-title {
+	    			font-size: 1.6rem;
+	    		}
+	    		
+	    	}
+	    	div.modal-body {
+	    		font-size: 1.6rem;
+	    	}
+	    }
+
 	    div.modal-brand div.modal-header {
 	    	background: $brand-primary;
 	    	color: white;
@@ -142,6 +154,12 @@ body.app {
 		}
 		div.offcanvas.show {
 			visibility: visible;
+		}
+
+		&.modal-text-center {
+			div.modal-body {
+				text-align: center;
+			}
 		}
 
 		div.modal-body > div.form-view {
