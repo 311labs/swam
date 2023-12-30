@@ -61,7 +61,7 @@ $swam-card-header: $brand-primary;
 
 $topbar-height: 50px;
 $topbar-background: #55697a;
-$topbar-border: 1px solid rgba(0,0,0,0.3);
+$topbar-border: 0;
 $topbar-box-shadow: 0 0 4px 1px rgba(0,0,0,0.5);
 $topbar-color: #ffffff;
 $topbar-link-color: #BEEBEA;
@@ -118,6 +118,13 @@ $swam-toc-width: 250px;
 
 $batch-select-bg: #cccccc;
 $batch-selected-bg: $primary;
+
+$input-border-radius: 0!important;
+$input-transition: .2s ease;
+$input-border-width: 2px;
+$input-border-color: $brand-primary;
+$input-focus-box-shadow: 0;
+$input-focus-border-color: black;
 
 @mixin nolist {
 	list-style: none;

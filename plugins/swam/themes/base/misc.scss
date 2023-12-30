@@ -69,6 +69,7 @@ body.app {
 
     button.btn-link, a.btn-link {
         text-decoration: none;
+        color: $brand-primary;
         &:focus, &:hover {
             box-shadow: none;
             // border-radius: 50%;
@@ -176,6 +177,10 @@ body.app {
     .bg-light {
         --bs-bg-opacity: 1;
         background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
+    }
+
+    .bg-default {
+        background-color: $brand-default;
     }
 
     .bg-blue {

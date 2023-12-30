@@ -587,6 +587,13 @@ div.swam-list-filter {
 }
 
 
+@media (max-width: 620px) {
+    #app_body {
+        div.batch-select-title {
+           display: none !important;
+        }
+    }
+}
 
 
 

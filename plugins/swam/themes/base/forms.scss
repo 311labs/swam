@@ -55,6 +55,11 @@ div.swam-form-input {
             bottom: 6px;
         }
     }
+
+    input.form-check-input:checked {
+        background-color: $brand-primary;
+        border-color: $brand-primary;
+    }
 }
 
 div.form-floating {
@@ -64,9 +69,7 @@ div.form-floating {
         top: 15px;
         background-color: transparent;;
         border: none;
-        &:hover {
-            color: $brand-primary;
-        }
+        color: $brand-primary;
     }
 }
 
@@ -438,3 +441,35 @@ div.form-view {
 .form-check-xl .form-check-label {
     padding-left: 1.2rem;
  }
+
+ div.form-floating {
+    padding-bottom: 1.3rem;
+    > input.form-control {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0 !important;
+        border-bottom-width: 2px;
+        padding-left: 0;
+        &:focus {
+            outline: none;
+            box-shadow: none;
+            border-color: $brand-primary;
+        }
+    }
+
+    > label {
+        padding-left: 0 !important;
+        font-weight: 600;
+        color: #cccccc;
+    }
+
+    .form-control:focus~label, .form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
+        opacity: .65;
+        transform: scale(.85) translateY(-0.8rem) translateX(0);
+        // font-weight: 300;
+        color: $brand-primary;
+    }
+ }
+
+
