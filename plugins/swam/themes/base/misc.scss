@@ -31,6 +31,11 @@ body.app {
     button.btn-primary, a.btn-primary {
         background-color: $brand-primary;
         border-color: $brand-primary;
+        cursor: pointer;
+        &:hover, &:active {
+            background-color: $brand-default;
+            color: $brand-primary;
+        }
     }
 
     button.btn-secondary, a.btn-secondary {
@@ -51,6 +56,13 @@ body.app {
     button.btn-warning, a.btn-warning {
         background-color: $brand-warning;
         border-color: $brand-warning;
+    }
+
+    button.btn-dark {
+        &:hover, &:active {
+            background-color: $brand-default;
+            color: black;
+        }
     }
 
     button.btn-danger, a.btn-danger {

@@ -8,7 +8,7 @@
     
     <div class="card card-login">
       <div class="card-body">
-        <h1 class="login-title pb-3"><div><i style="font-size: 2rem;" class="bi bi-box-arrow-in-right text-brand"></i></div>Login</h1>
+        <h1 class="login-title pb-3"><i style="font-size: 2rem;" class="bi bi-box-arrow-in-right text-brand"></i> Login</h1>
         <div id="err_box" class="alert alert-danger collapse" role="alert">
           {{{ICON('exclamation-triangle-fill')}}} <span id="err_msg"></span>
         </div>
@@ -37,6 +37,9 @@
         <div class="py-3 login-or text-center text-muted">--- OR ---</div>
             <button type="button" class="w-100 btn btn-lg btn-google-signin" data-action="google_login">{{{ICON('google')}}} Google Sign in</button>
         {{/app.options.allow_google_login}}
+        {{#app.options.webauthn_by_button}}
+        <button type="button" class="mt-1 w-100 btn btn-lg btn-dark" data-action="passkey_login">{{{ICON('key-fill')}}} Sign in with a passkey</button>
+        {{/app.options.webauthn_by_button}}
 
         {{#options.agree_terms}}
         <p class="login-terms fs-7 mt-3">Please read these <a href="{{options.terms_path}}" target="_blank">Terms of Use</a> carefully before accessing or using our website.  By using our website you are agreeing to these <a href="{{options.terms_path}}" target="_blank">terms</a>.</p>
@@ -59,10 +62,6 @@
     <div class="login-footer text-center">
           <div class="mt-5 text-muted text-center">© 2023</div>
          <div class="text-center text-muted">{{{app.options.title}}} {{app.version}}</div> 
-         <div>
-          <a class="btn btn-link text-muted" href="{{options.privacy_path}}" target="_blank">Privacy Policy</a>
-          <a class="btn btn-link text-muted" href="{{options.terms_path}}" target="_blank">Terms of Use</a>
-         </div>
     {{#options.show_api_url}}
     {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
     {{/options.show_api_url}}

@@ -85,13 +85,14 @@ window.WebAuthnClient = {
         }
     },
 
-    authenticate: function(callback, username) {
+    authenticate: function(callback, username, mediation) {
+        if (mediation == undefined) mediation = "conditional";
         this.init();
         WebAuthnClient.getPublicKeyRequestOptions(function(resp, options){
             if (resp.status) {
                 console.log(options);
                 navigator.credentials
-                    .get({publicKey:options, mediation:"conditional"})
+                    .get({publicKey:options, mediation:mediation})
                     .then((assertion) => {
                         WebAuthnClient.sendSignedChallenge(assertion, callback);
                     })

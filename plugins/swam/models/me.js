@@ -83,8 +83,9 @@ SWAM.Models.Me = SWAM.Models.User.extend({
     },
 
     startAutoJwtRefresh: function() {
+        if (!this.options.auto_refresh_jwt) return;
         if (!this._auto_jwt_timer) {
-            var timeout = (this.authExpiresIn() - 300) * 1000; // refresh 5 min before expires
+            let timeout = (this.authExpiresIn() - 300) * 1000; // refresh 5 min before expires
             if (!this.isAuthed()) {
                 timeout = 100;
             } else if (timeout < 4000) {

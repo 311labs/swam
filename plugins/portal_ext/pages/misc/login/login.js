@@ -180,6 +180,10 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         }
     },
 
+    on_action_passkey_login: function() {
+        this.startWebauthn();
+    },
+
     on_action_google_login: function() {
         const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
         const redirectUri = '/api/account/oauth/google/login';
@@ -205,6 +209,43 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         window.location = `${googleAuthUrl}?${urlParams}`;
     },
 
+    startWebauthn: function() {
+        if (this.options.webauthn_started) return;
+        let uname = null;
+        if (WebAuthnClient.options.require_username) {
+            // removing the username allows any passkeys for this host to be used
+            uname = this.$el.find("#signin_username").val();
+            if (!uname) {
+                SWAM.toast("Warning", "Passkey requires username!", "danger");
+                return;
+            }
+
+        }
+        let mediation = "conditional";
+        if (app.options.webauthn_by_button) mediation = "required";
+        // Availability of `window.PublicKeyCredential` means WebAuthn is usable. 
+        if (mediation == "conditional") {
+            WebAuthnClient.isConditionalMediationAvailable(function(isCMA){
+                if (isCMA) {
+                    this.options.webauthn_started = true;
+                    WebAuthnClient.authenticate(this.on_webauth_auth.bind(this), uname, mediation);
+                }
+            }.bind(this));
+        } else {
+            this.options.webauthn_started = true;
+            WebAuthnClient.authenticate(this.on_webauth_auth.bind(this), uname, mediation);
+        }
+    },
+
+    on_webauth_auth: function(resp, options) {
+        if (resp.status) {
+            app.me.setJWT(resp.data);
+            if (app.me.isAuthenticated()) app.me.trigger("logged_in", app.me);
+        } else {
+            SWAM.Dialog.warning(resp.error);
+        }
+    },
+
     on_pre_render: function() {
         this.options.requires_totp = app.getProperty("requires_totp");
     },
@@ -220,21 +261,8 @@ PORTAL.Pages.Login = SWAM.Page.extend({
             uname = null;
         }
 
-        if (app.options.allow_webauthn && !this.options.webauthn_started) {
-            // Availability of `window.PublicKeyCredential` means WebAuthn is usable.  
-            WebAuthnClient.isConditionalMediationAvailable(function(isCMA){
-                if (isCMA) {
-                    this.options.webauthn_started = true;
-                    WebAuthnClient.authenticate(function(resp, options){
-                        if (resp.status) {
-                            app.me.setJWT(resp.data);
-                            if (app.me.isAuthenticated()) app.me.trigger("logged_in", app.me);
-                        } else {
-                            SWAM.Dialog.warning(resp.error);
-                        }
-                    }, uname);
-                }
-            }.bind(this));
+        if (app.options.allow_webauthn && !this.options.webauthn_started && !app.options.webauthn_by_button) {
+            this.startWebauthn();
         }
     }
 
