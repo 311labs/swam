@@ -592,6 +592,18 @@ div.swam-list-filter {
         div.batch-select-title {
            display: none !important;
         }
+
+        div.swam-batch-select-panel {
+            height: 36px;
+            div#select_count {
+                height: 36px;
+                font-size: 1.3rem !important;
+                line-height: 36px;
+            }
+            div.batch-action-title {
+                display: none;
+            }
+        }
     }
 }
 

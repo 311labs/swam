@@ -899,7 +899,8 @@ SWAM.Localize = {
             return '';
         }
         if ((fmt == null) && window.moment) {
-            return moment(value).fromNow();
+            value = moment(value).fromNow();
+            if (value.indexOf("seconds ago") > 0) return "seconds ago";
         }
         return value;
     },

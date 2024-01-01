@@ -6,4 +6,3 @@ settings/**/*.html
 settings/**/**/*.html
 views/**/*.html
 views/**/**/*.html
-

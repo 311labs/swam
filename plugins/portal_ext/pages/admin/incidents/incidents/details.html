@@ -1,0 +1,10 @@
+<div class="row">
+	<div class="col fw-bold">
+		<span class="text-uppercase">{{model.state_display}}</span> {{model.category|upper}} Incident #{{model.id}} {{#model.rule}}<span class='text-brand'>with rule {{model.rule.name}}</span>{{/model.rule}}
+	</div>
+	<div class="col-auto text-muted fs-8 text-end">
+		{{model.metadata.event_count|ifempty('1')}} events {{model.modified|ago}}
+	</div>
+</div>
+<div class="fs-7 fw-light">by {{model.reporter_ip}} on {{model.hostname}}</div>
+<div class="fs-7 text-danger">{{model.description}}</div>

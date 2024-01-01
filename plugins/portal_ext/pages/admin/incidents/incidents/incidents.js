@@ -17,14 +17,45 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         },
         item_url_param: "incident",
         columns: [
-            {label:"state", template:"{{model.state_display}} #{{model.id}}", sort_field:"state"},
-            {label:"events", field:"metadata.event_count"},
-            {label:"when", field:"created|datetime"},
-            {label:"cat", field:"category"},
-            {label:"rule", field:"rule.name|ifempty('none')", sort_field:"rule.id", classes:"d-none d-lg-table-cell"},
-            {label:"description", field:"description", classes:"d-none d-lg-table-cell"},
-   
-        
+            {
+                label:"incident",
+                sort_field: "category",
+                template: "portal_ext.pages.admin.incidents.incidents.item",
+                classes:"d-table-cell d-sm-none"
+            },
+            {
+                label:"when", template:"<div>{{model.created|date}}</div><div>{{model.created|time}}</div>",
+                classes: "d-none d-sm-table-cell fs-8"
+            },
+            {
+                label:"details",
+                sort_field: "category",
+                template: "portal_ext.pages.admin.incidents.incidents.details",
+                classes: "d-none d-sm-table-cell"
+            },
+            // {
+            //     label:"state",
+            //     template:"{{model.state_display}} #{{model.id}}",
+            //     sort_field:"state",
+            //     classes: "d-none d-sm-table-cell"
+            // },
+            // {
+            //     label:"events", field:"metadata.event_count",
+            //     classes: "d-none d-sm-table-cell"
+            // },
+            // {
+            //     label:"cat", field:"category",
+            //     classes: "d-none d-sm-table-cell"
+            // },
+            // {
+            //     label:"rule", field:"rule.name|ifempty('none')",
+            //     sort_field:"rule.id",
+            //     classes:"d-none d-lg-table-cell"
+            // },
+            // {
+            //     label:"description", field:"description",
+            //     classes:"d-none d-lg-table-cell"
+            // }
         ],
         Collection: SWAM.Collections.Incident,
         collection_params: {

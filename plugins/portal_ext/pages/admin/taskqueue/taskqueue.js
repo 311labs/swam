@@ -131,13 +131,28 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
         columns: [
            {label:"Id", field:"id"},
            {label:"State", field:"state_display"},
-           {label:"Runtime", field:"runtime"},
-           {label:"Model", field:"model"},
+           {
+                label:"Runtime", field:"runtime",
+                classes: "d-none d-lg-table-cell",
+           },
+           {
+                label:"Model", field:"model",
+                classes: "d-none d-md-table-cell",
+           },
            {label:"Function Name", field:"fname"},
-           {label:"Channel", field:"channel"},
+           {
+                label:"Channel", field:"channel",
+                classes: "d-none d-lg-table-cell",
+           },
            {label:"Created", field:"created|date"},
-           {label:"Completed At", field:"completed_at|ago"},
-           {label:"Reason", field:"reason"}
+           {
+                label:"Completed At", field:"completed_at|ago",
+                classes: "d-none d-lg-table-cell",
+           },
+           {    
+                label:"Reason", field:"reason",
+                classes: "d-none d-lg-table-cell",
+           }
         ],
         Collection: SWAM.Collections.Task,
         collection_params: {
@@ -167,9 +182,18 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             columns: [
                 {label:"Host", field: "hostname"},
                 {label:"Up", field: "uptime|prettytimer"},
-                {label: "Running", field: "running"},
-                {label:"Pending", field: "pending"},
-                {label:"Scheduled", field: "scheduled"}
+                {
+                    label: "Running", field: "running",
+                    classes: "d-none d-xl-table-cell",
+                },
+                {
+                    label:"Pending", field: "pending",
+                    classes: "d-none d-xl-table-cell",
+                },
+                {
+                    label:"Scheduled", field: "scheduled",
+                    classes: "d-none d-xl-table-cell",
+                }
             ],
             pagination: false,
         }));
@@ -178,7 +202,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
 
         this.addChild("barchart_cmpltd", new SWAM.Views.Chart({
             type:"bar",
-            height: "200px",
+            auto_height_width: 700,
             max_length:6
         }));
         this.children.barchart_cmpltd.setLabels(this.dayLabels);

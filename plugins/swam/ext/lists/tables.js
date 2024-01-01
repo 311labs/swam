@@ -414,6 +414,7 @@ SWAM.Views.TableBatchPanel = SWAM.View.extend({
                 if (item.requires_group_setting && app.group) {
                     if (!app.group.hasSetting(item.requires_group_setting)) return;
                 }
+                if (window.innerWidth <= item.hide_width) return;
                 var citem = _.clone(item);
                 citem.is_last = false;
                 this.actions.push(citem);

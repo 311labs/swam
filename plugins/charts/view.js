@@ -3,7 +3,11 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     defaults: {
         tension: 0.4,
-        fill: false
+        fill: false,
+        auto_height: false,
+        auto_height_width: 400,
+        auto_height_scale: 0.8,
+        auto_min_height: 300
     },
 
     on_init: function() {
@@ -227,7 +231,19 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     on_post_render: function() {
         this.$el.attr("id", this.id);
-        if (this.options.height) this.$el.css("height", this.options.height);
+        if (this.options.height) {
+           this.$el.css("height", this.options.height);
+        } else if (this.options.auto_height) {
+            let width = this.$el.parent().width();
+            if (width < this.options.auto_height_width) {
+                let height = parseInt(width * this.options.auto_height_scale);
+                if (height < this.options.auto_min_height) {
+                    height = this.options.auto_min_height;
+                }
+                console.log("new height:" + height);
+                this.$el.css("height", height);
+            }
+        }
         this.chart_config = {data:this.options.data, options: this.options.options || {}};
         var fname = "on_init_" + this.options.type;
         if (_.isFunction(this[fname])) this[fname](this.chart_config);

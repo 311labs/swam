@@ -3,26 +3,26 @@
 		<h3>Task Queue</h3>
 	</div>
 	<div class="col-auto">
-		<h5>running: <span class="badge bg-primary" id="tq_running_count"></span></h5>
+		<h5><span class="d-none d-md-inline-block">running: </span><span class="badge bg-primary" id="tq_running_count"></span></h5>
 	</div>
 	<div class="col-auto">
-		<h5>backlog: <span class="badge bg-danger" id="tq_backlog_count"></span></h5>
+		<h5><span class="d-none d-md-inline-block">backlog: </span><span class="badge bg-danger" id="tq_backlog_count"></span></h5>
 	</div>
 	<div class="col-auto text-right">
 	    <button class="btn btn-link btn-sm" data-action="refresh">{{{ICON('arrow-repeat')}}}</button>
 	</div>
 </div>
 <div>
-	<div class="row row-cols-1 row-cols-md-3 g-4">
-		<div class="col-md-4">
-			<div class="card">
+	<div class="row">
+		<div class="col-xl-4 col-lg-6">
+			<div class="card mt-3">
 				<div class="card-body">
 					<div id="barchart_cmpltd"></div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-8">
-		  	<div class="card">
+		<div class="col-xl-8 col-lg-6">
+		  	<div class="card mt-3">
 				<div class="card-body">
 					<div id="table_workers"></div>
 		  		</div>
