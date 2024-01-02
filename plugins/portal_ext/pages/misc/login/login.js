@@ -238,10 +238,12 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     },
 
     on_webauth_auth: function(resp, options) {
+        app.hideBusy();
+        this.options.webauthn_started = false;
         if (resp.status) {
             app.me.setJWT(resp.data);
             if (app.me.isAuthenticated()) app.me.trigger("logged_in", app.me);
-        } else {
+        } else if (resp.error) {
             SWAM.Dialog.warning(resp.error);
         }
     },

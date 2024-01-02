@@ -510,16 +510,20 @@ window.now = function() {
 window.DevTools = {
   detect_only_open: true,  // only detect if open, not closed
   is_open: false,
+  clear_console: true,
+  debug: false,
+  ignore_local: true,
   detect: function() {
     if (this.detect_only_open && this.is_open) return true;
     if (this.detect_by_performance()) {
         this.is_open = this.detect_by_performance(true);
+        if (this.is_open && this.debug) SWAM.toast("devtools", "it looks like devtools are open?", "info");
     }
     return this.is_open;
   },
 
   detect_by_performance: function(max_time) {
-    if (location.host.contains("localhost")) return false;
+    if (location.host.contains("localhost") && this.ignore_local) return false;
     if (window.DevTools.largeObjectArray == undefined) {
       window.DevTools.largeObjectArray = window.DevTools.createLargeObjectArray();
     }
@@ -528,7 +532,7 @@ window.DevTools = {
     const logPrintTime = window.DevTools.calcLogPrintTime();
     let maxPrintTime = Math.max(0, logPrintTime);
     let delta = Math.abs(tablePrintTime - logPrintTime);
-    console.clear();
+    if (this.clear_console) console.clear();
     // console.log(`table_print_time: ${tablePrintTime}`);
     // console.log(`log_print_time: ${logPrintTime}`);
     // console.log(`delta: ${delta}`);

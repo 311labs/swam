@@ -24,7 +24,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 classes:"d-table-cell d-sm-none"
             },
             {
-                label:"when", template:"<div>{{model.created|date}}</div><div>{{model.created|time}}</div>",
+                label:"when", template:"portal_ext.pages.admin.incidents.incidents.when",
                 classes: "d-none d-sm-table-cell fs-8"
             },
             {

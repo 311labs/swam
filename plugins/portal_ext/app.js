@@ -508,8 +508,10 @@ PORTAL.PortalApp = SWAM.App.extend({
 				browser_id: buid
 			}
 		};
-		if (app.me) {
+		if (app.me && app.me.id) {
 			data.metadata.username = app.me.get("username");
+			data.component = "account.Member";
+			data.component_id = app.me.id;
 		}
 		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
 		event.save(data);

@@ -94,11 +94,15 @@ window.WebAuthnClient = {
                 navigator.credentials
                     .get({publicKey:options, mediation:mediation})
                     .then((assertion) => {
+                        app.showBusy();
                         WebAuthnClient.sendSignedChallenge(assertion, callback);
                     })
                     .catch((error) => {
-                        console.log(error);
-                        SWAM.toast("Unexpected Error", error.message, "danger");
+                        if (!error.message.contains("timed out")) {
+                            console.log(error);
+                            SWAM.toast("Unexpected Error", error.message, "danger");
+                        }
+                        callback({status:false}, false);
                     });
             } else {
                 callback(resp, false);
