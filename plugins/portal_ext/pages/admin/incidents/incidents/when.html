@@ -1,7 +1,13 @@
 <div>
-<span class='text-uppercase badge bg-dark'>
+<span class="badge bg-primary">
+	#{{model.id}}
+</span>
+<span class='text-uppercase badge {{model.state_bg_class}}'>
 {{model.state_display}}
 </span>
+</div>
+<div>
+	{{model.category}}
 </div>
 <div>{{model.created|date}}</div>
 <div>{{model.created|time}}</div>

@@ -1,10 +1,6 @@
-<div class="row">
-	<div class="col fw-bold">
-		{{model.category|upper}} Incident #{{model.id}} {{#model.rule}}<span class='text-brand'>with rule {{model.rule.name}}</span>{{/model.rule}}
-	</div>
-	<div class="col-auto text-muted fs-8 text-end">
-		{{model.metadata.event_count|ifempty('1')}} events {{model.modified|ago}}
-	</div>
+<div class="fs-7 fw-bold text-danger">{{model.description}}</div>
+<div class="fs-7 fw-light">
+	{{model.reporter_ip}} on {{model.hostname}} {{#model.rule}}<span class='text-brand'> rule {{model.rule.name}}</span>{{/model.rule}}</div>
+<div class="fs-8">
+	{{model.metadata.event_count|ifempty('1')}} events {{model.modified|ago}}
 </div>
-<div class="fs-7 fw-light">by {{model.reporter_ip}} on {{model.hostname}}</div>
-<div class="fs-7 text-danger">{{model.description}}</div>
