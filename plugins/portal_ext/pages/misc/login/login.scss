@@ -35,4 +35,10 @@
     .form-signin input#signin_password {
       margin-top: 0.3rem;
     }
+
+    .form-signin input#signin_totp {
+      letter-spacing: 1rem;
+      font-weight: 800;
+      text-align: center;
+    }
 }

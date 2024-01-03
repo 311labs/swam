@@ -139,12 +139,13 @@ SWAM.Localize = {
         var arg1, arg2 = null;
         if (_.isArray(fmt)) {
             arg1 = fmt[0];
-            arg2 = fmt[1];
+            arg2 = value;
+            if (fmt[1]) arg2 = fmt[1];
         } else {
             arg1 = fmt || "not set";
             arg2 = value;
         }
-        if (_.isUndefined(value) || _.isNull(value)|| _.isEmpty(value)) {
+        if (_.isUndefined(value) || _.isNull(value)|| (value == "")) {
             return arg1;
         }
         return arg2;

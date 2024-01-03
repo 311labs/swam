@@ -27,8 +27,8 @@
           <button type="button" class="btn-icon" data-action="show_password">{{{ICON('eye-fill')}}}</button>
         </div>
         {{#options.requires_totp}}
-        <div class="form-floating">
-          <input type="text" class="form-control" name="signin_totp" placeholder="Six-Digit Code">
+        <div class="{{options.form_control_class}}">
+          <input type="text" class="form-control" name="signin_totp" placeholder="Six-Digit Code"id="signin_totp">
           <label for="signin_totp">MFA Six-Digit Code</label>
         </div>
         {{/options.requires_totp}}

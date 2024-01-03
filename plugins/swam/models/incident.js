@@ -289,7 +289,21 @@ SWAM.Models.Incident = SWAM.Model.extend({
     defaults: {
         url:"/api/incident/incident"
     },
+
+    state_bg_class: function() {
+        let state = this.get("state_display|lower");
+        let cls = SWAM.Models.Incident.STATE_COLORS[state];
+        if (!cls) return "bg-primary";
+        return cls;
+    }
 }, {
+    STATE_COLORS: {
+        "new": "bg-danger",
+        "opened": "bg-primary",
+        "resolved": "bg-success",
+        "ignored": "bg-dark",
+        "paused": "bg-secondary"
+    },
     COMPONENTS: [
         "taskqueue_errors",
         "rest_error",
