@@ -9,6 +9,7 @@ SWAM.Dialog = SWAM.View.extend({
         scrollable: false,
         can_dismiss: false,
         show_close: true,
+        btn_close: "btn-close",
         replaces_el: false,
         dark: false,
         stack: true,
