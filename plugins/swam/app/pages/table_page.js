@@ -11,7 +11,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		show_on_add: false,
 		fetch_on_click: false,
 		item_graph: "detailed",
-		item_url_param: null,
+		item_url_param: "item",
 		requires_group: false,
 		list_options: {
 			download_prefix: "download",
@@ -40,6 +40,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		        fields: [
 		            {
 		                name: "search",
+		                type: "search",
 		                columns: 6,
 		                columns_classes: "col-sm-12 col-md-5 col-lg-6",
 		                form_wrap: "search",
@@ -47,6 +48,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		                can_clear: true,
 		                button: {
 		                    icon: "bi bi-search"
+		                },
+		                attributes: {
+		                	autocomplete: "nope"
 		                }
 		            },
 		            {

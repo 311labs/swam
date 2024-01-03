@@ -43,23 +43,23 @@ body.app {
 
 	    div.modal-brand div.modal-header {
 	    	background: $brand-primary;
-	    	color: white;
+	    	color: $dialog-header-color;
 	    	button.btn-close {
 	    		filter: invert(1) grayscale(100%) brightness(200%);
 	    	}
 	    	button.btn {
-	    		color: white;
+	    		color: $dialog-header-color;
 	    	}
 	    }
 
 	    div.modal-primary div.modal-header {
 	    	background: $primary;
-	    	color: white;
+	    	color: $dialog-header-color;
 	    	button.btn-close {
 	    		filter: invert(1) grayscale(100%) brightness(200%);
 	    	}
 	    	button.btn {
-	    		color: white;
+	    		color: $dialog-header-color;
 	    	}
 	    }
 

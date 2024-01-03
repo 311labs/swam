@@ -6,6 +6,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
 
     defaults: {
         show_api_url: true,
+        form_control_class: "form-floating",
         terms_path: "/static/terms.html",
         privacy_path: "/static/privacy.html"
     },
@@ -143,6 +144,10 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                     }.bind(this), {timeout: 15});
                 }.bind(this)
             });
+    },
+
+    has_alternative_login: function() {
+        return app.options.allow_google_login || app.options.webauthn_by_button;
     },
 
     on_action_change_api: function() {

@@ -87,7 +87,7 @@ div.password-input-group {
     }
 }
 
-div.text-input-group {
+div.text-input-group, div.search-input-group {
     position: relative;
 
     button.btn-clear {
@@ -443,6 +443,12 @@ div.form-view {
  }
 
  div.form-floating {
+    > input.form-control {
+        padding-top: 1.2rem;
+    }
+ }
+
+ div.form-floating-material {
     padding-bottom: 1.3rem;
     > input.form-control {
         border-top: none;
@@ -450,7 +456,7 @@ div.form-view {
         border-right: none;
         border-radius: 0 !important;
         border-bottom-width: 2px;
-        padding-left: 0;
+        padding-left: 0.05rem;
         &:focus {
             outline: none;
             box-shadow: none;
@@ -471,5 +477,4 @@ div.form-view {
         color: $brand-primary;
     }
  }
-
 
