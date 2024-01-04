@@ -1,8 +1,9 @@
 <main class="form-signin">
   <form>
     <div class="signin-brand text-center mb-3">
-      {{#options.logo}}<img src="{{options.logo}}" alt="" class="logo mb-3">{{/options.logo}}
-      {{#options.title}}<h2 class="mb-3">{{{options.title}}}</h2>{{/options.title}}
+      {{#options.logo}}<img src="{{options.logo}}" alt="" class="logo">{{/options.logo}}
+      {{#options.title}}<h2>{{{options.title}}}</h2>{{/options.title}}
+      {{#options.description}}<div class="mt-1 text-brand fw-light signin-brand-description">{{{options.description}}}</div>{{/options.description}}
       
     </div>
     
@@ -67,6 +68,13 @@
     {{#options.show_api_url}}
     {{#app.options.api_url}}<a href="#" class="text-muted pe-auto text-decoration-none" data-action="change_api">API @ {{app.options.api_url}}</a>{{/app.options.api_url}}
     {{/options.show_api_url}}
+
+    {{#options.privacy_path}}
+    <a class="me-3 fs-8 btn btn-link" target="new" href="{{options.privacy_path}}">PRIVACY POLICY</a>
+    {{/options.privacy_path}}
+    {{#options.terms_path}}
+    <a class="fs-8 btn btn-link" target="new" href="{{options.terms_path}}">TERMS</a>
+    {{/options.terms_path}}
     </div>
 
   </form>

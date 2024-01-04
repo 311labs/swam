@@ -537,6 +537,8 @@ PORTAL.PortalApp = SWAM.App.extend({
         	callback:function(model, resp){
 	            if (resp.status) {
 	                SWAM.toast("Profile Saved", "Your profile succesfully updated");
+	            } else {
+	            	SWAM.Dialog.warning(resp.error);
 	            }
         	}.bind(this)}
         );
