@@ -3,4 +3,5 @@
 	{{model.reporter_ip}} on {{model.hostname}} {{#model.rule}}<span class='text-brand'> rule {{model.rule.name}}</span>{{/model.rule}}</div>
 <div class="fs-8">
 	{{model.metadata.event_count|ifempty('1')}} events {{model.modified|ago}}
+	{{#model.metadata.username}}<span class="pb-5 text-brand">{{model.metadata.username}}</span>{{/model.metadata.username}}
 </div>
