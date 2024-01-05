@@ -290,6 +290,12 @@ SWAM.Models.Incident = SWAM.Model.extend({
         url:"/api/incident/incident"
     },
 
+    details: function() {
+        let out = this.get("metadata.details");
+        if (!out) out = this.get("description");
+        return out;
+    },
+
     state_bg_class: function() {
         let state = this.get("state_display|lower");
         let cls = SWAM.Models.Incident.STATE_COLORS[state];

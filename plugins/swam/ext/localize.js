@@ -1060,10 +1060,12 @@ SWAM.Localize = {
     },
 
     location: function(value, attr, fmt) {
-        if (!value || !value.city) return "n/a";
-        return `${value.city}, ${value.state}, ${value.country} (${value.lat}, ${value.lng})`;
+        if (!value || !value.city) return "not set";
+        if (value.lat) {
+            return `${value.city}, ${value.state}, ${value.country} (${value.lat}, ${value.lng})`;
+        }
+        return `${value.city}, ${value.state}, ${value.country}`;
     },
-
 
     ignore_errors: true,
     localize: function(value, attr, fmt, context) {

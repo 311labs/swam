@@ -12,6 +12,12 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
     init_details_tab: function() {
         this.addTab("Details", "details", new SWAM.Views.ModelView({inline:false, fields:[
             {
+                label: "Details",
+                field: "details",
+                tag: "pre",
+                columns: 12
+            },
+            {
                 label:"Created",
                 field:"created|datetime",
                 columns: 6
@@ -22,45 +28,50 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
                 columns: 6
             },
             {
-                label:"Rule",
-                field:"rule.name",
+                label:"User",
+                field:"metadata.username|ifempty|clipboard",
                 columns: 6
             },
             {
-                label:"Rule Action",
-                field:"rule.action",
-                columns: 6
-            },
-            {
-                label:"Component",
-                field:"component",
-                columns: 6
-            },
-            {
-                label:"Component ID",
-                field:"component_id",
-                columns: 6
-            },
-            {
-                label:"Assigned TO",
-                field:"assigned_to.username",
-                columns: 6
-            },
-            {
-                label:"Notify Sent",
-                field:"action_sent|datetime",
-                columns: 6
-            },
-            {
-                label:"Reporter",
-                field:"reporter_ip",
+                label:"IP",
+                field:"reporter_ip|ifempty|clipboard",
                 columns: 6
             },
             {
                 label:"Host",
-                field:"hostname",
+                field:"hostname|ifempty",
                 columns: 6
-            }
+            },
+            {
+                label:"Location",
+                field:"metadata|location",
+                columns: 6
+            },
+            {
+                label:"Group",
+                field:"metadata.group_name|ifempty",
+                columns: 6
+            },
+            {
+                label:"Group ID",
+                field:"metadata.group_id|ifempty|clipboard",
+                columns: 6
+            },
+            {
+                label:"User Agent",
+                field:"metadata.http_user_agent|ifempty",
+                columns: 12
+            },
+            {
+                label:"Rule",
+                field:"rule.name|ifempty",
+                columns: 6
+            },
+            {
+                label:"Rule Action",
+                field:"rule.action|ifempty",
+                columns: 6
+            },
         ]}));
     },
 
