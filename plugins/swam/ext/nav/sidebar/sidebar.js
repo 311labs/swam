@@ -234,28 +234,6 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 		app.sidebar.showMenu(id);
 	},
 
-	on_action_about: function() {
-		SWAM.Dialog.showForm([
-				{
-					label: "API URL",
-					name: "api_url",
-					type: "select",
-					editable: true,
-					options: app.options.api_urls,
-					default: app.options.api_url
-				}
-			], {
-				title: "Select API Endpoint",
-				callback: function(dlg) {
-					var data = dlg.getData();
-					dlg.dismiss();
-					if (data.api_url != app.options.api_url) {
-						app.setProperty("api_url", data.api_url);
-					}
-				}
-			});
-	},
-
 	findMenu: function(page_name, menu) {
 		return _.find(menu, function(item){
 			if (item.page == page_name) return true;

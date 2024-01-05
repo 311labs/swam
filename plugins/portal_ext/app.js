@@ -23,6 +23,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		SWAM.Rest.GET("/api/version", {}, function(resp, status) {
 			if (resp.status) {
 				app.api_version = resp.data;
+				if (resp.ip) app.options.public_ip = resp.ip;
 				app.getChild("panel-left").render();
 			}
 		});

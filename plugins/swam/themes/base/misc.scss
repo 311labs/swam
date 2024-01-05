@@ -31,11 +31,6 @@ body.app {
     button.btn-primary, a.btn-primary {
         background-color: $brand-primary;
         border-color: $brand-primary;
-        cursor: pointer;
-        &:hover, &:active {
-            background-color: $brand-default;
-            color: $brand-primary;
-        }
     }
 
     button.btn-secondary, a.btn-secondary {
@@ -56,13 +51,6 @@ body.app {
     button.btn-warning, a.btn-warning {
         background-color: $brand-warning;
         border-color: $brand-warning;
-    }
-
-    button.btn-dark {
-        &:hover, &:active {
-            background-color: $brand-default;
-            color: black;
-        }
     }
 
     button.btn-danger, a.btn-danger {
@@ -90,12 +78,20 @@ body.app {
         }
     }
 
+    button.btn-hover-glow {
+        transition: border-color .3s ease-in-out, box-shadow .3s ease-in-out;
+        &:hover, &:active {
+            border-color: rgba(0, 123, 255, .25);
+            box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25), inset 0 0 30px rgba(200, 200, 200, .25);
+        }
+    }
+
     button.btn-google-signin {
         background-color: $gray-300;
         color: $brand-primary;
         border-color: $gray-100;
         &:hover {
-            background-color: $gray-100;
+            background-color: $brand-highlight;
             color: #F32C2A;
         }
     }
@@ -467,6 +463,20 @@ div.page-view {
             margin: 0;
         }
     }
+}
+
+div.hover-reveal {
+    div.hover-height {
+        transition: all .4s ease-in-out;
+        max-height: 0;
+    }
+
+    &:hover {
+        div.hover-height {
+            max-height: 1000px;
+        }
+    }
+
 }
 
 

@@ -182,7 +182,14 @@ SWAM.Rest = {
     },
 
     on_error: function(callback, xhr, status) {
-        var resp = {status:false, error_code: xhr.status, error: status, when:Date.now()};
+        var resp = xhr.responseJSON;
+        if (resp && resp.error) {
+            callback(resp, xhr.status, xhr);
+            return;
+        } else if (!resp) {
+            resp = {status:false, error_code: xhr.status, error: status, when:Date.now()};
+        }
+        
         if (status === 'timeout') {
             resp.error = 'Request timed-out';
             resp.error_code = 522;

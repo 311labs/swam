@@ -33,7 +33,7 @@
           <label for="signin_totp">MFA Six-Digit Code</label>
         </div>
         {{/options.requires_totp}}
-        <button class="mt-3 w-100 btn btn-lg btn-primary" data-action="login">Sign in</button>
+        <button class="mt-3 w-100 btn btn-lg btn-primary btn-hover-glow" data-action="login">Sign in</button>
         {{#has_alternative_login}}
         <div class="py-3 login-or text-center text-muted">--- OR ---</div>
         {{/has_alternative_login}}
@@ -41,7 +41,7 @@
             <button type="button" class="w-100 btn btn-lg btn-google-signin" data-action="google_login">{{{ICON('google')}}} Google Sign in</button>
         {{/app.options.allow_google_login}}
         {{#app.options.webauthn_by_button}}
-        <button type="button" class="mt-1 w-100 btn btn-lg btn-dark" data-action="passkey_login">{{{ICON('key-fill')}}} Sign in with a passkey</button>
+        <button type="button" class="mt-1 w-100 btn btn-lg btn-dark btn-hover-glow" data-action="passkey_login">{{{ICON('key-fill')}}} Sign in with a passkey</button>
         {{/app.options.webauthn_by_button}}
 
         {{#options.agree_terms}}

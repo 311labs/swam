@@ -2,7 +2,7 @@
 
 PORTAL.Pages.Login = SWAM.Page.extend({
     template: "portal_ext.pages.misc.login",
-    classes: "page-view page-fullscreen",
+    classes: "page-view page-fullscreen page-scroll",
 
     defaults: {
         show_api_url: true,

@@ -70,6 +70,9 @@ SWAM.Views.NavItem = SWAM.View.extend({
 			this.options.has_dropmenu = true;
 			var classes = "dropdown-menu p-2";
 			if (this.options.is_dark) classes += " dropdown-menu-dark";
+			if (this.options.align) {
+				classes += " dropdown-menu-" + this.options.align;
+			}
 			this.addClass("dropdown");
 			this.addChild("dropmenu", new SWAM.Views.Nav({items:this.options.items, type:"dropdown_menu", classes:classes, replaces_el:true}));
 		} else if (this.options.type == "view") {

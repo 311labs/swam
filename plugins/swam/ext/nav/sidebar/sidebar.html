@@ -1,50 +1,56 @@
 <div class="sidebar-container d-flex flex-column flex-shrink-0 p-0">
-
-{{#options.group_select}}
-  <div class="pt-1 text-center">
-    {{#options.group_label}}<label>{{options.group_label}}</label>{{/options.group_label}}
-    <div id="groupselect"></div>
-  </div>
-  <hr>
-{{/options.group_select}}
-{{^options.group_select}}
-  <h5 class="px-3 pt-3 text-center">
-    {{options.title}}
-  </h5>
-  <hr>
-{{/options.group_select}}
-
-{{#options.menu_select}}
-  <div id="menuselect" class="text-center"></div>
-{{/options.menu_select}}
-
-  <div id="main_nav" class="flex-column mb-auto p-2">
+    {{#options.group_select}}
+    <div class="pt-1 text-center">
+        {{#options.group_label}}<label>{{options.group_label}}</label>{{/options.group_label}}
+        <div id="groupselect"></div>
+    </div>
+    <hr>
+    {{/options.group_select}}
+    {{^options.group_select}}
+    <h5 class="px-3 pt-3 text-center">
+        {{options.title}}
+    </h5>
+    <hr>
+    {{/options.group_select}}
+    {{#options.menu_select}}
+    <div id="menuselect" class="text-center"></div>
+    {{/options.menu_select}}
+    <div id="main_nav" class="flex-column mb-auto px-2">
+    </div>
     
-  </div>
-
-{{#hasAdminMenus}}
-<ul class="nav nav-pills flex-column px-2">
-{{#getAdminMenus}}
-<li>
-<a class="nav-link" aria-current="page" href="#" data-action="{{.action}}" data-id="{{.id}}">{{{ICON(.icon)}}} {{.label}}</a>
-</li>
-{{/getAdminMenus}}
-</ul>
-<hr>
-{{/hasAdminMenus}}
-
-
-{{#options.logo}}
-<div class="text-center sidebar-logo">
-      <img src="{{options.logo}}" alt="" class="text-center" width="140">
+    <div class="hover-reveal">
+      <hr>
+      {{#options.logo}}
+      <div class="text-center sidebar-logo pb-2">
+          <img src="{{options.logo}}" alt="" class="text-center" width="140">
+      </div>
+      {{/options.logo}}
+      {{^options.logo}}
+      <div class="text-center pb-2">
+        {{app.options.company_name}}
+      </div>
+      {{/options.logo}}
+      
+      <div class="hover-height">
+        {{#hasAdminMenus}}
+        <ul class="nav nav-pills flex-column px-2">
+            {{#getAdminMenus}}
+            <li>
+                <a class="nav-link" aria-current="page" href="#" data-action="{{.action}}" data-id="{{.id}}">{{{ICON(.icon)}}} {{.label}}</a>
+            </li>
+            {{/getAdminMenus}}
+        </ul>
+        {{/hasAdminMenus}}
+        <div class="version py-1 px-3" data-action="about" style="cursor: pointer;">
+            <div class="row">
+                <div class="col">
+                    Portal {{app.version}}
+                </div>
+                <div class="col">
+                    API {{app.api_version}}
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
 </div>
-<hr>
-{{/options.logo}}
-
-<div class="version p-3" data-action="about" style="cursor: pointer;">
-<div>App {{app.version}}</div>
-<div>Server {{app.api_version}}</div>
-</div>
-</div>
-
-  
