@@ -108,6 +108,12 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
                 }
                 return;
             }
+            if (page.options.requires_perm) {
+                if (!app.me || !app.me.hasPerm(page.options.requires_perm)) {
+                    this.setActivePage("denied", {invalid_page: name}); 
+                    return;
+                }
+            }
             if (this.active_page) {
                 page._prev_page = this.active_page;
                 this.active_page.removeFromDOM();
