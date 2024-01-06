@@ -1,6 +1,6 @@
 
 
-SWAM.Views.ModelView = SWAM.View.extend({
+SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
     tagName: "div",
     classes: "swam-model-view",
     defaults: {
