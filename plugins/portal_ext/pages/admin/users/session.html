@@ -1,8 +1,8 @@
 <div class="row">
-	<div class="col-auto fs-1 text-brand">
+	<div class="col-auto fs-3 text-brand">
 		{{{ICON('clock-history')}}}
 	</div>
-	<div class="col">
+	<div class="col fs-8">
 		<div class="row">
 			<div class="col">
 				<div class="fw-bold">
@@ -10,10 +10,10 @@
 				</div>
 			</div>
 			<div class="col-auto">
-				<div class="fs-7 text-right">{{model.created|date}}</div>
+				<div class="text-end">{{model.created|date}}</div>
 			</div>
 		</div>
-		<div class="fs-7">
+		<div>
 			<div>{{{ICON('pin-map-fill')}}} {{model.ip}} @ {{model.location.city}}, {{model.location.state}}</div>
 			<div>{{{ICON(model.browser_icon)}}} {{model.browser}} on {{model.device}}</div>
 		</div>

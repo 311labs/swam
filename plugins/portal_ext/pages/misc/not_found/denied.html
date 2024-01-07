@@ -5,10 +5,12 @@
         <p class="lead text-danger fw-light">You are not authorized to access this resource.</p>
         <p class="lead mb-4 text-muted fw-light">Please contact your administrator or try a different page.</p>
     </div>
+    {{#params.denied_page}}
     <div class="text-center fs-8 text-muted fw-light">
         <div>page <span class="fw-bold">{{params.denied_page.page_name}}</span></div>
         <div>requires permission <span class="fw-bold">{{params.denied_page.options.requires_perm}}</span></div>
     </div>
+    {{/params.denied_page}}
     {{#app.group.membership}}
     <div class="fs-8 text-muted fw-light p-4 position-absolute bottom-0">
         {{#app.group.membership.active_perms|iter}}

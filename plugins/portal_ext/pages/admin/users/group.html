@@ -1,0 +1,20 @@
+<div class="row">
+	<div class="col-auto fs-3 text-brand">
+		<div>{{{ICON('building')}}}</div>
+	</div>
+	<div class="col fs-8">
+		<div class="row">
+			<div class="col">
+				<div class="fw-bold">
+					{{model.group.name}}
+				</div>
+			</div>
+			<div class="col-auto">
+				<div class="text-end">Joined {{model.group.kind|upper}} {{model.created|date}}</div>
+			</div>
+		</div>
+		<div>
+			<div>{{{model.metadata.permissions|badges}}}</div>
+		</div>
+	</div>
+</div>

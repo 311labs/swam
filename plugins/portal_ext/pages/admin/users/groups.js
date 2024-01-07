@@ -1,36 +1,28 @@
 
-PORTAL.Views.MemberGroups = SWAM.Views.AdvancedTable.extend({
-    classes: "swam-paginated-table swam-table-clickable swam-table-tiny",
+PORTAL.Views.MemberGroups = SWAM.Views.List.extend({
     defaults: {
-        columns: [
-            {label:"Name", field:"group.name"},
-            {label:"Kind", field:"group.kind"},
-            {label:"Added", field:"created|datetime_tz"},
-            {label:"Role", field:"role"}
-        ],
+        add_classes: "p-3",
+        item_template: "portal_ext.pages.admin.users.group",
         Collection: SWAM.Collections.Member,
+
         collection_params: {
-            size: 15,
-            sort: "-created"
-        },
-        group_members: false,
-        filter_bar: null
+            size: 5
+        }
     },
 
     setModel: function(model) {
-      this.model = model;
-      if (this.options.group_members) {
-        this.collection.params.group = model.id;
-    } else {
-        this.collection.params.member = model.id;
-    }
-      
-      if (this.isInViewport()) {
-          this.collection.fetch();
-      } else {
-          this.collection.reset();
-      }
-      
+        this.model = model;
+        if (this.options.group_members) {
+            this.collection.params.group = model.id;
+        } else {
+            this.collection.params.member = model.id;
+        }
+
+        if (this.isInViewport()) {
+            this.collection.fetch();
+        } else {
+            this.collection.reset();
+        }
     },
 
     on_tab_focus: function() {
