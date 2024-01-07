@@ -38,6 +38,13 @@ PORTAL.PortalApp = SWAM.App.extend({
 				auth_code: app.starting_params.oauth_code,
 				username: app.starting_params.username
 			};
+
+			if (app.starting_params.oauth_code) delete app.starting_params.oauth_code;
+			if (app.starting_params.username) delete app.starting_params.username;
+
+			app.starting_url = app.getPath(true) + '?' + $.param(app.starting_params);
+			app.navigate(app.starting_url);
+
 			SWAM.Rest.POST("/api/account/login", data, function(data, status){
 			    app.hideBusy();
 			    if (data.error) {
@@ -46,7 +53,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			        app.me.setJWT(data.data);
 			        if (app.me.isAuthenticated()) {
 			            app.on_logged_in();
-			            app.loadRoute(this.starting_url);
+			            // app.loadRoute(this.starting_url);
 			        }
 			    }
 			}.bind(this), {timeout: 15});
@@ -60,6 +67,12 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	on_logged_in: function() {
 		this.me.fetch(this.on_logged_in_ready.bind(this));
+	},
+
+	on_ms_ready: function() {
+		this.active_page = null;
+		if (this.starting_url == "login") this.starting_url = null;
+		this.on_ready(this.starting_url);
 	},
 
 	on_logged_in_ready: function() {
@@ -95,7 +108,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 					// set the first one has active
 					this.setGroup(this.groups.getAt(0));
 				} else {
-					if (!this.options.is_ready) this.on_ready();
+					this.on_ms_ready();
 				}
 			}.bind(this));
 		} else {
@@ -173,8 +186,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 					if (resp.status) {
 						this.fetchMS();
 					} else {
-						SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
-						app.showPage("not_found");
+						// SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
+						app.showPage("denied");
 					}
 				}.bind(this));
 				this.wsChangeGroup(old_group);
@@ -186,7 +199,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.group = null;
 			this.setProperty("active_group", null);
 			this.trigger("group:change", {group:null});
-			if (!app.options.is_ready) app.on_ready();
+			if (!this.options.is_ready) this.on_ready();
 			if (old_group && this.ws) this.ws.unsubscribe("group", old_group.id);
 		} else {
 			if (this.group != group) {
@@ -237,17 +250,14 @@ PORTAL.PortalApp = SWAM.App.extend({
 
 	fetchMS: function() {
 		app.group.fetchMembership(function(model, resp){
-			if (!app.options.is_ready) app.on_ready();
+			if (!app.options.is_ready) app.on_ms_ready();
 			if (resp.status) {
 				app.trigger("group:change", {group:app.group});
 			} else {
 				if (app.me.hasPerm(["sys.manage_users", "sys.view_all_groups", "sys.manage_groups"])) {
 					app.trigger("group:change", {group:app.group});
 				} else {
-					SWAM.Dialog.warning(
-						"Permission Denied",
-						"You do not have access to this group.  Please check with your administrator.");
-					app.showPage("not_found");
+					app.showPage("denied");
 				}
 			}
 		});

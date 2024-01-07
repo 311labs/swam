@@ -69,7 +69,7 @@ SWAM.Page = SWAM.View.extend({
 			this.params.url_params = url_params;
 		}
 		var route = app.options.root + this.getRoute(this.params, url_params);
-		app.navigate(route, false);
+		app.navigate(route, false, this.options.title);
 	},
 
 	getRoute: function(params, url_params) {

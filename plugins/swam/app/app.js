@@ -110,7 +110,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             }
             if (page.options.requires_perm) {
                 if (!app.me || !app.me.hasPerm(page.options.requires_perm)) {
-                    this.setActivePage("denied", {invalid_page: name}); 
+                    this.setActivePage("denied", {denied_page: page}); 
                     return;
                 }
             }
@@ -277,14 +277,18 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         this.on_ready();
     },
 
-    on_ready: function() {
+    on_route_homepage: function() {
+        this.setActivePage(this.options.home_page);
+    },
+
+    on_ready: function(path) {
         this.options.is_ready = true;
-        this.loadRoute();
+        this.loadRoute(path);
         if (!this.active_page) {
             let path = this.getPath();
             console.warn("failed to load starting page: " + path);
             if ((path === "") && this.options.home_page && this.hasPage(this.options.home_page)) {
-                this.setActivePage(this.options.home_page);
+                this.on_route_homepage();
             } else if (this._pages.not_found) {
                 this.setActivePage("not_found", {"path":path});
             } else if (this.options.not_found) {

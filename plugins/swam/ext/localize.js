@@ -507,6 +507,10 @@ SWAM.Localize = {
         }
     },
 
+    'json': function(value, attr, fmt) {
+        return this.prettyjson(value, attr, fmt);
+    },
+
     'prettyjson': function(value, attr, fmt) {
         if (_.isObject(value)) {
             return window.syntaxHighlight(value);

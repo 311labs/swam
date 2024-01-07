@@ -5,13 +5,21 @@ PORTAL.Pages.RegisterUser = SWAM.Page.extend({
     classes: "page-view page-fullscreen",
 
     showInvalid: function() {
-    	SWAM.Dialog.warning("Your invite token is not valid!");
+    	SWAM.toast("Register Error", "Your invite token is no longer valid!", "danger", 4000);
     	app.showPage("login");
+    	app.navigate("login");
+    },
+
+    updateURL: function() {
+
     },
 
     on_page_enter: function() {
-    	console.log(this.params);
-    	if (!this.params.auth_code) return this.showInvalid();
+    	if (!this.params.auth_code) {
+    		app.showPage("login");
+    		app.navigate("login");
+    		return;
+    	}
     
 	    try {
 		    this.params.token = b64ToDict(this.params.auth_code);
@@ -19,7 +27,16 @@ PORTAL.Pages.RegisterUser = SWAM.Page.extend({
 	    	console.error(error);
 	    	return this.showInvalid();
 	    }
-	    this.render();
+
+	    app.showBusy();
+	    SWAM.Rest.POST("/api/account/invite/validate", this.params.token, function(data, status) {
+	    	app.hideBusy();
+	    	if (!data.status) {
+	    		this.showInvalid();
+	    	} else {
+	    		this.render();
+	    	}
+	    }.bind(this));
     },
 
     on_action_register: function(evt) {
@@ -38,6 +55,7 @@ PORTAL.Pages.RegisterUser = SWAM.Page.extend({
     	        SWAM.Dialog.warning(data.error);
     	        if (data.error_code == 123) return; // validation error try again
     	        app.showPage("login");
+    	        app.navigate("login");
     	    } else {
     	        app.me.setJWT(data.data);
     	        app.me.fetchIfStale();

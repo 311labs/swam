@@ -24,6 +24,11 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         }
     },
 
+    getPerm: function(perm) {
+        let v = this.get("metadata.permissions." + perm);
+        return (v != "0") && (v != "false") && v;
+    },
+
     hasPerm: function(perm, ignore_membership) {
         if (_.isArray(perm)) {
             var i=0;
@@ -38,7 +43,7 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         }
         if (this.get("is_superuser")) return true;
         if ((perm == "staff")&&(this.isStaff())) return true;
-        if (this.get("metadata.permissions." + perm)) return true;
+        if (this.getPerm(perm)) return true;
         if (ignore_membership) return false;
         if (app.group && app.group.membership) return app.group.membership.hasPerm(perm);
         return false;

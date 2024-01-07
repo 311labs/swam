@@ -39,8 +39,8 @@ PORTAL.Pages.TokenLogin = SWAM.Page.extend({
                 } else {
                     app.me.setJWT(data.data);
                     if (app.me.isAuthenticated()) {
-                        app.on_logged_in();
-                        app.loadRoute(this.starting_url);
+                        // app.on_logged_in();
+                        // app.loadRoute(this.starting_url);
                     }
                 }
             }.bind(this), {timeout: 15});

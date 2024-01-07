@@ -63,8 +63,8 @@ PORTAL.Pages.Login = SWAM.Page.extend({
 
                 } else {
                     if (app.me.isAuthenticated()) {
-                        app.on_logged_in();
-                        app.loadRoute(this.starting_url);
+                        // app.on_logged_in();
+                        // app.loadRoute(this.starting_url);
                     } else {
                         this.$el.find("#err_box").addClass("show");
                         this.$el.find("#err_msg").text("unknown error");
@@ -137,8 +137,8 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                                 app.me.setJWT(data.data);
                             }
                             if (app.me.isAuthenticated()) {
-                                app.on_logged_in();
-                                app.loadRoute(this.starting_url);
+                                // app.on_logged_in();
+                                // app.loadRoute(this.starting_url);
                             }
                         }
                     }.bind(this), {timeout: 15});
@@ -271,6 +271,10 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         if (app.options.allow_webauthn && !this.options.webauthn_started && !app.options.webauthn_by_button) {
             this.startWebauthn();
         }
+    },
+
+    updateURL: function() {
+        
     }
 
 });

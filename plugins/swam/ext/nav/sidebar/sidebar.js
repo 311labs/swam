@@ -191,11 +191,6 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 	on_logged_in: function() {
 		this.render();
-		if (this.children.groupselect) {
-			this.children.groupselect.setActive(app.group);
-			this.children.groupselect.setRecent(app.recent_groups);
-			this.children.groupselect.collection.fetch();
-		}
 	},
 
 	on_me_change: function() {
@@ -211,6 +206,11 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 
 	on_app_ready: function() {
 		this.showMenu(app.getRootPath());
+		if (this.children.groupselect && app.group) {
+			this.children.groupselect.setActive(app.group);
+			this.children.groupselect.setRecent(app.recent_groups);
+			this.children.groupselect.collection.fetch();
+		}
 	},
 
 	on_page_change: function(name) {

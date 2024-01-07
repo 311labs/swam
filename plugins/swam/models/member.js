@@ -10,6 +10,19 @@ SWAM.Models.Member = SWAM.Model.extend({
         return this.get("state") == -25;
     },
 
+    active_perms: function() {
+        let perms = [];
+        _.each(this.get("metadata.permissions"), function(value, key){
+            if (value) perms.push(key);
+        });
+        return perms;
+    },
+
+    getPerm: function(perm) {
+        let v = this.get("metadata.permissions." + perm);
+        return (v != undefined) && (v != 0) && (v != "0");
+    },
+
     hasPerm: function(perm) {
         if (_.isArray(perm)) {
             var i=0;
@@ -18,8 +31,7 @@ SWAM.Models.Member = SWAM.Model.extend({
             }
             return false;
         }
-        if (this.get("metadata.permissions." + perm)) return true;
-        return false;
+        return this.getPerm(perm);
     }
 }, {
     EDIT_FORM: [

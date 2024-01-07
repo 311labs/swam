@@ -1,8 +1,19 @@
 <div class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-auto mb-4" src="/plugins/media/denied.png" alt="" width="200">
+    <img class="d-block mx-auto mb-4 mw-100" style="width: 400px;" src="/plugins/media/security_denied.png" alt="">
     <h1 class="display-5 fw-bold text-muted">Permission Denied</h1>
     <div class="col-lg-6 mx-auto">
-        <p class="lead text-danger fw-light">You are not authorized to access this page.</p>
-        <p class="lead mb-4 text-muted fw-light">Please contact your administrator!</p>
+        <p class="lead text-danger fw-light">You are not authorized to access this resource.</p>
+        <p class="lead mb-4 text-muted fw-light">Please contact your administrator or try a different page.</p>
     </div>
+    <div class="text-center fs-8 text-muted fw-light">
+        <div>page <span class="fw-bold">{{params.denied_page.page_name}}</span></div>
+        <div>requires permission <span class="fw-bold">{{params.denied_page.options.requires_perm}}</span></div>
+    </div>
+    {{#app.group.membership}}
+    <div class="fs-8 text-muted fw-light p-4 position-absolute bottom-0">
+        {{#app.group.membership.active_perms|iter}}
+        <span>{{.value}}</span>
+        {{/app.group.membership.active_perms|iter}}
+    </div>
+    {{/app.group.membership}}
 </div>
