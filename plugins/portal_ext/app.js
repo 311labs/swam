@@ -187,7 +187,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 						this.fetchMS();
 					} else {
 						// SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
-						app.showPage("denied");
+						app.showPage("denied", {denied_group: id});
 					}
 				}.bind(this));
 				this.wsChangeGroup(old_group);
@@ -257,7 +257,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				if (app.me.hasPerm(["sys.manage_users", "sys.view_all_groups", "sys.manage_groups"])) {
 					app.trigger("group:change", {group:app.group});
 				} else {
-					app.showPage("denied");
+					app.showPage("denied", {denied_group:app.group.id});
 				}
 			}
 		});
@@ -500,8 +500,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 		return false;
 	},
 
-	reportIncident: function(category, description, details, level, ip_lookup) {
-		if (app.options.api_url.contains("localhost")) return;
+	reportIncident: function(category, description, details, level, ip_lookup, extra) {
+		// if (app.options.api_url.contains("localhost")) return;
 		let event = new SWAM.Models.IncidentEvent();
 		let buid = window.getBrowserUID();
 		let data = {
@@ -519,12 +519,13 @@ PORTAL.PortalApp = SWAM.App.extend({
 				browser_id: buid
 			}
 		};
+		if (extra) _.extend(data.metadata, extra);
 		if (app.me && app.me.id) {
 			data.metadata.username = app.me.get("username");
 			data.component = "account.Member";
 			data.component_id = app.me.id;
 		}
-		if (app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
+		if (!data.metadata.page && app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
 		event.save(data);
 	},
 

@@ -182,6 +182,12 @@ SWAM.Dialog = SWAM.View.extend({
         }
         return SWAM.Form.getData(this.$el.find("form"));
     },
+    hasRequiredData: function(highlight) {
+        if (this.options.view && this.options.view.hasRequiredData) {
+            return this.options.view.hasRequiredData(highlight);
+        }
+        return true;
+    },
     getFormData: function() {
         return this.getData();
     }

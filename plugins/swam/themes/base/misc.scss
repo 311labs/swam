@@ -275,6 +275,18 @@ body.app {
         font-size: 0.6rem;
     }
 
+    .display-7 {
+        font-size: calc(1.275rem + 1.4vw);
+        font-weight: 300;
+        line-height: 1.2;
+    }
+
+    .display-8 {
+        font-size: calc(1.175rem + 1.1vw);
+        font-weight: 300;
+        line-height: 1.2;
+    }
+
     img.avatar {
         border: 1px solid white;
         box-shadow: 0 0 3px rgba(0,0,0,0.3);
