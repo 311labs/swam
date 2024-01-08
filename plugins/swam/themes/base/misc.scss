@@ -467,7 +467,7 @@ div.page-view {
 
 div.hover-reveal {
     div.hover-height {
-        transition: all .4s ease-in-out;
+        transition: max-height .8s ease-in-out;
         max-height: 0;
     }
 

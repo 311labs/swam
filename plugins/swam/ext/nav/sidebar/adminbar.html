@@ -17,10 +17,25 @@
 
     <hr>
     <button class="btn btn-default mb-2 px-1" data-action="show_menu" data-id="default">{{{ICON(arrow-left)}}} EXIT MENU</button>
-    <div class="version" data-action="about" style="cursor: pointer;">
-    	<div>App {{app.version}}</div>
-    	<div>Server {{app.api_version}}</div>
+
+
+    <div>
+      <div class="text-center pb-2">
+        {{app.options.company_name}}
+      </div>
+
+      <div class="version py-1 px-3" data-action="about" style="cursor: pointer;">
+          <div class="row">
+              <div class="col">
+                  Portal {{app.version}}
+              </div>
+              <div class="col">
+                  API {{app.api_version}}
+              </div>
+          </div>
+      </div>
     </div>
+
   </div>
 
 
