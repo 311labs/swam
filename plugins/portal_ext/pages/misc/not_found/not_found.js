@@ -22,7 +22,7 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
         if (this.params.denied_group) {
             title = `You are requesting access to group #${this.params.denied_group}`;
         } else if (this.params.denied_page) {
-            title = `You are requesting access to page '${this.params.denied_page.page_name}`;
+            title = `You are requesting access to page <span class="text-brand">${this.params.denied_page.page_name}</span>`;
         }
         SWAM.Dialog.showForm([
             {
