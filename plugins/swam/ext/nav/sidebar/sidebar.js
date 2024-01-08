@@ -59,7 +59,8 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 	},
 
 	showMenu: function(name) {
-		let has_changed = (this.options.active_menu_name != name)
+		let has_changed = (this.options.active_menu_name != name);
+		this.$el.attr("data-menu", name);
 		this.options.active_menu_name = name;
 		if (name == "admin") {
 			this.template = "swam.ext.nav.sidebar.adminbar";
