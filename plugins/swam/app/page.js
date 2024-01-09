@@ -35,6 +35,10 @@ SWAM.Page = SWAM.View.extend({
 		return app.active_page == this;
 	},
 
+	showPage: function(params, anchor) {
+	    app.setActivePage(this.page_name, params, anchor);
+	},
+
 	extractPathVariables: function(template, str) {
 	    const matches = [...template.matchAll(/:([a-zA-Z0-9_]+)(\/|\?|$)/g)];
 	    const result = {};

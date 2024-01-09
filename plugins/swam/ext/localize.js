@@ -190,7 +190,7 @@ SWAM.Localize = {
     'yesno_icon': function(value, attr, fmt) {
         var v = this.bool(value);
         var yes_icon = "bi bi-check-circle-fill";
-        var no_icon = "bi bi-slash-circle";
+        var no_icon = "bi bi-slash-circle-fill";
         var action = null;
         if (_.isArray(fmt)) {
             yes_icon = fmt[0];

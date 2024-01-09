@@ -142,6 +142,8 @@ SWAM.Model = SWAM.Object.extend({
             this.last_fetched_at = Date.now();
             this.trigger("fetched", this);
             this.on_fetched(data, status);
+        } else {
+            this.trigger("error", this);
         }
     },
 

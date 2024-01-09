@@ -227,6 +227,18 @@ PORTAL.PortalApp = SWAM.App.extend({
 			console.log(choice);
 			if (choice == "yes") {
 				this.me.logout();
+				this.me.clear();
+				this.options.is_ready = false;
+				if (app.group) {
+					app.group.clear();
+					app.group = null;
+				}
+				if (app.groups) {
+					app.groups.reset();
+				}
+				if (this.ws) {
+					this.ws.close();
+				}
 				this.showPage("login");
 			}
 		}.bind(this)})

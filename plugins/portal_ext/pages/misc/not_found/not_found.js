@@ -66,6 +66,10 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
                 page: this.params.denied_page.page_name,
                 requires_perm: this.params.denied_page.options.requires_perm
             };
+            if (app.group) {
+                extra.group_id = app.group.id;
+                extra.group_name = app.group.get("name");
+            }
         }
 
         app.reportIncident(
@@ -80,5 +84,20 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
             title: "Access Request",
             message: "Your access request has been sent to the adminstrator for this resource."
         });
+    },
+
+    on_page_enter: function() {
+        if (this.params.denied_page) {
+            // lets try one more time, to see if this is a slow connect?
+            setTimeout(this.on_recheck_perms.bind(this), 1000);
+        }
+    },
+
+    on_recheck_perms: function() {
+        if (this.isActivePage() && this.params.denied_page) {
+            if (app.me.hasPerm(this.params.denied_page.options.requires_perm)) {
+                this.params.denied_page.showPage();
+            }
+        }
     }
 });
