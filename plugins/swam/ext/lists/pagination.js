@@ -95,6 +95,14 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
 
     on_loading_end: function() {
         this.$el.find("#count").text(this.collection.count);
+    },
+
+    reset: function() {
+        this.list.reset();
+    },
+
+    reload: function() {
+        this.list.reload();
     }
 
 });

@@ -140,6 +140,10 @@ SWAM.Views.List = SWAM.View.extend({
         this.collection.reset();
     },
 
+    reload: function() {
+        this.collection.fetch();
+    },
+
     clear: function() {
         this.items = [];
         this.render();
