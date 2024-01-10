@@ -70,6 +70,8 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
 
         this.collection.on("loading:end", this.on_loading_end, this);
         this.addChild("list", this.list);
+        this.list.on("item:clicked", this.on_item_clicked, this);
+
         this.pager = new SWAM.Views.ListPagination({list:this.list});
         this.addChild("pager", this.pager);
         this.counter = new SWAM.Views.ListPaginationCount({list:this.list});
@@ -91,6 +93,10 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
             });
             this.addChild("filters", this.filters);
         }
+    },
+
+    on_item_clicked: function(item) {
+
     },
 
     on_loading_end: function() {

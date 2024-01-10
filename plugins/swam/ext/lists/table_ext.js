@@ -153,8 +153,6 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
             this.options.list_options = _.extend({columns:this.options.columns}, this.options.list_options);
         }
         SWAM.Views.PaginatedTable.prototype.on_init.apply(this, arguments);
-
-        this.list.on("item:clicked", this.on_item_clicked, this);
     },
 
     setParams: function(params) {
