@@ -46,6 +46,7 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
         let dlg = SWAM.Dialog.showView(view, {
             title: SWAM.renderString("Rule #{{model.id}} - {{model.name}}", {model:model}),
             size:"lg", vsize:"lg",
+            scrollable: true,
             can_dismiss:true,
             context_menu: [
                 {

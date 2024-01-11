@@ -512,7 +512,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 		return false;
 	},
 
-	reportIncident: function(category, description, details, level, ip_lookup, extra) {
+	reportIncident: function(category, description, details, level, ip_lookup, extra, group, callback) {
 		// if (app.options.api_url.contains("localhost")) return;
 		let event = new SWAM.Models.IncidentEvent();
 		let buid = window.getBrowserUID();
@@ -522,6 +522,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			description: description,
 			details: details,
 			ip_lookup: ip_lookup,
+			group: group,
 			metadata: {
 				version: app.version,
 				name: app.options.title,
@@ -538,7 +539,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			data.component_id = app.me.id;
 		}
 		if (!data.metadata.page && app.active_page && app.active_page.page_name) data.metadata.page = app.active_page.page_name;
-		event.save(data);
+		event.save(data, callback);
 	},
 
 	on_action_change_password: function(evt) {

@@ -215,6 +215,7 @@ SWAM.Models.IncidentRuleCheck = SWAM.Model.extend({
             type:"select",
             placeholder:"Select Operator",
             options: ["==", ">", ">=", "<", "<=", "!=", "contains", "regex"],
+            default: "==",
             columns: 3
         },
         {
