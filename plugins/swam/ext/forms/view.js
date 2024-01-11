@@ -130,6 +130,10 @@ SWAM.Form.View = SWAM.View.extend({
         return value.isEmail();
     },
 
+    on_validate_phone: function($field, value) {
+        return value.isPhone();
+    },
+
     on_validate_hex: function($field, value) {
         return value.isHex();
     },

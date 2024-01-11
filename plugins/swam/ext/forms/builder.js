@@ -320,6 +320,7 @@ SWAM.Form.Builder.heading = function(fc, form_info) {
 	var tag = "h" + fc.size;
 	var el = document.createElement(tag);
 	fc.$el = $(el).html(fc.value || fc.label);
+	if (fc.classes) fc.$el.addClass(fc.classes);
 }
 
 SWAM.Form.Builder.html = function(fc, form_info) {

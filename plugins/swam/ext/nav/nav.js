@@ -57,6 +57,25 @@ SWAM.Views.NavItem = SWAM.View.extend({
 		link_classes: "nav-link",
 	},
 
+	events: {
+		"show.bs.dropdown": "on_dropdown_show",
+		"hide.bs.dropdown": "on_dropdown_hide"
+	},
+
+	on_dropdown_show: function(evt) {
+		if (this.options.view && this.options.view.on_shown) {
+			evt.nav_item = this;
+			this.options.view.on_shown(evt);
+		} 
+	},
+
+	on_dropdown_hide: function(evt) {
+		if (this.options.view && this.options.view.on_dismiss) {
+			evt.nav_item = this;
+			this.options.view.on_dismiss(evt);
+		} 
+	},
+
 	get_tooltip: function() {
 		// hack because mustache is having hard time parsing inside elements
 		if (!this.options.tooltip) return null;
@@ -68,13 +87,26 @@ SWAM.Views.NavItem = SWAM.View.extend({
 			
 		} else if (this.options.type == "dropdown") {
 			this.options.has_dropmenu = true;
-			var classes = "dropdown-menu p-2";
+			var classes = "dropdown-menu p-2 shadow";
 			if (this.options.is_dark) classes += " dropdown-menu-dark";
-			if (this.options.align) {
+			if (this.options.align && this.options.align != "center") {
 				classes += " dropdown-menu-" + this.options.align;
+				this.addClass("dropdown");
+			} else if (this.options.align == "center") {
+				this.addClass("dropdown");
+				classes += " dropdown-menu-center";
+			} else {
+				this.addClass("dropdown");
 			}
-			this.addClass("dropdown");
-			this.addChild("dropmenu", new SWAM.Views.Nav({items:this.options.items, type:"dropdown_menu", classes:classes, replaces_el:true}));
+			
+			if (this.options.items) {
+				this.addChild("dropmenu", new SWAM.Views.Nav({items:this.options.items, type:"dropdown_menu", classes:classes, replaces_el:true}));
+			} else {
+				let subview = new SWAM.View({classes:classes, replaces_el:true});
+				subview.appendChild("view", this.options.view);
+				this.addChild("dropmenu", subview);
+			}
+			
 		} else if (this.options.type == "view") {
 			this.appendChild("view", this.options.view);
 		} else if (this.options.items) {
