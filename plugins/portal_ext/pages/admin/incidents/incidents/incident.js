@@ -163,4 +163,101 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
         }
         SWAM.Dialog.editModel(new view.collection.options.Model(), options);
     },
+
+    showDialog: function(model, collection, parent) {
+        let state = model.get("state");
+        let state_display = model.get("state_display");
+        let description = model.get("description");
+        let component = model.get("component"); 
+        let item = {model:model};
+        let context_menu = [
+            {
+                label: "Edit Incident",
+                icon: "pencil",
+                callback: function(dlg, menu) {
+                    parent.on_item_edit(item);
+                }
+            }
+        ];
+
+        this.setModel(model);
+
+        if (model.get("rule")) {
+            context_menu.push({
+                    label: "Edit Rule",
+                    icon: "pencil",
+                    callback: function(dlg, menu) {
+                        parent.on_rule_edit(item);
+                    }
+                });
+        }
+
+        context_menu.push({divider:true});
+        let menu_state = {};
+        if (state < 3) {
+            if (state == 0) {
+                context_menu.push({
+                    label: "Open",
+                    icon: "inbox-fill",
+                    callback: function(dlg, menu) {
+                        app.showBusy();
+                        model.save({state:1}, function(){
+                            app.hideBusy();
+                            collection.fetch();
+                        });
+                    }
+                });
+            } else if (state == 1) {
+                context_menu.push({
+                    label: "Pause",
+                    icon: "inbox-fill",
+                    callback: function(dlg, menu) {
+                        app.showBusy();
+                        model.save({state:2}, function(){
+                            app.hideBusy();
+                            dlg.dismiss();
+                            collection.fetch();
+                        });
+                    }
+                });
+            }
+
+            context_menu.push({
+                label: "Ignore",
+                icon: "trash2",
+                callback: function(dlg, menu) {
+                    app.showBusy();
+                    model.save({state:3}, function(){
+                        app.hideBusy();
+                        dlg.dismiss();
+                        collection.fetch();
+                    });
+                }
+            });
+
+            context_menu.push({
+                label: "Resolved",
+                icon: "check-square",
+                callback: function(dlg, menu) {
+                    app.showBusy();
+                    model.save({state:4}, function(){
+                        app.hideBusy();
+                        dlg.dismiss();
+                        collection.fetch();
+                    });
+                }
+            });
+        }
+        let header = SWAM.renderTemplate("portal_ext.pages.admin.incidents.incidents.header", {model:model});
+        return SWAM.Dialog.showView(this, {
+            title: header,
+            kind: "primary",
+            can_dismiss: true,
+            padded: true,
+            scrollable: true,
+            size: 'lg',
+            height: 'md',
+            "context_menu": context_menu
+        });
+    }
 });

@@ -142,6 +142,7 @@ SWAM.View = SWAM.Object.extend({
         if (this.attrs) attrs = _.extend(attrs, this.attrs);
         if (this.classes) attrs.class = this.classes;
         if (this.id) attrs.id = this.id;
+        if (this.tagName == "a") attrs.href = this.options.href || "#";
         if (this.data_attrs) _.each(this.data_attrs, function(val, key){this.$el.data(key, val);}.bind(this));
         this.$el.attr(attrs);
         if (this.options.add_classes) this.$el.addClass(this.options.add_classes);

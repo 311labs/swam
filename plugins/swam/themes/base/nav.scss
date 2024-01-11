@@ -115,6 +115,22 @@ div#panel-left {
 	ul.dropdown-menu-center {
 		left: -100% !important;
 	}
+
+	ul.dropdown-menu-width-xs {
+		width: 140px;
+	}
+
+	ul.dropdown-menu-width-sm {
+		width: 240px;
+	}
+
+	ul.dropdown-menu-width-md {
+		width: 340px;
+	}
+
+	ul.dropdown-menu-width-lg {
+		width: 440px;
+	}
 }
 
 
@@ -169,6 +185,31 @@ div.sidebar-collapse {
 	#title-bar {
 		span.logo-title {
 			display: none;
+		}
+	}
+}
+
+@media(max-width: 460px) {
+	#title-bar {
+
+		ul.dropdown-menu-center {
+			left: -100% !important;
+		}
+
+		ul.dropdown-menu-width-xs {
+			width: 100px;
+		}
+
+		ul.dropdown-menu-width-sm {
+			width: 200px;
+		}
+
+		ul.dropdown-menu-width-md {
+			width: 300px;
+		}
+
+		ul.dropdown-menu-width-lg {
+			width: 400px;
 		}
 	}
 }

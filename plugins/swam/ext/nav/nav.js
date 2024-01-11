@@ -55,6 +55,7 @@ SWAM.Views.NavItem = SWAM.View.extend({
 
 	defaults: {
 		link_classes: "nav-link",
+		dropdown_autoclose: "true"
 	},
 
 	events: {
@@ -98,10 +99,15 @@ SWAM.Views.NavItem = SWAM.View.extend({
 			} else {
 				this.addClass("dropdown");
 			}
+
+			if (this.options.dropdown_width) {
+				classes += " dropdown-menu-width-" + this.options.dropdown_width;
+			}
 			
 			if (this.options.items) {
 				this.addChild("dropmenu", new SWAM.Views.Nav({items:this.options.items, type:"dropdown_menu", classes:classes, replaces_el:true}));
 			} else {
+				classes += " bg-muted";
 				let subview = new SWAM.View({classes:classes, replaces_el:true});
 				subview.appendChild("view", this.options.view);
 				this.addChild("dropmenu", subview);

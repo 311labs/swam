@@ -49,6 +49,22 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         return false;
     },
 
+    getNotify: function(name) {
+        let v = this.get("metadata.noitfy." + name);
+        return (v != "0") && (v != "false") && v;
+    },
+
+    hasNotify: function(name) {
+        if (_.isArray(name)) {
+            var i=0;
+            for (; i < name.length; i++) {
+                if (this.hasNotify(name[i])) return true;
+            }
+            return false;
+        }
+        return this.getNotify(name);
+    },
+
     checkAuth: function(callback) {
         // this method is safer when supporting multiple auth types
         var auth_method = this.options.auth_method.upper();

@@ -187,6 +187,10 @@ body.app {
         background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
     }
 
+    .bg-muted {
+        background-color: $muted-color;
+    }
+
     .bg-default {
         background-color: $brand-default;
     }

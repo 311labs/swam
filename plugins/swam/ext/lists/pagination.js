@@ -60,6 +60,7 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
             collection: this.options.collection,
             item_template: this.options.item_template,
             Collection: this.options.Collection,
+            collection_params: this.options.collection_params,
         }, this.options.list_options);
         this.list = new this.options.List(list_opts);
         this.collection = this.list.collection;

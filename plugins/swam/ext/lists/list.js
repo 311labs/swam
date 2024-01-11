@@ -112,6 +112,7 @@ SWAM.Views.List = SWAM.View.extend({
         if (!item) {
             var opts = _.extend({model:model, list:this}, this.options.item_options);
             if (this.options.item_template) opts.template = this.options.item_template;
+            if (this.options.item_tag) opts.tagName = this.options.item_tag;
             item = new this.options.ItemView(opts);
             if (at_top) {
                 this.items.insertAt(item, 0);
