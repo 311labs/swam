@@ -107,7 +107,8 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                             {label:"Opened", value:"1"},
                             {label:"Paused", value:"2"},
                             {label:"Ignored", value:"3"},
-                            {label:"Resolved", value:"4"}
+                            {label:"Resolved", value:"4"},
+                            {label:"Pending", value:"5"}
                         ],
                         columns: 3
                     },
@@ -214,7 +215,8 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         setTimeout(function(){
             app.hideBusy();
             this.reload();
-        }.bind(this), 2000);    },
+        }.bind(this), 2000);    
+    },
 
     on_action_merge: function(evt) {
         SWAM.Dialog.confirm({
@@ -283,6 +285,10 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
         let dlg = this.view.showDialog(item.model, this.collection, this);
         this.on_item_dlg(item, dlg);
     },
+
+    on_loading_end: function() {
+        app.getChild("title-bar").setBadge("incidents", this.collection.count, true);
+    }
 
 });
 

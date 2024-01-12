@@ -106,6 +106,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		this.collection = this.children.list.collection;
 		if (this.collection) {
 			this.collection.on("loading:begin", this.on_loading_begin, this);
+			this.collection.on("loading:end", this.on_loading_end, this);
 			if (this.options.collection_params) this.collection.params = _.extend({}, this.collection.params, this.options.collection_params);
 			if (this.options.item_url_param) this.collection.options.item_url_param = this.options.item_url_param;
 		}
@@ -186,6 +187,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		if (this.options.update_url) {
 			this.updateURL(this.collection.params);
 		}
+	},
+
+	on_loading_end: function() {
+		
 	},
 
 	on_pre_render: function() {

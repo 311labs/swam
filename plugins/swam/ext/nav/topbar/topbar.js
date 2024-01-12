@@ -60,11 +60,16 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		}
 	},
 
-	setBadge: function(id, value) {
+	setBadge: function(id, value, no_render) {
 		let item = _.findWhere(this.options.right_nav, {"id":id});
 		if (item) {
 			item.badge = value;
-			this.render();
+			let $b = this.$el.find(`#badge_${id}`);
+			if ($b.length) {
+				$b.text(value);
+			} else {
+				if (!no_render) this.render();
+			}
 		}
 	},
 
