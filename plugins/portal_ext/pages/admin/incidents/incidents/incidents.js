@@ -287,7 +287,9 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
     },
 
     on_loading_end: function() {
-        app.getChild("title-bar").setBadge("incidents", this.collection.count, true);
+        if (this.collection.params.state == 0) {
+            app.getChild("title-bar").setBadge("incidents", this.collection.count, true);
+        }
     }
 
 });
