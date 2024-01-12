@@ -572,7 +572,7 @@ SWAM.Form.View = SWAM.View.extend({
             }
         }.bind(ievt);
 
-        if (ievt.type == "text") {
+        if ((ievt.type == "text")||(ievt.type == "search")) {
             if (ievt.value == "") {
                 ievt.$el.parent().removeClass("input-clearable");
             } else {
