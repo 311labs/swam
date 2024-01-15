@@ -465,7 +465,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				title: title, 
 				message: body,
 				status: TOAST_STATUS["danger"],
-				timeout: null,
+				timeout: 10000,
 				on_click: function(evt, t, opts) {
 					app.showPage("incidents", {url_params:{incident:msg.message.pk}});
 				}

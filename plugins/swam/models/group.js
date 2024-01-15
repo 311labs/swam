@@ -146,3 +146,31 @@ SWAM.Collections.Group = SWAM.Collection.extend({
         Model: SWAM.Models.Group
     }
 });
+
+
+
+SWAM.Models.GroupFeed = SWAM.Model.extend({
+    defaults: {
+        url:"/api/account/group/feed"
+    }
+}, {
+    EDIT_FORM: [
+        {
+            label: "Note",
+            name: "note",
+            type: "textarea",
+            rows: 10
+        },
+        {
+            type: "hidden",
+            name: "kind",
+            value: "note",
+        }
+    ]
+});
+
+SWAM.Collections.GroupFeed = SWAM.Collection.extend({
+    defaults: {
+        Model: SWAM.Models.GroupFeed
+    }
+});
