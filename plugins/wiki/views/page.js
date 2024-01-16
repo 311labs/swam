@@ -12,6 +12,9 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
         // group should be magically handled by the app start process
         console.log("on_params for page");
         console.log(this.params);
+        if (this.params.show_menu) {
+            app.getChild("panel-left").showMenu(this.params.show_menu);
+        }
         if (!this.params.wiki && this.params.path) {
             let paths = this.params.path.split("/");
             this.params.wiki = paths[1];
