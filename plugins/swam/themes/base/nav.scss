@@ -102,6 +102,10 @@ div#panel-left {
 }
 
 #title-bar {
+	> nav {
+		height: 100%;
+	}
+	
 	ul.navbar-nav {
 		li.nav-item {
 			text-wrap: nowrap;

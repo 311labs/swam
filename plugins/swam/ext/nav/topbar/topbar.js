@@ -40,7 +40,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 
 		if (this.options.show_usermenu) {
 			this.user_dropdown = new SWAM.View({
-				classes: "dropdown ms-3 mt-1",
+				classes: "dropdown ms-3 h-100",
 				user_menu: this.options.user_menu,
 				template: this.options.user_menu_template});
 			if (!this.options.right_nav) this.options.right_nav = [];
