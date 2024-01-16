@@ -14,6 +14,9 @@ from objict import nobjict, objict
 import threading
 import shutil
 
+import aaencoder
+
+
 CONFIG = objict(
     output_path="output",
     port=8080,
@@ -26,7 +29,7 @@ parser = OptionParser()
 parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=CONFIG.get("verbose", False))
 parser.add_option("-a", "--auto_version", action="store_true", dest="auto_version", default=False, help="auto update app versions on change")
 parser.add_option("-f", "--force", action="store_true", dest="force", default=False, help="force the revision")
-parser.add_option("-m", "--minify", action="store_true", dest="minify", default=False, help="minify the revision")
+parser.add_option("-m", "--minify", action="store_true", dest="minify", default=CONFIG.get("minify", False), help="minify the revision")
 parser.add_option("-w", "--watch", action="store_true", dest="watch", default=False, help="watch for changes and auto refresh")
 parser.add_option("-s", "--serve", action="store_true", dest="serve", default=False, help="serve for changes and auto refresh")
 parser.add_option("-o", "--output", type="str", dest="output", default=CONFIG.get("output_path", "output"), help="static output path")
@@ -399,17 +402,6 @@ class MustacheFile(SwamFile):
             return value
         tmin = HTMLMinifier()
         return tmin.minify(value)
-        # return htmlmin.minify(
-        #     value,
-        #     remove_optional_attribute_quotes=False,
-        #     reduce_boolean_attributes=False,
-        #     reduce_empty_attributes=False,
-        #     remove_all_empty_space=True,
-        #     remove_comments=True,
-        #     keep_pre=True)
-        # return value.replace('\n', '').replace('\t', '').replace(' ', '')
-        # split = value.split()
-        # return " ".join(split)
 
     def setKey(self, path, value):
         nodes = path.split(os.sep)
