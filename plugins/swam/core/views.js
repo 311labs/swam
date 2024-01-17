@@ -241,13 +241,13 @@ SWAM.View = SWAM.Object.extend({
 
     on_action_lightbox: function(evt) {
         evt.stopPropagation();
-        var $el = $(evt.currentTarget);
-        var opts = {};
+        let $el = $(evt.currentTarget);
+        let opts = {};
         opts.url = $el.data("media");
         opts.kind = $el.data("kind");
         opts.title = $el.data("title");
         if (!opts.url || !opts.kind) return true;
-        var view = null;
+        let view = null;
         if (opts.kind == "image") {
             view = new SWAM.View({
                 classes: "swam-lightbox",

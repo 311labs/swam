@@ -55,6 +55,7 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
             description = `${username} is requesting access to group #${this.params.denied_group}`;
             details = `${description}\n${reason}`;
             extra = {
+                group: this.params.denied_group;
                 group_id:this.params.denied_group,
                 reason: reason
             };
@@ -67,6 +68,7 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
                 requires_perm: this.params.denied_page.options.requires_perm
             };
             if (app.group) {
+                extra.group = app.group.id;
                 extra.group_id = app.group.id;
                 extra.group_name = app.group.get("name");
             }

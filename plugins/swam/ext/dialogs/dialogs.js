@@ -377,6 +377,33 @@ SWAM.Dialog = SWAM.View.extend({
         return dlg;
     },
 
+    showMedia: function(opts) {
+        // opts.url = $el.data("media");
+        // opts.kind = $el.data("kind");
+        // opts.title = $el.data("title");
+        if (!opts.url || !opts.kind) return true;
+        let view = null;
+        if (opts.kind == "image") {
+            view = new SWAM.View({
+                classes: "swam-lightbox",
+                template:"<div>{{{options.src|image}}}</div>",
+                src:opts.url});
+        } else if (opts.kind == "video") {
+            view = new SWAM.Views.Video({src:opts.url});
+        } else {
+            window.open(opts.url, '_blank');
+            return;
+        }
+        if (!opts.title) opts.title = "Lightbox";
+        return SWAM.Dialog.show({
+            add_classes: "bg-dark text-white",
+            fullscreen: true,
+            title: opts.title,
+            view: view,
+            buttons: []
+        });
+    },
+
     dismissAll: function() {
         var dlg = SWAM.active_dialog;
         while (dlg) {

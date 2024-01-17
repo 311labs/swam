@@ -387,6 +387,24 @@ window.isNumeric = function(value) {
     return false;
 }
 
+window.identifyMediaType = function(contentType) {
+    // Define the MIME types for images and videos
+    const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+    const videoMimeTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/mpeg', 'video/avi'];
+
+    // Check if the contentType is in the list of image MIME types
+    if (imageMimeTypes.includes(contentType)) {
+        return 'image';
+    }
+    // Check if the contentType is in the list of video MIME types
+    else if (videoMimeTypes.includes(contentType)) {
+        return 'video';
+    }
+    // Return 'unknown' if the content type is neither image nor video
+    return 'unknown';
+}
+
+
 window.getScrollParent = function(element, includeHidden) {
     var style = getComputedStyle(element);
     var excludeStaticParent = style.position === "absolute";
