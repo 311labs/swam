@@ -58,3 +58,18 @@ Number.prototype.toFileSize = function() {
     return __fs_format(value, i - 1);
 }
 
+Number.prototype.fileSizeToBytes = function() {
+    return this;
+}
+
+String.prototype.fileSizeToBytes = function() {
+    if (this.isNumber()) return this;
+    let unit = this.slice(-2).toUpperCase();
+    let value = this.slice(0,-2);
+    let index = __FS_UNITS.indexOf(unit);
+    if (index === -1) {
+        throw new Error('Invalid unit');
+    }
+    return value * Math.pow(__FS_STEP, index);
+};
+

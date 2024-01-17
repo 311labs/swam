@@ -578,6 +578,8 @@ SWAM.Form.View = SWAM.View.extend({
             } else {
                 ievt.$el.parent().addClass("input-clearable");
             }
+        } else if (ievt.type == "file") {
+            this.on_input_file(ievt);
         }
         this.trigger("input:change", ievt);
         if (_.isFunction(this[func_name])) {
@@ -585,6 +587,24 @@ SWAM.Form.View = SWAM.View.extend({
         } else if (_.isFunction(this["on_input_change"])) {
             this.on_input_change(ievt.name, ievt.value, ievt);
         }
+    },
+
+    on_input_file: function(ievt) {
+        let filesize = ievt.$el.data("filesize");
+        if (filesize > 0) {
+            if (ievt.$el[0].files.length > 0) {
+                if (ievt.$el[0].files[0].size > filesize) {
+                    this.on_input_file_size(ievt, filesize);
+                }
+            }
+        }
+    },
+
+    on_input_file_size: function(ievt, max_file_size) {
+        // called when max file size is reached
+        let pretty_max = max_value.toFileSize();
+        SWAM.Dialog.warning("Max File Size Reached", `The max file size for this field is ${pretty_max}!`);
+        ievt.$el.val(null);
     },
 
     enablePops: function() {

@@ -230,6 +230,12 @@ SWAM.Form.Builder.help = function(fc, form_info) {
 	return null;
 }
 
+SWAM.Form.Builder.file = function(fc, form_info) {
+	fc = SWAM.Form.Builder.text(fc, form_info);
+	if (fc.max_file_size) fc.$input.attr("data-filesize", fc.max_file_size.fileSizeToBytes());
+	return fc;
+}
+
 SWAM.Form.Builder.text = function(fc, form_info) {
 	if (fc.button || fc.icon || fc.left_icon) {
 		fc = SWAM.Form.Builder.input_group(fc, form_info);

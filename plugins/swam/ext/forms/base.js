@@ -5,8 +5,8 @@ SWAM.Form = {
 SWAM.Form.getFiles = function($form) {
 	var files = {};
 	$form.find('input[value!=""]:file:enabled').each(function(k,field){
-		var $field = $(field);
-		var n = $field.attr('name');
+		let $field = $(field);
+		let n = $field.attr('name');
 		if (n) files[n] = $field;
 	});
 	return files;
