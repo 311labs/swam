@@ -168,7 +168,14 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             type:"select",
             help: "Perform an action when the rule is triggered. <br>Notify members of the group.<br>Trigger a task 'task:APP_NAME:FNAME:CHANNEL'.<br>Send email 'email:USER_NOTIFICATION'<br>Send sms 'sms:USER_NOTIFICATION'",
             editable: true,
-            options: ["notify", "email", "sms", "ignore", "task:APP_NAME:FNAME:CHANNEL", "email:USER_NOTIFICATION", "sms:USER_NOTIFICATION", "webhook:URL"],
+            options: [
+                "notify", "email", 
+                "sms", "ignore", 
+                "group:issues",
+                "task:APP_NAME:FNAME:CHANNEL", 
+                "email:USER_NOTIFICATION", 
+                "sms:USER_NOTIFICATION", 
+                "webhook:URL"],
             columns: 6
         },
         {
