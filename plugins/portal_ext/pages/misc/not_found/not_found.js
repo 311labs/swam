@@ -74,8 +74,6 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
             }
         }
 
-        (category, description, details, level, ip_lookup, extra, group, callback
-
         app.reportIncident(
             "access_request",
             description,
