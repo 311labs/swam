@@ -60,6 +60,14 @@ PORTAL.Views.IncidentList = SWAM.Views.AdvancedTable.extend({
       this.model = model;
       this.collection.params.component = this.options.component;
       this.collection.params.component_id = model.id;
+      if (this.options.group_filtering) {
+          let group = model.get("group");
+          if (group.id) {
+            this.collection.params.group = group.id;
+          } else if (group) {
+            this.collection.params.group = group;
+          }
+      }
       if (this.isInViewport()) {
           this.collection.fetch();
       } else {

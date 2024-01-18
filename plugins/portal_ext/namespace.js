@@ -5,33 +5,86 @@ window.PORTAL.Pages = window.PORTAL.Pages || {};
 
 
 window.PORTAL.init_admin_pages = function() {
-	app.addPage("admin_dashboard", new PORTAL.Pages.AdminDashboard(), ["admin/dashboard"]);
-	app.addPage("users", new PORTAL.Pages.Users(), ["admin/users", "users"]);
-	app.addPage("groups", new PORTAL.Pages.Groups(), ["admin/groups", "groups"]);
-	app.addPage("audit_logs", new PORTAL.Pages.AuditLogs(), ["admin/logs", "logs"]);
-	app.addPage("taskqueue", new PORTAL.Pages.TaskQueue(), ["admin/taskqueue", "taskqueue"]);
-	
-	app.addPage("email_inbox", new PORTAL.Pages.EmailInbox(), ["admin/email/inbox"]);
-	app.addPage("email_message", new PORTAL.Pages.EmailMessage(), ["admin/email/messages"]);
-	app.addPage("email_outbox", new PORTAL.Pages.EmailOutgoing(), ["admin/email/outbox"]);
-	app.addPage("email_bounced", new PORTAL.Pages.EmailBounced(), ["admin/email/bounced"]);
-	app.addPage("email_complaint", new PORTAL.Pages.EmailComplaint(), ["admin/email/complaints"]);
-	app.addPage("email_template", new PORTAL.Pages.EmailTemplate(), ["admin/email/templates"]);
-	
-	app.addPage("phone_sms", new PORTAL.Pages.TextMessages(), ["admin/phone/sms"]);
-	app.addPage("phone_info", new PORTAL.Pages.PhoneInfo(), ["admin/phone/info"]);
-	
-	app.addPage("admin_media", new PORTAL.Pages.MediaItems(), ["admin/media"]);
-	app.addPage("admin_metrics", new PORTAL.Pages.Metrics(), ["admin/metrics"]);
-	app.addPage("admin_cloudwatch", new PORTAL.Pages.CloudWatch(), ["admin/cloudwatch"]);
-	app.addPage("admin_firewall", new PORTAL.Pages.FirewallEvents(), ["admin/firewall"]);
-	app.addPage("admin_servers", new PORTAL.Pages.ServerInfo(), ["admin/servers"]);
-	app.addPage("admin_domains", new PORTAL.Pages.DomainWatch(), ["admin/domains"]);
-	app.addPage("admin_ips", new PORTAL.Pages.GeoIPs(), ["admin/geo/ips"]);
 
-	app.addPage("incidents", new PORTAL.Pages.Incidents({group_filtering:false}), ["admin/incidents"]);
-	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({group_filtering:false}), ["admin/incident/events"]);
-	app.addPage("incident_rules", new PORTAL.Pages.IncidentRules({group_filtering:false}), ["admin/incident/rules"]);
+	app.addPage("not_found", new PORTAL.Pages.NotFound(), ["404"]);
+	app.addPage("denied", new PORTAL.Pages.Denied(), ["403"]);
+
+	app.addPage("admin_dashboard", new PORTAL.Pages.AdminDashboard({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/dashboard"]);
+	app.addPage("users", new PORTAL.Pages.Users({
+		requires_perm: ["sys.view_admin", "sys.manage_users"]
+	}), ["admin/users", "users"]);
+	app.addPage("groups", new PORTAL.Pages.Groups({
+		requires_perm: ["sys.view_admin", "sys.manage_groups"]
+	}), ["admin/groups", "groups"]);
+	app.addPage("audit_logs", new PORTAL.Pages.AuditLogs({
+		requires_perm: ["sys.view_admin", "sys.view_logs"]
+	}), ["admin/logs", "logs"]);
+	app.addPage("taskqueue", new PORTAL.Pages.TaskQueue({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/taskqueue", "taskqueue"]);
+	
+	app.addPage("email_inbox", new PORTAL.Pages.EmailInbox({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/email/inbox"]);
+	app.addPage("email_message", new PORTAL.Pages.EmailMessage({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/email/messages"]);
+	app.addPage("email_outbox", new PORTAL.Pages.EmailOutgoing({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/email/outbox"]);
+	app.addPage("email_bounced", new PORTAL.Pages.EmailBounced({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/email/bounced"]);
+	app.addPage("email_complaint", new PORTAL.Pages.EmailComplaint({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/email/complaints"]);
+	app.addPage("email_template", new PORTAL.Pages.EmailTemplate({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/email/templates"]);
+	
+	app.addPage("phone_sms", new PORTAL.Pages.TextMessages({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/phone/sms"]);
+	app.addPage("phone_info", new PORTAL.Pages.PhoneInfo({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/phone/info"]);
+	
+	app.addPage("admin_media", new PORTAL.Pages.MediaItems({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/media"]);
+	app.addPage("admin_metrics", new PORTAL.Pages.Metrics({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/metrics"]);
+	app.addPage("admin_cloudwatch", new PORTAL.Pages.CloudWatch({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/cloudwatch"]);
+	app.addPage("admin_firewall", new PORTAL.Pages.FirewallEvents({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/firewall"]);
+	app.addPage("admin_servers", new PORTAL.Pages.ServerInfo({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/servers"]);
+	app.addPage("admin_domains", new PORTAL.Pages.DomainWatch({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/domains"]);
+	app.addPage("admin_ips", new PORTAL.Pages.GeoIPs({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/geo/ips"]);
+
+	app.addPage("incidents", new PORTAL.Pages.Incidents({
+		requires_perm: ["sys.view_admin"],
+		group_filtering:false
+	}), ["admin/incidents"]);
+	app.addPage("incident_events", new PORTAL.Pages.IncidentEvents({
+		requires_perm: ["sys.view_admin"],
+		group_filtering:false
+	}), ["admin/incident/events"]);
+	app.addPage("incident_rules", new PORTAL.Pages.IncidentRules({
+		requires_perm: ["sys.view_admin"],
+		group_filtering:false
+	}), ["admin/incident/rules"]);
 }
 
 PORTAL.Menus.Admin = [
