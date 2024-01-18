@@ -74,11 +74,13 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
             }
         }
 
+        (category, description, details, level, ip_lookup, extra, group, callback
+
         app.reportIncident(
             "access_request",
             description,
             details,
-            3, false, extra);
+            3, false, extra, extra.group);
 
         SWAM.Dialog.show({
             add_classes: "modal-info",
