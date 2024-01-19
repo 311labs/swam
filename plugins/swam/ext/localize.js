@@ -667,14 +667,17 @@ SWAM.Localize = {
     },
 
     'percentage': function(value, attr, fmt) {
-        var pos = 0;
+        let pos = 0;
+        let empty_lbl = "0%"
         if (_.isNumber(fmt)){
             pos = fmt;
         } else if (fmt && fmt.isNumber()) {
             pos = Number(fmt);
+        } else if (fmt) {
+            empty_lbl = fmt;
         }
 
-        if (!value) return "0%";
+        if (!value) return empty_lbl;
 
         return (value*100.0).toFixed(pos) + "%";
     },
