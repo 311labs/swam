@@ -203,7 +203,16 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
         }
 
         if (this.options.group_filtering && app.group) {
-            this.collection.params.group = app.group.id;
+            if (!app.me.hasPerm("sys.view_logs")) {
+                if (this.options.group_field) {
+                    this.collection.params.group = model.get(this.options.group_field);
+                    if (this.collection.params.group && this.collection.params.group.id) {
+                        this.collection.params.group = this.collection.params.group.id;
+                    }
+                } else {
+                    this.collection.params.group = app.group.id;
+                }
+            }
         } else if (this.collection.params.group && (this.options.param_field != "group")) {
             delete this.collection.params.group;
         }

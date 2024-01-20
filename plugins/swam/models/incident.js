@@ -170,7 +170,7 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             editable: true,
             options: [
                 "notify", "email", 
-                "sms", "ignore", 
+                "sms", "ignore", "resolved",
                 "group:issues",
                 "task:APP_NAME:FNAME:CHANNEL", 
                 "email:USER_NOTIFICATION", 
