@@ -490,11 +490,13 @@ SWAM.Collection = SWAM.Object.extend({
         document.body.removeChild(a);
     },
 
-    download: function(filename, format, callback) {
+    download: function(filename, format, callback, localize) {
+        if (localize) localize = JSON.stringify(localize);
         SWAM.Rest.DOWNLOAD(this.getRawUrl(
             {
                 format_filename: filename,
                 format:format,
+                localize: localize
             }), null,
             function(status, state){
                 // do nothing?
