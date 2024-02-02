@@ -72,6 +72,9 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("admin_ips", new PORTAL.Pages.GeoIPs({
 		requires_perm: ["sys.view_admin"]
 	}), ["admin/geo/ips"]);
+	app.addPage("admin_server_logs", new PORTAL.Pages.ServerLogs({
+		requires_perm: ["sys.view_logs"]
+	}), ["admin/server/logs"]);
 
 	app.addPage("incidents", new PORTAL.Pages.Incidents({
 		requires_perm: ["sys.view_admin"],
@@ -154,6 +157,11 @@ PORTAL.Menus.Admin = [
 				label:"Complaints",
 				page: "email_complaint"
 			},
+			{
+				icon: "file-text-fill",
+				label: "Templates",
+				page: "email_template"
+			}
 		]
 	},
 	{
@@ -223,7 +231,12 @@ PORTAL.Menus.Admin = [
 				label:"Geo IPs",
 				icon: "globe",
 				page: "admin_ips"
-			}
+			},
+			{
+				label:"Server Logs",
+				icon: "file-text-fill",
+				page: "admin_server_logs"
+			},
 		]
 	},
 	{

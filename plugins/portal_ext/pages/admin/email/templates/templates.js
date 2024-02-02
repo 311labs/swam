@@ -1,5 +1,3 @@
-SWAM.Collections.EmailTemplate
-
 
 PORTAL.Pages.EmailTemplate = SWAM.Pages.TablePage.extend({
     defaults: {
