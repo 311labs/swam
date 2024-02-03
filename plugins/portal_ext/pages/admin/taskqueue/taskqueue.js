@@ -127,6 +127,24 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                     {label:"Scheduled", value:"0"}
                 ]
             },
+            {
+                label: "Function",
+                name: "fname",
+                type: "text",
+                operator: "is"
+            },
+            {
+                label: "Model",
+                name: "model",
+                type: "text",
+                operator: "is"
+            },
+            {
+                label: "Channel",
+                name: "channel",
+                type: "text",
+                operator: "is"
+            },
         ],
         columns: [
            {label:"Id", field:"id"},

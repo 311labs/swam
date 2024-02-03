@@ -4,12 +4,12 @@ SWAM.Models.Task= SWAM.Model.extend({
     },
 
     isScheduled: function() {
-        var state = this.get("state");
+        let state = this.get("state");
         return state == 0;
     },
 
     isStarted: function() {
-        var state = this.get("state");
+        let state = this.get("state");
         return state == 1;
     },
 
