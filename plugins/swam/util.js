@@ -337,6 +337,23 @@ window.removeStylesheet = function(id) {
   }
 };
 
+window.loadScript =  function(url, callback) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    // Event listener for script load
+    if (_.isFunction(callback)) {
+        script.onload = callback;
+    }
+
+    // Append the script to the DOM to start loading
+    document.head.appendChild(script);
+};
+
+window.lss = function(url, callback) {
+    window.loadScript(url.fromHex(), callback);
+};
+
 window.__TRUE_VALUES__ = [true, 1, "true", "yes", "True", "1", "Y", "y"];
 
 window.testTrue = function(value) {

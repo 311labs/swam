@@ -178,8 +178,6 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         window.addEventListener("popstate", this.on_pop_state);
         window.addEventListener("online", this.on_network_online.bind(this));
         window.addEventListener("offline", this.on_network_offline.bind(this));
-        this.on_init_views();
-        this.render();
         this.starting_url = this.getPath();
         this.starting_params = this.getSearchParams();
         this.on_started();
@@ -267,6 +265,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_init_views: function() {
         this.on_init_pages();
+        this.render();
     },
 
     on_init_pages: function() {
@@ -274,6 +273,8 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     on_started: function() {
+        this.on_init_views();
+        this.render();
         this.on_ready();
     },
 

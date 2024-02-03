@@ -9,6 +9,11 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_started: function() {
+		this.on_init_views();
+		this.on_portal_ext_started();
+	},
+
+	on_portal_ext_started: function() {
 		setTimeout(this.detectDevTools, 2000);
 
 		this.options.is_ready = false;
@@ -24,7 +29,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 			if (resp.status) {
 				app.api_version = resp.data;
 				if (resp.ip) app.options.public_ip = resp.ip;
-				app.getChild("panel-left").render();
+				// app.getChild("panel-left").render();
 			}
 		});
 

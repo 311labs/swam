@@ -635,6 +635,11 @@ def buildIncludes(FileClass, app_path, includes, output, static_paths, opts):
     is_dirty = False
     for ipath in includes:
         fpath = ipath
+        include = True
+        if fpath.startswith("!"):
+            include = False
+            ipath = ipath[1:]
+            fpath = fpath[1:]
         if not fpath.startswith("/"):
             fpath = os.path.join(app_path, ipath)
         else:
@@ -650,7 +655,8 @@ def buildIncludes(FileClass, app_path, includes, output, static_paths, opts):
         if static_paths and not ipath.startswith("/"):
             ipath = "/" + os.path.join(app_path, ipath)
             # print(ipath)
-        output.append(ipath)
+        if include:
+            output.append(ipath)
     return is_dirty
 
 
