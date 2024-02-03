@@ -18,9 +18,12 @@ PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
         title: "Server Logs",
         list_options: {
             add_classes: "swam-table-clickable",
+            download_local: true,
         },
         columns: [
+            {label:"When", field:"time_local"},
             {label:"IP", field:"remote_addr"},
+            {label:"Server", field:"server"},
             {label:"Request", field:"request"},
             {label:"Status", field:"status"},
             {label:"Referrer", field:"http_referer"},
@@ -54,11 +57,20 @@ PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
                         }
                     },
                     {
-                        name: "server",
-                        type: "text",
-                        placeholder: "server",
-                        columns: 3,
-                    },
+                         columns: 3,
+                         name: "gz",
+                         type: "select",
+                         options: [
+                             {
+                                 label: "Active Logs",
+                                 value: "active"
+                             },
+                             {
+                                 label: "GZip Logs",
+                                 value: "gz"
+                             },
+                         ]
+                     },
                     {
                         columns: 3,
                         columns_classes: "col-auto",
@@ -88,23 +100,6 @@ PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
                         ]
                     },
                 ],
-                filters: [
-               	   {
-                    	columns: 3,
-                       	name: "gz",
-                       	type: "select",
-                       	options: [
-        	               	{
-        	               		label: "Active Logs",
-        	               		value: "active"
-        	               	},
-        	               	{
-        	               		label: "GZip Logs",
-        	               		value: "gz"
-        	               	},
-                       	]
-                    },
-                ]
             }
         ]
     },

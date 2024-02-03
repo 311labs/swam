@@ -307,8 +307,8 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         }
     },
 
-    on_action_download_csv: function(evt) {
-        var filename = "";
+    guess_filename: function(evt) {
+        let filename = "";
         if (this.options.list.options.download_group_prefix && app.group) {
             filename += app.group.get("name").slugify() + "_";
         }
@@ -317,6 +317,24 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         } else {
             filename += "data";
         }
+        return filename;
+    },
+
+    on_action_download_local_csv: function(evt) {
+        if (!this.options.list.options.download_local_fields) {
+            this.options.list.options.download_local_fields = this.options.list.options.columns;
+        }
+        let filename = this.guess_filename(evt);
+        filename += ".csv";
+        this.options.list.collection.downloadLocal(filename, this.options.list.options.download_local_fields);
+    },
+
+    on_action_download_csv: function(evt) {
+        if (this.options.list.options.download_local) {
+            this.on_action_download_local_csv(evt);
+            return;
+        }
+        let filename = this.guess_filename(evt);
         filename += ".csv";
         SWAM.Rest.DOWNLOAD(this.options.list.collection.getRawUrl(
             {
