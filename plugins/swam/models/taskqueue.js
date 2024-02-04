@@ -5,7 +5,7 @@ SWAM.Models.Task= SWAM.Model.extend({
 
     isScheduled: function() {
         let state = this.get("state");
-        return state == 0;
+        return ((state == 0) || (state == 1));
     },
 
     isStarted: function() {
