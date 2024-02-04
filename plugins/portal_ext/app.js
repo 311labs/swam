@@ -8,8 +8,8 @@ PORTAL.PortalApp = SWAM.App.extend({
 		this.groups = new SWAM.Collections.Group({size:10});
 	},
 
-	on_started: function() {
-		this.on_init_views();
+	on_init_settings: function() {
+		this.initViews();
 		this.on_portal_ext_started();
 	},
 
