@@ -284,7 +284,10 @@ SWAM.Views.SideBar = SWAM.View.extend(SWAM.Ext.BS).extend({
 			return;
 		}
 
-		let menu_name = this.getPageMenu(app.active_page.page_name);
+		let menu_name = null;
+		if (app.active_page) {
+			menu_name = this.getPageMenu(app.active_page.page_name);
+		}
 		if (menu_name != this.options.group_menu_name) {
 			// side bar hack for not double loading
 			app.group = group;
