@@ -58,18 +58,9 @@ PORTAL.Pages.RegisterUser = SWAM.Page.extend({
     	        app.navigate("login");
     	    } else {
     	        app.me.setJWT(data.data);
-    	        app.me.fetchIfStale();
+    	        // app.me.fetchIfStale();
     	        app.showBusy({icon:"download", color:"success", no_timeout_alert:true});
-    	        app.groups.fetch(function(){
-    	        	app.hideBusy();
-    	        	if (app.groups.length) {
-    	        		// set the first one has active
-    	        		app.getChild("title-bar").render();
-    	        		app.showLeftPanel();
-    	        		app.setGroup(app.groups.getAt(0));
-    	        		app.showPage("dashboard", {group:this.params.group});
-    	        	}
-    	        }.bind(this));
+    	        app.me.trigger("logged_in", app.me);
     	    }
     	}.bind(this), {timeout: 15});
     	return false;

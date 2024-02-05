@@ -137,6 +137,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                                 app.me.setJWT(data.data);
                             }
                             if (app.me.isAuthenticated()) {
+                                app.me.trigger("logged_in", app.me);
                                 // app.on_logged_in();
                                 // app.loadRoute(this.starting_url);
                             }
