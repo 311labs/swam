@@ -154,6 +154,17 @@ window.expandObject = function(obj) {
 
 window.getBrowserUID = function() {
     if (window.buid) return window.buid;
+    window.buid = window.localStorage.getItem("__buid__");
+    if (!window.buid) {
+        window.buid = String.Random(16);
+    } else {
+        window.localStorage.setItem("__buid__", window.buid);
+    }
+    return window.buid;
+};
+
+window.getBrowserUIDLegacy = function() {
+    if (window.buid) return window.buid;
     var data = window.getBrowserHash();
     window.buid = data.toString().toHex();
     return window.buid;

@@ -304,7 +304,6 @@ PORTAL.PortalApp = SWAM.App.extend({
 				} else if (app.me.isAuthenticated()) {
 					this.on_ready();
 				}
-				this.trigger("ready");
 			}
 		}.bind(this));
 	},
