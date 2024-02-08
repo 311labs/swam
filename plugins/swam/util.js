@@ -351,12 +351,18 @@ window.removeStylesheet = function(id) {
 window.loadScript =  function(url, callback) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
+    if (!url.contains("?")) {
+        if (window.app && window.app.version) {
+            url += `?version=${app.version}`;
+        } else {
+            url += `?_=${Date.now()}`;
+        }
+    }
     script.src = url;
     // Event listener for script load
     if (_.isFunction(callback)) {
         script.onload = callback;
     }
-
     // Append the script to the DOM to start loading
     document.head.appendChild(script);
 };
