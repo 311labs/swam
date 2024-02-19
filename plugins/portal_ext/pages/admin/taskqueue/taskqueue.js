@@ -37,6 +37,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             batch_select: false,
             view_only: true // don't show edit for on click
         },
+        item_url_param: "item",
         add_button: null,
         filter_bar: [
             {
@@ -347,7 +348,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                 }
             });
 
-        SWAM.Dialog.showView(this.task_view, {
+        let mdlg = SWAM.Dialog.showView(this.task_view, {
             title: `Task #${item.model.id}`,
             kind: "primary",
             can_dismiss: true,
@@ -356,6 +357,8 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             scrollable: true,
             "context_menu": context_menu
         });
+
+        this.on_item_dlg(item, mdlg);
     },
 
     on_action_reload_stats: function() {

@@ -30,7 +30,22 @@ PORTAL.Views.MemberGroups = SWAM.Views.List.extend({
     },
 
     on_item_clicked: function(item) {
- 
+        let view = new PORTAL.Views.AdminGroup();
+        view.setModel(new SWAM.Models.Group(item.model.get("group")));
+        let dlg = SWAM.Dialog.showView(view, {
+            title: item.model.get("group.name"),
+            size:"lg",
+            context_menu: [
+                {
+                    icon: "pencil",
+                    label: "Edit",
+                    action: "edit_group",
+                    callback: function(dlg, menu) {
+                        this.on_item_edit(item);
+                    }.bind(this)
+                }
+            ],
+            can_dismiss:true, scrollable:true});
     }
 
 });

@@ -449,6 +449,7 @@ SWAM.Form.Builder.select = function(fc, form_info) {
 	} else {
 		fc.$input.addClass("normal");
 	}
+	if (fc.force_top) fc.$input.addClass("force_top");
 	SWAM.Form.Builder.options(fc, form_info);
 	SWAM.Form.Builder.orderLabel(fc, form_info);
 	return fc;
@@ -597,7 +598,9 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 	fc.did = _.uniqueId("dropdown");
 	fc.$child = $("<div />").addClass("dropdown");
 	if (fc.classes) fc.$child.addClass(fc.classes);
-
+	if (!fc.btn_classes && fc.dropup) {
+		fc.btn_classes = SWAM.Form.Builder.config.dropdown_btn_classes + " dropup";
+	}
 	var $button = $("<button />")
 		.prop("type", "button")
 		.attr("id", fc.did)

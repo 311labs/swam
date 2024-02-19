@@ -31,7 +31,7 @@ SWAM.Views.EditSelect = SWAM.View.extend({
         $el.find("option").each(function(){
             self.options.menu_items.push({label:this.innerHTML, value:this.value})
         });
-
+        if ($el.hasClass("force_top")) this.options.force_top = true;
         this.addToDOM($el.parent());
         $el.remove();
     },
@@ -44,12 +44,34 @@ SWAM.Views.EditSelect = SWAM.View.extend({
     on_focus: function(evt) {
         this.$dropdown.css("width", this.$el.outerWidth());
         this.$dropdown.addClass("show");
+        if (this.options.force_top) {
+            $('body').append(this.$dropdown.css({
+              position: 'absolute',
+              "z-index": "10001",
+              left: this.$dropdown.offset().left,
+              top: this.$dropdown.offset().top
+            }).detach());
+
+            if (!this._on_selected) {
+                this._on_selected = this.on_action_es_selected.bind(this);
+                this.$dropdown.find("a").on("click", this._on_selected);
+            }
+        }
     },
 
     on_blur: function(evt) {
-        setTimeout(function(){
-            this.$dropdown.removeClass("show");
-        }.bind(this), 200);
+        setTimeout(this.on_input_blur.bind(this), 200);
+    },
+
+    on_input_blur: function(evt) {
+        this.$dropdown.removeClass("show");
+        if (this.options.force_top) {
+          this.$el.append(this.$dropdown.css({
+            position: "absolute",
+            left: "inherit",
+            top: "inherit"
+          }).detach());
+        }
     },
 
     on_action_es_selected: function(evt) {

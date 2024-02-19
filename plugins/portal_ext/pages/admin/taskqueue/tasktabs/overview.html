@@ -27,12 +27,12 @@
         </div>
         <div class="col">
             <div class="swam-field" data-label="Modified">
-                {{#options.model.state}}
-                {{options.model.state|datetime_tz}}
-                {{/options.model.state}}
-                {{^options.model.state}}
+                {{#options.model.modified}}
+                {{options.model.modified|datetime_tz}}
+                {{/options.model.modified}}
+                {{^options.model.modified}}
                     n/a
-                {{/options.model.state}}
+                {{/options.model.modified}}
             </div>
         </div>
     </div>
@@ -60,6 +60,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col">
+            <div class="swam-field" data-label="Attempts">
+                {{options.model.attempts}}
+            </div>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
 
     
     <div class="swam-field" data-label="Reason">
