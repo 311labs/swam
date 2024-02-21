@@ -198,7 +198,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             if (state == 0) {
                 context_menu.push({
                     label: "Open",
-                    icon: "inbox-fill",
+                    icon: "shield-check",
                     callback: function(dlg, menu) {
                         app.showBusy();
                         model.save({state:1}, function(){
@@ -210,7 +210,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
             } else if (state == 1) {
                 context_menu.push({
                     label: "Pause",
-                    icon: "inbox-fill",
+                    icon: "pause-circle",
                     callback: function(dlg, menu) {
                         app.showBusy();
                         model.save({state:2}, function(){
@@ -224,7 +224,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
 
             context_menu.push({
                 label: "Ignore",
-                icon: "trash2",
+                icon: "shield-slash-fill",
                 callback: function(dlg, menu) {
                     app.showBusy();
                     model.save({state:3}, function(){
@@ -237,7 +237,7 @@ PORTAL.Views.Incident = SWAM.Views.Tabs.extend({
 
             context_menu.push({
                 label: "Resolved",
-                icon: "check-square",
+                icon: "shield-fill-check",
                 callback: function(dlg, menu) {
                     app.showBusy();
                     model.save({state:4}, function(){

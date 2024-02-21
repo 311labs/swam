@@ -146,7 +146,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			columns: this.options.columns,
 			list_options: this.options.list_options
 		}));
-		this.children["list"].list.on("item:clicked", this.on_item_clicked, this);
+		if (!this.options.on_item_clicked) {
+			this.children["list"].list.on("item:clicked", this.on_item_clicked, this);
+		}
 
 		if (_.isString(this.options.item_url_param) && !this.collection.options.ignore_params) {
 			this.collection.options.ignore_params = [this.options.item_url_param];

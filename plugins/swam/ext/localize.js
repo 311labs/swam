@@ -604,6 +604,17 @@ SWAM.Localize = {
         }
         return value;
     },
+    'badge': function(value, attr, fmt) {
+        let color = "primary";
+        if (fmt) {
+            if (_.isArray(fmt)) {
+                color = fmt[0];
+            } else {
+                color = fmt;
+            }
+        }
+        return `<span class="badge bg-${color}">${value}</span>`;
+    },
     'icon': function(value, attr, fmt) {
         return SWAM.Icons.getIcon(value);
     },
@@ -1072,6 +1083,20 @@ SWAM.Localize = {
             return `${value.city}, ${value.state}, ${value.country} (${value.lat}, ${value.lng})`;
         }
         return `${value.city}, ${value.state}, ${value.country}`;
+    },
+
+    address: function(value, attr, fmt) {
+        if (!value || !value.city) return "not set";
+        let output = "";
+        if (value.line1) {
+            output = `<div>${value.line1}</div>`;
+        }
+        if (value.line2) {
+            output += `<div>${value.line2}</div>`;
+        }
+        output += `<div>${value.city}, ${value.state}, ${value.postalcode}</div>`;
+        if (value.country) output += `<div>${value.country}</div>`;
+        return output;
     },
 
     ignore_errors: true,

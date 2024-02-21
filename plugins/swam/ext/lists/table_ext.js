@@ -171,7 +171,11 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
     },
 
     on_item_clicked: function(item, evt) {
-        this.on_item_edit(item, evt);
+        if (this.options.on_item_clicked) {
+            this.options.on_item_clicked(item, evt);
+        } else {
+            this.on_item_edit(item, evt);
+        }
     },
 
     on_item_edit: function(item, evt) {

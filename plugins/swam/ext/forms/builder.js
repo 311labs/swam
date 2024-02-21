@@ -419,7 +419,9 @@ SWAM.Form.Builder.input_group = function(fc, form_info) {
 
 SWAM.Form.Builder.date = function(fc, form_info) {
 	if (!fc.icon) fc.icon = "bi bi-calendar-month";
-	return SWAM.Form.Builder.input_group(fc, form_info);
+	SWAM.Form.Builder.input_group(fc, form_info);
+	fc.$input[0].type = "text"; // bug with chrome date input?
+	return fc;
 }
 
 SWAM.Form.Builder.datetime = function(fc, form_info) {

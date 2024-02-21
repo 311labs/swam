@@ -225,6 +225,20 @@ SWAM.Models.User = SWAM.Model.extend({
             columns: 6
         },
         {
+            name:"metadata.permissions.manage_media",
+            label:"Manage Media",
+            help: "Allow this user to access and manage media.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"metadata.permissions.file_vault",
+            label:"Access File Vault",
+            help: "Allow this user to access secure file system.",
+            type:"toggle",
+            columns: 6
+        },
+        {
             label:"System Notifications",
             type:"label",
             columns: 12

@@ -173,7 +173,7 @@ SWAM.Dialog = SWAM.View.extend({
         if (!_.isEmpty(this.children)) {
             var form = this.children["dlg_view"];
             if (form && form.getData) {
-                if (this.options.changes_only || SWAM.Form.changes_only) return form.getChanges();
+                if ((this.options.changes_only != false) && SWAM.Form.changes_only) return form.getChanges();
                 return form.getData();
             }
         }

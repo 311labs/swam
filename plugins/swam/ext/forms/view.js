@@ -406,6 +406,7 @@ SWAM.Form.View = SWAM.View.extend({
         this._date_pickers = list.map(function (sel) {
           var picker = new easepick.create({
                 element:sel,
+                date: sel.value,
                 css: [
                   // 'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css',
                   '/swamcore/plugins/datepicker.css?v=1.2.0',
