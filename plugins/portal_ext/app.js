@@ -198,6 +198,10 @@ PORTAL.PortalApp = SWAM.App.extend({
 				this.wsChangeGroup(old_group);
 			} else {
 				this.group = group;
+				if (this.options.fetch_detailed_group) {
+					group.params.graph = "detailed";
+					group.fetch();
+				}
 				this.fetchMS();
 			}
 		} else if (!group) {
@@ -211,7 +215,12 @@ PORTAL.PortalApp = SWAM.App.extend({
 				this.group = group;
 				this.setProperty("active_group", group);
 				// do not trigger until we fetch our membership
-				this.group.fetchIfStale();
+				if (this.options.fetch_detailed_group) {
+					this.group.params.graph = "detailed";
+					this.group.fetch();
+				} else {
+					this.group.fetchIfStale();
+				}
 				this.fetchMS();
 				this.wsChangeGroup(old_group);
 			}

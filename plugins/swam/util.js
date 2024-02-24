@@ -348,9 +348,19 @@ window.removeStylesheet = function(id) {
   }
 };
 
+window._script_cache = [];
+
 window.loadScript =  function(url, callback) {
+    if (window._script_cache.indexOf(url) >= 0) {
+        if (_.isFunction(callback)) {
+            callback();
+        }
+        return;
+    }
+    window._script_cache.push(url);
     var script = document.createElement('script');
     script.type = 'text/javascript';
+    script.async = true;
     if (!url.contains("?")) {
         if (window.app && window.app.version) {
             url += `?version=${app.version}`;
@@ -359,6 +369,7 @@ window.loadScript =  function(url, callback) {
         }
     }
     script.src = url;
+    script.async = true;
     // Event listener for script load
     if (_.isFunction(callback)) {
         script.onload = callback;
