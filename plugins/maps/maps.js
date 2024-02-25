@@ -16,12 +16,40 @@ SWAM.Views.Map = SWAM.View.extend({
         size: "lg",
         tag_class: 'swam-map-tag',
         map_id: null,
+        heatmap_max_intensity: 100,
+        heatmap_scale_radius: false,
+        heatmap_radius: null,
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
     },
 
     on_init: function() {
         if (!this.options.map_id) this.options.map_id = SWAM.Maps.GOOGLE_MAP_ID;
+        this.debouncedTrigger = window.debounce(
+            this.trigger.bind(this),
+            200
+        );
+    },
+
+    bindMapEvents: function() {
+        if (this.map) {
+            this.map.addListener("zoom_changed", this.on_map_changed.bind(this));
+            this.map.addListener("center_changed", this.on_map_changed.bind(this));
+        }
+    },
+
+    unbindMapEvents: function() {
+        if (this.map) {
+            google.maps.event.clearListeners(this.map, "zoom_changed");
+            google.maps.event.clearListeners(this.map, "center_changed");
+        }
+    },
+
+    on_map_changed: function(evt) {
+        this.debouncedTrigger("map_changed", {
+            zoom: this.getZoom(),
+            center: this.getCenter()
+        });
     },
 
     createInlineMarker: function(marker_info) {
@@ -56,11 +84,23 @@ SWAM.Views.Map = SWAM.View.extend({
         return adv_marker;
     },
 
-    on_render_markers: function() {
-        if (this.options.markers) {
+    setMarkers: function(markers, render) {
+        if (this._markers) {
+            this._markers.forEach(marker => {
+                marker.map = null;
+            });
+        }
+        this._markers = [];
+        this.options.markers = markers;
+        this._markers_changed = true;
+        if (render) this.renderMarkers();
+    },
+
+    renderMarkers: function() {
+        if (this.options.markers && this._markers_changed) {
+            this._markers_changed = false;
             this.info_window = new google.maps.InfoWindow();
             this.options.markers.forEach(marker_info => {
-
                 let adv_marker;
                 if (marker_info.inline) {
                     adv_marker = this.createInlineMarker(marker_info);
@@ -78,49 +118,61 @@ SWAM.Views.Map = SWAM.View.extend({
                         this.info_window.open(adv_marker.map, adv_marker);
                     });
                }
-
+               this._markers.push(adv_marker);
             });
         }
     },
 
-    on_render_heatmap: function() {
-        if (this.options.heatmap_data) {
-            let data = [];
-            this.options.heatmap_data.forEach(hm_info => {
-                data.push({location: new google.maps.LatLng(hm_info.lat, hm_info.lng), weight: hm_info.weight});
-            });
-            this.heatmap = new google.maps.visualization.HeatmapLayer({
-                data: data,
-                map: this.map,
-            });
-        }
+    hideHeatmap: function() {
+        if (this.heatmap) this.heatmap.setMap(null);
     },
 
-    // on_render_markers: function() {
-    //     if (this.options.markers) {
-    //         this.options.markers.forEach(marker => {
-    //            var point = {lat: marker.lat, lng: marker.lng};
-    //            new google.maps.Marker({
-    //              position: point,
-    //              map: this.map,
-    //              title: marker.title
-    //            });
-    //         });
-    //     }
-    // },
+    setHeatmapData: function(data, render) {
+        let weighted = [];
+        data.forEach(hm_info => {
+            weighted.push({
+                location: new google.maps.LatLng(hm_info.lat, hm_info.lng),
+                weight: hm_info.weight
+            });
+        });
+        this._hm_data = weighted;
+        if (render) this.renderHeatmap();
+    },
+
+    renderHeatmap: function() {
+        if (!google.maps.visualization.HeatmapLayer) {
+            console.warn("missing google.maps.visualization.HeatmapLayer");
+            return;
+        }
+        if (this._hm_data) {
+            if (!this.heatmap) {
+                this.heatmap = new google.maps.visualization.HeatmapLayer();
+            }
+            this.heatmap.setMap(this.map);
+            this.heatmap.setOptions({
+                maxIntensity: this.options.heatmap_max_intensity,
+                scaleRadius: this.options.heatmap_scale_radius,
+                radius: this.options.heatmap_radius,
+            });
+            this.heatmap.setData(this._hm_data);
+        }
+    },
 
     on_post_render: function() {
         if (SWAM.Map) {
             this.el.style.width = this.options.width;
             this.el.style.height = this.options.height;
+            if (this.map) {
+                this.unbindMapEvents();
+            }
             this.map = new SWAM.Map(this.el, {
               center: this.options.center,
               zoom: this.options.zoom,
               mapId: this.options.map_id
             });
-
-            this.on_render_markers();
-            this.on_render_heatmap();
+            this.bindMapEvents();
+            this.renderMarkers();
+            this.renderHeatmap();
         } else {
             if (!SWAM.Maps.GOOGLE_MAP_ID) {
                 console.warn("Missing SWAM.Maps.GOOGLE_MAP_ID");
@@ -128,6 +180,23 @@ SWAM.Views.Map = SWAM.View.extend({
             }
             initMaps(this.render.bind(this));
         }
+    },
+    getCenter: function() {
+        if (this.map) {
+            let c = this.map.getCenter();
+            return {lat:c.lat(), lng:c.lng()};
+        }
+        return null;
+    },
+    getZoom: function() {
+        if (this.map) {
+            return this.map.getZoom();
+        }
+        return this.options.zoom;
+    },
+    update: function() {
+        this.renderMarkers();
+        this.renderHeatmap();
     }
 }, {
     showDialog: function(opts) {
