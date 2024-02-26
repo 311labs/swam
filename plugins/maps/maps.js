@@ -29,6 +29,12 @@ SWAM.Views.Map = SWAM.View.extend({
             this.trigger.bind(this),
             200
         );
+        if (this.options.markers) {
+            this.setMarkers(this.options.markers);
+        }
+        if (this.options.heatmap) {
+            this.setHeatmapData(this.options.heatmap);
+        }
     },
 
     bindMapEvents: function() {
