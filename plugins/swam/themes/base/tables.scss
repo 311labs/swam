@@ -181,6 +181,9 @@ table.swam-table {
                 }
             }
         }
+        &.sorted {
+            background: #0000ff29;
+        }
     }
 
     i.swam-icon.swam-icon-sort {

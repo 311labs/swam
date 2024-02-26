@@ -232,6 +232,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     },
 
     on_render_header: function() {
+        if (this.collection.params.sort) {
+            this.collection.sort_field = this.collection.params.sort;
+            if (this.collection.sort_field[0] == "-") this.collection.sort_field = this.collection.sort_field.substr(1);
+        }
         if (this.options.batch_select) {
             var $el = $("<th class='swam-batch-select' data-action='batch_select_all' />");
             var $input = $("<div />").addClass("swam-table-checkbox");
@@ -271,6 +275,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
     			$el.attr("data-action", "sort");
     			$el.data("sort", column.sort_field);
     			if (this.collection.sort_field == column.sort_field) {
+                    $el.addClass("sorted");
     				if (this.collection.sort_descending) {
     					lbl = lbl + " " + this.options.sort_down_icon;
     				} else {
