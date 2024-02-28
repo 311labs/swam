@@ -257,6 +257,7 @@ SWAM.Form.View = SWAM.View.extend({
     getChanges: function() {
         var data = this.getData();
         if (this.options.model) {
+            // data = expandObject(data);
             return deepDiff(this.options.model.attributes, data);
         }
         return data;

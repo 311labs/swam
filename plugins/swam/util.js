@@ -110,7 +110,7 @@ window.deepDiff = function(o1, o2){
             // Compare values
             if (o1[prop] !== o2[prop]) {
                 // If values are not the same, check if they are objects
-                if (typeof o1[prop] === 'object' && typeof o2[prop] === 'object') {
+                if ((typeof o1[prop] === 'object' && typeof o2[prop] === 'object')&&(o1[prop] != null) && (o2[prop] != null)) {
                     // If they are objects, compare them recursively
                     var subDiff = deepDiff(o1[prop], o2[prop]);
                     if (Object.keys(subDiff).length > 0) {

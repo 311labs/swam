@@ -129,16 +129,21 @@ SWAM.Collection = SWAM.Object.extend({
         this.trigger("loading:end", this);
     },
 
+    triggerChange: function() {
+        this.trigger("loading:end", this);
+    },
+
     set: function(models, append) {
         if (!append) {
             this.models = [];
         }
 
-        _.each(models, function(m){
+        _.each(models, function(m, i){
             var model;
             if (_.isObject(m.attributes)) {
                 model = m;
             } else {
+                if (!m.id) m.id = i+1; // fix collections with no id
                 model = new this.options.Model(m);
             }
             this.models.push(model);
@@ -203,6 +208,7 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     get: function(id) {
+        if (id.id) id = id.id;
         return _.findWhere(this.models, {id:parseInt(id)});
     },
 
@@ -218,6 +224,12 @@ SWAM.Collection = SWAM.Object.extend({
 
     each: function(callback) {
         _.each(this.models, callback);
+    },
+
+    toList: function() {
+        var output = [];
+        _.each(this.models, function(obj){ output.push(obj.attributes);});
+        return output;
     },
 
     parseResponse: function(resp) {

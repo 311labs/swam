@@ -104,6 +104,7 @@ SWAM.Views.List = SWAM.View.extend({
     },
 
     get: function(id) {
+        if (id.id) id = id.id;
         return _.findWhere(this.items, {id:id});
     },
 
@@ -130,10 +131,17 @@ SWAM.Views.List = SWAM.View.extend({
         this.render();
     },
 
+    removeModel: function(model) {
+        this.remove(model);
+    },
+
     remove: function(model) {
-        if (this.get(model)) {
-            this.on_remove(model);
-            this.trigger("remove", model);
+        let item = this.get(model);
+        if (item) {
+            this.collection.remove(item.model);
+            this.items.remove(item);
+            this.trigger("remove", item);
+            this.render();
         }
     },
 
