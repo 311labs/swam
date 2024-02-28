@@ -392,7 +392,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     },
 
     showBusy: function(opts) {
-        options = _.extend({timeout:12000}, opts);
+        options = _.extend({timeout:120000}, opts);
         this.cancelBusy();
         if (_.isNumber(options.timeout) && (options.timeout > 0)) {
             this._busy_info = options;

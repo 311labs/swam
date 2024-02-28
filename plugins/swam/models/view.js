@@ -67,10 +67,11 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
                     .appendTo($container);
                 var $wrapper = $("<div data-label='" + obj.label + "' />").addClass("swam-field").appendTo($fieldbox);
                 if (model) {
+                    let value = null;
                     if (obj.template) {
                         value = SWAM.renderString(obj.template, {model:model});
                     } else {
-                        var value = model.get(obj.field, obj.localize);
+                        value = model.get(obj.field, null, obj.localize);
                         if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
                     }
                     
