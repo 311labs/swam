@@ -69,21 +69,33 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
                 } else {
                     obj = _.extend({}, obj);
                 }
+                if (obj.view_ignore) return;
                 if (!obj.field && obj.name) obj.field = obj.name;
-                if (!obj.label) obj.label = obj.field;
+                if (obj.label === undefined) obj.label = obj.field;
                 if (!obj.field) obj.field = obj.label;
                 if (!obj.columns) obj.columns = 6;
-                if (!obj.label) obj.label = "";
                 if (obj.view_localize) obj.localize = obj.view_localize;
                 var $fieldbox = $("<div />")
                     .addClass("col-md-" + obj.columns)
                     .appendTo($container);
-                var $wrapper = $("<div data-label='" + obj.label + "' />").addClass("swam-field").appendTo($fieldbox);
+
+                var $wrapper = $("<div data-label='" + obj.label + "' />").appendTo($fieldbox);
                 if (obj.type == "empty") return;
                 if (obj.type == "line") {
                     $wrapper.html("<hr>");
                     return;
+                } else if (obj.type == "heading") {
+                    if (!obj.size) obj.size = 3;
+                    let tag = "h" + obj.size;
+                    let $el = $(document.createElement(tag)).html(obj.value || obj.label);
+                    $wrapper.append($el)
+                    if (obj.classes) $el.addClass(obj.classes);
+                    return;
                 }
+                if (obj.label != null) {
+                    $wrapper.addClass("swam-field");
+                }
+                
                 if (model) {
                     let value = null;
                     if (obj.template) {

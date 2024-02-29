@@ -119,6 +119,18 @@ SWAM.Model = SWAM.Object.extend({
         return ret;
     },
 
+    hasSetting: function(setting) {
+        if (_.isArray(setting)) {
+            for (var i = 0; i < setting.length; i++) {
+                if (this.hasSetting(setting[i])) return true;
+            }
+            return false;
+        }
+        var val = this.get("metadata." + setting);
+        if (val == undefined) val = this.get(setting);
+        return ["True", "true", "1", 1, true].indexOf(val) >= 0;
+    },
+
     lookup: function(key) {
         var mc = new Mustache.Context(this);
         return mc.lookup(key);

@@ -10,7 +10,7 @@ SWAM.Form.build = function(fields, defaults, model, options) {
 	form_info.$form = options.$form || $('<form autocorrect="off" spellcheck="false" autocomplete="off" />');
 
 	_.each(fields, function(field) {
-		if (!field) return;
+		if (!field || field.form_ignore) return;
 		if ((field == "")|| (field == " ")) field = {type:"line", columns:12};
 		if (_.isString(field)) field = {label:field, type:"label"};
 		var fc = _.extend({type:"text", columns:12, column_size:"sm"}, _.deepClone(field)); // copy the field so we can manipulate its info
@@ -314,6 +314,7 @@ SWAM.Form.Builder.textarea = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.line = function(fc, form_info) {
+	fc.$el.removeClass("swam-field");
 	fc.$el.append("<hr />");
 }
 
