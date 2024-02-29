@@ -159,6 +159,7 @@ SWAM.Localize = {
     },
 
     'clipboard': function(value, attr, fmt) {
+        if (!value) return;
         let vid = _.uniqueId("clipboard");
         return `<span id="${vid}">${value}</span><button type="button" class="btn btn-link btn-clipboard" data-clipboard-target="#${vid}" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="Copy to clipboard" aria-label="Copy to clipboard"><i class="bi bi-clipboard"></i></button>`;
     },
@@ -1085,7 +1086,8 @@ SWAM.Localize = {
         return `${value.city}, ${value.state}, ${value.country}`;
     },
 
-    address: function(value, attr, fmt) {
+    address: function(value, attr, fmt, opts) {
+        opts = opts || {};
         if (!value || !value.city) return "not set";
         let output = "";
         if (value.line1) {
@@ -1095,8 +1097,12 @@ SWAM.Localize = {
             output += `<div>${value.line2}</div>`;
         }
         output += `<div>${value.city}, ${value.state}, ${value.postalcode}</div>`;
-        if (value.country) output += `<div>${value.country}</div>`;
+        if (!opts.no_country && value.country) output += `<div>${value.country}</div>`;
         return output;
+    },
+
+    address_us: function(value, attr, fmt, opts) {
+        return this.address(value, attr, fmt, {no_country:true});
     },
 
     ignore_errors: true,
