@@ -104,6 +104,7 @@ SWAM.Views.List = SWAM.View.extend({
     },
 
     get: function(id) {
+        if (!id) return null;
         if (id.id) id = id.id;
         return _.findWhere(this.items, {id:id});
     },

@@ -208,6 +208,7 @@ SWAM.Collection = SWAM.Object.extend({
     },
 
     get: function(id) {
+        if (!id) return null;
         if (id.id) id = id.id;
         return _.findWhere(this.models, {id:parseInt(id)});
     },
