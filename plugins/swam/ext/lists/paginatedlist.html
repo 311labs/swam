@@ -1,5 +1,5 @@
 {{#options.title}}
-{{#options.title_right}}
+{{#has_title_right}}
 <div class="row">
 	<div class="col">
 		<div class='swam-list-title'>
@@ -7,13 +7,13 @@
 		</div>
 	</div>
 	<div class="swam-list-title col-auto text-end">
-		<div>{{{options.title_right}}}</div>
+		<div id="title_right_view">{{{options.title_right}}}</div>
 	</div>
 </div>
-{{/options.title_right}}
-{{^options.title_right}}
+{{/has_title_right}}
+{{^has_title_right}}
 <div class='swam-list-title'>{{#options.icon}}{{{options.icon|icon}}} {{/options.icon}}{{{options.title}}}</div>
-{{/options.title_right}}
+{{/has_title_right}}
 {{/options.title}}
 <div class="swam-table-group">
 	<div id='filters'></div>

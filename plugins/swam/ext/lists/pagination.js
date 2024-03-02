@@ -94,6 +94,13 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
             });
             this.addChild("filters", this.filters);
         }
+        if (this.options.title_right_view) {
+            this.addChild("title_right_view", this.options.title_right_view);
+        }
+    },
+
+    has_title_right: function() {
+        return (this.options.title_right || this.options.title_right_view);
     },
 
     on_item_clicked: function(item) {
@@ -102,6 +109,7 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
 
     on_loading_end: function() {
         this.$el.find("#count").text(this.collection.count);
+        if (this.getChild("title_right_view")) this.getChild("title_right_view").render();
     },
 
     reset: function() {

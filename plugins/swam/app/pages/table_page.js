@@ -30,19 +30,20 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	        label: "<i class='bi bi-plus'></i> Add",
 	        classes: "btn btn-primary",
 	        columns:3,
-	        columns_classes: "col-sm-12 col-md-3 col-lg-3",
+	        columns_classes: "col-auto",
 	    },
 		filter_bar: [
 		    {
 		        type: "group",
 		        classes: "justify-content-sm-end",
 		        columns: 9,
+		        columns_classes: "col",
 		        fields: [
 		            {
 		                name: "search",
 		                type: "search",
 		                columns: 6,
-		                columns_classes: "col-sm-12 col-md-5 col-lg-6",
+		                columns_classes: "col-md col-lg col-sm-12",
 		                form_wrap: "search",
 		                placeholder: "search...",
 		                can_clear: true,
@@ -55,7 +56,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		            },
 		            {
 		                columns: 3,
-		                columns_classes: "col-sm-3 col-md-3 col-lg-2",
+		                columns_classes: "col-md col-lg col-sm-12",
 		                type: "select",
 		                name: "size",
 		                options: [
@@ -144,6 +145,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			summary_button: this.options.summary_button,
 			summary_template: this.options.summary_template,
 			columns: this.options.columns,
+			title_right: this.options.title_right,
+			title_right_view: this.options.title_right_view,
 			list_options: this.options.list_options
 		}));
 		if (!this.options.on_item_clicked) {
