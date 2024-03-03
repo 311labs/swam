@@ -60,6 +60,20 @@ SWAM.Dialog = SWAM.View.extend({
         if (!this.options.add_classes) {
             this.options.add_classes = app.options.dialog_theme;
         }
+
+        if (this.options.color) {
+            let lst = this.options.add_classes.split(' ');
+            lst.remove('modal-primary')
+                .remove('modal-success')
+                .remove('modal-brand')
+                .remove('modal-danger')
+                .remove('modal-warning')
+                .remove('modal-info')
+                .remove('modal-dark')
+            lst.push('modal-' + this.options.color);
+            this.options.add_classes = lst.join(' ');
+        }
+
         if (!this.options.stack && SWAM.active_dialog) {
             SWAM.active_dialog.dismiss();
         } else if (this.options.stack) {
