@@ -113,7 +113,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         filter_icon_active: ' <i class="bi bi-filter text-success" data-action="filter"></i>',
         filter_icon: ' <i class="bi bi-filter text-muted hover-primary" data-action="filter"></i>',
         batch_select: false,
-        batch_select_label: 'Rows Selected',
+        batch_select_label: 'Selected',
         batch_actions: [
             {label:"Delete", icon:"trash", action:"batch_delete"}
         ],

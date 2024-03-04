@@ -10,7 +10,7 @@
 	<div class="col">
 		<div class="batch-select-actions d-flex justify-content-end">
 			{{#getActions}}
-			<div class="batch-select-action text-center {{#.is_last}}rounded-rend{{/.is_last}}" data-action="{{.action}}">
+			<div class="batch-select-action text-center {{#.is_last}}rounded-rend{{/.is_last}} {{.add_classes}}" data-action="{{.action}}">
 				<div class="batch-action-icon fs-3">{{{ICON(.icon)}}}</div>
 				<div class="batch-action-title fs-8">{{.label}}</div>
 			</div>
