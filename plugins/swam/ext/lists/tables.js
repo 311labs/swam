@@ -121,7 +121,8 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         empty_html: "<tr><td colspan='100' class='text-center p-3 text-muted'>No items returned</td>",
         fetch_on_tab: true,
         show_totals_label: "totals",
-        show_totals: null
+        show_totals: null,
+        menu_sort: true
     },
 
     selectAll: function() {
@@ -171,33 +172,86 @@ SWAM.Views.Table = SWAM.Views.List.extend({
             this.showSortMenu(evt, $column, sort_field);
         } else {
             // do toggle sort
-            this.sortByField(sort_field, !this.collection.sort_descending);
+            if (!this.collection.sort_descending && this.collection.sort_field) {
+                this.clearSorting();
+            } else {
+                this.sortByField(sort_field, !this.collection.sort_descending);
+            }
         }
         
     },
 
     showSortMenu: function(evt, $column, sort_field) {
-        if (this.popover) this.pop
+        if (this.popover) this.popover.dispose();
+
+        let is_sort_field = this.collection.sort_field == sort_field;
+        let is_decending = this.collection.sort_descending;
+        ctxt = {is_sort_field:is_sort_field, is_decending:is_decending};
+        ctxt.show_no_sort = is_sort_field;
+        ctxt.show_ascending = !is_sort_field || is_decending;
+        ctxt.show_descending = !is_sort_field || !is_decending;
         this.popover = new bootstrap.Popover($column, {
-          title: 'Sort', // Title of the popover
-          content: 'Popover content', // Content inside the popover
-          trigger: 'focus', // Manual triggering
+          // title: 'Sort', // Title of the popover
+          html: true,
+          customClass: "shadow popover-sm-padding",
+          content: SWAM.renderTemplate("swam.ext.lists.sort_menu", ctxt),
+          trigger: 'click', // Manual triggering
           placement: 'right' // Adjust the placement as needed
         });
         this.popover.show();
+        // $("body").one("click", function(evt){
+        //     evt.stopPropagation();
+        //     this.popover.dispose();
+        //     this.popover = null;
+        // }.bind(this));
+
+        $("#sort_popover_menu").find("a").one("click", function(evt) {
+            let action = $(evt.currentTarget).attr("id");
+            if (action == "sort_ascending") {
+                this.sortByField(sort_field, false);
+            } else if (action == "sort_descending") {
+                this.sortByField(sort_field, true);
+            } else {
+                this.clearSorting();
+            }
+            this.popover.dispose();
+            this.popover = null;
+        }.bind(this));
+
+        evt.stopPropagation();
+
+        $("body").one("click", function(evt){
+            if (this.popover) {
+                this.popover.dispose();
+                this.popover = null;
+                evt.stopPropagation();
+            }
+        }.bind(this));
+
+    },
+
+    clearSorting: function() {
+        if (this.collection.params.sort) {
+            delete this.collection.params.sort;
+            this.collection.sort_field = undefined;
+            this.collection.sort_descending = false;
+            this.trigger("sort", this, "");
+            if (!this.options.remote_sort) {
+                this.collection.clearFilter();
+            } else {
+                this.collection.fetch();
+            }
+        }
     },
 
     sortByField: function(sort_field, sort_descending) {
     	this.collection.sort_field = sort_field;
     	this.collection.sort_descending = sort_descending;
-    	if (this.collection.params.sort == sort_field) {
-    		this.collection.params.sort = "-" + sort_field;
-    	} else if (this.collection.params.sort == "-" + sort_field) {
-    		delete this.collection.params.sort;
-    		this.collection.sort_field = undefined;
-    	} else {
-    		this.collection.params.sort = sort_field;
-    	}
+        if (sort_descending) {
+            this.collection.params.sort = "-" + sort_field;
+        } else {
+            this.collection.params.sort = sort_field;
+        }
     	this.trigger("sort", this, sort_field);
         if (!this.options.remote_sort) {
             this.sortBy(sort_field, this.collection.sort_descending);

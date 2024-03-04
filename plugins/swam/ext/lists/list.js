@@ -71,6 +71,10 @@ SWAM.Views.List = SWAM.View.extend({
         this.collection.sortBy(field, decending, models);
     },
 
+    clearSorting: function() {
+        this.collection.clearFilter();
+    },
+
     setCollection: function(col) {
         if (this.collection) {
             this.collection.off('add', this.on_add, this);
