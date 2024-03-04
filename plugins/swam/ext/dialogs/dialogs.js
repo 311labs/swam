@@ -181,7 +181,7 @@ SWAM.Dialog = SWAM.View.extend({
             }
             this.$el.addClass("show");
             
-            this.$el.find("input:text, textarea").first().focus();
+            this.$el.find("input:text, textarea").not(".swam-edit-select-input").first().focus();
         }.bind(this));
     },
     getData: function(evt) {
