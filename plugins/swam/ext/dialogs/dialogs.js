@@ -61,7 +61,7 @@ SWAM.Dialog = SWAM.View.extend({
             this.options.add_classes = app.options.dialog_theme;
         }
 
-        if (this.options.color) {
+        if (this.options.color && this.options.add_classes) {
             let lst = this.options.add_classes.split(' ');
             lst.remove('modal-primary')
                 .remove('modal-success')

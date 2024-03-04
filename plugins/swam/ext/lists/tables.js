@@ -167,8 +167,29 @@ SWAM.Views.Table = SWAM.Views.List.extend({
             sort_field = $column.data("sort");
         }
     	if (!sort_field) return;
+        if (this.options.menu_sort) {
+            this.showSortMenu(evt, $column, sort_field);
+        } else {
+            // do toggle sort
+            this.sortByField(sort_field, !this.collection.sort_descending);
+        }
+        
+    },
+
+    showSortMenu: function(evt, $column, sort_field) {
+        if (this.popover) this.pop
+        this.popover = new bootstrap.Popover($column, {
+          title: 'Sort', // Title of the popover
+          content: 'Popover content', // Content inside the popover
+          trigger: 'focus', // Manual triggering
+          placement: 'right' // Adjust the placement as needed
+        });
+        this.popover.show();
+    },
+
+    sortByField: function(sort_field, sort_descending) {
     	this.collection.sort_field = sort_field;
-    	this.collection.sort_descending = !this.collection.sort_descending;
+    	this.collection.sort_descending = sort_descending;
     	if (this.collection.params.sort == sort_field) {
     		this.collection.params.sort = "-" + sort_field;
     	} else if (this.collection.params.sort == "-" + sort_field) {
