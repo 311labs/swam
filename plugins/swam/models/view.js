@@ -46,13 +46,69 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
         return table;
     },
 
+    buildField: function(obj, model, $container) {
+        if (_.isString(obj)) {
+            obj = {field:obj};
+        } else {
+            obj = _.extend({}, obj);
+        }
+        if (obj.view_ignore) return;
+        if (!obj.field && obj.name) obj.field = obj.name;
+        if (obj.label === undefined) obj.label = obj.field;
+        if (!obj.field) obj.field = obj.label;
+        if (!obj.columns) obj.columns = 6;
+        if (obj.view_localize) obj.localize = obj.view_localize;
+        var $fieldbox = $("<div />")
+            .addClass("col-md-" + obj.columns)
+            .appendTo($container);
+
+        var $wrapper = $("<div data-label='" + obj.label + "' />").appendTo($fieldbox);
+        if (obj.type == "empty") return;
+        if (obj.type == "line") {
+            $wrapper.html("<hr>");
+            return;
+        } else if (obj.type == "heading") {
+            if (!obj.size) obj.size = 3;
+            let tag = "h" + obj.size;
+            let $el = $(document.createElement(tag)).html(obj.value || obj.label);
+            $wrapper.append($el)
+            if (obj.classes) $el.addClass(obj.classes);
+            return;
+        }
+        if (obj.label != null) {
+            $wrapper.addClass("swam-field");
+        }
+        
+        if (model) {
+            let value = null;
+            if (obj.template) {
+                value = SWAM.renderString(obj.template, {model:model});
+            } else if (obj.type == "toggle") {
+                value = model.get(obj.field, null, "yesno_icon");
+            } else {
+                value = model.get(obj.field, null, obj.localize);
+                if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
+            }
+            
+            if (!value) {
+                if (obj.hide_null) {
+                    $fieldbox.remove();
+                    return;
+                }
+                value = "&nbsp;"
+            }
+            $wrapper.html(value);
+        } else {
+            $wrapper.text("&nbsp;");
+        }
+    },
+
     build: function(model, fields, options) {
         options = options || {};
         var $container = $("<div />").addClass("model-fields row");
         if (options.inline) {
             $container.addClass("inline");
         }
-        var model = model;
         if (!fields) {
             _.each(model.attributes, function(value, key){
                 var $fieldbox = $("<div />")
@@ -63,62 +119,19 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
                 $wrapper.html(value);
             });
         } else {
+            if (options.prepend_fields) {
+                _.each(options.prepend_fields, function(obj){
+                    SWAM.Views.ModelView.buildField(obj, model, $container);
+                });
+            }
             _.each(fields, function(obj){
-                if (_.isString(obj)) {
-                    obj = {field:obj};
-                } else {
-                    obj = _.extend({}, obj);
-                }
-                if (obj.view_ignore) return;
-                if (!obj.field && obj.name) obj.field = obj.name;
-                if (obj.label === undefined) obj.label = obj.field;
-                if (!obj.field) obj.field = obj.label;
-                if (!obj.columns) obj.columns = 6;
-                if (obj.view_localize) obj.localize = obj.view_localize;
-                var $fieldbox = $("<div />")
-                    .addClass("col-md-" + obj.columns)
-                    .appendTo($container);
-
-                var $wrapper = $("<div data-label='" + obj.label + "' />").appendTo($fieldbox);
-                if (obj.type == "empty") return;
-                if (obj.type == "line") {
-                    $wrapper.html("<hr>");
-                    return;
-                } else if (obj.type == "heading") {
-                    if (!obj.size) obj.size = 3;
-                    let tag = "h" + obj.size;
-                    let $el = $(document.createElement(tag)).html(obj.value || obj.label);
-                    $wrapper.append($el)
-                    if (obj.classes) $el.addClass(obj.classes);
-                    return;
-                }
-                if (obj.label != null) {
-                    $wrapper.addClass("swam-field");
-                }
-                
-                if (model) {
-                    let value = null;
-                    if (obj.template) {
-                        value = SWAM.renderString(obj.template, {model:model});
-                    } else if (obj.type == "toggle") {
-                        value = model.get(obj.field, null, "yesno_icon");
-                    } else {
-                        value = model.get(obj.field, null, obj.localize);
-                        if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
-                    }
-                    
-                    if (!value) {
-                        if (obj.hide_null) {
-                            $fieldbox.remove();
-                            return;
-                        }
-                        value = "&nbsp;"
-                    }
-                    $wrapper.html(value);
-                } else {
-                    $wrapper.text("&nbsp;");
-                }
+                SWAM.Views.ModelView.buildField(obj, model, $container);
             });
+            if (options.append_fields) {
+                _.each(options.append_fields, function(obj){
+                    SWAM.Views.ModelView.buildField(obj, model, $container);
+                });
+            }
         }
         return $("<div />").append($container).html();
     }
