@@ -2,6 +2,29 @@ SWAM.Pages = {};
 
 SWAM.Page = SWAM.View.extend({
 	classes: "page-view",
+
+	startTimer: function() {
+		this.stopTimer();
+		if (!this._on_timer_bound) this._on_timer_bound = this._on_timer_.bind(this);
+		if (!this.options.timer_ms) this.options.timer_ms = 30000;
+		this._timer = setTimeout(this._on_timer_bound, this.options.timer_ms);
+	},
+
+	clearTimer: function() {
+		if (this._timer) {
+			clearTimeout(this._timer);
+			this._timer = null;
+		}
+	},
+
+	_on_timer_: function(evt) {
+		this._timer = null;
+		if (this.on_timer_event) {
+			this.on_timer_event(evt);
+		} else {
+			console.warn("missing on_timer_event callback");
+		}
+	},
 	
 	on_route: function(path, route) {
 		// this is only called for an initial route loaded by the app

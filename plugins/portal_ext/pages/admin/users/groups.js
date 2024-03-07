@@ -4,7 +4,7 @@ PORTAL.Views.MemberGroups = SWAM.Views.List.extend({
         add_classes: "p-3",
         item_template: "portal_ext.pages.admin.users.group",
         Collection: SWAM.Collections.Member,
-
+        can_view: true,
         collection_params: {
             size: 5
         }
@@ -30,6 +30,7 @@ PORTAL.Views.MemberGroups = SWAM.Views.List.extend({
     },
 
     on_item_clicked: function(item) {
+        if (!this.options.can_view) return;
         let view = new PORTAL.Views.AdminGroup();
         view.setModel(new SWAM.Models.Group(item.model.get("group")));
         let dlg = SWAM.Dialog.showView(view, {

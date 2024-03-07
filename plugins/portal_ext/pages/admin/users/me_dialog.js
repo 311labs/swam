@@ -91,7 +91,9 @@ PORTAL.Views.Me = SWAM.View.extend(SWAM.Ext.BS).extend({
             }
         }));
 
-        this.tabs.addTab("Groups", "groups", new PORTAL.Views.MemberGroups());
+        this.tabs.addTab("Groups", "groups", new PORTAL.Views.MemberGroups({
+            can_view: false
+        }));
 
         // this.tabs.addTab("Devices", "devices", new PORTAL.Views.MemberDevices());
 
