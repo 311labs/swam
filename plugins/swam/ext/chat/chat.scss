@@ -121,6 +121,13 @@ ol.swam-chat-list {
     }
   }
 
+  .status-bubble {
+    background: #ffffe4;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #cccccc;
+  }
+
   .chat-bubble {
     position: relative; /* Setup a relative container for our psuedo elements */
     max-width: 255px;

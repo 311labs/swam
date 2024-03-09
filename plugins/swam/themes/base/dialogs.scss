@@ -107,6 +107,36 @@ body.app {
 	    	}
 	    }
 
+	    div.modal-info div.modal-header {
+	    	background: $brand-info;
+	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
+	    	button.btn {
+	    		color: white;
+	    	}
+	    }
+
+	    div.modal-dark div.modal-header {
+	    	background: $brand-dark;
+	    	color: white;
+	    	button.btn-close {
+	    		filter: invert(1) grayscale(100%) brightness(200%);
+	    	}
+	    	button.btn {
+	    		color: white;
+	    	}
+	    }
+
+	    div.modal-muted div.modal-header {
+	    	background: $muted-color;
+	    	color: black;
+	    	button.btn {
+	    		color: black;
+	    	}
+	    }
+
 	    &.bg-dark {
 	    	div.modal-content {
 	    		background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;;

@@ -6,8 +6,8 @@
 	<div class="chat-avatar-initials">{{model.by.initials|ifempty('?')}}</div>
 	{{/model.by.avatar}}
 </div>
-<div class="chat-bubble">
+<div class="{{options.kind}}-bubble">
 	<div class="chat-by">{{model.by.display_name}}</div>
-	<div class="chat-msg">{{{model.text}}}</div>
+	<div class="chat-msg">{{{get_message}}}</div>
 	<div class="chat-time">{{model.created|datetime}}</div>
 </div>
