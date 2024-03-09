@@ -120,6 +120,19 @@ PORTAL.Views.Incident = SWAM.View.extend({
             });
 
             context_menu.push({
+                label: "Pause",
+                icon: "pause-circle",
+                callback: function(dlg, menu) {
+                    app.showBusy();
+                    model.save({state:2}, function(){
+                        app.hideBusy();
+                        dlg.dismiss();
+                        collection.fetch();
+                    });
+                }
+            });
+
+            context_menu.push({
                 label: "Resolved",
                 icon: "shield-fill-check",
                 callback: function(dlg, menu) {

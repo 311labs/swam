@@ -35,7 +35,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
 });
 
 SWAM.Views.ChatView = SWAM.View.extend({
-    classes: "swam-chat d-flex flex-column h-100",
+    classes: "swam-chat d-flex flex-column h-100 position-relative",
     template: "swam.ext.chat.notes",
 
     events: {
