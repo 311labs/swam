@@ -30,11 +30,12 @@ PORTAL.Views.Incident = SWAM.View.extend({
     on_new_msg: function(evt) {
         if (!evt.value) return;
         this.notes.showBusy();
-        let model = new PAYOMI.Models.FFOrderNote();
-        let data = {text:evt.value};
+        let model = new SWAM.Models.IncidentHistory();
+        let data = {note:evt.value};
         data.by = app.me.id;
+        data.kind = "note";
         data.group = this.model.get("group.id");
-        data.order = this.model.id;
+        data.parent = this.model.id;
         model.save(data, function(resp){
             this.notes.hideBusy();
             this.notes.clearMessage();
@@ -131,8 +132,21 @@ PORTAL.Views.Incident = SWAM.View.extend({
                 }
             });
         }
+
+        context_menu.push({
+            divider: true
+        });
+        var dlg;
+        context_menu.push({
+            label: "Close Window",
+            icon: "x",
+            callback: function() {
+                dlg.dismiss();
+            }
+        });
+
         let header = SWAM.renderTemplate("portal_ext.pages.admin.incidents.incidents.header", {model:model});
-        return SWAM.Dialog.showView(this, {
+        dlg = SWAM.Dialog.showView(this, {
             title: header,
             kind: "primary",
             can_dismiss: true,
@@ -143,6 +157,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
             // height: 'md',
             "context_menu": context_menu
         });
+        return dlg;
     }
 
 });
