@@ -161,6 +161,7 @@ SWAM.Dialog = SWAM.View.extend({
         if (this.options.context_menu) {
             var cmenu = [];
             _.each(this.options.context_menu, function(menu){
+                if (menu.divider) return cmenu.push({divider:true});
                 if (menu.action == undefined) menu.action = _.uniqueId("context_menu");
                 cmenu.push({icon:menu.icon, label:menu.label, action:"context_menu", id:menu.action});
             });

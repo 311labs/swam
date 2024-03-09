@@ -122,6 +122,8 @@ SWAM.Views.NavItem = SWAM.View.extend({
 			this.template = "<label>{{#options.icon}}{{{ICON(options.icon)}}}{{/options.icon}} {{options.label}}</label>";
 		} else if ((this.options.kind == "separator")||(this.options.kind == "spacer")) {
 			this.template = "<hr />";
+		} else if (this.options.divider) {
+			this.template = "<hr />";
 		}
 	},
 
