@@ -88,10 +88,24 @@ body.app {
 		transform: translateX(-120%);
 		user-select: none;
 	}
+
+	#panel-right {
+		position: absolute;
+		right: 0px;
+		top: 0;
+		bottom: 0;
+		width: $panel-right-width;
+		background: $panel-right-background;
+		color: $panel-right-color;
+		transform: translateX(120%);
+		// user-select: none;
+		z-index: 101;
+	}
 }
 
 #app_body.panel-animate {
 	div#panel-left,
+	div#panel-right,
 	div#panel-main {
 		transition-duration: 400ms;
 	}
@@ -109,7 +123,7 @@ body.app {
 		left: $panel-left-width;
 	}
 	div#panel-left{
-		transform: translateX(0)
+		transform: translateX(0);
 	}
 }
 
@@ -139,6 +153,14 @@ body.app {
 	div#panel-main {
 		right: $panel-right-width;
 	}
+
+	div#panel-right {
+		transform: translateX(0);
+	}
+
+	.panel-right-reveal-hide {
+		display: none;
+	}
 }
 
 
@@ -162,7 +184,28 @@ body.app {
 			right: -$panel-left-width;
 		}
 	}
+
+	#app_body.panel-right-reveal {
+		div#panel-right {
+			position: fixed;
+			left: 0;
+			width: 100%;
+		}
+	}
 }
+
+@media (max-width: 1200px) {
+	#app_body.panel-right-reveal {
+		div#panel-main{ 
+			right: 0;
+		}
+		div#panel-right {
+			position: fixed;
+		}
+	}
+}
+
+
 #app_body.use-mobile-menu {
 	.topnav-brand{
 		.brand-img {

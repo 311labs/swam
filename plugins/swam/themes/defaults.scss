@@ -91,9 +91,9 @@ $panel-left-hover-color: white;
 $panel-left-hover-bg: rgba(255,255,255,.1);
 $panel-left-shadow: none;
 
-$panel-right-width: $panel-left-width;
-$panel-right-background: $panel-left-background;
-$panel-right-color: $panel-left-color;
+$panel-right-width: 300px;
+$panel-right-background: white;
+$panel-right-color: black;
 
 
 $table-header-bg: $gray-700;
@@ -127,6 +127,7 @@ $input-border-width: 2px;
 $input-border-color: $brand-primary;
 $input-focus-box-shadow: 0;
 $input-focus-border-color: black;
+$input-placeholder-color: #cccccc;
 
 @mixin nolist {
 	list-style: none;

@@ -16,6 +16,14 @@ div.swam-form-input {
         color: #444;
     }
 
+    input::placeholder, textarea::placeholder {
+        color: $input-placeholder-color;
+    }
+
+    input.swam-edit-select-input::placeholder {
+        color: var(--bs-body-color);
+    }
+
     input.form-control-date, input.form-control-daterange {
         cursor: pointer;
         &[readonly] {

@@ -6,6 +6,16 @@ div.swam-chat {
   max-height: 100%;
 }
 
+div.swam-chat-header {
+  background-color: $page-background;
+  color: $brand-primary;
+  height: $topbar-height;
+  line-height: $topbar-height;
+  div.swam-chat-title {
+    font-size: 1.2rem;
+  }
+}
+
 ol.swam-chat-list {
   --sentColor: #0b93f6;
   --receiveColor: #e5e5ea;
@@ -123,6 +133,7 @@ ol.swam-chat-list {
 
   .status-bubble {
     background: #ffffe4;
+    margin: 8px 0;
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #cccccc;

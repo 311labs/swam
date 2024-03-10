@@ -1,5 +1,6 @@
 
 PORTAL.PortalApp = SWAM.App.extend({
+	template: "<div id='panel-left'></div><div id='panel-main'><header id='title-bar'></header><div id='pages' class='has-topbar pages-absolute'></div></div><div id='panel-right'></div>",
 
 	init_portal_ext: function() {
 		this.me = new SWAM.Models.Me();

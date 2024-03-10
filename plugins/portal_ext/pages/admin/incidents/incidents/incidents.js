@@ -96,6 +96,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                 type: "group",
                 classes: "justify-content-sm-end",
                 columns: 9,
+                columns_classes: "col",
                 fields: [
                     {
                         placeholder: "Select State",

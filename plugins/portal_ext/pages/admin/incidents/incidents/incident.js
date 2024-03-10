@@ -5,6 +5,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
     on_init: function() {
         this.addChild("tabs", new PORTAL.Views.IncidentTabs());
         this.addChild("notes", new SWAM.Views.ChatView({
+            title: "Notes",
             item_options: {
                 message_field: "note"
             },

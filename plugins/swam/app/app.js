@@ -229,10 +229,12 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         } else {
             this.$el.addClass("panel-animate").removeClass("panel-left-reveal-partial").addClass("panel-left-reveal");
         }
+        this.trigger("show_left_panel", this);
     },
 
     hideLeftPanel: function() {
         this.$el.addClass("panel-animate").removeClass("panel-left-reveal");
+        this.trigger("hide_left_panel", this);
     },
 
     toggleLeftPanel: function() {
@@ -246,6 +248,35 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     isLeftPanelOpen: function() {
         return this.$el.hasClass("panel-left-reveal");
+    },
+
+    showRightPanel: function(partial) {
+        // to make it slide over vs shrink add class slide to body
+        if (this.options.slide) this.$el.addClass("slide");
+        if (partial) {
+            this.$el.addClass("panel-animate").removeClass("panel-right-reveal").addClass("panel-right-reveal-partial");
+        } else {
+            this.$el.addClass("panel-animate").removeClass("panel-right-reveal-partial").addClass("panel-right-reveal");
+        }
+        this.trigger("show_right_panel", this);
+    },
+
+    hideRightPanel: function() {
+        this.$el.addClass("panel-animate").removeClass("panel-right-reveal");
+        this.trigger("show_right_panel", this);
+    },
+
+    toggleRightPanel: function() {
+        if (this.isRightPanelOpen()) {
+            this.hideRightPanel();
+        } else {
+            this.showRightPanel();
+        }
+
+    },
+
+    isRightPanelOpen: function() {
+        return this.$el.hasClass("panel-right-reveal");
     },
 
     on_swipe_begin: function(evt) {

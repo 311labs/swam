@@ -1,42 +1,16 @@
-SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
-    template: "swam.ext.chat.item",
-    classes: "chat-item",
-
-    defaults: {
-        kind: "chat",
-        message_field: "text",
-        bubble_kinds: {
-            "status": "status",
-            "upload": "upload",
-            "note": "chat",
-            "chat": "chat"
-        }
-    },
-
-    get_message: function() {
-        return this.model.get(this.options.message_field);
-    },
-
-    on_pre_render: function() {
-        let by = this.model.get("by");
-        let kind = this.model.get("kind");
-        if (this.options.kind) {
-            this.options.kind = this.options.bubble_kinds[kind] || "status";
-        }
-
-        if (by.id == app.me.id) {
-            this.options.add_classes = "sent";
-        } else {
-            this.options.add_classes = "received";
-        }
-        this.updateAttributes();
-    }
-
-});
-
 SWAM.Views.ChatView = SWAM.View.extend({
     classes: "swam-chat d-flex flex-column h-100 position-relative",
-    template: "swam.ext.chat.notes",
+    template: "swam.ext.chat.chat",
+
+    defaults: {
+        title: "Chat",
+        buttons: [
+            {
+                icon: "reload",
+                action: "reload"
+            }
+        ]
+    },
 
     events: {
         "keydown textarea": "on_submit"
@@ -56,7 +30,17 @@ SWAM.Views.ChatView = SWAM.View.extend({
         this.collection = this.getChild("chatlist").collection;
         this.collection.params.size = 400;
         this.collection.params.sort = "id";
-        this.collection.on("loading:end", this.scrollToEnd, this);
+        this.collection.on("loading:begin", this.on_loading_start, this);
+        this.collection.on("loading:end", this.on_loading_end, this);
+    },
+
+    on_loading_start: function() {
+        this.showBusy();
+    },
+
+    on_loading_end: function() {
+        this.hideBusy();
+        this.scrollToEnd();
     },
 
     clearMessage: function() {
@@ -64,6 +48,7 @@ SWAM.Views.ChatView = SWAM.View.extend({
     },
 
     showBusy: function() {
+        if (this.busy_dlg) return;
         this.busy_dlg = SWAM.Dialog.showLoading({
            parent:this.$el
         });
@@ -122,3 +107,39 @@ SWAM.Views.ChatView = SWAM.View.extend({
     }
 });
 
+SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
+    template: "swam.ext.chat.item",
+    classes: "chat-item",
+
+    defaults: {
+        kind: "chat",
+        message_field: "text",
+        bubble_kinds: {
+            "status": "status",
+            "upload": "upload",
+            "note": "chat",
+            "chat": "chat"
+        },
+    },
+
+    get_message: function() {
+        return this.model.get(this.options.message_field);
+    },
+
+    on_pre_render: function() {
+        let by = this.model.get("by");
+        let kind = this.model.get("kind");
+        if (kind) {
+            if (this.options.bubble_kinds) {
+                this.options.kind = this.options.bubble_kinds[kind] || "status";
+            }
+        }
+
+        if (by.id == app.me.id) {
+            this.options.add_classes = "sent";
+        } else {
+            this.options.add_classes = "received";
+        }
+        this.updateAttributes();
+    }
+});

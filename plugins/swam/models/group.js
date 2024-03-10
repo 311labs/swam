@@ -152,6 +152,10 @@ SWAM.Collections.Group = SWAM.Collection.extend({
 SWAM.Models.GroupFeed = SWAM.Model.extend({
     defaults: {
         url:"/api/account/group/feed"
+    },
+
+    by: function() {
+        return this.get("member");
     }
 }, {
     EDIT_FORM: [
