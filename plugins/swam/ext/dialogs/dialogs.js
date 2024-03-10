@@ -107,11 +107,12 @@ SWAM.Dialog = SWAM.View.extend({
             }
             this.options.buttons[0] = btn;
         }
-
+        SWAM.Dialog.active_dialogs.push(this);
         this.addToDOM($("body"));
         this.$el.show();
     },
     dismiss: function() {
+        SWAM.Dialog.active_dialogs.remove(this);
         this.$el.removeClass("show").find(".show").removeClass("show");
         window.sleep(300).then(function(){
             SWAM.active_dialog = this.prev_dialog;
@@ -208,6 +209,7 @@ SWAM.Dialog = SWAM.View.extend({
         return this.getData();
     }
 },{
+    active_dialogs:[],
     globals: {
         btn_primary: "btn btn-link",
         btn_secondary: "btn btn-link color-secondary",
@@ -421,12 +423,9 @@ SWAM.Dialog = SWAM.View.extend({
     },
 
     dismissAll: function() {
-        var dlg = SWAM.active_dialog;
-        while (dlg) {
-            dlg.removeFromDOM();
-            dlg = dlg.prev_dialog;
+        while (SWAM.Dialog.active_dialogs.length > 0) {
+            SWAM.Dialog.active_dialogs[SWAM.Dialog.active_dialogs.length-1].dismiss();
         }
-        SWAM.active_dialog = null;
     }
 
 });
