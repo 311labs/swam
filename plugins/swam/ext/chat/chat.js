@@ -118,7 +118,8 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
             "status": "status",
             "upload": "upload",
             "note": "chat",
-            "chat": "chat"
+            "chat": "chat",
+            "message": "chat"
         },
     },
 

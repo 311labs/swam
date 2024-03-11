@@ -595,6 +595,24 @@ SWAM.Localize = {
 
         return value;
     },
+    HTML_URL_REG: /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig,
+    'linkify': function(value, attr, fmt) {
+        // Replace URLs with anchor tags
+        let label = null;
+        if (fmt) {
+            if (_.isArray(fmt)) {
+                label = fmt[0];
+            } else {
+                label = fmt;
+            }
+        }
+
+        return value.replace(this.HTML_URL_REG, function(url) {
+            let ulbl = url;
+            if (label) ulbl = label;
+            return '<a data-showurl="' + url + '" class="swam-link" href="' + url + '" target="blank">' + ulbl + '</a>';
+        });
+    },
     'badges': function(value, attr, fmt) {
         if (_.isObject(value)) {
             var out = [];
