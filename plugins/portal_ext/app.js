@@ -493,7 +493,29 @@ PORTAL.PortalApp = SWAM.App.extend({
 		if (window.isDevToolsOpen()) {
 			if ((evt.lineno == 1) || (evt.lineno == 0)) return; // chrome dev console bugs?
 		}
-		SWAM.Dialog.warning({title:"Uncaught Error", message:"<pre class='text-left'>" + error.stack + "</pre>", size:"large"});
+		SWAM.Dialog.warning({
+			title:null,
+			message:"<h1><i class='bi bi-emoji-frown fs-xl text-brand'></i></h1><h3>UNHANDLED ERROR</h3><hr><p>The issue has been reported!</p><p>You can click the reload button to try again, or ignore at your own risk.</p>",
+			buttons: [
+				{
+					label: "Ignore",
+					action: "choice",
+					id: "ignore"
+				},
+				{
+					label: "Reload",
+					action: "choice",
+					id: "reload"
+				}
+			],
+
+			callback: function(dlg, choice) {
+				if (choice == "reload") {
+					location.reload(true);
+				}
+				dlg.dismiss();
+			}
+		});
 		if (location.host.contains("localhost")) return;
 		let event = new SWAM.Models.IncidentEvent();
 		let stack = stackToMethods(error.stack);

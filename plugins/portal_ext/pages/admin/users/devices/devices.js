@@ -8,7 +8,8 @@ PORTAL.Views.MemberDevices = SWAM.Views.AdvancedTable.extend({
             {label:"IP", field:"ip"},
             {label:"Name", field:"name"},
             {label:"Kind", field:"kind"},
-            {label:"CM", field:"cm_provider"}
+            {label:"CM", field:"cm_provider"},
+            {label:"BUID", field:"buid"},
         ],
         Collection: SWAM.Collections.MemberDevice,
         collection_params: {

@@ -116,6 +116,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			app.on("group:change", this.on_group_change, this);
 		}
 
+		if (this.options.add_button && this.options.add_button_lbl) {
+			this.options.add_button.label = this.options.add_button_lbl;
+		}
+
 		if (this.options.no_search || this.options.search_field) {
 			var searchfield = _.find(this.options.filter_bar[0].fields, function(field) {
 				return (field.name == "search");

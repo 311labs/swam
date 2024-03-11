@@ -25,6 +25,7 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
         },
         search_field: "reporter_ip__icontains",
         group_filtering: false,
+        add_button_lbl: "<i class='bi bi-shield-plus'></i> Action",
         filters: [
             {
                 label: "Created",
@@ -51,20 +52,26 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
                     name: "ip"
                 }
             ], {
-                title: "Block IP Address",
+                title: "Firewall Action",
                 can_dismiss: true,
-                callback: function(dlg) {
+                color: "danger",
+                buttons: [
+                    {label:"Block IP", id:"block", action:"choice"},
+                    {label:"UNBlock IP", id:"unblock", action:"choice"},
+                ],
+                callback: function(dlg, choice) {
+                    return SWAM.Dialog.warning(choice);
                     let data = dlg.getData();
-                    data.action = "block";
+                    data.action = choice;
                     dlg.dismiss();
                     if (data.ip && data.ip.isIPV4()) {
                         SWAM.Rest.POST(
                             "/api/incident/firewall", data,
                             function(resp, status) {
                                 if (resp.status) {
-                                    SWAM.toast("FIREWALL", `IP '${data.ip}' is now blocked`, "success", 5000, true);
+                                    SWAM.toast("FIREWALL", `IP '${data.ip}' is now ${choice}`, "success", 5000, true);
                                 } else {
-                                    SWAM.toast("FIREWALL", `IP '${data.ip}' block FAILED`, "danger", 5000, true);
+                                    SWAM.toast("FIREWALL", `IP '${data.ip}' ${choice} FAILED`, "danger", 5000, true);
                                 }
                             });
                     }
