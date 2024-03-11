@@ -60,7 +60,6 @@ PORTAL.Pages.FirewallEvents = SWAM.Pages.TablePage.extend({
                     {label:"UNBlock IP", id:"unblock", action:"choice"},
                 ],
                 callback: function(dlg, choice) {
-                    return SWAM.Dialog.warning(choice);
                     let data = dlg.getData();
                     data.action = choice;
                     dlg.dismiss();
