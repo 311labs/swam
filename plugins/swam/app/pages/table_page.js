@@ -148,6 +148,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			summary_button: this.options.summary_button,
 			summary_template: this.options.summary_template,
 			columns: this.options.columns,
+			add_button: this.options.add_button,
 			title_right: this.options.title_right,
 			title_right_view: this.options.title_right_view,
 			list_options: this.options.list_options
