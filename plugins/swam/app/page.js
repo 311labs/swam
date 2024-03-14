@@ -3,6 +3,10 @@ SWAM.Pages = {};
 SWAM.Page = SWAM.View.extend({
 	classes: "page-view",
 
+	on_page_init: function() {
+		// called todo delayed initializing of page if supported
+	},
+
 	startTimer: function() {
 		this.stopTimer();
 		if (!this._on_timer_bound) this._on_timer_bound = this._on_timer_.bind(this);

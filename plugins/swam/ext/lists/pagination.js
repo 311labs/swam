@@ -73,6 +73,56 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.addChild("list", this.list);
         this.list.on("item:clicked", this.on_item_clicked, this);
 
+
+        if (this.options.filter_bar) {
+            let button_group;
+            if (this.options.summary_button || this.options.filters) {
+                button_group = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
+                    return field.type == "buttongroup";
+                });
+
+                if (button_group) {
+                    let filter_menu = _.findWhere(button_group.buttons, {id:"filter_menu"});
+                    if (filter_menu) {
+                        
+                    }
+                }
+            }
+
+
+            if (button_group && this.options.summary_button) {
+                button_group.buttons.push({
+                    classes: "btn btn-secondary",
+                    icon: "bi bi-calculator",
+                    action: "rest_summary"
+                });
+
+                if (this.options.summary_template) {
+                    if (!this.options.list_options) this.options.list_options = {};
+                    this.options.list_options.summary_template = this.options.summary_template;
+                }
+            }
+
+            if (button_group && this.options.filters) {
+                let menu = [];
+                _.each(this.options.filters, function(value){
+                    menu.push({
+                        label: value.label,
+                        icon: value.icon,
+                        id: value.name,
+                        action: "add_filter"
+                    });
+                });
+
+                button_group.buttons.push({
+                    type: "dropdown",
+                    icon: "bi bi-filter",
+                    id: "filter_menu",
+                    items: menu
+                });
+            }
+        }
+
         this.pager = new SWAM.Views.ListPagination({list:this.list});
         this.addChild("pager", this.pager);
         this.counter = new SWAM.Views.ListPaginationCount({list:this.list});

@@ -98,6 +98,17 @@ ol.swam-chat-list {
       .chat-time, .chat-by {
         color: #6c6c6c;
       }
+
+      .status-bubble, .upload-bubble {
+        padding-left: 50px;
+        .chat-icon {
+          position: absolute;
+          left: 8px;
+          top: 12px;
+          font-size: 2rem;
+          color: #cccccc;
+        }
+      }
     }
 
     &.sent {
@@ -132,6 +143,17 @@ ol.swam-chat-list {
       a.swam-link {
         color: white;
       }
+
+      .status-bubble, .upload-bubble {
+        padding-right: 50px;
+        .chat-icon {
+          position: absolute;
+          right: 8px;
+          top: 12px;
+          font-size: 2rem;
+          color: #cccccc;
+        }
+      }
     }
   }
 
@@ -141,6 +163,19 @@ ol.swam-chat-list {
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #cccccc;
+  }
+
+  .upload-bubble {
+    background: #6a6a6a;
+    color: white;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #cccccc;
+
+    .chat-time, .chat-by {
+      color: #cacaca !important;
+    }
   }
 
   .chat-bubble {

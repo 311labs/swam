@@ -103,14 +103,12 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_init: function() {
-		this.addChild("list", new SWAM.Views.AdvancedTable(this.options));
-		this.collection = this.children.list.collection;
-		if (this.collection) {
-			this.collection.on("loading:begin", this.on_loading_begin, this);
-			this.collection.on("loading:end", this.on_loading_end, this);
-			if (this.options.collection_params) this.collection.params = _.extend({}, this.collection.params, this.options.collection_params);
-			if (this.options.item_url_param) this.collection.options.item_url_param = this.options.item_url_param;
-		}
+
+	},
+
+	on_page_init: function() {
+		if (this.options._page_inited_) return;
+		this.options._page_inited_ = true;
 
 		if (this.options.group_filtering) {
 			app.on("group:change", this.on_group_change, this);
@@ -143,7 +141,8 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		this.addChild("list", new SWAM.Views.PaginatedTable({
 			icon: this.options.icon,
 			title: this.options.title,
-			collection: this.collection, 
+			Collection: this.options.Collection,
+			collection: this.options.collection, 
 			filter_bar: this.options.filter_bar,
 			filters: this.options.filters,
 			summary_button: this.options.summary_button,
@@ -153,10 +152,17 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			title_right_view: this.options.title_right_view,
 			list_options: this.options.list_options
 		}));
+
 		if (!this.options.on_item_clicked) {
 			this.children["list"].list.on("item:clicked", this.on_item_clicked, this);
 		}
 
+		this.collection = this.children.list.collection;
+		this.collection.on("loading:begin", this.on_loading_begin, this);
+		this.collection.on("loading:end", this.on_loading_end, this);
+		if (this.options.collection_params) this.collection.params = _.extend({}, this.collection.params, this.options.collection_params);
+		if (this.options.item_url_param) this.collection.options.item_url_param = this.options.item_url_param;
+		if (this.options.group_filtering && app.group) this.collection.params.group = app.group.id;
 		if (_.isString(this.options.item_url_param) && !this.collection.options.ignore_params) {
 			this.collection.options.ignore_params = [this.options.item_url_param];
 		}
@@ -354,6 +360,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	on_action_download_pdf: function(evt) {
 	    SWAM.toast("Add Group", "Not implemented yet", "warning");
 	},
+
 
 	on_page_reenter: function() {
 	    this.on_page_enter();

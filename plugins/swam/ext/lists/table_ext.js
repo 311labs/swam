@@ -98,57 +98,6 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
         }
         this.options.collection = this.collection;
 
-        if (this.options.filter_bar) {
-
-            var button_group;
-
-            if (this.options.summary_button || this.options.filters) {
-                button_group = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
-                    return field.type == "buttongroup";
-                });
-            }
-
-
-            if (button_group && this.options.summary_button) {
-                button_group.buttons.push({
-                    classes: "btn btn-secondary",
-                    icon: "bi bi-calculator",
-                    action: "rest_summary"
-                });
-
-                if (this.options.summary_template) {
-                    if (!this.options.list_options) this.options.list_options = {};
-                    this.options.list_options.summary_template = this.options.summary_template;
-                }
-            }
-
-            if (button_group && this.options.filters) {
-                var menu = [];
-                _.each(this.options.filters, function(value){
-                    menu.push({
-                        label: value.label,
-                        icon: value.icon,
-                        id: value.name,
-                        action: "add_filter"
-                    });
-                });
-
-                button_group.buttons.push({
-                    type: "dropdown",
-                    icon: "bi bi-filter",
-                    items: menu
-                });
-            }
-            // if (this.options.add_button) {
-            //     this.options.filter_bar.unshift(this.options.add_button);
-            // } else {
-            //     this.options.filter_bar[0].columns = 12;
-            //     // don't bother with grouping
-            //     // this.options.filter_bar = [this.options.filter_bar[0].fields];
-            //     // this.options.filter_bar.unshift({columns:3, type:"hidden"}); // need this to make view look clean
-            // }
-        }
-
         if (!this.options.list_options || !this.options.list_options.columns) {
             this.options.list_options = _.extend({columns:this.options.columns}, this.options.list_options);
         }

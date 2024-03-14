@@ -104,8 +104,8 @@ PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
         ]
     },
 
-    on_init: function() {
-        SWAM.Pages.TablePage.prototype.on_init.call(this);
+    on_page_init: function() {
+        SWAM.Pages.TablePage.prototype.on_page_init.call(this);
         this.getChild("list")
         	.getChild("filters")
         	.getChild("fb_actions")

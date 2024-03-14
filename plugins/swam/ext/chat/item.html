@@ -10,4 +10,7 @@
 	<div class="chat-by">{{model.by.display_name}}</div>
 	<div class="chat-msg">{{{get_message|linkify('view link')}}}</div>
 	<div class="chat-time">{{model.created|datetime}}</div>
+	{{#icon}}
+	<div class="chat-icon">{{{ICON(icon)}}}</div>
+	{{/icon}}
 </div>

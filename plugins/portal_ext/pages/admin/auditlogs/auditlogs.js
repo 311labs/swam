@@ -101,6 +101,23 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
         SWAM.Dialog.showView(view, opts);
     },
 
+    on_group_change: function() {
+        if (this.options.component) {
+            if (app.group) this.collection.params.pkey = app.group.id;
+        } else {
+            if (app.group && this.options.group_filtering) {
+                this.collection.params.group = app.group.id;
+            } else if (this.collection.params.group) {
+                delete this.collection.params.group;
+            }
+        }
+
+        this.collection.params.start = 0; // reset the page to 0
+        if (this.isActivePage()) {
+            this.reload();
+        }
+    },
+
     on_page_pre_enter: function() {
         if (this.options.default_dr_range) {
             if (!this.params.url_params || !this.params.url_params.dr_start) {
@@ -109,6 +126,10 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
                 this.collection.params.dr_field = "when";
                 
             }
+        }
+        if (this.options.component) {
+            this.collection.params.component = this.options.component;
+            if (app.group) this.collection.params.pkey = app.group.id;
         }
     }
 

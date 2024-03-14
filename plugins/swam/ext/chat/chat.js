@@ -121,6 +121,14 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
             "chat": "chat",
             "message": "chat"
         },
+        bubble_icons: {
+            "upload": "upload",
+            "status": "info-circle"
+        }
+    },
+
+    icon: function() {
+        return this.options.bubble_icons[this.model.get("kind")];
     },
 
     get_message: function() {

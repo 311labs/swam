@@ -129,6 +129,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
             this.active_page = page;
             if (this.options.track_page_views) SWAM.Metrics.trackView(page.page_name, true)
             $parent.empty();
+            page.on_page_init();
             page.setParams(params);
             page.on_page_pre_enter();
             page.addToDOM($parent);

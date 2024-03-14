@@ -20,7 +20,7 @@ window.PORTAL.init_admin_pages = function() {
 	}), ["admin/groups", "groups"]);
 	app.addPage("audit_logs", new PORTAL.Pages.AuditLogs({
 		requires_perm: ["sys.view_admin", "sys.view_logs"]
-	}), ["admin/logs", "logs"]);
+	}), ["admin/logs"]);
 	app.addPage("taskqueue", new PORTAL.Pages.TaskQueue({
 		requires_perm: ["sys.view_admin"]
 	}), ["admin/taskqueue", "taskqueue"]);
