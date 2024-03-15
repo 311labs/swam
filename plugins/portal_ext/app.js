@@ -470,6 +470,12 @@ PORTAL.PortalApp = SWAM.App.extend({
 	},
 
 	on_ws_channel_incident: function(msg) {
+		if (msg.message.error) {
+			setTimeout(function(){
+				SWAM.toast("Error", msg.message.error, "danger", 6000);
+			}, 100);
+			return;
+		}
 		let title = `New Incident #${msg.message.pk}`;
 		let body = SWAM.renderTemplate(
 			"portal_ext.views.incident.toast",
