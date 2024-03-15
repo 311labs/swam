@@ -131,8 +131,8 @@ SWAM.Page = SWAM.View.extend({
 		    }
 		});
 		if (best_route) {
-			console.log("best route");
-			console.log(params);
+			// console.log("best route");
+			// console.log(params);
 		    _.each(params, function(v, p){
 		        best_route = best_route.replace(":" + p, v);
 		    });
