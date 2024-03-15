@@ -472,7 +472,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 	on_ws_channel_incident: function(msg) {
 		if (msg.message.error) {
 			setTimeout(function(){
-				SWAM.toast("Error", msg.message.error, "danger", 6000);
+				SWAM.toast("Incident Channel", msg.message.error, "danger", 6000);
 			}, 100);
 			return;
 		}
