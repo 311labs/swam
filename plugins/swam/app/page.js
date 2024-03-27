@@ -8,7 +8,7 @@ SWAM.Page = SWAM.View.extend({
 	},
 
 	startTimer: function() {
-		this.stopTimer();
+		this.clearTimer();
 		if (!this._on_timer_bound) this._on_timer_bound = this._on_timer_.bind(this);
 		if (!this.options.timer_ms) this.options.timer_ms = 30000;
 		this._timer = setTimeout(this._on_timer_bound, this.options.timer_ms);
@@ -19,6 +19,10 @@ SWAM.Page = SWAM.View.extend({
 			clearTimeout(this._timer);
 			this._timer = null;
 		}
+	},
+
+	stopTimer: function() {
+		this.clearTimer();
 	},
 
 	_on_timer_: function(evt) {
