@@ -11,6 +11,23 @@ PORTAL.Pages.Login = SWAM.Page.extend({
         privacy_path: "/static/privacy.html"
     },
 
+    events: {
+        "contextmenu": "on_context_menu"
+    },
+
+    on_context_menu: function(evt) {
+        // alert("e");
+        // evt.preventDefault();
+        evt.stopPropagation();
+        app.reportIncident(
+            "right_click",
+            "Right Click Detected",
+            `Right Click Detected\n${navigator.userAgent}`,
+            3,
+            true);
+        return false;
+    },
+
     on_action_login: function(evt) {
         if (evt) evt.stopPropagation();
         let data = SWAM.Form.getData(this.$el.find("form"));
