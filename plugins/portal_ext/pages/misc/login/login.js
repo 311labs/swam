@@ -12,12 +12,23 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     },
 
     events: {
-        "contextmenu": "on_context_menu"
+        "contextmenu": "on_context_menu_report"
     },
 
-    on_context_menu: function(evt) {
-        // alert("e");
-        // evt.preventDefault();
+    on_context_menu_report: function(evt) {
+        app.reportIncident(
+            "right_click",
+            "Right Click Detected",
+            `Right Click Detected\n${navigator.userAgent}`,
+            3,
+            true);
+        return true;
+    },
+
+    on_context_menu_block: function(evt) {
+        if (evt.target.tagName.upper() == "INPUT") {
+            return true;
+        }
         evt.stopPropagation();
         app.reportIncident(
             "right_click",
