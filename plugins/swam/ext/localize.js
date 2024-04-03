@@ -613,6 +613,10 @@ SWAM.Localize = {
             return '<a data-showurl="' + url + '" class="swam-link" href="' + url + '" target="blank">' + ulbl + '</a>';
         });
     },
+    'escape': function(value, attr, fmt) {
+        if (!value) return value;
+        return escapeHtml(value);
+    },
     'badges': function(value, attr, fmt) {
         if (_.isObject(value)) {
             var out = [];

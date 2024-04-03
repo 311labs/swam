@@ -8,7 +8,7 @@ PORTAL.Pages.EmailBounced = SWAM.Pages.TablePage.extend({
         columns: [
             {label:"created", field:"created|datetime"},
             {label:"User Name", field:"user.username"},
-            {label:"Address", field:"address"},
+            {label:"Address", field:"address|escape"},
             {label:"Source", field:"source"}
         ],
         Collection: SWAM.Collections.EmailBounced,
