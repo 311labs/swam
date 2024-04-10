@@ -1,3 +1,50 @@
+
+SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
+    template: "swam.ext.chat.item",
+    classes: "chat-item",
+
+    defaults: {
+        kind: "chat",
+        message_field: "text",
+        bubble_kinds: {
+            "status": "status",
+            "upload": "upload",
+            "note": "chat",
+            "chat": "chat",
+            "message": "chat"
+        },
+        bubble_icons: {
+            "upload": "upload",
+            "status": "info-circle"
+        }
+    },
+
+    icon: function() {
+        return this.options.bubble_icons[this.model.get("kind")];
+    },
+
+    get_message: function() {
+        return this.model.get(this.options.message_field);
+    },
+
+    on_pre_render: function() {
+        let by = this.model.get("by");
+        let kind = this.model.get("kind");
+        if (kind) {
+            if (this.options.bubble_kinds) {
+                this.options.kind = this.options.bubble_kinds[kind] || "status";
+            }
+        }
+
+        if (by.id == app.me.id) {
+            this.options.add_classes = "sent";
+        } else {
+            this.options.add_classes = "received";
+        }
+        this.updateAttributes();
+    }
+});
+
 SWAM.Views.ChatView = SWAM.View.extend({
     classes: "swam-chat d-flex flex-column h-100 position-relative",
     template: "swam.ext.chat.chat",
@@ -9,7 +56,8 @@ SWAM.Views.ChatView = SWAM.View.extend({
                 icon: "reload",
                 action: "reload"
             }
-        ]
+        ],
+        ItemView: SWAM.Views.ChatItem
     },
 
     events: {
@@ -22,7 +70,7 @@ SWAM.Views.ChatView = SWAM.View.extend({
             classes: "swam-chat-list mt-auto",
             collection: this.options.collection,
             Collection: this.options.Collection,
-            ItemView: SWAM.Views.ChatItem
+            ItemView: this.options.ItemView
         }));
         if (this.options.item_options) {
             this.getChild("chatlist").options.item_options = this.options.item_options;
@@ -104,51 +152,9 @@ SWAM.Views.ChatView = SWAM.View.extend({
 
     on_action_reload: function() {
         this.collection.fetch();
-    }
-});
-
-SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
-    template: "swam.ext.chat.item",
-    classes: "chat-item",
-
-    defaults: {
-        kind: "chat",
-        message_field: "text",
-        bubble_kinds: {
-            "status": "status",
-            "upload": "upload",
-            "note": "chat",
-            "chat": "chat",
-            "message": "chat"
-        },
-        bubble_icons: {
-            "upload": "upload",
-            "status": "info-circle"
-        }
     },
 
-    icon: function() {
-        return this.options.bubble_icons[this.model.get("kind")];
-    },
-
-    get_message: function() {
-        return this.model.get(this.options.message_field);
-    },
-
-    on_pre_render: function() {
-        let by = this.model.get("by");
-        let kind = this.model.get("kind");
-        if (kind) {
-            if (this.options.bubble_kinds) {
-                this.options.kind = this.options.bubble_kinds[kind] || "status";
-            }
-        }
-
-        if (by.id == app.me.id) {
-            this.options.add_classes = "sent";
-        } else {
-            this.options.add_classes = "received";
-        }
-        this.updateAttributes();
+    on_tab_focus: function() {
+        this.collection.fetchIfStale();
     }
 });
