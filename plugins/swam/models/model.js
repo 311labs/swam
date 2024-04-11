@@ -236,6 +236,10 @@ SWAM.Model = SWAM.Object.extend({
         return this.fetch(callback, opts);
     },
 
+    hasActiveRequest: function() {
+        return ((this._request != null) || (this._request != undefined));
+    },
+
     save: function(data, callback, opts) {
         if (opts && opts.abort_previous) this.abort();
         this._request = SWAM.Rest.POST(this.getUrl(), data, function(response, status) {
