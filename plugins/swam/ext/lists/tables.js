@@ -38,6 +38,10 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
                     if (!app.me) return;
                     if (!app.me.hasPerm(col.requires_perm)) return;
                 }
+                if (col.requires_group_setting) {
+                    if (!app.group) return;
+                    if (!app.group.hasSetting(col.requires_group_setting)) return;
+                }
     			this.template += "<td";
                 if (col.td_classes) {
                     let classes = col.td_classes;
@@ -327,6 +331,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                 if (!app.me) return;
                 if (!app.me.hasPerm(column.requires_perm)) return;
             }
+            if (column.requires_group_setting) {
+                if (!app.group) return;
+                if (!app.group.hasSetting(column.requires_group_setting)) return;
+            }
     		var $el = $("<th></th>");
             if (column.context_menu) {
                 this.$header.append($el);
@@ -491,7 +499,8 @@ SWAM.Views.TableBatchPanel = SWAM.View.extend({
                     if (!app.me) return;
                     if (!app.me.hasPerm(item.requires_perm)) return;
                 }
-                if (item.requires_group_setting && app.group) {
+                if (item.requires_group_setting) {
+                    if (!app.group) return;
                     if (!app.group.hasSetting(item.requires_group_setting)) return;
                 }
                 if (window.innerWidth <= item.hide_width) return;
