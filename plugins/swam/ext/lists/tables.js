@@ -401,6 +401,10 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                         if (!app.me) return;
                         if (!app.me.hasPerm(col.requires_perm)) return;
                     }
+                    if (col.requires_group_setting) {
+                        if (!app.group) return;
+                        if (!app.group.hasSetting(col.requires_group_setting)) return;
+                    }
                     let field_name, localize;
                     let td_classes = null;
                     if (_.isObject(col)) {
