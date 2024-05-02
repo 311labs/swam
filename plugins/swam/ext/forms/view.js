@@ -16,6 +16,13 @@ SWAM.Form.View = SWAM.View.extend({
         "click form.search button": "on_submit"
     },
 
+    setData: function(data) {
+        _.each(data, function(v, k){
+            this.set(k, v);
+        }.bind(this));
+        this.render();
+    },
+
     set: function(key, value) {
         let field = this.getField(key);
         if (field) field.value = value;

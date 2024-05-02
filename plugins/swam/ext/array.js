@@ -130,6 +130,20 @@ if (!Array.prototype.find) {
   };
 }
 
+Array.prototype.clone = function() {
+    var list = [];
+    _.each(this, function(v){
+        if (_.isArray(v)) {
+            list.push(v.clone());
+        } else if (_.isObject(v)) {
+            list.push(_.extend({}, v));
+        } else {
+            list.push(v);
+        }
+    });
+    return list;
+};
+
 
 if (!Array.prototype.fill) {
   Object.defineProperty(Array.prototype, 'fill', {

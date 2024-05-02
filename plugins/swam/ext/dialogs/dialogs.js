@@ -207,6 +207,9 @@ SWAM.Dialog = SWAM.View.extend({
     },
     getFormData: function() {
         return this.getData();
+    },
+    setFormData: function(data) {
+        this.options.view.setData(data);
     }
 },{
     active_dialogs:[],
