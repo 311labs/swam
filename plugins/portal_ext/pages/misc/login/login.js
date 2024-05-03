@@ -118,7 +118,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                 {name:"username", label:"Username or Email", floating_label:true},
             ], {
                 title: "Reset Password",
-                message: "Enter a valid email or password and we will send you a reset token.",
+                message: "<p class='px-3 fw-bold'>Enter a valid email or password and we will send you a reset token.</p>",
                 lbl_save: "Submit",
                 callback: function(dlg) {
                     var data = dlg.getData();
@@ -148,7 +148,7 @@ PORTAL.Pages.Login = SWAM.Page.extend({
                 {name:"new_password", label:"Enter New Password", type:"password", floating_label:true},
             ], {
                 title: "Enter Reset Password Code",
-                message: "Check for an email or SMS with your reset code!",
+                message: "<p class='px-3 fw-bold'>If your account is valid, we'll promptly send you an email or SMS with a reset code. Keep an eye on your inbox!</p>",
                 lbl_save: "Submit",
                 callback: function(dlg) {
                     var data = dlg.getData();
