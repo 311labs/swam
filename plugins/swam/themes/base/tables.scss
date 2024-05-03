@@ -182,7 +182,7 @@ table.swam-table {
             }
         }
         &.sorted {
-            background: #0000ff29;
+            background: $table-sorted-bg;
         }
     }
 
