@@ -153,6 +153,11 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         return (this.options.title_right || this.options.title_right_view);
     },
 
+    addTitleRightView: function(view) {
+        this.options.title_right_view = view;
+        this.addChild("title_right_view", this.options.title_right_view);
+    },
+
     on_item_clicked: function(item) {
 
     },
