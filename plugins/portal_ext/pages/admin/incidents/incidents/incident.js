@@ -4,15 +4,20 @@ PORTAL.Views.Incident = SWAM.View.extend({
 
     on_init: function() {
         this.addChild("tabs", new PORTAL.Views.IncidentTabs());
-        this.addChild("notes", new SWAM.Views.ChatView({
+        this.notes = new SWAM.Views.ChatView({
             title: "Notes",
             item_options: {
                 message_field: "note"
             },
             collection: new SWAM.Collections.IncidentHistory()
-        }));
-
-        this.notes = this.getChild("notes");
+        });
+        if (window.outerWidth > 800) {
+            this.addChild("notes", this.notes);
+        } else {
+            this.template = "portal_ext.pages.admin.incidents.incidents.mview";
+            this.getChild("tabs").addTab("Notes", "notes", this.notes);
+        }
+        
         this.notes.on("new_msg", this.on_new_msg, this);
     },
 
