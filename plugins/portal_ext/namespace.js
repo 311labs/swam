@@ -88,6 +88,10 @@ window.PORTAL.init_admin_pages = function() {
 		requires_perm: ["sys.view_admin"],
 		group_filtering:false
 	}), ["admin/incident/rules"]);
+	app.addPage("admin_cloudcreds", new PORTAL.Pages.CloudCredntials({
+		requires_perm: ["sys.manage_cm"],
+		group_filtering:false
+	}), ["admin/cloud/creds"]);
 }
 
 PORTAL.Menus.Admin = [
@@ -124,7 +128,13 @@ PORTAL.Menus.Admin = [
 				label:"Logs",
 				page: "audit_logs",
 				requires_perm: "sys.view_logs",
-			}
+			},
+			{
+				icon: "cloud",
+				label:"Cloud Creds",
+				page: "admin_cloudcreds",
+				requires_perm: "sys.manage_cm",
+			},
 		]
 	},
 	{
