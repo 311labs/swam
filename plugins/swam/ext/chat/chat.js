@@ -36,7 +36,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
             }
         }
 
-        if (by.id == app.me.id) {
+        if (by && (by.id == app.me.id)) {
             this.options.add_classes = "sent";
         } else {
             this.options.add_classes = "received";
