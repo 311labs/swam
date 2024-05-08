@@ -115,14 +115,23 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     on_action_forgot: function() {
         SWAM.Dialog.showForm(
             [
-                {name:"username", label:"Username or Email", floating_label:true},
+                {
+                    name:"username",
+                    label:"Username or Email",
+                    floating_label:true,
+                    required:true
+                },
             ], {
                 title: "Reset Password",
                 message: "<p class='px-3 fw-bold'>Enter a valid email or password and we will send you a reset token.</p>",
                 lbl_save: "Submit",
                 callback: function(dlg) {
+                    if (!dlg.hasRequiredData(true)) return;
                     var data = dlg.getData();
-                    if (!data.username) return;
+                    if (!data.username || (data.username.length < 4)) {
+                        dlg.options.view.highlightField("username", false);
+                        return;
+                    }
                     dlg.dismiss();
                     this.options.username = data.username.trim();
                     SWAM.toast("Reset Password", "Request sent to reset password!");
