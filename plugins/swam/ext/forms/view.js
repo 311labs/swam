@@ -228,6 +228,10 @@ SWAM.Form.View = SWAM.View.extend({
         }
     },
 
+    getFiles: function(raw_files) {
+        return SWAM.Form.getFiles(this.$el.find("form"), raw_files);
+    },
+
     getData: function() {
         var $form = this.$el.find("form");
         $form.find("input").each(function(){

@@ -184,6 +184,21 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
         }
     },
 
+    on_action_kill_sessions: function(evt) {
+        SWAM.Dialog.confirm({
+            title: "Kill All User Sessions",
+            message: "This will reset the security token, and require user to login again!<div>Are you sure?</div>",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.model.save({"action": "refresh_keys"}, function(){
+                        SWAM.toast("Sessions Killed", "All user session killed", "success");
+                    });
+                }
+            }.bind(this)
+        });
+    },
+
     generateAuthToken: function() {
         app.showBusy({icon:"key"});
         this.model.save({action:"auth_token"}, function(model, resp) {

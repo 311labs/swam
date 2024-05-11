@@ -186,6 +186,19 @@ SWAM.Dialog = SWAM.View.extend({
             this.$el.find("input:text, textarea").not(".swam-edit-select-input").first().focus();
         }.bind(this));
     },
+    getFiles: function(raw_files) {
+        if (!_.isEmpty(this.children)) {
+            var form = this.children["dlg_view"];
+            if (form && form.getFiles) {
+                if ((this.options.changes_only != false) && SWAM.Form.changes_only) return form.getChanges();
+                return form.getFiles(raw_files);
+            }
+        }
+        if (this.options.view && this.options.view.getFiles) {
+            return this.options.view.getFiles(raw_files);
+        }
+        return SWAM.Form.getFiles(this.$el.find("form"), raw_files);
+    },
     getData: function(evt) {
         if (!_.isEmpty(this.children)) {
             var form = this.children["dlg_view"];

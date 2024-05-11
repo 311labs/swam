@@ -349,7 +349,6 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_action_download_json: function(evt) {
         var filename = "";
-        var filename = this.options.list.options.download_prefix;
         if (this.options.list.options.download_group_prefix && app.group) {
             filename += app.group.get("name").slugify() + "_";
         }

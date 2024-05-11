@@ -2,11 +2,11 @@
 PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
 
     defaults: {
-        download_prefix: "incidents",
+        download_prefix: "rules",
         icon: "exclamation-diamond-fill",
         title: "Rules",
         list_options: {
-            add_classes: "swam-table-clickable",
+            add_classes: "swam-table-clickable"
         },
         columns: [
             {label:"p", field:"priority"},
@@ -21,6 +21,7 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
             sort: "priority",
             size: 10
         },
+        allow_batch_upload: true,
         filters: [
             {
                 label: "category",

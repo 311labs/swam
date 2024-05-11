@@ -2,13 +2,22 @@ SWAM.Form = {
 	changes_only: true, // only return changes on a form from existing data
 };
 
-SWAM.Form.getFiles = function($form) {
+SWAM.Form.getFiles = function($form, raw_files) {
 	var files = {};
 	$form.find('input[value!=""]:file:enabled').each(function(k,field){
 		let $field = $(field);
 		let n = $field.attr('name');
 		if (n) files[n] = $field;
 	});
+	if (raw_files) {
+	    let out = [];
+	    _.each(files, function(f){
+	        if (f[0].files.length) {
+	            _.each(f[0].files, function(sf){out.push(sf)});
+	        }
+	    });
+	    return out;
+	}
 	return files;
 }
 
@@ -89,4 +98,12 @@ SWAM.Form.transorm = {
 		if (!_.isString(value)) return value;
 		return value.lower();
 	},
+};
+
+SWAM.Form.readFileAsText = function(file, callback) {
+	const reader = new FileReader();
+	reader.onload = function(e) {
+	  callback(e.target.result);
+	};
+	reader.readAsText(file); // Read the file as text
 };

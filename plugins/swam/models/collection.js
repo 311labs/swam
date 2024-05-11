@@ -517,4 +517,12 @@ SWAM.Collection = SWAM.Object.extend({
             }.bind(this), {filename:filename});
         SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
     },
+
+    batchUpload: function(data, callback) {
+        let model = new this.options.Model();
+        model.save({
+            rest_batch: "create",
+            batch_data: data
+        }, callback);
+    }
 });

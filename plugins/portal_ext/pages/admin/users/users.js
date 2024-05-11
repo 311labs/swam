@@ -73,6 +73,10 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
             {
                 label: "Login Country",
                 name: "login_country"
+            },
+            {
+                label: "Not Login Country",
+                name: "not_login_country"
             }
         ],
         group_filtering: false

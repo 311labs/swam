@@ -73,10 +73,9 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.addChild("list", this.list);
         this.list.on("item:clicked", this.on_item_clicked, this);
 
-
         if (this.options.filter_bar) {
             let button_group;
-            if (this.options.summary_button || this.options.filters) {
+            if (this.options.summary_button ||this.options.allow_batch_upload || this.options.filters) {
                 button_group = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
                     return field.type == "buttongroup";
                 });
@@ -101,6 +100,14 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
                     if (!this.options.list_options) this.options.list_options = {};
                     this.options.list_options.summary_template = this.options.summary_template;
                 }
+            }
+
+            if (button_group && this.options.allow_batch_upload) {
+                button_group.buttons.push({
+                    classes: "btn btn-secondary",
+                    icon: "bi bi-upload",
+                    action: "batch_upload"
+                });
             }
 
             if (button_group && this.options.filters) {

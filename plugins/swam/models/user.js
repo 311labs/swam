@@ -218,16 +218,23 @@ SWAM.Models.User = SWAM.Model.extend({
             columns: 6
         },
         {
-            name:"requires_totp",
-            label:"Requires MFA",
-            help: "Requires the user to use a 'time based one time passwords' through an app like authy or SMS code to phone.",
+            name:"metadata.permissions.manage_media",
+            label:"Manage Media",
+            help: "Allow this user to access and manage media.",
             type:"toggle",
             columns: 6
         },
         {
-            name:"metadata.permissions.manage_media",
-            label:"Manage Media",
-            help: "Allow this user to access and manage media.",
+            name:"metadata.permissions.force_single_session",
+            label:"Force Single Session",
+            help: "Only allow the user to have one session at a time.  This prevents multiple logins at the same time.",
+            type:"toggle",
+            columns: 6
+        },
+        {
+            name:"requires_totp",
+            label:"Requires MFA",
+            help: "Requires the user to use a 'time based one time passwords' through an app like authy or SMS code to phone.",
             type:"toggle",
             columns: 6
         },
@@ -242,6 +249,13 @@ SWAM.Models.User = SWAM.Model.extend({
             label:"System Notifications",
             type:"label",
             columns: 12
+        },
+        {
+            name:"metadata.permissions.email_disabled",
+            label:"Email Disabled",
+            help: "Disable any email notifications.",
+            type:"toggle",
+            columns: 6
         },
         {
             name:"metadata.notify.server_login",

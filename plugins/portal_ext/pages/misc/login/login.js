@@ -16,6 +16,9 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     },
 
     on_context_menu_report: function(evt) {
+        if (evt.target.tagName.upper() == "INPUT") {
+            return true;
+        }
         app.reportIncident(
             "right_click",
             "Right Click Detected",
