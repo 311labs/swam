@@ -242,26 +242,28 @@ PORTAL.PortalApp = SWAM.App.extend({
 			console.log(choice);
 			if (choice == "yes") {
 				this.me.logout();
-				this.me.clear();
-				this.options.is_ready = false;
-				if (app.group) {
-					app.group.clear();
-					app.group = null;
-				}
-				if (app.groups) {
-					app.groups.reset();
-				}
-				if (this.ws) {
-					this.ws.close();
-				}
-				this.showPage("login");
 			}
 		}.bind(this)})
 	},
 
 	on_logged_out: function() {
-		this.getChild("title-bar").render();
-		this.hideLeftPanel();
+		this.me.clear();
+		this.options.is_ready = false;
+		if (app.group) {
+			app.group.clear();
+			app.group = null;
+		}
+		if (app.groups) {
+			app.groups.reset();
+		}
+		if (this.ws) {
+			this.ws.close();
+		}
+		if (this.getChild("title-bar")) {
+			this.getChild("title-bar").render();
+			this.hideLeftPanel();
+		}
+		this.showPage("login");
 	},
 
 	wsChangeGroup: function(old_group) {
@@ -307,7 +309,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				this.on_logged_in();
 				this.on_ready();
 			} else {
-				SWAM.toast("AUTH FAILURE", resp.error, "danager", 10000);
+				SWAM.toast("Session Expired", "Your session has expired, please login again.", "danager", 10000);
 				if (!resp.network_error && !app.me.isAuthenticated()) {
 					this.trigger("auth_fail", this.me);
 					this.showPage("login");
@@ -318,15 +320,30 @@ PORTAL.PortalApp = SWAM.App.extend({
 		}.bind(this));
 	},
 
-	refreshIncidentBadge: function() {
+	_refreshIB: function() {
+		// temp fix for crazy loop on perm denied
+		// recv perm denied via ws, causes refresh, causes recv perm denied
+		if (this.options._stop_refresh_ib) return;
 		SWAM.Rest.GET(
 			"/api/incident/incident",
 			{format:"summary", state:0},
 			function(data, status){
 				if (data.data && data.data.count) {
 					app.getChild("title-bar").setBadge("incidents", data.data.count);
+				} else if (data.error) {
+					app.options._stop_refresh_ib = true;
 				}
 			});
+	},
+
+	refreshIncidentBadge: function() {
+		if (!this._debounce_fetch) {
+		    this._debounce_time = this.options.debounce_time || 1000;
+		   this._debounce_fetch = window.debounce(
+		       this._refreshIB.bind(this),
+		       this._debounce_time
+		   );
+		}
 	},
 
 	showLegalDisclaimer: function() {
@@ -387,24 +404,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 				}
 			});
 		} else if (this.options.fetch_on_focus && (evt.age > this.options.fetch_on_focus)) {
-			app.showBusy({icon:"lock"});
-			app.me.fetch(function(model, resp) {
-				if (!resp.status) {
-					app.me.refreshJWT(function(model, resp) {
-						app.hideBusy();
-						if (!resp.status) {
-							if (!resp.network_error) {
-								SWAM.toast("Logged Out", "The user is no longer authenticated", "warning", 20000);
-								app.showPage("login");
-							} else {
-								SWAM.toast("Network Issue", "Problems connecting to server!", "warning", 0);
-							}
-						}
-					});
-				} else {
-					app.hideBusy();
-				}
-			});
+			app.me.checkAuth();
 		}
 	},
 
@@ -431,6 +431,9 @@ PORTAL.PortalApp = SWAM.App.extend({
 		} else if (msg.channel == "user") {
 			if (msg.message.name == "message") {
 				SWAM.toast(SWAM.renderString("Message from {{message.from.display_name}}", msg), msg.message.message, null, 20000);
+			} else if (msg.message.name == "logged_out") {
+				SWAM.toast("Session Terminated", msg.message.message, "danger", 0);
+				app.me.logout();
 			}
 		} else {
 			let fname = `on_ws_channel_${msg.channel}`;

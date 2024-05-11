@@ -155,7 +155,7 @@ SWAM.Model = SWAM.Object.extend({
             this.trigger("fetched", this);
             this.on_fetched(data, status);
         } else {
-            this.trigger("error", this);
+            this.trigger("error", {model:this, response:{data:data, status:status}});
         }
     },
 

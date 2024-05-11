@@ -191,7 +191,7 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
             callback: function(dlg, value) {
                 dlg.dismiss();
                 if (value.upper() == "YES") {
-                    this.model.save({"action": "refresh_keys"}, function(){
+                    this.model.save({"action": "force_logout"}, function(){
                         SWAM.toast("Sessions Killed", "All user session killed", "success");
                     });
                 }

@@ -22,6 +22,25 @@ SWAM.Models.Me = SWAM.Models.User.extend({
         } else {
         	this.id = this.attributes.id;
         }
+
+        this.on("error", this.on_fetch_error, this);
+
+    },
+
+    on_fetch_error: function(evt) {
+        if (evt.response) {
+            if (evt.response.data.error_code == 420) return; // ignore aborts
+            if (evt.response.data.error_code == 401) {
+                // permission denied, logged out?
+                if (this.options.auth_method == "jwt") {
+                    // lets try and refresh the token if we have one
+                    if (this.isOrCanAuth()) {
+                        return this.refreshJWT();
+                    }
+                }
+                this.logout();
+            }
+        }
     },
 
     getPerm: function(perm) {
@@ -67,17 +86,22 @@ SWAM.Models.Me = SWAM.Models.User.extend({
 
     checkAuth: function(callback) {
         // this method is safer when supporting multiple auth types
-        var auth_method = this.options.auth_method.upper();
-        if (auth_method == "JWT") {
-            return callback(this.isAuthenticated());
+        // var auth_method = this.options.auth_method.upper();
+        if (this.options.auth_method == "jwt") {
+            if (!this.isAuthenticated()) {
+                if (callback) return callback(false);
+            }
         }
 
         // all other types we just hit the server for now
-        this.fetch(function(model, resp) {
-            callback(resp.status);
-        });
+        this.fetchDebounced(function(model, resp) {
+            if (callback) {
+                callback(model, resp);
+            } else if (!resp.status) {
+                this.trigger("logged_out", this);
+            }
+        }.bind(this));
     },
-
 
     isOrCanAuth: function() {
         return this.isAuthenticated() || (this.refreshExpiresIn() > 60);

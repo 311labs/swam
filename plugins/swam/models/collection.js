@@ -308,6 +308,13 @@ SWAM.Collection = SWAM.Object.extend({
         } else if (resp.error_code == 420) {
             // ignore aborted requests?
             return;
+        } else if (resp.error_code == 401) {
+            // permission denied
+            this.reset(true);
+            this.resetPager();
+            // check to make sure we are still logged in
+            if (app.me) app.me.checkAuth();
+            this.trigger("error", this. resp);
         } else {
             this.trigger("error", this. resp);
         }

@@ -320,10 +320,12 @@ SWAM.Models.Incident = SWAM.Model.extend({
         "paused": "bg-secondary"
     },
     COMPONENTS: [
-        "taskqueue_errors",
-        "rest_error",
-        "ossec",
+        "account",
+        "access_request",
         "rest_denied",
+        "rest_error",
+        "taskqueue_errors",
+        "ossec",
         "devtools"
     ],
     EDIT_FORM: [
