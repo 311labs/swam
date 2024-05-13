@@ -43,7 +43,12 @@ PORTAL.Views.Rule = SWAM.View.extend({
                 field:"action",
                 columns: 8
             },
-
+            {
+                label:"Title Template",
+                field:"title_template",
+                help: "Customize the incident title by event metadata. example {event.metadata.geoip.country}",
+                columns: 12
+            },
         ]}));
 
         this.checks = new SWAM.Collections.IncidentRuleCheck({params:{size:100, sort:"index"}});

@@ -6,7 +6,8 @@ PORTAL.Pages.IncidentRules = SWAM.Pages.TablePage.extend({
         icon: "exclamation-diamond-fill",
         title: "Rules",
         list_options: {
-            add_classes: "swam-table-clickable"
+            add_classes: "swam-table-clickable",
+            batch_select: true
         },
         columns: [
             {label:"p", field:"priority"},

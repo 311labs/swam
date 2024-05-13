@@ -187,6 +187,12 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             default: 0,
             columns: 6
         },
+        {
+            label:"Title Template",
+            field:"title_template",
+            help: "Customize the incident title by event metadata. example {event.metadata.geoip.country}",
+            columns: 12
+        },
     ]
 });
 
