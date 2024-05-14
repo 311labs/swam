@@ -331,6 +331,7 @@ SWAM.Models.Incident = SWAM.Model.extend({
         "rest_denied",
         "rest_error",
         "taskqueue_errors",
+        "uncaught_error",
         "ossec",
         "devtools"
     ],
