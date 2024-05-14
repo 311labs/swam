@@ -7,6 +7,7 @@ SWAM.Collection = SWAM.Object.extend({
         size: 50,
         stale_after_ms: 15000,
         max_visible_pages: 4,
+        reset_before_fetch: false,
         reset_after_fetch: true,
         fetch_debounced: true  // by default debounce fetch requests (ie avoid double clicks, etc)
     },
@@ -373,6 +374,7 @@ SWAM.Collection = SWAM.Object.extend({
                 return;
             }
         }
+        if (this.options.reset_before_fetch) this.reset();
         this.trigger('loading:begin', this);
         let params = this.params;
         if (this.options.ignore_params) {

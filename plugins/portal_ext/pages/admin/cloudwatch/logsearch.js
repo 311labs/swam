@@ -1,6 +1,6 @@
 SWAM.Models.ServerLogs = SWAM.Model.extend({
     defaults: {
-    	url:"/api/metrics/servers/logs"
+    	url:"/api/auditlog/server/logs"
     },
 });
 
@@ -11,7 +11,6 @@ SWAM.Collections.ServerLogs = SWAM.Collection.extend({
 });
 
 PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
-
     defaults: {
         download_prefix: "server_logs",
         icon: "exclamation-diamond-fill",
@@ -21,91 +20,47 @@ PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
             download_local: true,
         },
         columns: [
-            {label:"When", field:"time_local"},
-            {label:"IP", field:"remote_addr"},
-            {label:"Server", field:"server"},
-            {label:"Request", field:"request"},
+            {label:"When", field:"time|parse_date('DD/MMM/YYYY:HH:mm:ss Z')|datetime"},
+            {label:"IP", field:"ip"},
+            {label:"Method", field:"method"},
+            {label:"URL", field:"url"},
             {label:"Status", field:"status"},
-            {label:"Referrer", field:"http_referer"},
-            {label:"Agent", field:"http_user_agent"}
+            {label:"Referrer", field:"referrer"}
         ],
         Collection: SWAM.Collections.ServerLogs,
         add_button: false,
         group_filtering: false,
         collection_params: {
-            ip: "headless"
+            log_streams: "access.log,ui_access.log"
         },
-        filter_bar: [
+        filters: [
             {
-                type: "group",
-                classes: "justify-content-sm-end",
-                columns: 9,
-                fields: [
-                    {
-                        name: "ip",
-                        type: "search",
-                        columns: 3,
-                        columns_classes: "col-sm-12 col-md-5 col-lg-6",
-                        form_wrap: "search",
-                        placeholder: "search...",
-                        can_clear: true,
-                        button: {
-                            icon: "bi bi-search"
-                        },
-                        attributes: {
-                        	autocomplete: "nope"
-                        }
-                    },
-                    {
-                         columns: 3,
-                         name: "gz",
-                         type: "select",
-                         options: [
-                             {
-                                 label: "Active Logs",
-                                 value: "active"
-                             },
-                             {
-                                 label: "GZip Logs",
-                                 value: "gz"
-                             },
-                         ]
-                     },
-                    {
-                        columns: 3,
-                        columns_classes: "col-auto",
-                        type: "buttongroup",
-                        buttons: [
-                            {
-                                classes: "btn btn-secondary",
-                                icon: "bi bi-arrow-repeat",
-                                action: "reload"
-                            },
-                            {
-                                type: "dropdown",
-                                icon: "bi bi-download",
-                                items: [
-                                    {
-                                        icon: "bi bi-filetype-csv",
-                                        label: "Download CSV",
-                                        action: "download_csv"
-                                    },
-                                    {
-                                        icon: "bi bi-filetype-json",
-                                        label: "Download JSON",
-                                        action: "download_json"
-                                    },
-                                ]
-                            }
-                        ]
-                    },
-                ],
-            }
+                label: "Date Range",
+                name: "created",
+                type: "daterange",
+                operator: "is"
+            },
+            {
+                label: "Server",
+                name: "log_group",
+                type: "select",
+                options: []
+            },
+            // {
+            //     label: "Log Files",
+            //     name: "log_streams",
+            //     type: "select",
+            //     options: [
+            //         "access.log",
+            //         "access.log,ui_access.log",
+            //     ]
+            // },
         ]
     },
 
     on_page_init: function() {
         SWAM.Pages.TablePage.prototype.on_page_init.call(this);
+        this.getChild("list").collection.options.reset_before_fetch = true;
         this.getChild("list")
         	.getChild("filters")
         	.getChild("fb_actions")
@@ -122,5 +77,12 @@ PORTAL.Pages.ServerLogs = SWAM.Pages.TablePage.extend({
         // this.view.setModel(item.model);
         SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
     },
+
+    setServerLogOptions: function(options) {
+        this.options.filters[1].options = options;
+        if (this.getChild("list")) {
+            this.getChild("list").getChild("filters").options.filters[1].options = options;
+        }  
+    }
 
 });

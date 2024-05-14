@@ -360,6 +360,8 @@ SWAM.Localize = {
             return 0;
         }
 
+        if (_.isFunction(value.dayOfYear)) return value;
+
         if (_.isNumeric(value)) {
             // we will assume then this is secs
             value = value * 1000;
@@ -859,6 +861,14 @@ SWAM.Localize = {
             if (fmt) return moment(value).tz(tz).format(fmt);
         }
         return moment(value).tz(tz);
+    },
+    'parse_date': function(value, attr, fmt) {
+        if (!value) return "";
+        if (_.isString(value) && fmt) {
+            if (_.isArray(fmt)) fmt = fmt.pop();
+            return moment(value, fmt);
+        }
+        return this.safe_datetime(value, attr, fmt);
     },
     'moment': function(value, attr, fmt, default_fmt) {
         value = this.safe_datetime(value, attr, fmt);
