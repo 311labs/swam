@@ -16,7 +16,7 @@ SWAM.Views.Chart = SWAM.View.extend({
         this.options.labels = [];
         this.options.options = this.options.options || {};
         if (this.options.height) {
-            this.options.aspect_ratio = true;
+            this.options.aspect_ratio = false;
         }
         if (this.options.aspect_ratio) {
             this.options.options.aspectRatio = this.options.aspect_ratio;
@@ -111,6 +111,9 @@ SWAM.Views.Chart = SWAM.View.extend({
         } else {
             if (!config.options.plugins) config.options.plugins = {};
             if (!config.options.plugins.tooltip) config.options.plugins.tooltip = {};
+            if (this.options.xaxis_hide) {
+                config.options.scales.x = {ticks:{display:false}};
+            }
             let callbacks = config.options.plugins.tooltip.callbacks || {};
             config.options.plugins.tooltip.callbacks = callbacks;
             callbacks.label = function(context) {

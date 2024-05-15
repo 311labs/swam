@@ -1,4 +1,5 @@
 <div class="card">
+    {{#options.title}}
     <div class="card-header d-inline {{options.title_classes}}">
         <div class="row">
             <div class="col h4">{{{options.title}}}</div> 
@@ -23,6 +24,7 @@
             {{{/options.show_refresh}}}
         </div>
     </div>
+    {{/options.title}}
     <div class="card-body">
         <div class="metrics-chart" id="metrics_chart">
 

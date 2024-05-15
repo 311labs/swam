@@ -122,7 +122,10 @@ PORTAL.PortalApp = SWAM.App.extend({
 			this.setGroup(group);
 		}
 
-		this.getChild("title-bar").render();
+		if (this.getChild("title-bar")) { 
+			this.getChild("title-bar").render();
+		}
+		
 		if (window.innerWidth > 720) {
 			this.showLeftPanel();
 		} else {

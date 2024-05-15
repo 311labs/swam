@@ -34,8 +34,12 @@ PORTAL.Pages.GeoIPs = SWAM.Pages.TablePage.extend({
         show_on_add: true
     },
 
-    // on_action_add: function(evt) {
-    //     let model = PhoneInfo.Lookup()
-    // },
+    on_item_clicked: function(item, evt) {
+        if (app.me.hasPerm("manage_ips")) {
+            this.options.view_only = false;
+            this.options.edit_form = SWAM.Models.GeoIP.EDIT_FORM;
+        }
+        this.on_item_edit(item, evt);
+    },
 });
 

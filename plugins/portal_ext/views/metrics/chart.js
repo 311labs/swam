@@ -39,7 +39,9 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             yaxis_localize: this.options.yaxis_localize,
             xaxis_localize: this.options.xaxis_localize,
             hide_tooltips: this.options.hide_tooltips,
-            hide_legend: this.options.hide_legend
+            hide_legend: this.options.hide_legend,
+            height: this.options.height,
+            xaxis_hide: this.options.xaxis_hide
         }));
 
         if (this.options.filters) {
@@ -73,6 +75,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         var params = {granularity:this.options.granularity};
         if (this.options.no_refresh) return; // this assume data is coming from somewhere else
         if (this.options.requires_group && !this.options.group) return;
+        if (this.options.prefix) params.prefix = this.options.prefix;
         if (this.options.category) {
             params.category = this.options.category
         } else if (this.options.slugs) {

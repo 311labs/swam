@@ -35,6 +35,43 @@ SWAM.Models.GeoIP = SWAM.Model.extend({
             columns: 12
         }
     ],
+    EDIT_FORM: [
+        {
+            name:"isp",
+            label:"ISP",
+            columns: 12
+        },
+        {
+            name:"hostname",
+            label:"Hostname",
+            columns: 12
+        },
+        {
+            name:"city",
+            label:"City",
+            columns: 12
+        },
+        {
+            name:"state",
+            label:"State",
+            columns: 12
+        },
+        {
+            name:"country",
+            label:"Country",
+            columns: 12
+        },
+        {
+            name:"lat",
+            label:"Latitude",
+            columns: 6
+        },
+        {
+            name:"lng",
+            label:"Longitude",
+            columns: 6
+        }
+    ],
 });
 
 SWAM.Collections.GeoIP = SWAM.Collection.extend({
