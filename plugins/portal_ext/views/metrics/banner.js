@@ -77,15 +77,24 @@ PORTAL.Views.MetricsBanner = SWAM.View.extend({
     },
 
     on_metrics: function(data) {
-        if (this.options.field_labels) {
-            let new_data = {};
-            _.each(this.options.field_labels, function(v, k) {
-                if (data[k] != undefined) new_data[v] = data[k];
+        let order_data = [];
+        let labels = this.options.field_labels;
+        if (this.options.fields) {
+            // data = _.pick(data, this.options.fields);
+            _.each(this.options.fields, function(key){
+                if (data[key] === undefined) return;
+                let nkey = key;
+                if (labels && labels[key] != undefined) nkey = labels[key]
+                order_data.push({label:nkey, value:data[key]});
             });
-            this.data = new_data;
         } else {
-            this.data = data;
+            _.each(data, function(value, key){
+                let nkey = key;
+                if (labels && labels[key] != undefined) nkey = labels[key]
+                order_data.push({label:nkey, value:value});
+            });
         }
+        this.data = order_data;
         this.render();
     }
 
