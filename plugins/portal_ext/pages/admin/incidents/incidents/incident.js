@@ -53,12 +53,9 @@ PORTAL.Views.Incident = SWAM.View.extend({
         return this.children.tabs.getTab(tab);
     },
 
-
     showDialog: function(model, collection, parent) {
+        this.setModel(model);
         let state = model.get("state");
-        let state_display = model.get("state_display");
-        let description = model.get("description");
-        let component = model.get("component"); 
         let item = {model:model};
         let context_menu = [
             {
@@ -69,8 +66,6 @@ PORTAL.Views.Incident = SWAM.View.extend({
                 }
             }
         ];
-
-        this.setModel(model);
 
         if (model.get("rule")) {
             context_menu.push({
@@ -91,7 +86,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
                     icon: "shield-check",
                     callback: function(dlg, menu) {
                         app.showBusy();
-                        model.save({state:1}, function(){
+                        item.model.save({state:1}, function(){
                             app.hideBusy();
                             collection.fetch();
                         });
@@ -103,7 +98,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
                     icon: "pause-circle",
                     callback: function(dlg, menu) {
                         app.showBusy();
-                        model.save({state:2}, function(){
+                        item.model.save({state:2}, function(){
                             app.hideBusy();
                             dlg.dismiss();
                             collection.fetch();
@@ -117,7 +112,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
                 icon: "shield-slash-fill",
                 callback: function(dlg, menu) {
                     app.showBusy();
-                    model.save({state:3}, function(){
+                    item.model.save({state:3}, function(){
                         app.hideBusy();
                         dlg.dismiss();
                         collection.fetch();
@@ -130,7 +125,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
                 icon: "pause-circle",
                 callback: function(dlg, menu) {
                     app.showBusy();
-                    model.save({state:2}, function(){
+                    item.model.save({state:2}, function(){
                         app.hideBusy();
                         dlg.dismiss();
                         collection.fetch();
@@ -143,7 +138,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
                 icon: "shield-fill-check",
                 callback: function(dlg, menu) {
                     app.showBusy();
-                    model.save({state:4}, function(){
+                    item.model.save({state:4}, function(){
                         app.hideBusy();
                         dlg.dismiss();
                         collection.fetch();
@@ -164,8 +159,9 @@ PORTAL.Views.Incident = SWAM.View.extend({
             }
         });
 
-        let header = SWAM.renderTemplate("portal_ext.pages.admin.incidents.incidents.header", {model:model});
-        dlg = SWAM.Dialog.showView(this, {
+        let header = SWAM.renderTemplate("portal_ext.pages.admin.incidents.incidents.header", item);
+
+        let dlg_opts = {
             title: header,
             kind: "primary",
             can_dismiss: true,
@@ -175,7 +171,39 @@ PORTAL.Views.Incident = SWAM.View.extend({
             // size: 'lg',
             // height: 'md',
             "context_menu": context_menu
-        });
+        };
+
+        if (collection) {
+            dlg_opts.buttons = [
+                {
+                    id: "prev",
+                    action:"choice",
+                    label:"Previous",
+                },
+                {
+                    id: "next",
+                    action:"choice",
+                    label:"Next",
+                    classes: "btn btn-link me-4"
+                },
+                {
+                    action:"close",
+                    label:"Close",
+                },
+            ];
+
+            dlg_opts.callback = function(dlg, choice) {
+                dlg.dismiss();
+                if (choice == "prev") {
+                    this.showDialog(collection.getBefore(item.model), collection, parent);
+                } else {
+                    this.showDialog(collection.getAfter(item.model), collection, parent);
+                }
+                
+            }.bind(this);
+        }
+
+        dlg = SWAM.Dialog.showView(this, dlg_opts);
         return dlg;
     }
 

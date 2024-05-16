@@ -214,6 +214,27 @@ SWAM.Collection = SWAM.Object.extend({
         return _.findWhere(this.models, {id:parseInt(id)});
     },
 
+    getIndex: function(model) {
+        if (_.isNumber(model)) model = this.get(model);
+        return this.models.indexOf(model);
+    },
+
+    getAfter: function(model) {
+        let index = this.getIndex(model);
+        if (index < 0) return null;
+        index += 1;
+        if (index < this.models.length) return this.models[index];
+        return this.models[0];
+    },
+
+    getBefore: function(model) {
+        let index = this.getIndex(model);
+        if (index < 0) return null;
+        index -= 1;
+        if (index < 0) index = this.models.length - 1;
+        return this.models[index];
+    },
+
     find: function(predicate) {
         return _.find(this.models, predicate);
     },
