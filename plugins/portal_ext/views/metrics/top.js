@@ -8,6 +8,53 @@ PORTAL.Views.Leaders = SWAM.View.extend({
         field: "id"
     },
 
+    on_action_chart_refresh: function(evt, id) {
+        this.refresh();
+    },
+
+    on_pre_render: function() {
+        if (this.options.show_filters && !this.getChild("card_filter")) {
+            this.enable_filters();
+        }
+    },
+
+    enable_filters: function() {
+        let fields = [
+            {
+                type: "select",
+                name: "timeframe",
+                size: "sm",
+                options: [
+                    {
+                        label: "Day",
+                        value: "day"
+                    },
+                    {
+                        label: "Month",
+                        value: "month"
+                    },
+                    {
+                        label: "Year",
+                        value: "year"
+                    }
+                ]
+            }
+        ];
+
+        this.addChild("card_filter", new SWAM.Form.View({
+            classes: "form-view nopad",
+            fields: fields,
+            defaults: this.options
+        }));
+
+        this.children.card_filter.on("input:change", this.on_input_change, this);
+    },
+
+    on_input_change: function(evt) {
+        this.options[evt.name] = evt.value;
+        this.refresh();
+    },
+
     _refresh: function() {
         // slugs are sorted automatically, so metrics data values will be arranged accordingly
         var params = {};

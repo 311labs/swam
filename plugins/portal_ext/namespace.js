@@ -264,7 +264,7 @@ PORTAL.Menus.Admin = [
 		icon: "file-earmark-image",
 		label:"Media",
 		page: "admin_media",
-		requires_perm: "view_groups",
+		requires_perm: "manage_media",
 	},
 	{
 		icon: "book",
