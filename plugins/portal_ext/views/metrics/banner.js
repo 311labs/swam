@@ -79,10 +79,16 @@ PORTAL.Views.MetricsBanner = SWAM.View.extend({
     on_metrics: function(data) {
         let order_data = [];
         let labels = this.options.field_labels;
+        if (this.options.field_localize) {
+            _.each(this.options.field_localize, function(loc, key){
+                if (data[key] === undefined) data[key] = 0;
+                data[key] = SWAM.Localize.render(`${key}|${loc}`, data);
+            });
+        }
         if (this.options.fields) {
             // data = _.pick(data, this.options.fields);
             _.each(this.options.fields, function(key){
-                if (data[key] === undefined) return;
+                if (data[key] === undefined) data[key] = 0;
                 let nkey = key;
                 if (labels && labels[key] != undefined) nkey = labels[key]
                 order_data.push({label:nkey, value:data[key]});

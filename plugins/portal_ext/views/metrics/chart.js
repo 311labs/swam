@@ -137,6 +137,13 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.refreshDebounced();
     },
 
+    setGroup: function(group) {
+        if (this.getChild("group_select")) {
+            this.getChild("group_select").setActive(group);
+            this.getChild("group_select").collection.params.child_of = group.id;
+        }
+    },
+
     enable_filters: function() {
         let fields = [
             {
