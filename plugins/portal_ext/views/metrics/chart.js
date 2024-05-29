@@ -92,6 +92,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (this.options.samples) {
             if (this.options.granularity == "daily") {
                 params.since = moment().subtract(this.options.samples, "d").format("YYYY-MM-DD");
+            } else if (this.options.granularity == "monthly") {
+                params.since = moment().subtract(this.options.samples, "months").format("YYYY-MM-DD");
             }
             if (this.options.source != "db") {
                 params.samples = this.options.samples;

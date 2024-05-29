@@ -548,6 +548,42 @@ SWAM.Collection = SWAM.Object.extend({
         SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
     },
 
+    saveEach: function(data, callback) {
+        const total = this.length;
+        let completed = 0;
+        let saved = [];
+        if ((total === 0) && (callback)) return callback(saved);
+        this.each(function(model){
+            model.save(data, function(m, resp){
+                completed++;
+                if (resp.status) saved.push(m);
+                if (completed == total) {
+                    if (callback) callback(saved);
+                }
+            });
+        });
+    },
+
+    batchUpdate: function(data, callback) {
+        let params = this.params;
+        if (this.options.ignore_params) {
+            params = _.extend({}, params);
+            this.options.ignore_params.forEach(e => delete params[e]);
+        }
+        payload = _.extend({rest_batch:"update", batch_data:data}, opts.params);
+        SWAM.Rest.POST(this.getUrl(), payload, callback);
+    },
+
+    batchDelete: function(data, callback) {
+        let params = this.params;
+        if (this.options.ignore_params) {
+            params = _.extend({}, params);
+            this.options.ignore_params.forEach(e => delete params[e]);
+        }
+        payload = _.extend({rest_batch:"delete", batch_data:data}, opts.params);
+        SWAM.Rest.POST(this.getUrl(), payload, callback);
+    },
+
     batchUpload: function(data, callback) {
         let model = new this.options.Model();
         model.save({
