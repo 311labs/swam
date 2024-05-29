@@ -967,6 +967,10 @@ SWAM.Localize = {
         return "<" + fmt + "/>" + value + "</" + fmt + ">";
     },
 
+    'action': function(value, attr, fmt) {
+        return `<span data-action="${fmt}>${value}</span>`;
+    },
+
     'truncate': function(value, attr, fmt) {
         fmt = fmt || 0;
         fmt = parseInt(fmt, 10);
