@@ -107,3 +107,14 @@ SWAM.Form.readFileAsText = function(file, callback) {
 	};
 	reader.readAsText(file); // Read the file as text
 };
+
+SWAM.Form.renameFields = function(fields, substring, replacement) {
+	// in each field object, replace the substring with the replacement of field.name
+	return fields.map((field) => {
+	    let fieldClone = {...field}; // so not to mutate the original field
+	    if (fieldClone.name.includes(substring)) {
+	        fieldClone.name = fieldClone.name.replace(substring, replacement);
+	    }
+	    return fieldClone;
+	});
+};
