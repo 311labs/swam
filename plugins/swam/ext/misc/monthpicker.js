@@ -15,8 +15,12 @@ SWAM.Views.MonthPicker = SWAM.View.extend({
         if (this.options.value) {
             this.options.orig_value = this.options.value;
             this.val(this.options.value);
+        } else {
+            let date = moment();
+            let obj = {year:date.year(), month:date.month()};
+            if (obj.month < 10) obj.month = `0${obj.month}`;
+            this.val(`${obj.year}-${obj.month}`);
         }
-
     },
 
     val: function(value) {

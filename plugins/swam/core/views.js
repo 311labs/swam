@@ -147,10 +147,6 @@ SWAM.View = SWAM.Object.extend({
         this.$el.attr(attrs);
         if (this.options.add_classes) this.$el.addClass(this.options.add_classes);
     },
-    isInDOM: function() {
-        if (!this.$el) return false;
-        return this.$el.closest(document.documentElement).length;
-    },
     addToDOM: function($el) {
         if (this.$parent) this.removeFromDOM();
         if (!$el) {
