@@ -110,12 +110,14 @@ SWAM.WikiMenu = SWAM.Object.extend({
 			items.push({
 				label: "New Page",
 				icon: "file-earmark-plus",
-				action: "new_wiki_page"
+				action: "new_wiki_page",
+				requires_perm: "edit_wiki"
 			});
 			items.push({
 				label: "New Section",
 				icon: "file-earmark-plus",
-				action: "new_wiki_section"
+				action: "new_wiki_section",
+				requires_perm: "edit_wiki"
 			});
 			this.options.menu.hideBusy();
 			this.options.menu.items = items;
