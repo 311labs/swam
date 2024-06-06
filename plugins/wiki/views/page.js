@@ -127,6 +127,10 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
                 start: 0,
                 end: 100
             },
+            {
+                label: "Requires Permissions",
+                field: "metadata.requires_perm",
+            },
         ];
         let model = new SWAM.Models.WikiPage(this.model.get("parent"));
         SWAM.Dialog.editModel(model, {
