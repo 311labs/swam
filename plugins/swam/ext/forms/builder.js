@@ -127,8 +127,12 @@ SWAM.Form.Builder.getValue = function(fc, form_info) {
 		} else {
 			fc.value = form_info.model.get(fc.name, fc.value, fc.localize);
 		}
-		if (_.isDict(fc.value) && fc.value.id) {
-			fc.value = fc.value.id;
+		if (_.isDict(fc.value)) {
+			if (fc.value.id) {
+				fc.value = fc.value.id;
+			} else if (fc.type === "textarea") {
+				fc.value = JSON.stringify(fc.value);
+			}
 		}
 	}
 }
