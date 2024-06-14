@@ -769,7 +769,9 @@ def buildApps(opts):
 
 
 def loadAppsFromPath(opts, app_path, parent_folder=None):
-    for name in os.listdir(app_path):
+    items = list(os.listdir(app_path))
+    items.sort()
+    for name in items:
         path = os.path.join(app_path, name)
         if os.path.isdir(path):
             if parent_folder:
