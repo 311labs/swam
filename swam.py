@@ -20,6 +20,7 @@ import aaencoder
 CONFIG = objict(
     output_path="output",
     port=8080,
+    sort_includes=True,
     disable_html_minify=False,
     plugins=["swamcore/plugins", "plugins"]
 )
