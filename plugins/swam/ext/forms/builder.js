@@ -131,7 +131,7 @@ SWAM.Form.Builder.getValue = function(fc, form_info) {
 			if (fc.value.id) {
 				fc.value = fc.value.id;
 			} else if (fc.type === "textarea") {
-				fc.value = JSON.stringify(fc.value);
+				fc.value = JSON.stringify(fc.value, undefined, 4);
 			}
 		}
 	}
