@@ -3,13 +3,17 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
     template: "portal_ext.pages.admin.metrics.cloudwatch",
     classes: "page-view page-padded has-topbar",
 
+    defaults: {
+        auto_refresh_time: 150000
+    },
+
     on_init: function() {
         this.addChild("filter_bar", new SWAM.Form.View({
             fields: [
                 {
                     type: "select",
                     name: "duration",
-                    default: 43200,
+                    default: 3600,
                     size: "sm",
                     options: [
                         {label: "30m", value: 1800},
@@ -207,6 +211,32 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
 
     on_page_pre_enter: function() {
         this.refresh();
+    },
+
+    startAutoRefresh: function() {
+        if (this._ar_timer || !this.options.auto_refresh_time) return;
+        this._ar_timer = setTimeout(function(){
+            this.refresh();
+            this._ar_timer = null;
+            this.startAutoRefresh();
+        }.bind(this), this.options.auto_refresh_time);
+    },
+
+    stopAutoRefresh: function() {
+        if (this._ar_timer) {
+            clearTimeout(this._ar_timer);
+            this._ar_timer = null;
+        }
+    },
+
+    on_action_auto_refresh: function(evt, id) {
+        if (evt.target.checked) {
+            SWAM.toast("Auto Refresh", "ENABLED", "success", 1000);
+            this.startAutoRefresh();
+        } else {
+            SWAM.toast("Auto Refresh", "DISABLED", "danger", 1000);
+            this.stopAutoRefresh();
+        }
     }
 
 });
