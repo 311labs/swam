@@ -86,7 +86,8 @@ div.password-input-group {
     button.btn-icon {
         position: absolute;
         right: 8px;
-        bottom: 14px;
+        top: 50%;
+        transform: translate(0, -50%);
         background-color: transparent;;
         border: none;
         &:hover {
@@ -448,6 +449,12 @@ div.form-view {
 
 .form-check-xl .form-check-label {
     padding-left: 1.2rem;
+ }
+
+ div.form-hide-label {
+    label {
+        display: none;
+    }
  }
 
  div.form-floating {
