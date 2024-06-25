@@ -86,8 +86,7 @@ div.password-input-group {
     button.btn-icon {
         position: absolute;
         right: 8px;
-        top: 50%;
-        transform: translate(0, -50%);
+        bottom: 14px;
         background-color: transparent;;
         border: none;
         &:hover {
@@ -454,6 +453,18 @@ div.form-view {
  div.form-hide-label {
     label {
         display: none;
+    }
+ }
+
+ div.form-floating-label {
+    padding-top: 24px;
+    position: relative;
+    label {
+        font-size: 0.8rem;
+        color: #686868;
+        position: absolute;
+        top: 4px;
+        left: 4px;
     }
  }
 
