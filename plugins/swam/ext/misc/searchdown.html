@@ -8,7 +8,7 @@
       <div id="searchdown-list"></div>
    </div>
    {{#options.input_name}}
-   <input id="hidden_input" type="hidden" name="{{options.input_name}}">
+   <input id="hidden_input" type="hidden" name="{{options.input_name}}" {{#options.required}}required{{/options.required}}>
    {{/options.input_name}}
 </div>
 

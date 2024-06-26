@@ -333,6 +333,7 @@ div.searchdown-input {
     button.dropdown-toggle {
         width: 100%;
         border: 1px solid #cccccc;
+        background: white;
         text-align: left;
         &:after {
             position: absolute;
@@ -347,6 +348,11 @@ div.searchdown-input {
             max-height: 400px;
             overflow-y: auto;
         }
+    }
+
+    div.dropdown.is-invalid {
+        border: 1px solid red;
+        border-radius: 3px;
     }
 }
 

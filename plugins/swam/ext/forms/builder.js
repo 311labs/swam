@@ -591,6 +591,10 @@ SWAM.Form.Builder.searchdown = function(fc, form_info) {
 	SWAM.Form.Builder.iconlabel(fc);
 	fc.$el.append(SWAM.Form.Builder.label(fc, form_info));
 	fc.$child = $("<div />").addClass("searchdown-input");
+	if (fc.required) {
+		if (!fc.options) fc.options = {};
+		fc.options.required = true;
+	}
 	if (fc.options) fc.$child.data("options", fc.options);
 	if (_.isFunction(fc.collection)) fc.collection = fc.collection(fc, form_info);
 	fc.$child.data("collection", fc.collection);

@@ -189,6 +189,10 @@ SWAM.Form.View = SWAM.View.extend({
             }
         }
 
+        if ($field.prop("type") === "hidden") {
+            $field = $field.parent();
+        }
+
         if (!v) {
             is_valid = false;
             if (highlight) {
