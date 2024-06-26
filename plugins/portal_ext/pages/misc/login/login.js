@@ -219,10 +219,13 @@ PORTAL.Pages.Login = SWAM.Page.extend({
     on_action_show_password: function(evt) {
         var $parent = $(evt.currentTarget).parent();
         var $input = $parent.find("input");
+        var $icon = $parent.find("i");
         if ($input.attr("type") == "password") {
             $input.attr("type", "text");
+            $icon.removeClass("bi-eye-fill").addClass("bi-eye-slash-fill");
         } else {
             $input.attr("type", "password");
+            $icon.removeClass("bi-eye-slash-fill").addClass("bi-eye-fill");
         }
     },
 

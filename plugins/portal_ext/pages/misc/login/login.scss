@@ -41,4 +41,19 @@
       font-weight: 800;
       text-align: center;
     }
+
+    .login-video-background {
+        position: fixed;
+        top: 0;
+        left: -1px;
+        right: -1px;
+        width: 102%;
+        height: 100%;
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8; /* Slight opacity for a darker effect */
+        }
+    }
 }

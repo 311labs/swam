@@ -334,6 +334,18 @@ window.deepExtend = function(obj) {
 
 if (window._) window._.deepExtend = window.deepExtend;
 
+window.changeFavicon = function(src) {
+    var link = document.getElementById('dynamic-favicon');
+    if (!link) {
+        link = document.createElement('link');
+        link.id = 'dynamic-favicon';
+        link.rel = 'icon';
+        link.type = 'image/png';
+        document.head.appendChild(link);
+    }
+    link.href = src;
+};
+
 window.addStylesheet = function(css, id) {
   const styleEl = document.createElement('style');
   styleEl.textContent = css;
