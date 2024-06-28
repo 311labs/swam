@@ -237,6 +237,10 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         } else {
             filters.push(filter);
         }
+
+        if ((filter.type == "select")&&(filter.editable)) {
+            filter.force_top = true;
+        }
         
         SWAM.Dialog.showForm(filters, {
             title: "Add Filter",
