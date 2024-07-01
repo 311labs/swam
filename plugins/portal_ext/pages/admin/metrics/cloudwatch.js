@@ -44,6 +44,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
 
@@ -63,6 +68,34 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
+                ]
+            }));
+
+        this.addChild("ec2_cons",
+            new PORTAL.Views.MetricsChart({
+                url: "/api/metrics/aws/ec2/network/established",
+                title: "EC2 Connections",
+                source: "aws",
+                xaxis_localize: "time",
+                show_refresh: true,
+                granularity: null,
+                ids:["all"],
+                colors:[
+                    "rgba(250, 50, 50, 0.9)",
+                    "rgba(50, 20, 255, 0.9)",
+                    "rgba(200, 80, 20, 0.9)",
+                    "rgba(25, 25, 25, 0.9)",
+                    "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
 
@@ -81,6 +114,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
 
@@ -100,6 +138,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
 
@@ -118,6 +161,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
 
@@ -136,6 +184,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
 
@@ -154,6 +207,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
         this.addChild("redis_cons",
@@ -171,6 +229,11 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     "rgba(200, 80, 20, 0.9)",
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
+                    "rgba(220, 150, 150, 0.9)",
+                    "rgba(150, 20, 155, 0.9)",
+                    "rgba(100, 180, 200, 0.9)",
+                    "rgba(25, 225, 225, 0.9)",
+                    "rgba(150, 155, 0, 0.9)"
                 ]
             }));
     },

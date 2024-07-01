@@ -262,6 +262,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     },
 
     on_metrics: function (data) {
+        if (!data.periods) return;
         if (this.options.on_localize) {
             data = this.options.on_localize(data);
         }
