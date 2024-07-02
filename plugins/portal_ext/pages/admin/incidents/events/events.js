@@ -43,7 +43,13 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
                 name: "category",
                 type: "select",
                 editable: true,
-                options: ["ossec", "account"]
+                force_top: true,
+                options: SWAM.Models.Incident.COMPONENTS
+            },
+            {
+                label: "Host",
+                name: "hostname",
+                type: "text"
             },
             {
                 label: "Level",

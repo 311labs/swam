@@ -117,6 +117,7 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         name: "category",
                         type: "select",
                         editable: true,
+                        force_top: true,
                         placeholder: "Select category",
                         options: SWAM.Models.Incident.COMPONENTS,
                         columns: 3,
