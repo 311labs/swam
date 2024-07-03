@@ -37,12 +37,12 @@ SWAM.View = SWAM.Object.extend({
         if (this.options.model) this.setModel(this.options.model);
         this.setElement(document.createElement(this.tagName));
         if (this.options.parent) this.options.$parent = $(this.options.parent);
+        this.on_init();
         if (this.options.$parent) {
             let $el = this.options.$parent;
             this.options.$parent = null;
             this.addToDOM($el);
         }
-        this.on_init();
     },
     on_init: function() {
 

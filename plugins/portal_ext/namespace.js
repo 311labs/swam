@@ -63,9 +63,12 @@ window.PORTAL.init_admin_pages = function() {
 	app.addPage("admin_firewall", new PORTAL.Pages.FirewallEvents({
 		requires_perm: ["sys.view_admin"]
 	}), ["admin/firewall"]);
-	app.addPage("admin_servers", new PORTAL.Pages.ServerInfo({
+	app.addPage("admin_server_versions", new PORTAL.Pages.ServerVersion({
 		requires_perm: ["sys.view_admin"]
-	}), ["admin/servers"]);
+	}), ["admin/servers/version"]);
+	app.addPage("admin_server_info", new PORTAL.Pages.ServerInfo({
+		requires_perm: ["sys.view_admin"]
+	}), ["admin/servers/info"]);
 	app.addPage("admin_domains", new PORTAL.Pages.DomainWatch({
 		requires_perm: ["sys.view_admin"]
 	}), ["admin/domains"]);
@@ -229,8 +232,13 @@ PORTAL.Menus.Admin = [
 			},
 			{
 				label:"Server Info",
+				icon: "binoculars-fill",
+				page: "admin_server_info"
+			},
+			{
+				label:"Server Versions",
 				icon: "info-circle-fill",
-				page: "admin_servers"
+				page: "admin_server_versions"
 			},
 			{
 				label:"Domain Watch",
