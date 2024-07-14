@@ -191,6 +191,9 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                     columns: 6
                 });
         }
+        if (_.isDict(this.options.filters) && (_.isArray(this.options.filters.filters))) {
+            this.options.filters.filters.forEach((item) => fields.push(item));
+        }
 
         this.addChild("card_filter", new SWAM.Form.View({
             classes: "form-view nopad",
