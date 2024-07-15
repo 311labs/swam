@@ -919,6 +919,9 @@ SWAM.Localize = {
     'date_utc': function(value, attr, fmt) {
         return moment.unix(value).utc().format("M/DD/YYYY");
     },
+    'simple_time': function(value, attr, fmt) {
+        return this.moment(value, attr, fmt, "h:mm A");
+    },
 
     'years': function(value, attr, fmt) {
         value = this.safe_datetime(value, attr, fmt);

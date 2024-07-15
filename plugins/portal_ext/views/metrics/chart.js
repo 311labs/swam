@@ -119,7 +119,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             gs.collection.fetch();
         }
         
-        this.showBusy();
+        if (!this.options.live_chart || !this.getChild("metrics_chart").options.initialized) this.showBusy();
 
         SWAM.Rest.GET(this.options.url, params, function(resp, status) {
             this.hideBusy();
@@ -260,7 +260,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
            );
         }
         this.is_loading = true;
-        this.trigger('loading:begin', this);
+        if (!this.options.live_chart) this.trigger('loading:begin', this);
         this._debounce_refresh();
     },
 
@@ -269,10 +269,14 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (this.options.on_localize) {
             data = this.options.on_localize(data);
         }
+        this.options.old_labels = this.options.labels;
         this.options.labels = data.periods;
         this.options.period_beg = data.periods[0];
         this.options.period_end = data.periods[data.periods.length-1];
-        this.children.metrics_chart.clearData();
+        if (!this.options.live_chart) {
+            this.children.metrics_chart.clearData();
+        }
+        
         this.children.metrics_chart.setLabels(this.options.labels);
         var colors = [];
         if (!this.options.colors) {
@@ -341,13 +345,21 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     on_aws_metrics: function(data, colors) {
         _.each(data.data, function(data, key) {
             let color = colors.pop();
-
-            this.children.metrics_chart.addDataSet(
-                key, data, 
-                {backgroundColor: color});
+            if (!this.options.live_chart) {
+                this.children.metrics_chart.addDataSet(
+                    key, data, 
+                    {backgroundColor: color});
+            } else {
+                this.children.metrics_chart.appendData(
+                    key, data, 
+                    {backgroundColor: color});
+            }
         }.bind(this));
-
-        this.renderChildren();
+        if (!this.options.live_chart) {
+            this.renderChildren();
+        } else {
+            this.getChild("metrics_chart").updateConfig();
+        }
     },
 
     on_redis_metrics: function(data, colors) {

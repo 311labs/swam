@@ -34,9 +34,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/ec2/cpu",
                 title: "EC2 CPU",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -58,9 +59,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 title: "EC2 Network Out",
                 source: "aws",
                 yaxis_localize: "bytes",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -81,9 +83,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/ec2/network/established",
                 title: "EC2 Connections",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -104,9 +107,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/rds/cpu",
                 title: "RDS CPU",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -128,9 +132,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 title: "RDS Memory",
                 source: "aws",
                 yaxis_localize: "bytes",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -151,9 +156,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/rds/cons",
                 title: "RDS Connections",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -174,9 +180,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/redis/cpu",
                 title: "Redis CPU",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -197,9 +204,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/redis/memory",
                 title: "Redis Memory",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -219,9 +227,10 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 url: "/api/metrics/aws/redis/cons",
                 title: "Redis Connections",
                 source: "aws",
-                xaxis_localize: "time",
+                xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
+                live_chart: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -243,14 +252,14 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
         _.each(this.children, function(view){
             if (_.isFunction(view.refresh)) {
                 view.options.duration = duration;
-                view.options.xaxis_localize = "time";
+                view.options.xaxis_localize = "simple_time";
                 view.options.size = 7;
                 if (duration > 86400) {
                     view.options.xaxis_localize = "date";
                     view.options.size = 24;
                 } else if (duration >= 43200) {
                     view.options.size = 12;
-                    view.options.xaxis_localize = "time";
+                    view.options.xaxis_localize = "simple_time";
                 } else if (duration >= 10800) {
                     view.options.size = 12;
                 } else if (duration >= 3600) {
