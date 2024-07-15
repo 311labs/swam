@@ -41,7 +41,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             hide_tooltips: this.options.hide_tooltips,
             hide_legend: this.options.hide_legend,
             height: this.options.height,
-            xaxis_hide: this.options.xaxis_hide
+            xaxis_hide: this.options.xaxis_hide,
+            live_data: this.options.live_data
         }));
 
         if (this.options.filters) {
@@ -119,7 +120,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             gs.collection.fetch();
         }
         
-        if (!this.options.live_chart || !this.getChild("metrics_chart").options.initialized) this.showBusy();
+        if (!this.options.live_data || !this.getChild("metrics_chart").options.initialized) this.showBusy();
 
         SWAM.Rest.GET(this.options.url, params, function(resp, status) {
             this.hideBusy();
@@ -260,7 +261,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
            );
         }
         this.is_loading = true;
-        if (!this.options.live_chart) this.trigger('loading:begin', this);
+        if (!this.options.live_data) this.trigger('loading:begin', this);
         this._debounce_refresh();
     },
 
@@ -273,7 +274,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         this.options.labels = data.periods;
         this.options.period_beg = data.periods[0];
         this.options.period_end = data.periods[data.periods.length-1];
-        if (!this.options.live_chart) {
+        if (!this.options.live_data) {
             this.children.metrics_chart.clearData();
         }
         
@@ -345,21 +346,11 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     on_aws_metrics: function(data, colors) {
         _.each(data.data, function(data, key) {
             let color = colors.pop();
-            if (!this.options.live_chart) {
-                this.children.metrics_chart.addDataSet(
-                    key, data, 
-                    {backgroundColor: color});
-            } else {
-                this.children.metrics_chart.appendData(
-                    key, data, 
-                    {backgroundColor: color});
-            }
+            this.children.metrics_chart.addDataSet(
+                key, data, 
+                {backgroundColor: color});
         }.bind(this));
-        if (!this.options.live_chart) {
-            this.renderChildren();
-        } else {
-            this.getChild("metrics_chart").updateConfig();
-        }
+        this.renderChart();
     },
 
     on_redis_metrics: function(data, colors) {
@@ -381,7 +372,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 {backgroundColor: color});
         }.bind(this));
 
-        this.renderChildren();
+        this.renderChart();
     },
 
     on_db_metrics: function(data, colors) {
@@ -403,7 +394,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 });
         }.bind(this));
 
-        this.renderChildren();
+        this.renderChart();
     },
 
     on_all_metrics: function(data, colors) {
@@ -426,7 +417,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 });
         }.bind(this));
 
-        this.renderChildren();
+        this.renderChart();
     },
 
     on_action_chart_refresh: function(evt, id) {
@@ -467,6 +458,14 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     on_pre_render: function() {
         this.refreshDebounced();
+    },
+
+    renderChart: function() {
+        if (!this.options.live_data) {
+            this.renderChildren();
+        } else {
+            this.getChild("metrics_chart").updateConfig();
+        }
     }
 
 });

@@ -7,7 +7,8 @@ SWAM.Views.Chart = SWAM.View.extend({
         auto_height: false,
         auto_height_width: 400,
         auto_height_scale: 0.8,
-        auto_min_height: 300
+        auto_min_height: 300,
+        live_data: false
     },
 
     on_init: function() {
@@ -27,18 +28,26 @@ SWAM.Views.Chart = SWAM.View.extend({
         this.options.labels = labels;
     },
 
-    addDataSet: function(label, data, opts) {
+    setDataSet: function(label, data, opts) {
         this.options.data.datasets.push(_.extend({
             label: label,
             data: data
         }, opts));
     },
 
+    addDataSet: function(label, data, opts) {
+        if (this.options.live_data) {
+            this.appendData(label, data, opts);
+        } else {
+            this.setDataSet(label, data, opts);
+        }
+    },
+
     appendData: function(label, data, opts) {
         // this assumes the dataset already exists and just updates
         let ds = _.findWhere(this.options.data.datasets, {"label":label});
         if (!ds) {
-            this.addDataSet(label, data, opts);
+            this.setDataSet(label, data, opts);
         } else {
             ds.data = data;
         }

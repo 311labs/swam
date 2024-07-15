@@ -37,7 +37,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -62,7 +62,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -86,7 +86,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -110,7 +110,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -135,7 +135,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -159,7 +159,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -183,7 +183,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -207,7 +207,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
@@ -230,7 +230,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 xaxis_localize: "simple_time",
                 show_refresh: true,
                 granularity: null,
-                live_chart: true,
+                live_data: true,
                 ids:["all"],
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
