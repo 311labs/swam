@@ -54,7 +54,11 @@ PORTAL.Views.MetricsBanner = SWAM.View.extend({
 
         SWAM.Rest.GET(this.options.url, params, function(resp, status) {
             if (resp.status) {
-                this.on_metrics(resp.data);
+                if (this.options.on_metrics) {
+                    this.options.on_metrics(resp.data);
+                } else {
+                    this.on_metrics(resp.data);
+                }
             }
         }.bind(this));
     },
