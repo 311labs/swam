@@ -369,7 +369,11 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
 
             this.children.metrics_chart.addDataSet(
                 key, slug_data.values, 
-                {backgroundColor: color});
+                {
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: this.options.line_width
+                });
         }.bind(this));
 
         this.renderChart();
