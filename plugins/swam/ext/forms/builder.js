@@ -65,6 +65,7 @@ SWAM.Form.buildField = function(fc, form_info) {
 		if (fc.validator) fc.$input.attr("data-validator", fc.validator);
 		if (fc.transform) fc.$input.attr("data-transform", fc.transform);
 		if (fc.monospace) fc.$input.addClass("font-monospace");
+		if (fc.maxdays) fc.$input.attr("data-maxdays", fc.maxdays);
 		if (_.isString(fc.monospace)) {
 			fc.$input.addClass(`font-monospace-${fc.monospace}`);
 		}

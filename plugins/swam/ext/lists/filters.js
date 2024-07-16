@@ -301,8 +301,9 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     on_action_remove_filter: function(evt) {
         var id = $(evt.currentTarget).data("id");
         var safe_id = id.replaceAll(".", "__");
-        this.children.fb_filters.removeChild(safe_id);
         var filter = _.findWhere(this.options.filters, {name:id});
+        if (filter && filter.required) return;
+        this.children.fb_filters.removeChild(safe_id);     
         if (filter && (filter.type == "daterange")) {
             this.removeDateRangeFilter();
         } else {

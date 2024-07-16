@@ -457,22 +457,29 @@ SWAM.Form.View = SWAM.View.extend({
     on_init__daterangepicker: function($root) {
         if (!window.easepick) return;
 
-        var list = [].slice.call(this.$el[0].querySelectorAll('input.input-daterange'))
-        this._daterange_pickers = list.map(function (sel) {
-          var picker = new easepick.create({
-                element:sel,
-                plugins: ['RangePlugin', 'AmpPlugin'],
-                css: [
-                  '/swamcore/plugins/datepicker.css?v=1.2.0',
-                ],
-                AmpPlugin: {
-                    resetButton: true,
-                    dropdown: {
-                        months: true,
-                        years: true
-                    }
+        var list = [].slice.call(this.$el[0].querySelectorAll('input.input-daterange'));
+        let config = {
+            plugins: ['RangePlugin', 'AmpPlugin', 'LockPlugin'],
+            css: [
+              '/swamcore/plugins/datepicker.css?v=1.2.0',
+            ],
+            AmpPlugin: {
+                resetButton: true,
+                dropdown: {
+                    months: true,
+                    years: true
                 }
-          });
+            }
+        };
+
+        this._daterange_pickers = list.map(function (sel) {
+          let iconf = _.extend({element:sel}, config);
+          let maxDays = $(sel).data("maxdays");
+          if (maxDays) {
+            iconf.plugins.push("LockPlugin");
+            iconf.LockPlugin = {maxDays:maxDays};
+          }
+          var picker = new easepick.create(iconf);
           picker.on("select", function(evt) { 
                 evt.picker= picker;
                 evt.inputElement = sel;

@@ -27,7 +27,9 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
             {
                 label: "Date Range",
                 name: "when",
-                type: "daterange"
+                type: "daterange",
+                required: true,
+                maxdays: 14
             },
             {
                 label: "Level",
