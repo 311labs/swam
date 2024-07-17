@@ -193,6 +193,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
                 });
         }
         if (_.isDict(this.options.filters) && (_.isArray(this.options.filters.filters))) {
+            fields[0].columns_classes = "col-auto";
             this.options.filters.filters.forEach((item) => fields.push(item));
         }
 
@@ -436,7 +437,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         let collection = new SWAM.Collection();
         let data = this.children.metrics_chart.options.data;
         let columns = [{label:"Label", field:"label"}];
-        for (let i=0; i<data.labels.length-1; i++) {
+        for (let i=0; i<data.labels.length; i++) {
             let obj = {id:i, label:data.labels[i]};
             for (let x = 0; x < data.datasets.length; x++) {
                 if ((columns.length-2) < x) {

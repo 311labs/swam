@@ -9,7 +9,7 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 title: "Rest Metrics",
                 slugs:["rest_calls", "rest_errors"],
                 parse_slug: "_",
-                colors:["rgba(50, 250, 50, 0.9)", "rgba(250, 50, 50, 0.9)"],
+                colors:["rgba(150, 220, 150, 0.9)", "rgba(250, 50, 50, 0.9)"],
                 chart_type: "bar",
                 chart_types: ["line", "bar"],
                 line_width: 2,

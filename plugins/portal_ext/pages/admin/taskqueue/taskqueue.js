@@ -219,16 +219,17 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
         this.children.table_workers.on("item:clicked", this.on_worker_clicked, this);
 
 
-        this.addChild("barchart_cmpltd", new SWAM.Views.Chart({
-            type:"bar",
-            auto_height_width: 700,
-            max_length:6
-        }));
-        this.children.barchart_cmpltd.setLabels(this.dayLabels);
-        this.children.barchart_cmpltd.addDataSet("Completed", this.daily_cmpltd, {backgroundColor: 'green'});
-        this.children.barchart_cmpltd.addDataSet("Failed", this.daily_fails, {backgroundColor: 'red'});
-        // this.children.barchart_failed.addDataSet("Failed", this.daily_fails, {backgroundColor: 'red'});
-        // this.children.barchart_lngst.addDataSet("Longest", this.daily_lngst, {backgroundColor: 'blue'});
+        this.addChild("barchart_cmpltd",
+            new PORTAL.Views.MetricsChart({
+                title: "Task Metrics",
+                slugs:["tq_task_completed", "tq_task_failed"],
+                parse_slug: "_",
+                colors:["rgba(150, 220, 150, 0.9)", "rgba(250, 50, 50, 0.9)"],
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 3,
+                filters: true
+            }));
 
         //this.collection = new SWAM.Collection({url:"/api/taskqueue/task"});
         SWAM.Pages.TablePage.prototype.on_init.call(this);
@@ -240,6 +241,30 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             json: item.model.attributes
         });
     },
+
+    on_action_tq_chart: function() {
+        let view = new PORTAL.Views.MetricsChart({
+                title: "Tasks By Channel",
+                category: "tq_chan_done",
+                parse_slug: "_",
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 3,
+                filters: {
+                    filters: [
+                        {
+                            type: "select",
+                            name: "category",
+                            size: "sm",
+                            options: [{label:"Completed", value:"tq_chan_done"},{label:"Failed", value:"tq_chan_fail"}],
+                            columns: 6,
+                            columns_classes: "col-auto"
+                        },
+                    ]
+                }
+            });
+        SWAM.Dialog.showView(view, {size:"xl"});
+    },  
 
     on_action_refresh: function() {
         this.refresh();
