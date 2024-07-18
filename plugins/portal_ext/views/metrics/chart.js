@@ -136,7 +136,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         // this.getChild("metrics_chart").updateConfig();
     },
 
-    refresh: function() {
+    refresh: function(force) {
+        if (force) this.options.force_render = true;
         this.refreshDebounced();
     },
 
@@ -250,6 +251,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (evt.name == "chart_type") {
             this.getChild("metrics_chart").options.type = evt.value;
         }
+        this.options.force_render = true;
         this.refresh();
     },
 
@@ -466,7 +468,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
     },
 
     renderChart: function() {
-        if (!this.options.live_data) {
+        if (!this.options.live_data || this.options.force_render) {
+            this.options.force_render = false;
             this.renderChildren();
         } else {
             this.getChild("metrics_chart").updateConfig();

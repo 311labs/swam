@@ -10,7 +10,7 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 slugs:["rest_calls", "rest_errors"],
                 parse_slug: "_",
                 colors:["rgba(150, 220, 150, 0.9)", "rgba(250, 50, 50, 0.9)"],
-                chart_type: "bar",
+                chart_type: "line",
                 chart_types: ["line", "bar"],
                 line_width: 2,
                 filters: true
@@ -27,7 +27,7 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                     "rgba(25, 25, 25, 0.9)",
                     "rgba(50, 255, 100, 0.9)",
                 ],
-                chart_type: "bar",
+                chart_type: "line",
                 chart_types: ["line", "bar"],
                 line_width: 2,
                 filters: true

@@ -39,6 +39,9 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -64,6 +67,8 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -88,6 +93,8 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -112,6 +119,9 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -137,6 +147,9 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -161,6 +174,8 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -185,6 +200,9 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -209,6 +227,9 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_type: "bar",
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -232,6 +253,8 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                 granularity: null,
                 live_data: true,
                 ids:["all"],
+                chart_types: ["line", "bar"],
+                line_width: 2,
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -266,7 +289,7 @@ PORTAL.Pages.CloudWatch = SWAM.Page.extend({
                     view.options.size = 12;
                 }
                 view.update();
-                view.refresh();
+                view.refresh(true);
             }
         });
     },
