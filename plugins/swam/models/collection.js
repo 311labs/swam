@@ -239,6 +239,15 @@ SWAM.Collection = SWAM.Object.extend({
         return _.find(this.models, predicate);
     },
 
+    findWhere: function(query) {
+        return _.find(this.models, function(m){
+            for (const [key, value] of Object.entries(query)) {
+                if (m.get(key) != value) return false;
+            }
+            return true;
+        });
+    },
+
     pluck: function(field) {
         var output = [];
         _.each(this.models, function(obj){ output.push(obj.get(field));});

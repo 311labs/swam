@@ -168,8 +168,13 @@ if (typeof String.prototype.startsWith != 'function') {
 }
 
 String.prototype.isNumber = function() {
-    var numberreg = /^\d+$/;
-    return numberreg.test(this.removeAll(',').removeAll('$').removeAll("%"));
+    // var numberreg = /^\d+$/;
+    // return numberreg.test(this.removeAll(',').removeAll('$').removeAll("%"));
+    const str = this.removeAll(',').removeAll('$').removeAll("%");
+    // Check if the string is a number
+    const num = Number(str);
+    // Check if the conversion to number was successful and if the result is finite
+    return !isNaN(num) && isFinite(num);
 };
 
 
