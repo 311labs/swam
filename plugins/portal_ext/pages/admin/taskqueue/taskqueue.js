@@ -226,6 +226,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                 parse_slug: "_",
                 colors:["rgba(150, 220, 150, 0.9)", "rgba(250, 50, 50, 0.9)"],
                 chart_type: "bar",
+                granularity: "hourly",
                 chart_types: ["line", "bar"],
                 line_width: 3,
                 filters: true

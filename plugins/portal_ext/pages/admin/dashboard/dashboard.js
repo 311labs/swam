@@ -9,6 +9,7 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 title: "Rest Metrics",
                 slugs:["rest_calls", "rest_errors"],
                 parse_slug: "_",
+                granularity: "hourly",
                 colors:["rgba(150, 220, 150, 0.9)", "rgba(250, 50, 50, 0.9)"],
                 chart_type: "line",
                 chart_types: ["line", "bar"],
@@ -20,6 +21,7 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 title: "Email Metrics",
                 slugs:["email_errors", "emails_sent", "email_complaints", "emails_bounced", "emails_received"],
                 parse_slug: "_",
+                granularity: "hourly",
                 colors:[
                     "rgba(250, 50, 50, 0.9)",
                     "rgba(50, 20, 255, 0.9)",
@@ -42,8 +44,10 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 chart_types: ["line", "bar"],
                 line_width: 3,
                 colors:["rgba(255, 135, 55, 0.9)"],
+                granularity: "hourly",
                 filters: true
             }));
+        
         this.addChild("incidents",
             new PORTAL.Views.MetricsChart({
                 title: "Incidents",
@@ -53,6 +57,7 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 chart_types: ["line", "bar"],
                 line_width: 3,
                 colors:["rgba(50, 250, 50, 0.9)", "rgba(250, 50, 50, 0.9)"],
+                granularity: "hourly",
                 filters: true
             }));
 
