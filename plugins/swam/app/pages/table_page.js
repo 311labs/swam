@@ -144,6 +144,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			Collection: this.options.Collection,
 			collection: this.options.collection, 
 			filter_bar: this.options.filter_bar,
+			add_filter_buttons: this.options.add_filter_buttons,
 			filters: this.options.filters,
 			allow_batch_upload: this.options.allow_batch_upload,
 			summary_button: this.options.summary_button,

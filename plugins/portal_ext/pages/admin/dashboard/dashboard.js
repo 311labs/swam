@@ -61,26 +61,6 @@ PORTAL.Pages.AdminDashboard = SWAM.Page.extend({
                 filters: true
             }));
 
-        this.addChild("host_incident_events",
-            new PORTAL.Views.MetricsChart({
-                title: "Host Events",
-                parse_slug: "_",
-                category: "incident_events",
-                chart_type: "line",
-                chart_types: ["line", "bar"],
-                line_width: 2,
-                filters: true
-            }));
-        this.addChild("host_incidents",
-            new PORTAL.Views.MetricsChart({
-                title: "Host Incidents",
-                parse_slug: "_",
-                category: "incidents",
-                chart_type: "line",
-                chart_types: ["line", "bar"],
-                line_width: 2,
-                filters: true
-            }));
     },
 
     refresh: function() {

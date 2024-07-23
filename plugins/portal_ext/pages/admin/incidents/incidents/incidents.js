@@ -142,6 +142,11 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                                 action: "reload"
                             },
                             {
+                                classes: "btn btn-secondary",
+                                icon: "bi bi-graph-up",
+                                action: "chart"
+                            },
+                            {
                                 type: "dropdown",
                                 icon: "bi bi-download",
                                 items: [
@@ -167,6 +172,22 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
     on_init: function() {
         SWAM.Pages.TablePage.prototype.on_init.call(this);
         this.view = new PORTAL.Views.Incident();
+    },
+
+    on_action_chart: function(evt) {
+        SWAM.Dialog.show({
+            size: "xl",
+            btn_label: "CLOSE",
+            view: new PORTAL.Views.MetricsChart({
+                title: "Incidents",
+                parse_slug: "_",
+                category: "incidents",
+                chart_type: "line",
+                chart_types: ["line", "bar"],
+                line_width: 2,
+                filters: true
+            })
+        });
     },
 
     on_action_ignore: function(evt) {

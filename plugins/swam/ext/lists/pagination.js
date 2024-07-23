@@ -110,6 +110,16 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
                 });
             }
 
+            if (this.options.add_filter_buttons) {
+                _.each(this.options.add_filter_buttons, function(btn){
+                    if (btn.index >= 0) {
+                        button_group.buttons.insertAt(btn, btn.index);
+                    } else {
+                        button_group.buttons.push(btn);
+                    }
+                });
+            }
+
             if (button_group && this.options.filters) {
                 let menu = [];
                 _.each(this.options.filters, function(value){

@@ -27,6 +27,14 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
         },
         add_button: false,
         group_filtering: true,
+        add_filter_buttons: [
+            {
+                index: 1,
+                classes: "btn btn-secondary",
+                icon: "bi bi-graph-up",
+                action: "chart"
+            },
+        ],
         filters: [
             {
                 label: "Created",
@@ -97,6 +105,22 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
                 dlg.dismiss();
                 this.assignToIncident(dlg.getData().input);
             }.bind(this)});
+    },
+
+    on_action_chart: function(evt) {
+        SWAM.Dialog.show({
+            size: "xl",
+            btn_label: "CLOSE",
+            view: new PORTAL.Views.MetricsChart({
+                title: "Events",
+                parse_slug: "_",
+                category: "incident_events",
+                chart_type: "line",
+                chart_types: ["line", "bar"],
+                line_width: 2,
+                filters: true
+            })
+        });
     },
 
     assignToIncident: function(id) {
