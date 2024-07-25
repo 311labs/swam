@@ -36,9 +36,17 @@ SWAM.Dialog.NLP.Forms.address = [
 ];
 
 SWAM.Dialog.NLP.address = function(options) {
-    let textaddr = "";
+    let textaddr = [];
     if (options.defaults && options.defaults.line1) {
-        textaddr = `${options.defaults.line1}\n${options.defaults.line2}\n${options.defaults.city}, ${options.defaults.state} ${options.defaults.zip}`;
+        textaddr.push(options.defaults.line1.trim());
+        if (options.defaults.line2) textaddr.push(options.defaults.line2.trim());
+        let line3 = []
+        if (options.defaults.city) line3.push(options.defaults.city.trim());
+        if (options.defaults.state) line3.push(options.defaults.state.trim());
+        if (options.defaults.postalcode) line3.push(options.defaults.postalcode.trim());
+        line3 = line3.join(" ");
+        textaddr.push(line3);
+        textaddr = textaddr.join("\n");
     }
 
     SWAM.Dialog.showInput({
@@ -48,10 +56,14 @@ SWAM.Dialog.NLP.address = function(options) {
         callback: function(dlg) {
             let text = dlg.getData().input;
             if (text.length < 10) return;
-            dlg.dismiss();
             app.showBusy();
             SWAM.NLP.address(text, function(data){
                 app.hideBusy();
+                if (!data.address_line1) {
+                    SWAM.Dialog.show({title:"Error", message:data.content||data.error});
+                    return;
+                }
+                dlg.dismiss();
                 SWAM.Dialog.showForm(SWAM.Dialog.NLP.Forms.address, {
                     callback: options.callback,
                     defaults: data
