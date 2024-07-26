@@ -200,6 +200,7 @@ SWAM.Model = SWAM.Object.extend({
             opts = callback;
             callback = undefined;
         }
+        // TODO enable after a few releases if (!this.id && !this.options.no_url_id) throw new Error("cannot fetch without ID");
         this.abort();
         if (opts && opts.if_stale) {
             if (!this.isStale()) {
