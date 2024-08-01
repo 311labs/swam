@@ -16,7 +16,11 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
         bubble_icons: {
             "upload": "upload",
             "status": "info-circle"
-        }
+        },
+        by_display_field: "by.username",
+        by_field: "by",
+        by_avatar_field: "avatar",
+        default_avatar: "/plugins/media/empty_avatar.jpg"
     },
 
     icon: function() {
@@ -27,8 +31,18 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
         return this.model.get(this.options.message_field);
     },
 
+    get_avatar: function() {
+        let src = this.model.get(this.options.by_avatar_field);
+        if (!src) src = this.options.default_avatar;
+        return src;
+    },
+
+    get_username: function() {
+        return this.model.get(this.options.by_display_field);
+    },
+
     on_pre_render: function() {
-        let by = this.model.get("by");
+        let by = this.model.get(this.options.by_field);
         let kind = this.model.get("kind");
         if (kind) {
             if (this.options.bubble_kinds) {

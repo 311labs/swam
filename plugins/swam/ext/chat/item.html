@@ -1,10 +1,10 @@
 <div class="chat-avatar">
-	{{#model.by.avatar}}
-	<img src="{{model.by.avatar}}" alt="">
-	{{/model.by.avatar}}
-	{{^model.by.avatar}}
-	<div class="chat-avatar-initials">{{model.by.initials|ifempty('?')}}</div>
-	{{/model.by.avatar}}
+	{{#get_avatar}}
+	<img src="{{get_avatar}}" alt="">
+	{{/get_avatar}}
+	{{^get_avatar}}
+	<div class="chat-avatar-initials">{{get_by_displayname}}</div>
+	{{/get_avatar}}
 </div>
 <div class="{{options.kind}}-bubble">
 	<div class="chat-by">{{model.by.display_name}}</div>
