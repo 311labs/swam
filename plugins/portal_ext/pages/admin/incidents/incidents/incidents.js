@@ -111,7 +111,8 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                             {label:"Resolved", value:"4"},
                             {label:"Pending", value:"5"}
                         ],
-                        columns: 3
+                        columns: 3,
+                        columns_classes: "col-md col-lg col-sm-12",
                     },
                     {
                         name: "category",
@@ -121,49 +122,10 @@ PORTAL.Pages.Incidents = SWAM.Pages.TablePage.extend({
                         placeholder: "Select category",
                         options: SWAM.Models.Incident.COMPONENTS,
                         columns: 3,
+                        columns_classes: "col-md col-lg col-sm-12",
                     },
-                    {
-                        columns: 3,
-                        columns_classes: "col-sm-3 col-md-3 col-lg-2",
-                        type: "select",
-                        name: "size",
-                        options: [
-                            5, 10, 20, 50, 100
-                        ]
-                    },
-                    {
-                        columns: 3,
-                        columns_classes: "col-auto",
-                        type: "buttongroup",
-                        buttons: [
-                            {
-                                classes: "btn btn-secondary",
-                                icon: "bi bi-arrow-repeat",
-                                action: "reload"
-                            },
-                            {
-                                classes: "btn btn-secondary",
-                                icon: "bi bi-graph-up",
-                                action: "chart"
-                            },
-                            {
-                                type: "dropdown",
-                                icon: "bi bi-download",
-                                items: [
-                                    {
-                                        icon: "bi bi-filetype-csv",
-                                        label: "Download CSV",
-                                        action: "download_csv"
-                                    },
-                                    {
-                                        icon: "bi bi-filetype-json",
-                                        label: "Download JSON",
-                                        action: "download_json"
-                                    },
-                                ]
-                            }
-                        ]
-                    },
+                    SWAM.Views.PaginatedList.DEFAULT_SIZE_FILTER,
+                    SWAM.Views.PaginatedList.DEFAULT_FILTER_BUTTONS
                 ]
             }
         ],

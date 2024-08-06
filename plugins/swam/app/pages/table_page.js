@@ -39,58 +39,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		        columns: 9,
 		        columns_classes: "col",
 		        fields: [
-		            {
-		                name: "search",
-		                type: "search",
-		                columns: 6,
-		                columns_classes: "col-md col-lg col-sm-12",
-		                form_wrap: "search",
-		                placeholder: "search...",
-		                can_clear: true,
-		                button: {
-		                    icon: "bi bi-search"
-		                },
-		                attributes: {
-		                	autocomplete: "nope"
-		                }
-		            },
-		            {
-		                columns: 3,
-		                columns_classes: "col-md col-lg col-sm-12",
-		                type: "select",
-		                name: "size",
-		                options: [
-		                    5, 10, 20, 50, 100
-		                ]
-		            },
-		            {
-		                columns: 3,
-		                columns_classes: "col-auto",
-		                type: "buttongroup",
-		                buttons: [
-		                    {
-		                        classes: "btn btn-secondary",
-		                        icon: "bi bi-arrow-repeat",
-		                        action: "reload"
-		                    },
-		                    {
-		                        type: "dropdown",
-		                        icon: "bi bi-download",
-		                        items: [
-		                            {
-		                                icon: "bi bi-filetype-csv",
-		                                label: "Download CSV",
-		                                action: "download_csv"
-		                            },
-		                            {
-		                                icon: "bi bi-filetype-json",
-		                                label: "Download JSON",
-		                                action: "download_json"
-		                            },
-		                        ]
-		                    }
-		                ]
-		            },
+		            SWAM.Views.PaginatedList.DEFAULT_SEARCH_FILTER,
+		            SWAM.Views.PaginatedList.DEFAULT_SIZE_FILTER,
+		            SWAM.Views.PaginatedList.DEFAULT_FILTER_BUTTONS
 		        ]
 		    }
 		],

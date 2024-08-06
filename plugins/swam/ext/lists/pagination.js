@@ -192,6 +192,60 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.list.reload();
     }
 
+}, {
+    DEFAULT_FILTER_BUTTONS: {
+        columns: 3,
+        columns_classes: "col-sm-auto",
+        type: "buttongroup",
+        buttons: [
+            {
+                classes: "btn btn-secondary",
+                icon: "bi bi-arrow-repeat",
+                action: "reload"
+            },
+            {
+                type: "dropdown",
+                icon: "bi bi-download",
+                items: [
+                    {
+                        icon: "bi bi-filetype-csv",
+                        label: "Download CSV",
+                        action: "download_csv"
+                    },
+                    {
+                        icon: "bi bi-filetype-json",
+                        label: "Download JSON",
+                        action: "download_json"
+                    },
+                ]
+            }
+
+        ]
+    },
+    DEFAULT_SIZE_FILTER: {
+        columns: 3,
+        columns_classes: "col-md col-lg col-sm-12",
+        type: "select",
+        name: "size",
+        options: [
+            5, 10, 20, 50, 100
+        ]
+    },
+    DEFAULT_SEARCH_FILTER: {
+        name: "search",
+        type: "search",
+        columns: 6,
+        columns_classes: "col-md col-lg col-sm-12",
+        form_wrap: "search",
+        placeholder: "search...",
+        can_clear: true,
+        button: {
+            icon: "bi bi-search"
+        },
+        attributes: {
+            autocomplete: "nope"
+        }
+    }
 });
 
 

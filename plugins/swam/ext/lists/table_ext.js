@@ -53,35 +53,7 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
                             5, 10, 20, 50, 100
                         ]
                     },
-                    {
-                        columns: 3,
-                        columns_classes: "col-sm-auto",
-                        type: "buttongroup",
-                        buttons: [
-                            {
-                                classes: "btn btn-secondary",
-                                icon: "bi bi-arrow-repeat",
-                                action: "reload"
-                            },
-                            {
-                                type: "dropdown",
-                                icon: "bi bi-download",
-                                items: [
-                                    {
-                                        icon: "bi bi-filetype-csv",
-                                        label: "Download CSV",
-                                        action: "download_csv"
-                                    },
-                                    {
-                                        icon: "bi bi-filetype-json",
-                                        label: "Download JSON",
-                                        action: "download_json"
-                                    },
-                                ]
-                            }
-
-                        ]
-                    },
+                    SWAM.Views.PaginatedList.DEFAULT_FILTER_BUTTONS
                 ]
             }
         ],
