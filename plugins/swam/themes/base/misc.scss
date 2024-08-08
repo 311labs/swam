@@ -107,7 +107,15 @@ body.app {
         border-color: #ced4da;
     }
 
-    
+    span.localized-action {
+        text-decoration: none;
+        color: $brand-primary;
+        cursor: pointer;
+        &:focus, &:hover {
+            background-color: rgba(92, 152, 253, 0.14);
+        }
+    }
+
     .hover-success:hover {
         color: rgba(var(--bs-success-rgb),var(--bs-text-opacity))!important;
     }

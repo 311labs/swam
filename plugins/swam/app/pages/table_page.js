@@ -188,8 +188,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		let dlg = null;
 
 		if (this.options.view) {
-			this.options.view.setModel(item.model);
-			dlg = SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
+			dlg = this.showView(item);
 		} else if (!this.options.view_only && this.options.edit_form) {
 			let dlg_opts = _.extend({}, this.options.edit_dialog_options, {Title: "Edit"});
 			dlg_opts.fields = this.options.edit_form;
@@ -201,8 +200,12 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		} else {
 			dlg = this.showItem(item);
 		}
-
 		this.on_item_dlg(item, dlg);
+	},
+
+	showView: function(item) {
+		this.options.view.setModel(item.model);
+		return SWAM.Dialog.showView(this.options.view, this.options.dialog_options);
 	},
 
 	showItem: function(item) {

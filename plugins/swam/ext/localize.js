@@ -971,7 +971,10 @@ SWAM.Localize = {
     },
 
     'action': function(value, attr, fmt) {
-        return `<span data-action="${fmt}>${value}</span>`;
+        console.log(value);
+        console.log("attr:" + attr);
+        console.log(fmt);
+        return `<span class='localized-action' data-action="${fmt}" data-id="${value}">${value}</span>`;
     },
 
     'truncate': function(value, attr, fmt) {
