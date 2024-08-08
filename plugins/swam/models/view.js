@@ -86,6 +86,10 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
                 value = SWAM.renderString(obj.template, {model:model});
             } else if (obj.type == "toggle") {
                 value = model.get(obj.field, null, "yesno_icon");
+            } else if (obj.type == "searchdown") {
+                let display_field = "name";
+                if (obj.options && obj.options.display_field) display_field = obj.options.display_field;
+                value = model.get(`${obj.field}.${display_field}`);
             } else {
                 value = model.get(obj.field, null, obj.localize);
                 if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
