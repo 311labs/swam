@@ -17,7 +17,9 @@
 	{{#icon}}
 	<div class="row">
 		<div class="col">
-			<div class="chat-msg">{{{get_message|linkify('view link')}}}</div>
+			<div {{#model.ext_id}}class="chat-msg btn btn-link" data-id="{{model.ext_id}}" data-action="chat_click_{{model.safe_kind}}"{{/model.ext_id}}{{#model.ext_id}}class="chat-msg"{{/model.ext_id}}>
+			{{{get_message|linkify('view link')}}}
+			</div>
 		</div>
 		<div class="col-auto">
 			<div class="chat-icon">{{{ICON(icon)}}}</div>

@@ -26,7 +26,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
     },
 
     icon: function() {
-        return this.options.bubble_icons[this.model.get("kind")];
+        return this.options.bubble_icons[this.model.safe_kind()];
     },
 
     get_message: function() {
@@ -62,7 +62,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
 
     on_pre_render: function() {
         let by = this.model.get(this.options.by_field);
-        let kind = this.model.get("kind");
+        let kind = this.model.safe_kind();
         if (kind) {
             if (this.options.bubble_kinds) {
                 this.options.kind = this.options.bubble_kinds[kind] || "status";
