@@ -9,13 +9,15 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
         bubble_kinds: {
             "status": "status",
             "upload": "upload",
+            "shipping": "status",
             "note": "chat",
             "chat": "chat",
             "message": "chat"
         },
         bubble_icons: {
             "upload": "upload",
-            "status": "info-circle"
+            "status": "info-circle",
+            "shipping": "box2-fill"
         },
         by_display_field: "by.username",
         by_initials_field: "by.initials",
