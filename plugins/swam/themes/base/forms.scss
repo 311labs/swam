@@ -329,6 +329,14 @@ div.swam-editselect {
     }
 }
 
+
+button.dropdown-toggle-hide-caret {
+    &:after {
+        display: none;
+    }
+}
+
+
 div.searchdown-input {
     button.dropdown-toggle {
         width: 100%;

@@ -2,7 +2,7 @@
 <div class="modal-dialog modal-dialog-centered {{options.add_classes}}{{#options.kind}} modal-{{options.kind}}{{/options.kind}}">
   <div class="modal-content rounded-6 shadow">
     {{#options.title}}
-    <div class="modal-header border-bottom-1 user-select-none">
+    <div class="modal-header{{#options.add_header_classes}} {{options.add_header_classes}}{{/options.add_header_classes}}">
       <h5 class="modal-title">{{#options.icon}}{{{ICON(options.icon)}}} {{/options.icon}}{{{options.title}}}</h5>
       {{#options.show_close}}
       <button type="button" class="{{options.btn_close}}" data-action="close"></button>
@@ -12,6 +12,9 @@
       {{/options.show_context_menu}}
     </div>
     {{/options.title}}
+    {{#options.title_view}}
+    <div class="modal-header{{#options.add_header_classes}} {{options.add_header_classes}}{{/options.add_header_classes}}" id="title_view"></div>
+    {{/options.title_view}}
     {{#options.view}}
     <div id="dlg_view" class="modal-view{{#options.padded}} modal-view-padded{{/options.padded}}{{#options.scrollable}} overflow-auto{{/options.scrollable}}"></div>
     {{/options.view}}

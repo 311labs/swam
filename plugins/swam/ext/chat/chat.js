@@ -18,9 +18,11 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
             "status": "info-circle"
         },
         by_display_field: "by.username",
+        by_initials_field: "by.initials",
         by_field: "by",
         by_avatar_field: "avatar",
-        default_avatar: "/plugins/media/empty_avatar.jpg"
+        default_avatar: "/plugins/media/empty_avatar.jpg",
+        system_avatar: "/plugins/media/logos/logo_sm.png"
     },
 
     icon: function() {
@@ -33,12 +35,29 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
 
     get_avatar: function() {
         let src = this.model.get(this.options.by_avatar_field);
-        if (!src) src = this.options.default_avatar;
+        if (!src) {
+            if (this.get_by_displayname() == "system") {
+                src = this.options.system_avatar;
+            } else {
+                src = this.options.default_avatar;
+            }
+        }
         return src;
     },
 
-    get_username: function() {
-        return this.model.get(this.options.by_display_field);
+    get_by_displayname: function() {
+        let name = this.model.get(this.options.by_display_field);
+        if (!name) return "system";
+        return name;
+    },
+
+    get_by_initials: function() {
+        let name = this.model.get(this.options.by_initials_field);
+        if (!name) {
+            name = this.get_by_displayname();
+            if (name) name = name.initials();
+        }
+        return name;
     },
 
     on_pre_render: function() {
@@ -71,6 +90,7 @@ SWAM.Views.ChatView = SWAM.View.extend({
                 action: "reload"
             }
         ],
+        add_classes: "swam-chat-theme-slack",
         ItemView: SWAM.Views.ChatItem
     },
 
@@ -79,11 +99,15 @@ SWAM.Views.ChatView = SWAM.View.extend({
     },
 
     on_init: function() {
+        if (this.options.add_classes == "swam-chat-theme-slack") {
+            this.options.item_template = "swam.ext.chat.slack";
+        }
         this.addChild("chatlist", new SWAM.Views.List({
             tagName:"ol",
             classes: "swam-chat-list mt-auto",
             collection: this.options.collection,
             Collection: this.options.Collection,
+            item_template: this.options.item_template,
             ItemView: this.options.ItemView
         }));
         if (this.options.item_options) {

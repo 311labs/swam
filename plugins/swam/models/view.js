@@ -75,6 +75,15 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
             $wrapper.append($el)
             if (obj.classes) $el.addClass(obj.classes);
             return;
+        } else if (obj.type == "button") {
+            let value = null;
+            if (model) {
+                value = model.get(obj.field, null, obj.localize);
+            }
+            if (!obj.classes) obj.classes = "btn btn-primary";
+            let $el = $(`<button class='${obj.classes}' data-id='${value}' data-action="${obj.action}"></button>`).html(obj.value || obj.label);
+            $wrapper.append($el)
+            return;
         }
         if (obj.label != null) {
             $wrapper.addClass("swam-field");

@@ -613,6 +613,16 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 	if (!fc.btn_classes && fc.dropup) {
 		fc.btn_classes = SWAM.Form.Builder.config.dropdown_btn_classes + " dropup";
 	}
+
+	if (fc.value) {
+		let item = _.findWhere(fc.items, {id:fc.value});
+		if (item) {
+			fc.label = item.label;
+			if (item.icon) fc.icon = item.icon;
+			SWAM.Form.Builder.iconlabel(fc);
+		}
+	}
+
 	var $button = $("<button />")
 		.prop("type", "button")
 		.attr("id", fc.did)
@@ -682,6 +692,9 @@ SWAM.Form.Builder.buttongroup = function(fc, form_info) {
 	_.each(fc.buttons, function(btn){
 		btn.$el = fc.$wrap;
 		if (btn.type == "dropdown") {
+			if (btn.name) {
+				SWAM.Form.Builder.getValue(btn, form_info);
+			}
 			SWAM.Form.Builder.dropdown(btn, form_info);
 			btn.$child.attr("class", "btn-group").attr("role", "group");
 		} else {

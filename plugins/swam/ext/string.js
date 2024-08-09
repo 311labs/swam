@@ -177,6 +177,20 @@ String.prototype.isNumber = function() {
     return !isNaN(num) && isFinite(num);
 };
 
+String.prototype.initials = function(max_length) {
+    max_length = max_length || 2;
+    if (this.length == 0) return '';
+
+    const words = this.trim().split(/\s+/);
+    let initials = '';
+
+    for (let i = 0; i < words.length && initials.length < max_length; i++) {
+        initials += words[i][0].toUpperCase();
+    }
+
+    return initials;
+}
+
 
 String.prototype.isZipcode = function() {
     var numberreg = /(^\d{5}$)|(^\d{5}-\d{4}$)/;

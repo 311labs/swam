@@ -18,6 +18,10 @@ SWAM.Localize = {
         return value;
     },
 
+    'initials': function(value, attr, fmt) {
+
+    },
+
     'phone': function(value, attr, fmt) {
         if (_.isString(value)) {
             return value.formatPhone();

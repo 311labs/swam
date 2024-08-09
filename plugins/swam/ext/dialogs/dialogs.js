@@ -11,6 +11,7 @@ SWAM.Dialog = SWAM.View.extend({
         show_close: true,
         btn_close: "btn-close",
         replaces_el: false,
+        add_header_classes: "border-bottom-1 user-select-none",
         dark: false,
         stack: true,
         size: null, // null=normal, sm, lg, xl
@@ -107,6 +108,10 @@ SWAM.Dialog = SWAM.View.extend({
             }
             this.options.buttons[0] = btn;
         }
+
+        if (this.options.title_view) {
+            this.addChild("title_view", this.options.title_view);
+        }
         SWAM.Dialog.active_dialogs.push(this);
         this.addToDOM($("body"));
         this.$el.show();
@@ -175,7 +180,6 @@ SWAM.Dialog = SWAM.View.extend({
                 items:cmenu};
             SWAM.Form.Builder.dropdown(fc);
         }
-
 
         window.sleep(500).then(function(){
             if (this.$el.find(".offcanvas").length) {
