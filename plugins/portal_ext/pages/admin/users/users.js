@@ -48,9 +48,10 @@ PORTAL.Pages.Users = SWAM.Pages.TablePage.extend({
         },
         filters: [
             {
-                label: "User",
+                label: "Filter By",
                 name: "filter",
                 type: "select",
+                editable: true,
                 options: [
                     {label:"Active", value:""},
                     {label: "Disabled", value: "is_active:0"},
