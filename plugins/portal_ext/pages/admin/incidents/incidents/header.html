@@ -1,2 +1,16 @@
-<div><span class="text-uppercase">{{model.state_display}}</span> Incident #{{model.id}}</div>
-<div class="fs-7 fw-light">{{model.description}}</div>
+<div class="row">
+    <div class="col-auto">
+        <div class="fs-2">{{{options.icon}}}</div>
+    </div>
+    <div class="col">
+        <div class="fs-7 fw-bold">
+            {{model.category|upper}} Incident
+        </div>
+        <div class="h5 text-gray m-0 p-0">
+            #{{model.id}} - {{model.description}}
+        </div>
+    </div>
+    <div class="col text-end">
+        <div class="d-inline-block" id="action_bar"></div>
+    </div>
+</div>

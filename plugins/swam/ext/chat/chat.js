@@ -19,16 +19,17 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
             "status": "info-circle",
             "shipping": "box2-fill"
         },
+        by_field: "by",
         by_display_field: "by.username",
         by_initials_field: "by.initials",
-        by_field: "by",
-        by_avatar_field: "avatar",
+        by_avatar_field: "by.avatar",
+        kind_field: "kind",
         default_avatar: "/plugins/media/empty_avatar.jpg",
         system_avatar: "/plugins/media/logos/logo_sm.png"
     },
 
     icon: function() {
-        return this.options.bubble_icons[this.model.safe_kind()];
+        return this.options.bubble_icons[this.model.get(this.options.kind_field)];
     },
 
     get_message: function() {
@@ -64,7 +65,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
 
     on_pre_render: function() {
         let by = this.model.get(this.options.by_field);
-        let kind = this.model.safe_kind();
+        let kind = this.model.get(this.options.kind_field);
         if (kind) {
             if (this.options.bubble_kinds) {
                 this.options.kind = this.options.bubble_kinds[kind] || "status";
@@ -110,6 +111,7 @@ SWAM.Views.ChatView = SWAM.View.extend({
             collection: this.options.collection,
             Collection: this.options.Collection,
             item_template: this.options.item_template,
+            empty_html: "<div class='text-center p-3 text-muted'>No Messages</div>",
             ItemView: this.options.ItemView
         }));
         if (this.options.item_options) {

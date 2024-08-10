@@ -614,7 +614,7 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 		fc.btn_classes = SWAM.Form.Builder.config.dropdown_btn_classes + " dropup";
 	}
 
-	if (fc.value) {
+	if (fc.value != undefined) {
 		let item = _.findWhere(fc.items, {id:fc.value});
 		if (item) {
 			fc.label = item.label;

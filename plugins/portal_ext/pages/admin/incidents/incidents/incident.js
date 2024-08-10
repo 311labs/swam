@@ -1,6 +1,6 @@
 PORTAL.Views.Incident = SWAM.View.extend({
     template: "portal_ext.pages.admin.incidents.incidents.view",
-    classes: "swam-view h-100",
+    classes: "swam-view h-100 bg-white",
 
     on_init: function() {
         this.addChild("tabs", new PORTAL.Views.IncidentTabs());
@@ -53,17 +53,83 @@ PORTAL.Views.Incident = SWAM.View.extend({
         return this.children.tabs.getTab(tab);
     },
 
+    on_action_state_change: function(evt, id) {
+        app.showBusy();
+        this.model.save({state:id}, function(){
+            app.hideBusy();
+            if (this.options.dlg) this.options.dlg.dismiss();
+        }.bind(this));
+    },
+
+    on_action_edit_incident: function(evt, id) {
+        let dlg = SWAM.Dialog.editModel(this.model);
+    },
+
+    on_action_edit_rule: function(evt, id) {
+        this.editRule();
+    },
+
+    editRule: function() {
+        let model = new SWAM.Models.IncidentRule(this.model.get("rule"));
+        let view = new PORTAL.Views.Rule();
+        view.setModel(model);
+        let dlg = SWAM.Dialog.showView(view, {
+            title: SWAM.renderString("Rule #{{model.id}} - {{model.name}}", {model:model}),
+            size:"lg", vsize:"lg",
+            can_dismiss:true,
+            context_menu: [
+                {
+                    label: "Edit",
+                    icon: "pencil",
+                    callback: function(d, menu) {
+                        SWAM.Dialog.editModel(model, {});
+                    }
+                }
+            ]
+        });
+    },
+
     showDialog: function(model, collection, parent) {
         this.setModel(model);
         let state = model.get("state");
         let item = {model:model};
+        let status_menu = [
+            {
+                label: "New",
+                id: 0,
+                action: "state_change",
+                icon: "shield-exclamation",
+            },
+            {
+                label: "Open",
+                id: 1,
+                action: "state_change",
+                icon: "shield-fill-plus",
+            },
+            {
+                label: "Pause",
+                id: 2,
+                action: "state_change",
+                icon: "pause-circle",
+            },
+            {
+                label: "Ignore",
+                id: 3,
+                action: "state_change",
+                icon: "shield-x",
+            },
+            {
+                label: "Resolved",
+                id: 4,
+                action: "state_change",
+                icon: "shield-fill-check",
+            }
+        ];
         let context_menu = [
             {
                 label: "Edit Incident",
                 icon: "pencil",
-                callback: function(dlg, menu) {
-                    parent.on_item_edit(item);
-                }
+                action: "edit_incident"
             }
         ];
 
@@ -71,103 +137,60 @@ PORTAL.Views.Incident = SWAM.View.extend({
             context_menu.push({
                     label: "Edit Rule",
                     icon: "pencil",
-                    callback: function(dlg, menu) {
-                        parent.on_rule_edit(item);
-                    }
+                    action: "edit_rule"
                 });
         }
 
         context_menu.push({divider:true});
-        let menu_state = {};
-        if (state < 3) {
-            if (state == 0) {
-                context_menu.push({
-                    label: "Open",
-                    icon: "shield-check",
-                    callback: function(dlg, menu) {
-                        app.showBusy();
-                        item.model.save({state:1}, function(){
-                            app.hideBusy();
-                            collection.fetch();
-                        });
-                    }
-                });
-            } else if (state == 1) {
-                context_menu.push({
-                    label: "Pause",
-                    icon: "pause-circle",
-                    callback: function(dlg, menu) {
-                        app.showBusy();
-                        item.model.save({state:2}, function(){
-                            app.hideBusy();
-                            dlg.dismiss();
-                            collection.fetch();
-                        });
-                    }
-                });
-            }
-
-            context_menu.push({
-                label: "Ignore",
-                icon: "shield-slash-fill",
-                callback: function(dlg, menu) {
-                    app.showBusy();
-                    item.model.save({state:3}, function(){
-                        app.hideBusy();
-                        dlg.dismiss();
-                        collection.fetch();
-                    });
-                }
-            });
-
-            context_menu.push({
-                label: "Pause",
-                icon: "pause-circle",
-                callback: function(dlg, menu) {
-                    app.showBusy();
-                    item.model.save({state:2}, function(){
-                        app.hideBusy();
-                        dlg.dismiss();
-                        collection.fetch();
-                    });
-                }
-            });
-
-            context_menu.push({
-                label: "Resolved",
-                icon: "shield-fill-check",
-                callback: function(dlg, menu) {
-                    app.showBusy();
-                    item.model.save({state:4}, function(){
-                        app.hideBusy();
-                        dlg.dismiss();
-                        collection.fetch();
-                    });
-                }
-            });
-        }
-
-        context_menu.push({
-            divider: true
-        });
         var dlg;
         context_menu.push({
             label: "Close Window",
             icon: "x",
-            callback: function() {
-                dlg.dismiss();
-            }
+            action: "close"
         });
 
-        let header = SWAM.renderTemplate("portal_ext.pages.admin.incidents.incidents.header", item);
+        let header_template = "portal_ext.pages.admin.incidents.incidents.header";
+        // let header = SWAM.renderTemplate(header_template, item);
+
+        let title_view = new SWAM.View({
+            icon: model.getCategoryIcon(),
+            template:header_template
+        });
+        title_view.addChild("action_bar", new SWAM.Form.View({
+            model:model, 
+            action_context: this,
+            fields:[
+            {
+                type: "buttongroup",
+                buttons: [
+                    {
+                        type: "dropdown",
+                        name: "state",
+                        btn_classes: "btn btn-primary",
+                        columns_classes: "col-auto",
+                        items: status_menu
+                    },
+                    {
+                        type: "dropdown",
+                        icon:"bi bi-three-dots-vertical",
+                        btn_classes: "btn btn-primary dropdown-toggle dropdown-toggle-hide-caret",
+                        columns_classes: "col-auto",
+                        items: context_menu
+                    }
+                ]
+            }
+        ]}));
+
+        title_view.setModel(item.model);
 
         let dlg_opts = {
-            title: header,
-            kind: "primary",
+            title_view: title_view,
+            title: null,
             can_dismiss: true,
-            padded: true,
+            padded: false,
             scrollable: true,
             fullscreen: true,
+            add_header_classes: "d-block border-bottom-1",
             // size: 'lg',
             // height: 'md',
             "context_menu": context_menu
@@ -204,6 +227,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
         }
 
         dlg = SWAM.Dialog.showView(this, dlg_opts);
+        this.options.dlg = dlg;
         return dlg;
     }
 

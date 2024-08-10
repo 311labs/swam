@@ -322,6 +322,12 @@ SWAM.Models.Incident = SWAM.Model.extend({
         let cls = SWAM.Models.Incident.STATE_COLORS[state];
         if (!cls) return "bg-primary";
         return cls;
+    },
+
+    getCategoryIcon: function() {
+        let icon = SWAM.Models.Incident.CATEGORY_ICONS[this.get("category")];
+        if (!icon) icon = "shield-shaded";
+        return SWAM.Icons.getIcon(icon, "text-danger");
     }
 }, {
     STATE_COLORS: {
@@ -368,7 +374,19 @@ SWAM.Models.Incident = SWAM.Model.extend({
             start: 0, step: 1, end: 10,
             columns: 6
         },
-    ]
+    ],
+    CATEGORY_ICONS: {
+        "ossec": "broadcast",
+        "account": "person-badge",
+        "access_request": "person-lock",
+        "rest_denied": "person-fill-slash",
+        "rest_error": "exclamation-triangle-fill",
+        "rest_exception": "bug-fill",
+        "taskqueue_errors": "exclamation-octagon-fill",
+        "uncaught_error": "exclamation-octagon-fill",
+        "devtools": "tools",
+        "support": "chat-left"
+    }
 });
 
 SWAM.Collections.Incident = SWAM.Collection.extend({
