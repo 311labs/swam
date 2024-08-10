@@ -25,6 +25,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         login_logo: "/plugins/media/logos/login_logo_purple.svg",
         send_buid: true // sends a __buid__ with every requires to the server, this is a browser id
     },
+
     on_init: function() {
         // turn on smart parameter parsing ('sss', 22, model.name) where model.name value is passed into localize
         if (window.Mustache) {
@@ -179,6 +180,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         window.addEventListener("popstate", this.on_pop_state);
         window.addEventListener("online", this.on_network_online.bind(this));
         window.addEventListener("offline", this.on_network_offline.bind(this));
+        // window.addEventListener("drop", this.on_file_dropped.bind(this));
         this.starting_url = this.getPath();
         this.starting_params = this.getSearchParams();
         if (_.isFunction(this.on_init_settings)) {
@@ -529,7 +531,10 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
         }
     },
 
-
+    on_file_dropped: function(evt) {
+        evt.preventDefault();
+        SWAM.toast("FILE DROPPED", "Not allowed!", "danger", 8000);
+    },
 
     on_network_online: function(evt) {
         // javascript code the detects if the browser if online

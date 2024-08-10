@@ -1,5 +1,5 @@
 
-PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend({
+PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend(SWAM.Ext.DropZone).extend({
 
     defaults: {
         icon: "image",
@@ -66,6 +66,21 @@ PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend({
     on_init: function() {
         SWAM.Pages.TablePage.prototype.on_init.call(this);
         this.options.view = new PORTAL.Views.MediaItem();
+    },
+
+    on_drop_file: function(file) {
+        SWAM.toast("File Uploading", `${file.name} (${file.size} bytes)`, "info");
+        let model = new SWAM.Models.MediaItem();
+
+        let dd = {
+            media:  file
+        };
+        if (this.options.group_filtering && app.group) dd.group = app.group.id;
+        model.save(
+            SWAM.Form.filesToData(file, dd), 
+            function(m, resp){
+                this.collection.fetch();
+            }.bind(this));
     },
 });
 

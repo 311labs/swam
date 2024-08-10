@@ -30,6 +30,25 @@ SWAM.Form.convertToFormData = function($form, data) {
 	return fdat;
 }
 
+SWAM.Form.filesToFormData = function(files) {
+    let fdat = new FormData(); // Reset FormData
+    for (let i = 0; i < files.length; i++) {
+        // Append each file to FormData
+        fdat.append('files[]', file);
+    }
+    return fdat;
+}
+
+SWAM.Form.filesToData = function(files, data) {
+	let fdat = SWAM.Form.filesToFormData(files);
+	ndata = _.extend({}, data);
+	_.each(data, function(f, k) {
+		fdat.set(k, f);
+	});
+	ndata.__mpf = fdat;
+    return ndata;
+}
+
 SWAM.Form.getData = function($form, options) {
 	var data = {};
 	var opts = _.extend({}, {checkbox_truefalse:true}, options);
