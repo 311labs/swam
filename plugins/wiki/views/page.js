@@ -3,6 +3,36 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
     template: "wiki.views.page",
     classes: "page-view page-padded page-fullscreen-topbar",
 
+    defaults: {
+        show_title: true,
+        show_header: true
+    },
+
+    events: {
+        "click img": "on_image_click",
+        // "click video": "on_video_click"
+    },
+
+    on_image_click: function(evt) {
+        let src = $(evt.currentTarget).attr("src");
+        let alt = $(evt.currentTarget).attr("alt") || " ";
+        console.log(src);
+        SWAM.Dialog.showMedia({url:src, kind:"image", title:alt});
+    },
+
+    on_video_click: function(evt) {
+        let ve = evt.currentTarget;
+        if (ve.requestFullscreen) {
+            ve.requestFullscreen();
+        } else if (ve.mozRequestFullScreen) { // Firefox
+            ve.mozRequestFullScreen();
+        } else if (ve.webkitRequestFullscreen) { // Chrome, Safari, Opera
+            ve.webkitRequestFullscreen();
+        } else if (ve.msRequestFullscreen) { // IE/Edge
+            ve.msRequestFullscreen();
+        }
+    },
+
     on_init: function() {
 
     },
@@ -172,5 +202,48 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
         });
     }
 });
+
+if (SWAM.Dialog) {
+    SWAM.Dialog.showWikiPage = function(path) {
+        let view = new PORTAL.Pages.WikiPage({show_title:false, show_header:false});
+
+        let paths = path.split("/");
+        view.params = {};
+        view.params.root = paths[0];
+        view.params.wiki = paths[1];
+        view.params.page = paths[2];
+        view.params.path = path
+
+        view.setModel(new SWAM.Models.WikiPage(view.params));
+
+        let buttons = [
+            {
+                id: "view_page",
+                action:"choice",
+                label: "View Wiki"
+            },
+            {
+                action:"close",
+                label:"Close"
+            }
+        ];
+
+        view.model.fetch(function(m, r){
+            SWAM.Dialog.show({
+                title: m.get("title"),
+                add_classes: "modal-white",
+                view: view,
+                size: "lg",
+                buttons: buttons,
+                scrollable: true,
+                callback: function(dlg, choice) {
+                    dlg.dismiss();
+                    app.setActivePage("wiki_page", view.params);
+                }
+            });
+
+        }.bind(this));
+    }
+}
 
 

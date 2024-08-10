@@ -3,6 +3,9 @@ div#page_wiki_page {
 	div.container {
 		max-width: 56rem;
 	}
+}
+
+div.wiki-page {
 
 	li.task-list-item {
 		list-style-type: none;
@@ -22,9 +25,22 @@ div#page_wiki_page {
 			}
 		}
 	}
-}
 
-div.wiki-page {
+	img {
+		box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.3);
+		transition: box-shadow 0.3s ease-in-out;
+		cursor: pointer;
+		max-width: 100%;
+		&:hover {
+			box-shadow: 7px 6px 6px 1px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	video {
+		max-width: 100%;
+		box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.3);
+	}
+
 	.highlight pre {
 		border-radius: 4px;
 		border: 1px solid #d9d9d9;
@@ -96,6 +112,12 @@ div.wiki-page {
 	.highlight .vi { color: #aa0000 } /* Name.Variable.Instance */
 	.highlight .vm { color: #aa0000 } /* Name.Variable.Magic */
 	.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+}
+
+div.modal {
+	div.wiki-page {
+		padding: 2rem;
+	}
 }
 
 div.EasyMDEContainer {
