@@ -1,29 +1,29 @@
 <div class="chat-avatar">
+	{{^icon}}
 	{{#get_avatar}}
 	<img src="{{get_avatar}}" alt="">
 	{{/get_avatar}}
 	{{^get_avatar}}
 	<div class="chat-avatar-initials">{{get_by_initials}}</div>
 	{{/get_avatar}}
+	{{/icon}}
+	{{#icon}}
+	<div class="chat-avatar-icon chat-avatar-{{{get_kind}}}">{{{ICON(icon)}}}</div>
+	{{/icon}}
 </div>
-<div class="{{options.kind}}-bubble">
+<div class="chat-bubble chat-bubble-{{get_kind}}">
 	<div class="row">
 		<div class="col-auto chat-by">{{get_by_displayname}}</div>
 		<div class="col chat-time">{{model.created|datetime}}</div>
 	</div>
-	{{^icon}}
-	<div class="chat-msg">{{{get_message|linkify('view link')}}}</div>
-	{{/icon}}
-	{{#icon}}
-	<div class="row">
-		<div class="col">
-			<div {{#model.ext_id}}class="chat-msg btn btn-link" data-id="{{model.ext_id}}" data-action="chat_click_{{model.safe_kind}}"{{/model.ext_id}}{{#model.ext_id}}class="chat-msg"{{/model.ext_id}}>
-			{{{get_message|linkify('view link')}}}
+	
+	<div class="chat-msg" data-chatid="{{model.id}}">
+		{{#get_action_id}}
+			<div class="btn btn-link" data-id="{{get_action_id}}" data-action="chat_click_{{get_kind}}">{{{get_message|linkify('view link')}}}
 			</div>
-		</div>
-		<div class="col-auto">
-			<div class="chat-icon">{{{ICON(icon)}}}</div>
-		</div>
+		{{/get_action_id}}
+		{{^get_action_id}}
+			{{{get_message|linkify('view link')}}}
+		{{/get_action_id}}
 	</div>
-	{{/icon}}
 </div>

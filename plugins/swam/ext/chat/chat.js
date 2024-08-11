@@ -1,3 +1,23 @@
+SWAM.Chat = {
+    BUBBLE_KINDS: {
+        "status": "status",
+        "history": "status",
+        "upload": "upload",
+        "shipping": "status",
+        "note": "chat",
+        "chat": "chat",
+        "message": "chat"
+    },
+    BUBBLE_ICONS: {
+        "upload": "upload",
+        "accessed": "unlock-fill",
+        "history": "info-circle",
+        "status": "info-circle",
+        "shipping": "box2-fill",
+        "task": "check-square"
+    },
+}
+
 
 SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
     template: "swam.ext.chat.item",
@@ -6,23 +26,13 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
     defaults: {
         kind: "chat",
         message_field: "text",
-        bubble_kinds: {
-            "status": "status",
-            "upload": "upload",
-            "shipping": "status",
-            "note": "chat",
-            "chat": "chat",
-            "message": "chat"
-        },
-        bubble_icons: {
-            "upload": "upload",
-            "status": "info-circle",
-            "shipping": "box2-fill"
-        },
         by_field: "by",
+        bubble_kinds: SWAM.Chat.BUBBLE_KINDS,
+        bubble_icons: SWAM.Chat.BUBBLE_ICONS,
         by_display_field: "by.username",
         by_initials_field: "by.initials",
         by_avatar_field: "by.avatar",
+        action_id_field: "media.id",
         kind_field: "kind",
         default_avatar: "/plugins/media/empty_avatar.jpg",
         system_avatar: "/plugins/media/logos/logo_sm.png"
@@ -34,6 +44,15 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
 
     get_message: function() {
         return this.model.get(this.options.message_field);
+    },
+
+    get_action_id: function() {
+        return this.model.get(this.options.action_id_field);
+    },
+
+    get_kind: function() {
+        let kind = this.model.get(this.options.kind_field);
+        return this.options.bubble_kinds[kind] || kind;
     },
 
     get_avatar: function() {
@@ -73,10 +92,11 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
         }
 
         if (by && (by.id == app.me.id)) {
-            this.options.add_classes = "sent";
+            this.options.add_classes = `sent chat-kind-${kind}`;
         } else {
-            this.options.add_classes = "received";
+            this.options.add_classes = `received chat-kind-${kind}`;
         }
+        this.options.data_attrs = {chatid: this.model.id};
         this.updateAttributes();
     }
 });
@@ -149,6 +169,10 @@ SWAM.Views.ChatView = SWAM.View.extend({
             this.busy_dlg.removeFromDOM();
             this.busy_dlg = null;
         }
+    },
+
+    getChatItem: function(id) {
+        return this.getChild("chatlist").get(id);
     },
 
     on_submit: function(evt) {

@@ -34,7 +34,7 @@ SWAM.Form.filesToFormData = function(files) {
     let fdat = new FormData(); // Reset FormData
     for (let i = 0; i < files.length; i++) {
         // Append each file to FormData
-        fdat.append('files[]', file);
+        fdat.append('files[]', file[i]);
     }
     return fdat;
 }

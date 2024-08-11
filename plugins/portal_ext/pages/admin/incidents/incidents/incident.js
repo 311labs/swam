@@ -1,4 +1,4 @@
-PORTAL.Views.Incident = SWAM.View.extend({
+PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
     template: "portal_ext.pages.admin.incidents.incidents.view",
     classes: "swam-view h-100 bg-white",
 
@@ -6,6 +6,16 @@ PORTAL.Views.Incident = SWAM.View.extend({
         this.addChild("tabs", new PORTAL.Views.IncidentTabs());
         this.notes = new SWAM.Views.ChatView({
             title: "Notes",
+            buttons: [
+                {
+                    icon: "paperclip",
+                    action: "upload"
+                },
+                {
+                    icon: "reload",
+                    action: "reload"
+                }
+            ],
             item_options: {
                 message_field: "note"
             },
@@ -35,13 +45,22 @@ PORTAL.Views.Incident = SWAM.View.extend({
 
     on_new_msg: function(evt) {
         if (!evt.value) return;
+        this.addNote(evt.value);
+    },
+
+    addNote: function(text, file) {
         this.notes.showBusy();
         let model = new SWAM.Models.IncidentHistory();
-        let data = {note:evt.value};
+        let data = {note:text};
         data.by = app.me.id;
         data.kind = "note";
         data.group = this.model.get("group.id");
         data.parent = this.model.id;
+        if (file) {
+            data.media = file;
+            data.kind = "upload";
+            data = SWAM.Form.filesToData(file, data);
+        }
         model.save(data, function(resp){
             this.notes.hideBusy();
             this.notes.clearMessage();
@@ -51,6 +70,32 @@ PORTAL.Views.Incident = SWAM.View.extend({
 
     getTab: function(tab) {
         return this.children.tabs.getTab(tab);
+    },
+
+    on_drop_file: function(file) {
+        let dsize = SWAM.Localize.bytes(file.size);
+        let msg = `${file.name} (${dsize})`;
+        SWAM.toast("File Uploading", msg, "info");
+        this.addNote(msg, file);
+    },
+
+    on_action_upload: function(evt, id) {
+        SWAM.Dialog.showForm(
+            [{label:"Select File", name:"media", type:"file"}],
+            {
+                callback: function(dlg){
+                    var files = dlg.getFiles();
+                    // console.log(files)
+                    dlg.dismiss();
+                    this.on_drop_file(files.media[0].files[0]);
+                }.bind(this)
+            });
+
+    },
+
+    on_action_chat_click_upload: function(evt, id) {
+        let item = this.notes.getChatItem($(evt.currentTarget).parent().data("chatid"));
+        SWAM.Dialog.showMedia(item.model.get("media"));
     },
 
     on_action_state_change: function(evt, id) {

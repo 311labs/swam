@@ -420,14 +420,22 @@ SWAM.Dialog = SWAM.View.extend({
         // opts.url = $el.data("media");
         // opts.kind = $el.data("kind");
         // opts.title = $el.data("title");
+        if (opts.renditions) {
+            // this means this is a mediaitem
+            opts = {
+                kind: window.identifyMediaType(opts.renditions.original.content_type),
+                url: opts.renditions.original.url,
+                title: opts.name
+            }
+        }
         if (!opts.url || !opts.kind) return true;
         let view = null;
-        if (opts.kind == "image") {
+        if ((opts.kind == "image") || (opts.kind == "I")) {
             view = new SWAM.View({
                 classes: "swam-lightbox",
                 template:"<div>{{{options.src|image}}}</div>",
                 src:opts.url});
-        } else if (opts.kind == "video") {
+        } else if ((opts.kind == "video")||(opts.kind == "V")) {
             view = new SWAM.Views.Video({src:opts.url});
         } else {
             window.open(opts.url, '_blank');
