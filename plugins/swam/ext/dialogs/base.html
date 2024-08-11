@@ -16,7 +16,7 @@
     <div class="modal-header{{#options.add_header_classes}} {{options.add_header_classes}}{{/options.add_header_classes}}" id="title_view"></div>
     {{/options.title_view}}
     {{#options.view}}
-    <div id="dlg_view" class="modal-view{{#options.padded}} modal-view-padded{{/options.padded}}{{#options.scrollable}} overflow-auto{{/options.scrollable}}"></div>
+    <div id="dlg_view" class="modal-view{{#options.padded}} {{options.padded_class}}{{/options.padded}}{{#options.scrollable}} overflow-auto{{/options.scrollable}}"></div>
     {{/options.view}}
     {{^options.view}}
     <div class="modal-body">

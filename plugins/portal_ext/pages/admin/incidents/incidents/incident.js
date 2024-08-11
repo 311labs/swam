@@ -190,6 +190,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
             padded: false,
             scrollable: true,
             fullscreen: true,
+            overflow_class: "",
             add_header_classes: "d-block border-bottom-1",
             // size: 'lg',
             // height: 'md',
