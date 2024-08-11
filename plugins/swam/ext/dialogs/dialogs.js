@@ -15,7 +15,7 @@ SWAM.Dialog = SWAM.View.extend({
         dark: false,
         stack: true,
         size: null, // null=normal, sm, lg, xl
-        padded_class: "overflow-auto"
+        scrollable_class: "overflow-auto"
     },
     events: {
         "click": "on_dlg_click",

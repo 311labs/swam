@@ -190,7 +190,7 @@ PORTAL.Views.Incident = SWAM.View.extend({
             padded: false,
             scrollable: true,
             fullscreen: true,
-            overflow_class: "",
+            scrollable_class: "overflow-y-auto overflow-x-hidden",
             add_header_classes: "d-block border-bottom-1",
             // size: 'lg',
             // height: 'md',
@@ -249,6 +249,7 @@ PORTAL.Views.IncidentTabs = SWAM.Views.Tabs.extend({
                 label: "Details",
                 field: "details",
                 tag: "pre",
+                localize: "prettystacktrace",
                 columns: 12
             },
             {
