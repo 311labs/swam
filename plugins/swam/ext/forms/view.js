@@ -640,8 +640,9 @@ SWAM.Form.View = SWAM.View.extend({
 
     enableClear: function() {
         this.$el.find("button.btn-clear").each(function(index){
-            var $parent = $(this).parent();
+            var $parent = $(this).parent().parent();
             var $input = $parent.find("input");
+            $parent = $input.parent();
             if ($input.val()) {
                 $parent.addClass("input-clearable");
             }
@@ -662,8 +663,9 @@ SWAM.Form.View = SWAM.View.extend({
     },
 
     on_action_clear_field: function(evt) {
-        var $parent = $(evt.currentTarget).parent();
+        var $parent = $(evt.currentTarget).parent().parent();
         var $input = $parent.find("input");
+        $parent = $input.parent();
         if ($input.hasClass("form-control-color")) {
             $input.val("#D3C5C5").change();
         } else {
@@ -677,6 +679,14 @@ SWAM.Form.View = SWAM.View.extend({
         // if (!ievt.name) ievt.name = $input.attr("id");
         // this._handle_input_change(ievt);
     },
+
+    on_action_mediapicker(evt, id) {
+        var $parent = $(evt.currentTarget).parent().parent();
+        var $input = $parent.find("input");
+        SWAM.Dialog.showMediaPicker(app.group, function(url) {
+            $input.val(url).change();
+        });
+    }
 });
 
 // $form.find('input[value!=""]:file:enabled').each(function(k,field){

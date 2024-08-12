@@ -5,15 +5,25 @@ PORTAL.Views.MediaItem = SWAM.View.extend(SWAM.Ext.BS).extend({
     tagName: "div",
 
     defaults: {
-        title: ""
+        show_copy: true
     },
 
     on_init: function() {
 
     },
 
-    on_action_copy_url: function() {
-        
-    }
+    on_pre_render: function() {
+        if (_.isFunction(this.options.on_rendition_select)) {
+            this.options.show_copy = false;
+        }
+    },
+
+    on_action_select_rendition: function(evt, id) {
+        if (this.options.dlg) {
+            this.options.dlg.dismiss();
+            this.options.dlg = null;
+        }
+        if (this.options.on_rendition_select) this.options.on_rendition_select(id);
+    },
 
 });

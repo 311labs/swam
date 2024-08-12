@@ -344,6 +344,7 @@ SWAM.Dialog = SWAM.View.extend({
         };
         opts = _.extend(defaults, opts);
         var dlg = new this(opts);
+        view.options.dlg = dlg;
         dlg.show();
         return dlg;
     },
@@ -448,6 +449,57 @@ SWAM.Dialog = SWAM.View.extend({
             title: opts.title,
             view: view,
             buttons: []
+        });
+    },
+
+    showMediaPicker: function(group, callback) {
+        let mdlg;
+        let view = new SWAM.Views.AdvancedTable({
+            remote_sort: false,
+            add_classes: "swam-table-clickable",
+            Collection: SWAM.Collections.MediaItem,
+            columns: [
+                {label:"thumb", template:"{{{model.thumbnail|img}}}", no_sort:true},
+                {label: "Name", field: "name"}
+            ],
+            on_item_clicked: function(item) {
+                let item_view = new PORTAL.Views.MediaItem({
+                    on_rendition_select: function(src) {
+                        mdlg.dismiss();
+                        if (callback) callback(src);
+                    }
+                });
+                item_view.setModel(item.model);
+                SWAM.Dialog.showView(item_view, {title: item.model.get("name")});
+            }.bind(this)
+        });
+        let buttons = [
+            {
+                label: "Upload New",
+                action: "choice",
+                id: "new"
+            },
+            {
+                label: "Close",
+                action: "close"
+            },
+        ]
+        view.collection.fetch();
+
+        mdlg = SWAM.Dialog.showView(view, {
+            title:"Select Media",
+            buttons: buttons,
+            size: "lg",
+            callback: function(dlg, choice) {
+                let model = new SWAM.Models.WikiMedia();
+                SWAM.Dialog.editModel(model, {
+                    defaults: {entry: this.model.get("parent.id")},
+                    callback: function(model, resp, dlg) {
+                        if (dlg) dlg.dismiss();
+                        view.collection.fetch();
+                    }
+                })
+            }.bind(this)
         });
     },
 

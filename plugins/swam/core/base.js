@@ -11,6 +11,10 @@ window.SWAM = {
         context = _.extend({}, context, defaults);
         return Mustache.render(text, context);
     },
+    hasTemplate: function(tpath) {
+        let t = SWAM.getTemplate(tpath);
+        return t && (t != tpath);
+    },
     getTemplate: function(tpath, strip_comments) {
         var t;
         if (tpath[0] == '<' || tpath.call || (tpath.indexOf("{{") >= 0)) {

@@ -241,6 +241,23 @@ SWAM.Form.Builder.file = function(fc, form_info) {
 	return fc;
 }
 
+SWAM.Form.Builder.mediapicker = function(fc, form_info) {
+	fc = SWAM.Form.Builder.text(fc, form_info);
+	if (!fc.$btn_wrap) fc.$btn_wrap = $("<div class='form-text-btngroup>");
+	SWAM.Form.Builder.button({
+		$el: fc.$btn_wrap,
+		classes: "btn-media-picker",
+		action: "mediapicker",
+		icon: "file-earmark-image"
+	});
+	if (fc.$wrap) {
+		fc.$wrap.append(fc.$btn_wrap);
+	} else {
+		fc.$el.append(fc.$btn_wrap);
+	}
+
+}
+
 SWAM.Form.Builder.text = function(fc, form_info) {
 	if (fc.button || fc.icon || fc.left_icon) {
 		fc = SWAM.Form.Builder.input_group(fc, form_info);
@@ -252,12 +269,18 @@ SWAM.Form.Builder.text = function(fc, form_info) {
 	}
 
 	if (fc.can_clear) {
+		if (!fc.$btn_wrap) fc.$btn_wrap = $("<div class='form-text-btngroup'></div>");
 		SWAM.Form.Builder.button({
-			$el: fc.$wrap || fc.$el,
+			$el: fc.$btn_wrap,
 			classes: "btn-clear",
 			action: "clear_field",
 			icon: "x-circle-fill"
 		});
+		if (fc.$wrap) {
+			fc.$wrap.append(fc.$btn_wrap);
+		} else {
+			fc.$el.append(fc.$btn_wrap);
+		}
 	}
 	return fc;
 }

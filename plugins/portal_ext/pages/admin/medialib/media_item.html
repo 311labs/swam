@@ -32,7 +32,12 @@
       <td>{{.value.content_type}}</td>
       <td>{{.value.bytes|bytes}}</td>
       <td>{{.value.width}} x {{.value.height}}</td>
+      {{#options.show_copy}}
       <td><button class="btn btn-link btn-clipboard btn-sm" data-clipboard-text="{{.value.url}}">COPY URL</button></td>
+      {{/options.show_copy}}
+      {{^options.show_copy}}
+      <td><button class="btn btn-link btn-sm" data-action="select_rendition" data-id="{{.value.url}}">SELECT</button></td>
+      {{/options.show_copy}}
     </tr>
     {{/model.renditions|iter}}
   </tbody>

@@ -95,18 +95,22 @@ div.password-input-group {
     }
 }
 
-div.text-input-group, div.search-input-group {
+div.text-input-group, div.search-input-group, div.mediapicker-input-group {
     position: relative;
 
-    button.btn-clear {
-        display: none;
-        color: #6c757d;
-    }
-
-    button.btn-icon, button.btn-clear {
+    div.form-text-btngroup {
         position: absolute;
         right: 8px;
         bottom: 14px;
+        background-color: transparent;;
+        border: none;
+    }
+
+    button.btn-icon, button.btn-clear, button.btn-media-picker {
+        // position: absolute;
+        // right: 8px;
+        // bottom: 14px;
+        display: inline-block;
         background-color: transparent;;
         border: none;
         &:hover {
@@ -114,14 +118,19 @@ div.text-input-group, div.search-input-group {
         }
     }
 
+    button.btn-clear {
+        display: none;
+        color: #6c757d;
+    }
+
     &.input-clearable, div.input-group.input-clearable {
         button.btn-clear {
-            display: block;
+            display: inline-block;
         }
     }
 
     div.input-group {
-        button.btn-clear {
+        div.form-text-btngroup {
             right: 50px;
             bottom: 5px;
             z-index: 5;
