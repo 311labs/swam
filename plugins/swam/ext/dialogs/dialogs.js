@@ -473,6 +473,8 @@ SWAM.Dialog = SWAM.View.extend({
                 SWAM.Dialog.showView(item_view, {title: item.model.get("name")});
             }.bind(this)
         });
+
+        view.collection.params.group = group.id;
         let buttons = [
             {
                 label: "Upload New",
