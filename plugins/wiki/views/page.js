@@ -63,6 +63,7 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
         this.params.slug = this.params.page;
         if (this.params.slug) {
             this.params.title = this.params.slug.replace("_", " ").capitalize();
+            this.options.title = this.params.title;
         }
 
         if (!this.model.id) {
@@ -159,7 +160,7 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
             },
             {
                 label: "Requires Permissions",
-                field: "metadata.requires_perm",
+                field: "perms",
             },
         ];
         let model = new SWAM.Models.WikiPage(this.model.get("parent"));
@@ -204,7 +205,8 @@ PORTAL.Pages.WikiPage = SWAM.Page.extend({
 });
 
 if (SWAM.Dialog) {
-    SWAM.Dialog.showWikiPage = function(path) {
+    SWAM.Dialog.showWikiPage = function(path, opts) {
+        opts = _.extend({ignore_errors:false}, opts);
         let view = new PORTAL.Pages.WikiPage({show_title:false, show_header:false});
 
         let paths = path.split("/");
@@ -229,18 +231,28 @@ if (SWAM.Dialog) {
         ];
 
         view.model.fetch(function(m, r){
-            SWAM.Dialog.show({
-                title: m.get("title"),
-                add_classes: "modal-white",
-                view: view,
-                size: "lg",
-                buttons: buttons,
-                scrollable: true,
-                callback: function(dlg, choice) {
-                    dlg.dismiss();
-                    app.setActivePage("wiki_page", view.params);
+            if (r.error) {
+                if (!opts.ignore_errors) {
+                    SWAM.Dialog.show({
+                        title:null,
+                        message:`<div class='text-muted fs-3'>${r.error}</div><div>Accessing Page: '${path}'</div>`
+                    });
                 }
-            });
+            } else {
+                SWAM.Dialog.show({
+                    title: m.get("title"),
+                    add_classes: "modal-white",
+                    view: view,
+                    size: "lg",
+                    buttons: buttons,
+                    scrollable: true,
+                    callback: function(dlg, choice) {
+                        dlg.dismiss();
+                        app.setActivePage("wiki_page", view.params);
+                    }
+                });
+            }
+
 
         }.bind(this));
     }

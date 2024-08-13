@@ -90,11 +90,11 @@ SWAM.WikiMenu = SWAM.Object.extend({
 					items: []
 				};
 				items.push(item);
-				let requires_perm = model.get("metadata.requires_perm");
-				if (_.isString(requires_perm) && (requires_perm.contains(","))) {
-					requires_perm = requires_perm.split(',');
-				}
-				if (requires_perm) item.requires_perm = requires_perm;
+				// let requires_perm = model.get("perms");
+				// if (_.isString(requires_perm) && (requires_perm.contains(","))) {
+				// 	requires_perm = requires_perm.split(',');
+				// }
+				// if (requires_perm) item.requires_perm = requires_perm;
 				_.each(model.get("children"), function(child){
 					let cicon = "file-earmark-richtext";
 					if (child.metadata && child.metadata.icon) icon = child.metadata.icon;

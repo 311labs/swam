@@ -1,5 +1,17 @@
 # SWAMCORE
 
+## v0.2.15 - August 12, 2024
+
+ * fixed: input button overlays now opaque
+ * updated: wiki system to support proper permissions
+
+
+## v0.2.15 - August 12, 2024
+
+ * fixed: input button overlays now opaque
+ * updated: wiki system to support proper permissions
+
+
 
 ## v0.2.15
 
