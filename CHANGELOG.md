@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.15 - August 13, 2024
+
+ * updated: "Localize.icon ignores null icons"
+
+
 ## v0.2.15 - August 12, 2024
 
  * fixed: input button overlays now opaque

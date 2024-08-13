@@ -645,6 +645,7 @@ SWAM.Localize = {
         return `<span class="badge bg-${color}">${value}</span>`;
     },
     'icon': function(value, attr, fmt) {
+        if (!value) return "";
         return SWAM.Icons.getIcon(value);
     },
 
