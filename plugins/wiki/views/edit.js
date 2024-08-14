@@ -123,6 +123,7 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
         let dlg = SWAM.Dialog.showView(view, {
             title:"Select Media",
             buttons: buttons,
+            scrollabe: true,
             callback: function(dlg, choice) {
                 let model = new SWAM.Models.WikiMedia();
                 SWAM.Dialog.editModel(model, {
@@ -141,7 +142,12 @@ PORTAL.Pages.EditWikiPage = SWAM.Page.extend({
                 view.off("item:clicked");
                 var pos = editor.codemirror.getCursor();
                 editor.codemirror.setSelection(pos, pos);
-                editor.codemirror.replaceSelection(`![${item.model.get("media.name")}](${item.model.getMediaURL()})`);
+                if (item.model.isMedia()) {
+                    editor.codemirror.replaceSelection(`![${item.model.get("media.name")}](${item.model.getMediaURL()})`);
+                } else {
+                    editor.codemirror.replaceSelection(`[${item.model.get("media.name")}](${item.model.getMediaURL()})`);
+                }
+                
             }, this);
     },
 });

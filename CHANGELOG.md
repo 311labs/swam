@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.17 - August 14, 2024
+
+ * added: wiki media now support upload direct to s3
+ * fixed: invalid url for none media links
+
+
 ## v0.2.16 - August 13, 2024
 
  * added new progressview
