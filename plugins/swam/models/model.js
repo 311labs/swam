@@ -7,13 +7,14 @@ SWAM.Model = SWAM.Object.extend({
         id: null,
         stale_after_ms: 60000, // default 60s stale
     },
-    attributes: {},
+    attributes: null,
     params: {},
     id: null,
     last_fetched_at: null,
 
     initialize: function(attributes, opts) {
         this.id = null;
+        this.attributes = {};
         this.init_options(opts);
         this.id = this.options.id;
         this.params = _.extend({}, this.params, this.options.params);

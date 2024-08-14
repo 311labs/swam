@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.18 - August 14, 2024
+
+ * hotfix: attributes was sticking to the class level instead of instance if assigned direct
+ * wikimedia: fixed incorrect assigning via attributes vs set
+
+
 ## v0.2.17 - August 14, 2024
 
  * added: wiki media now support upload direct to s3

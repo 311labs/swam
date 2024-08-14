@@ -19,8 +19,7 @@ SWAM.Models.MediaItem = SWAM.Model.extend({
             "/api/medialib/media/item/s3", 
             payload, 
             function(resp, status) {
-                this.id = resp.data.id;
-                this.attributes.id = this.id;
+                this.set("id", resp.data.id);
                 let fsize = SWAM.Localize.bytes(file.size);
                 let prog_view = new SWAM.Views.ProgressBar({title:`${data.name} (${fsize})`});
                 prog_view.render();
