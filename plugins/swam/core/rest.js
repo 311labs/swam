@@ -31,6 +31,36 @@ SWAM.Rest = {
         return SWAM.Rest.makeRequest("PUT", url, data, callback, opts);
     },
 
+    UPLOAD: function(url, file, callback, onprogress) {
+        // onprogress = function(event) {
+        //     if (event.lengthComputable) {
+        //         const percentComplete = (event.loaded / event.total) * 100;
+        //         $('#progress-bar').val(percentComplete);
+        //         $('#status').text(`Upload progress: ${percentComplete.toFixed(2)}%`);
+        //     }
+        // }
+        $.ajax({
+            url: url,
+            type: 'PUT',
+            data: file,
+            processData: false,
+            contentType: file.type,
+            xhr: function() {
+                const xhr = new XMLHttpRequest();
+                if (onprogress) {
+                    xhr.upload.onprogress = onprogress;
+                }
+                return xhr;
+            },
+            success: function(xhr, status) {
+                callback(true, xhr, status);
+            },
+            error: function(xhr, status) {
+                callback(false, xhr, status);
+            }
+        });
+    },
+
     DOWNLOAD: function(url, params, callback, opts) {
         opts = _.extend({filename:"download.csv"}, opts);
 

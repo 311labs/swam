@@ -1,5 +1,13 @@
 # SWAMCORE
 
+## v0.2.16 - August 13, 2024
+
+ * added new progressview
+ * updated: toast now lets you set message to swamview
+ * updated: medialib now support large file uploads direct to s3
+ * updated: rest.upload now support progress
+
+
 ## v0.2.15 - August 13, 2024
 
  * updated: "Localize.icon ignores null icons"

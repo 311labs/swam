@@ -69,7 +69,6 @@ PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend(SWAM.Ext.DropZone).extend(
     },
 
     on_drop_file: function(file) {
-        SWAM.toast("File Uploading", `${file.name} (${file.size} bytes)`, "info");
         let model = new SWAM.Models.MediaItem();
 
         let dd = {

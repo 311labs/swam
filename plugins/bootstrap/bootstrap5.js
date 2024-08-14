@@ -222,8 +222,15 @@ class Toast {
             toastOptions.on_click(evt, t, toastOptions);
           });
         }
-        
-        toastBody.innerHTML = toastOptions.message;
+        if (toastOptions.message) {
+          if (toastOptions.message.el) {
+            toastBody.appendChild(toastOptions.message.el);
+          } else if (toastOptions.message.nodeType == 1) {
+            toastBody.appendChild(toastOptions.message);
+          } else {
+            toastBody.innerHTML = toastOptions.message;
+          }
+        }
         this.setStatus(toastEl, toastOptions.status);
         const toastInfo = {
             toast: toastEl,
@@ -234,10 +241,11 @@ class Toast {
             if (!this.queueEnabled)
                 return;
             this.queue.push(toastInfo);
-            return;
+            return toastInfo;
         }
 
         this.render(toastInfo);
+        return toastInfo;
     }
     /**
      * Sets the status icon and modifies ARIA properties if the context necessitates it
@@ -269,7 +277,7 @@ class Toast {
         }
     }
 
-    static removeToast(toastInfo) {
+    static removeToast(toastInfo, force) {
       var has_child = false;
       for(var c in TOAST_CONTAINER.children) {
           if (toastInfo.toast == c) {
@@ -278,7 +286,7 @@ class Toast {
           }
       }
       this.currentToastCount--;
-      if (has_child) TOAST_CONTAINER.removeChild(toastInfo.toast);
+      if (has_child || force) TOAST_CONTAINER.removeChild(toastInfo.toast);
     }
     /**
      * Inserts toast HTML onto page and sets up for toast deletion.
