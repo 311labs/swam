@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.20 - August 14, 2024
+
+ * added: dismiss_on_submit for edit model dialogs, auto dismisses dialog instead of waiting for save
+ * updated: medialib to use dismiss_on_submit so user can continue using portal while uploading
+
+
 ## v0.2.18 - August 14, 2024
 
  * hotfix: attributes was sticking to the class level instead of instance if assigned direct

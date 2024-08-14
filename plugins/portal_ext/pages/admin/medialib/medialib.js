@@ -7,6 +7,10 @@ PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend(SWAM.Ext.DropZone).extend(
         list_options: {
             add_classes: "swam-table-clickable",
         },
+        edit_dialog_options: {
+            can_dismiss:true,
+            dismiss_on_submit: true
+        },
         columns: [
 	        {label:"thumb", template:"{{{model|lightbox}}}", no_sort:true},
             {label:"id", field:"id"},

@@ -77,6 +77,7 @@ SWAM.Dialog.editModel = function(model, opts) {
 
 	var mdlg = null;
 	var callback = opts.callback;
+	var dismiss_on_submit = opts.dismiss_on_submit;
 	opts.callback = function(dlg, choice) {
 		if (choice == "save") {
 			var data = dlg.getData();
@@ -87,16 +88,20 @@ SWAM.Dialog.editModel = function(model, opts) {
 				return;
 			}
 			if (!dlg.hasRequiredData(true)) return;
-			app.showBusy({icon:"upload", timeout:false, color:"warning", no_timeout_alert:true});
 			// FIXME: this is not good, and can cause issues when in admin pages, etc
 			if (opts.use_app_group && app.group && (data.group == undefined)) data.group = app.group.id;
+			if (dismiss_on_submit) {
+				dlg.dismiss();
+			} else {
+				app.showBusy({icon:"upload", timeout:false, color:"warning", no_timeout_alert:true});
+			}
 			model.save(data, function(model, resp) {
-				app.hideBusy();
+				if (!dismiss_on_submit) app.hideBusy();
 				if (resp.error) {
 					dlg.options.changes_only = false;
 					if (!callback) SWAM.Dialog.warning(resp.error);
 				} else {
-					dlg.dismiss();
+					if (!dismiss_on_submit) dlg.dismiss();
 				}
 				if (callback) callback(model, resp, dlg);
 			});
