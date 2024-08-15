@@ -224,8 +224,17 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
     showTopBar: function() { this.$el.find("#title-bar").show(); },
     hideTopBar: function() { this.$el.find("#title-bar").hide(); },
 
+    disableLeftPanel: function() {
+        this.options.disable_left_panel = true;
+    },
+
+    enableLeftPanel: function() {
+        this.options.disable_left_panel = false;
+    },
+
     showLeftPanel: function(partial) {
         // to make it slide over vs shrink add class slide to body
+        if (this.options.disable_left_panel) return;
         if (this.options.slide) this.$el.addClass("slide");
         if (partial) {
             this.$el.addClass("panel-animate").removeClass("panel-left-reveal").addClass("panel-left-reveal-partial");
