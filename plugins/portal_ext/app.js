@@ -196,6 +196,7 @@ PORTAL.PortalApp = SWAM.App.extend({
 						this.fetchMS();
 					} else {
 						// SWAM.Dialog.warning("Permission Denied", "You do not have access to this group.  Please check with your administrator.");
+						if (!app.options.is_ready) app.on_ms_ready();
 						app.showPage("denied", {denied_group: id});
 					}
 				}.bind(this));

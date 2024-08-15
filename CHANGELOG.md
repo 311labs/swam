@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.23 - August 14, 2024
+
+ * fixed: bug where if the user doesn't have permission to active group nothing works
+
+
 ## v0.2.22 - August 14, 2024
 
  * added: user menu now support permissions
