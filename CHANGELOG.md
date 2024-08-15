@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.21 - August 14, 2024
+
+ * added: ability to enable/disable showing of left panel
+ 
+
+
 ## v0.2.20 - August 14, 2024
 
  * added: dismiss_on_submit for edit model dialogs, auto dismisses dialog instead of waiting for save
