@@ -41,7 +41,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		if (this.options.show_usermenu) {
 			this.user_dropdown = new SWAM.View({
 				classes: "dropdown ms-3 h-100",
-				user_menu: this.options.user_menu,
+				user_menu: this.filterUserMenu(),
 				template: this.options.user_menu_template});
 			if (!this.options.right_nav) this.options.right_nav = [];
 			this.options.right_nav.push({
@@ -161,6 +161,15 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		if (this.bound_scroll_spy) {
 			window.removeEventListener("scroll", this.bound_scroll_spy);
 		}
+	},
+
+	filterUserMenu: function() {
+		let user_menu = [];
+		_.each(this.options.user_menu, function(value, index){
+			if ((value.requires_perm) && (!app.me.hasPerm(value.requires_perm))) return;
+			user_menu.push(value);
+		});
+		return user_menu;
 	},
 
 	setActive: function(id) {

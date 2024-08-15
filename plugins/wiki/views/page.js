@@ -218,17 +218,19 @@ if (SWAM.Dialog) {
 
         view.setModel(new SWAM.Models.WikiPage(view.params));
 
-        let buttons = [
-            {
+        let buttons = [];
+
+        if (opts.show_wiki_btn) {
+            buttons.push({
                 id: "view_page",
                 action:"choice",
                 label: "View Wiki"
-            },
-            {
+            })
+        }
+        buttons.push({
                 action:"close",
                 label:"Close"
-            }
-        ];
+        });
 
         view.model.fetch(function(m, r){
             if (r.error) {

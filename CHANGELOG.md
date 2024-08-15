@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.22 - August 14, 2024
+
+ * added: user menu now support permissions
+ * fixed: wiki dialog no longer defautls has wiki button
+
+
 ## v0.2.21 - August 14, 2024
 
  * added: ability to enable/disable showing of left panel
