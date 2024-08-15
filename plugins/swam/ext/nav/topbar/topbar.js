@@ -178,5 +178,9 @@ SWAM.Views.TopBar = SWAM.View.extend({
 		this.$el.find("a.nav-link.active").removeClass("active");
 		this.$el.find("a[data-anchor='" + id + "']").addClass("active");
 	},
+
+	on_pre_render: function() {
+		this.user_dropdown.options.user_menu = this.filterUserMenu();
+	}
 });
 

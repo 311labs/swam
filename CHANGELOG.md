@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.24 - August 14, 2024
+
+ * fixed: bug in topbar.user_menu not updating after user fetch
+
+
 ## v0.2.23 - August 14, 2024
 
  * fixed: bug where if the user doesn't have permission to active group nothing works
