@@ -119,7 +119,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                 name: "state",
                 operator: "is",
                 options: [
-                    {label:"Started/Schedule", value:"0"},
+                    {label:"Started/Schedule", value:"__in:0,1,2"},
                     {label:"Completed", value:"10"},
                     {label:"Failed", value:"-1"},
                     {label:"Canceled", value:"-2"},
@@ -280,6 +280,8 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
                 if (resp.data.status) {
                     this.$el.find("#tq_running_count").text(resp.data.status.running);
                     this.$el.find("#tq_backlog_count").text(resp.data.status.backlog);
+                    this.$el.find("#tq_scheduled_count").text(resp.data.status.retry);
+                    this.$el.find("#tq_failed_count").text(resp.data.status.failed);
                 }
                 this.on_stats();
             }

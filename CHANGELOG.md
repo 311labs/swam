@@ -1,5 +1,12 @@
 # SWAMCORE
 
+## v0.2.25 - August 16, 2024
+
+ * fixed: taskqueue filtering of scheduled was broken
+ * added: taskqueue header now includes scheduled and failed
+ * added: saving of default_portal when a user is invited
+
+
 ## v0.2.24 - August 14, 2024
 
  * fixed: bug in topbar.user_menu not updating after user fetch

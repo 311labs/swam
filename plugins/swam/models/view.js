@@ -54,6 +54,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
         }
         if (obj.view_ignore) return;
         if (obj.requires_perm && !app.me.hasPerm(obj.requires_perm)) return;
+        if (obj.requires_field && !model.get(obj.requires_field)) return;
         if (!obj.field && obj.name) obj.field = obj.name;
         if (obj.label === undefined) obj.label = obj.field;
         if (!obj.field) obj.field = obj.label;

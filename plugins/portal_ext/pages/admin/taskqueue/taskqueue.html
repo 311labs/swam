@@ -3,10 +3,16 @@
 		<h3>Task Queue</h3>
 	</div>
 	<div class="col-auto">
-		<h5><span class="d-none d-md-inline-block">running: </span><span class="badge bg-primary" id="tq_running_count"></span></h5>
+		<h5><span class="d-none d-md-inline-block">running: </span><span class="badge bg-primary" id="tq_running_count">0</span></h5>
 	</div>
 	<div class="col-auto">
-		<h5><span class="d-none d-md-inline-block">backlog: </span><span class="badge bg-danger" id="tq_backlog_count"></span></h5>
+		<h5><span class="d-none d-md-inline-block">scheduled: </span><span class="badge bg-success" id="tq_scheduled_count">0</span></h5>
+	</div>
+	<div class="col-auto">
+		<h5><span class="d-none d-md-inline-block">backlog: </span><span class="badge bg-danger" id="tq_backlog_count">0</span></h5>
+	</div>
+	<div class="col-auto">
+		<h5><span class="d-none d-md-inline-block">failed: </span><span class="badge bg-danger" id="tq_failed_count">0</span></h5>
 	</div>
 	<div class="col-auto text-right">
 		<button class="btn btn-link btn-sm" data-action="tq_chart">{{{ICON('graph-up')}}}</button>
