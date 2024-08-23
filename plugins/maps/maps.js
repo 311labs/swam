@@ -146,7 +146,7 @@ SWAM.Views.Map = SWAM.View.extend({
     },
 
     renderHeatmap: function() {
-        if (!google.maps.visualization.HeatmapLayer) {
+        if (!SWAM.Map || !google.maps.visualization.HeatmapLayer) {
             console.warn("missing google.maps.visualization.HeatmapLayer");
             return;
         }
@@ -203,7 +203,52 @@ SWAM.Views.Map = SWAM.View.extend({
     update: function() {
         this.renderMarkers();
         this.renderHeatmap();
-    }
+    },
+
+    getMarkers: function() {
+        return this._markers;
+    },
+
+    focusOnMarker: function(marker, zoom) {
+        const zoomLevel = zoom || 15;
+
+        this.map.setCenter(marker.position);
+        this.setZoom(zoomLevel);
+        this.showInfoWindow(marker);
+    },
+
+    setZoom: function(zoom) {
+        this.map.setZoom(zoom);
+    },
+
+    // useful for getting the marker options that were used to initialize the google.maps marker
+    getMarkerOptionsFromPosition: function(position) {
+        // this.options.markers are the marker settings set by the caller, while
+        // this._markers are the google.maps markers initiated from those settings
+
+        // loop through the markers to find the one that matches the position
+        const match = this.options.markers.find(marker => {
+            return marker.lat === position.lat && marker.lng === position.lng;
+        });
+
+        return match;
+    },
+
+    getMarkerTitle: function(marker) {
+        const markerOpts = this.getMarkerOptionsFromPosition(marker.position);
+
+        return markerOpts.title;
+    },
+
+    showInfoWindow: function(marker) {
+        const title = this.getMarkerTitle(marker);
+        if(!this.info_window) {
+            this.info_window = new google.maps.InfoWindow();
+        }
+        this.info_window.close();
+        this.info_window.setContent(title);
+        this.info_window.open(marker.map, marker);
+    },
 }, {
     showDialog: function(opts) {
         let view = new this(opts);

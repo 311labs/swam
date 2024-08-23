@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.26 - August 22, 2024
+
+ * added: map view now has support for zooming and detailed markers
+ * added: searchdown can now clear and supports event searchdown:clear
+
+
 ## v0.2.25 - August 16, 2024
 
  * fixed: taskqueue filtering of scheduled was broken

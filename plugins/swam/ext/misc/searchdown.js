@@ -54,9 +54,16 @@ SWAM.Views.SearchDown = SWAM.View.extend({
 
     setActive: function(model) {
         this.active_model = model;
-        if (this.$button) this.$button.text(model.get(this.options.display_field));
-        if (this.options.input_name) {
-            this.$el.find("#hidden_input").val(this.active_model.get(this.options.input_value_field));
+        if (model) {
+            if (this.$button) this.$button.text(model.get(this.options.display_field));
+            if (this.options.input_name) {
+                this.$el.find("#hidden_input").val(this.active_model.get(this.options.input_value_field));
+            }
+        } else {
+            if (this.$button) this.$button.text(this.options.empty_label);
+            if (this.options.input_name) {
+                this.$el.find("#hidden_input").val("");
+            }
         }
     },
 
@@ -80,6 +87,12 @@ SWAM.Views.SearchDown = SWAM.View.extend({
 
     on_item_clicked: function(item) {
         this.setActive(item.model);
+    },
+
+    on_action_close: function(evt, id) {
+        if (this.options.no_close_clear) return;
+        this.setActive(null);
+        this.trigger("searchdown:clear", this);
     },
 
     on_filter: function(keyword) {
