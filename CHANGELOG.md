@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.28 - August 25, 2024
+
+ * fixed: log view bug when specifying component field
+
+
 ## v0.2.26 - August 22, 2024
 
  * added: map view now has support for zooming and detailed markers

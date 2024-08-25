@@ -185,7 +185,7 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
         if (this.options.component) {
             this.collection.params.component = this.options.component;
             if (this.options.component_field) {
-                this.collection.params.pkey = model.get(this.options.model_field);
+                this.collection.params.pkey = model.get(this.options.component_field);
             } else {
                 this.collection.params.pkey = model.id;
             }
