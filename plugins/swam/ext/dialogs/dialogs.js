@@ -139,7 +139,6 @@ SWAM.Dialog = SWAM.View.extend({
     on_action_bg_close: function(evt) {
         if (this.options.can_dismiss) {
             this.dismiss();
-            this.trigger("dialog:closed", this);
         }
     },
     on_action_context_menu: function(evt) {

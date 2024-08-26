@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.31 - August 26, 2024
+
+ * fixed: double event for when dialog closes via bg
+
+
 ## v0.2.30 - August 25, 2024
 
  * added: log datetime filtering
