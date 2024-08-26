@@ -100,13 +100,15 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
             if (option) value_lbl = option.label || val;
         } else if (_.isString(value_lbl) && (value_lbl.contains(":"))) {
             // special operators
-            let fields = value_lbl.split(":");
-            if (fields[0] == "__gt") {
-                operator = "is >";
-            } else if (fields[0] == "__lt") {
-                operator = "is <";
+            if (filter.type !== 'time' && filter.type !== 'timerange') {
+                let fields = value_lbl.split(":");
+                if (fields[0] == "__gt") {
+                    operator = "is >";
+                } else if (fields[0] == "__lt") {
+                    operator = "is <";
+                }
+                value_lbl = fields[1];
             }
-            value_lbl = fields[1];
         }
 
         this.children.fb_filters.appendChild(safe_id, new SWAM.View(_.extend({

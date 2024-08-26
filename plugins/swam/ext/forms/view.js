@@ -498,6 +498,14 @@ SWAM.Form.View = SWAM.View.extend({
         }.bind(this));
     },
 
+    on_init__timepicker: function() {
+        var self = this;
+        this.$el.find("input.input-time").each(function(){
+            var $el = $(this);
+            $el.on("click", function(){ this.showPicker();});
+        });
+    },
+
     on_dom_removed: function() { 
         this.$el.empty();
 

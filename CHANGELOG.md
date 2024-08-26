@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.29 - August 25, 2024
+
+ * added: time pickers
+
+
 ## v0.2.28 - August 25, 2024
 
  * fixed: log view bug when specifying component field
