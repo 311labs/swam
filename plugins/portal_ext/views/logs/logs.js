@@ -62,6 +62,18 @@ PORTAL.Views.Logs = SWAM.Views.AdvancedTable.extend({
                 maxdays: 14
             },
             {
+                label: "Time Start",
+                name: "tr_start",
+                type: "time",
+                maxdays: 14
+            },
+            {
+                label: "Time End",
+                name: "tr_end",
+                type: "time",
+                maxdays: 14
+            },
+            {
                 label: "Level",
                 name: "level",
                 type: "select",

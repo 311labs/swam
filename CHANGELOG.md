@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.30 - August 25, 2024
+
+ * added: log datetime filtering
+
+
 ## v0.2.29 - August 25, 2024
 
  * added: time pickers
