@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.32 - August 27, 2024
+
+ * added: callback on when tablepage creates a model, for setup of defaults
+
+
 ## v0.2.31 - August 26, 2024
 
  * fixed: double event for when dialog closes via bg

@@ -250,6 +250,10 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 		}
 	},
 
+	on_model_created: function(model) {
+
+	},
+
 	on_action_add: function(evt) {
 	    let defaults = {
 			title: this.options.dlg_add_title,
@@ -279,7 +283,9 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 				}
 			];
 		}
-		SWAM.Dialog.editModel(new this.collection.options.Model(), options);
+		let model = new this.collection.options.Model();
+		this.on_model_created(model);
+		SWAM.Dialog.editModel(model, options);
 	},
 
 	on_action_batch_delete: function(evt) {
