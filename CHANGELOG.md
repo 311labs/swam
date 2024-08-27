@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.33 - August 27, 2024
+
+ * added: form builder input add_classes option
+
+
 ## v0.2.32 - August 27, 2024
 
  * added: callback on when tablepage creates a model, for setup of defaults
