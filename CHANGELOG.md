@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.34 - August 30, 2024
+
+ * added: redis connection monitoring
+ * added: view abuse ip info
+
+
 ## v0.2.33 - August 27, 2024
 
  * added: form builder input add_classes option

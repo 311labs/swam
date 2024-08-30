@@ -51,7 +51,8 @@ PORTAL.Pages.ServerInfo = SWAM.Pages.TablePage.extend({
             {label:"CPU", field:"cpu_load"},
             {label:"MEM", field:"memory.percent"},
             {label:"DISK", field:"disk.percent"},
-            {label:"CONS", field:"network.tcp_cons"}
+            {label:"CONS", field:"network.tcp_cons"},
+            {label:"REDIS", field:"redis_pool.in_use"}
         ],
         Collection: SWAM.Collections.ServerInfo,
         add_button: false,

@@ -134,6 +134,15 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
         });
     },
 
+    on_action_view_abuse: function(evt, id) {
+        var opts = {
+            title: "Abuse IP Info",
+            size: "md",
+            json: this.model.get("metadata.abuse_info")
+        }
+        SWAM.Dialog.show(opts);
+    },
+
     showDialog: function(model, collection, parent) {
         this.setModel(model);
         let state = model.get("state");
@@ -183,6 +192,14 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
                     label: "Edit Rule",
                     icon: "pencil",
                     action: "edit_rule"
+                });
+        }
+
+        if (model.get("category") == "ossec") {
+            context_menu.push({
+                    label: "Abuse IP Info",
+                    icon: "shield-fill",
+                    action: "view_abuse"
                 });
         }
 
@@ -350,6 +367,18 @@ PORTAL.Views.IncidentTabs = SWAM.Views.Tabs.extend({
             {
                 label:"Rule Action",
                 field:"rule.action|ifempty",
+                columns: 6
+            },
+            {
+                label:"Abuse Info",
+                field:"metadata.abuse_info.abuseConfidenceScore|ifempty",
+                view_action: "view_abuse",
+                view_classes: "text-primary",
+                columns: 6
+            },
+            {
+                label:"OSSEC ID",
+                field:"metadata.rule_id",
                 columns: 6
             },
         ]}));

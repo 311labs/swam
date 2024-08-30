@@ -64,7 +64,11 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
             .addClass("col-md-" + obj.columns)
             .appendTo($container);
 
-        var $wrapper = $("<div data-label='" + obj.label + "' />").appendTo($fieldbox);
+        var $wrapper = $(`<div data-label='${obj.label}'></div>`)
+        if (obj.view_action) {
+            $wrapper = $(`<div data-label='${obj.label}' data-action='${obj.view_action}'></div>`)
+        }
+        $wrapper.appendTo($fieldbox);
         if (obj.type == "empty") return;
         if (obj.type == "line") {
             $wrapper.html("<hr>");
@@ -75,6 +79,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
             let $el = $(document.createElement(tag)).html(obj.value || obj.label);
             $wrapper.append($el)
             if (obj.classes) $el.addClass(obj.classes);
+            if (obj.view_classes)  $el.addClass(obj.view_classes);
             return;
         } else if (obj.type == "button") {
             let value = null;
@@ -86,6 +91,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
             $wrapper.append($el)
             return;
         }
+        if (obj.view_classes) $wrapper.addClass(obj.view_classes);
         if (obj.label != null) {
             $wrapper.addClass("swam-field");
         }
