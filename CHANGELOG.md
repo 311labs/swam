@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.35 - September 03, 2024
+
+ * hotfix: website topbar broken
+
+
 ## v0.2.34 - August 30, 2024
 
  * added: redis connection monitoring

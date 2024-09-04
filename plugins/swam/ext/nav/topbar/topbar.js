@@ -53,7 +53,7 @@ SWAM.Views.TopBar = SWAM.View.extend({
 			this.addChild(
 				"right_nav",
 				new SWAM.Views.Nav({
-					classes: "navbar-nav",
+					classes: "navbar-nav ms-auto",
 					replaces_el:true, 
 					items:this.options.right_nav})
 			);
@@ -180,7 +180,9 @@ SWAM.Views.TopBar = SWAM.View.extend({
 	},
 
 	on_pre_render: function() {
-		this.user_dropdown.options.user_menu = this.filterUserMenu();
+		if (this.user_dropdown) {
+			this.user_dropdown.options.user_menu = this.filterUserMenu();
+		}
 	}
 });
 

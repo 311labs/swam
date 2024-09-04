@@ -1,0 +1,17 @@
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        {{#options.logo_image}}
+        <img class="d-inline-block align-text-top" src="{{options.logo_image}}" alt="" height="{{options.logo_height}}">
+        {{/options.logo_image}}
+        {{#options.title}}<span class="logo-title">{{{options.title}}}</span>{{/options.title}}
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto " id="right_nav"></ul>
+      </div>
+    </div>
+  </nav>
+  
