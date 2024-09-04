@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.36 - September 04, 2024
+
+ * fixed: bug when passing models to collection constructor
+ * fixed: bug when adding table filter buttons not always working
+
+
 ## v0.2.35 - September 03, 2024
 
  * hotfix: website topbar broken

@@ -25,8 +25,8 @@ SWAM.Collection = SWAM.Object.extend({
         this.size = 0;
         this.length = 0;
         this.is_loading = false;
-        this.set(models);
         this.init_options(opts);
+        this.set(models);
         this.params = _.extend({size:this.options.size}, this.params, this.options.params);
         this.resetPager();
         if (!this.options.url) this.options.url = this.options.Model.prototype.defaults.url;
