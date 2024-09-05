@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.41 - September 05, 2024
+
+ * updated: filter logs by new timerange filter
+
+
 ## v0.2.40 - September 04, 2024
 
  * removed: filters completely from swamlite

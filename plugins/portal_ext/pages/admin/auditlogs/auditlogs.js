@@ -32,16 +32,10 @@ PORTAL.Pages.AuditLogs = SWAM.Pages.TablePage.extend({
                 maxdays: 14
             },
             {
-                label: "Time Start",
-                name: "tr_start",
-                type: "time",
-                maxdays: 14
-            },
-            {
-                label: "Time End",
-                name: "tr_end",
-                type: "time",
-                maxdays: 14
+                label: "Time Range",
+                name: "timerange",
+                type: "timerange",
+                multi_days: true
             },
             {
                 label: "Level",
