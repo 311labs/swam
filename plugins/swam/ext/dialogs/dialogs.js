@@ -470,7 +470,7 @@ SWAM.Dialog = SWAM.View.extend({
                 });
                 item_view.setModel(item.model);
                 SWAM.Dialog.showView(item_view, {title: item.model.get("name")});
-            }.bind(this)
+            }
         });
 
         view.collection.params.group = group.id;
@@ -492,15 +492,18 @@ SWAM.Dialog = SWAM.View.extend({
             buttons: buttons,
             size: "lg",
             callback: function(dlg, choice) {
-                let model = new SWAM.Models.WikiMedia();
-                SWAM.Dialog.editModel(model, {
-                    defaults: {entry: this.model.get("parent.id")},
-                    callback: function(model, resp, dlg) {
-                        if (dlg) dlg.dismiss();
-                        view.collection.fetch();
-                    }
-                })
-            }.bind(this)
+                if (choice == "new") {
+                    let model = new SWAM.Models.MediaItem();
+                    SWAM.Dialog.editModel(model, {
+                        defaults: {group:group.id},
+                        fields: SWAM.Models.MediaItem.ADD_FORM,
+                        callback: function(model, resp, dlg) {
+                            if (dlg) dlg.dismiss();
+                            view.collection.fetch();
+                        }
+                    });
+                }
+            }
         });
     },
 

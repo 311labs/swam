@@ -73,8 +73,9 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.addChild("list", this.list);
         this.list.on("item:clicked", this.on_item_clicked, this);
 
-        if (this.options.filter_bar) {
-            let button_group = _.find(this.options.filter_bar[this.options.filter_bar.length-1].fields, function(field){
+        if (this.options.filter_bar && this.options.filter_bar.length) {
+            let last_item = this.options.filter_bar[this.options.filter_bar.length-1];
+            let button_group = _.find(last_item.fields, function(field){
                 return field.type == "buttongroup";
             });
 

@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.42 - September 05, 2024
+
+ * fixed: dialog media picker error during upload
+ * fixed: filterbars that are empty cause errors
+
+
 ## v0.2.41 - September 05, 2024
 
  * updated: filter logs by new timerange filter
