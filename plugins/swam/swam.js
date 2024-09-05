@@ -14,6 +14,7 @@ ext/forms/base.js
 ext/forms/datasets.js
 ext/forms/view.js
 ext/forms/builder.js
+ext/lists/filters.js
 ext/dialogs/dialogs.js
 ext/nav/**/*.js
 app/*.js

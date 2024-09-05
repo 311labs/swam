@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.37 - September 04, 2024
+
+ * added: timerange picker with filter support
+ * cleanup: abstracted out daterange and timerange from filters and made filters easier to extend
+
+
 ## v0.2.36 - September 04, 2024
 
  * fixed: bug when passing models to collection constructor

@@ -4,17 +4,12 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_init: function() {
         this.appendChild("fb_actions", new SWAM.Form.View({fields:this.options.filter_bar, add_classes: "filter-action-bar"}));
-        this.getChild("fb_actions").on("input:change", function(evt){
-            if (evt.start && evt.end) {
-                this.on_daterange_picker(evt);
-            } else if (evt.date) {
-                this.on_datepicker(evt);
-            } else {
-               this.on_input_change(evt.name, evt.value, evt); 
-            }
-            
-        }.bind(this));
+        this.getChild("fb_actions").on("input:change", this.on_fb_action_input_change.bind(this));
         this.appendChild("fb_filters", new SWAM.View({classes:"swam-list-filter-items d-flex flex-row-reverse"}));
+    },
+
+    on_fb_action_input_change: function(evt) {
+        this.on_input_change(evt.name, evt.value, evt); 
     },
 
     unlocalizer: function(evt, val) {
@@ -48,27 +43,6 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         this.options.list.collection.fetch();
     },
 
-    toRangeString: function(dt) {
-        // having issues with the picker and dates, doing manual
-        return dt.toISOString().split('T')[0];
-    },
-
-    on_daterange_picker: function(evt) {
-        this.options.list.collection.params["dr_field"] = evt.name;
-        this.options.list.collection.params["dr_start"] = this.toRangeString(evt.start);
-        this.options.list.collection.params["dr_end"] = this.toRangeString(evt.end);
-        this.options.list.collection.params["dr_offset"] = new Date().getTimezoneOffset();
-        this.options.list.collection.fetch();
-    },
-
-    on_datepicker: function(evt) {
-        this.options.list.collection.params["dr_field"] = evt.name;
-        this.options.list.collection.params["dr_start"] = this.toRangeString(evt.date);
-        this.options.list.collection.params["dr_end"] = this.toRangeString(evt.date);
-        this.options.list.collection.params["dr_offset"] = new Date().getTimezoneOffset();
-        this.options.list.collection.fetch();
-    },
-
     removeParams: function(params) {
         _.each(params, function(p){
             if (this.options.list.collection.params[p] != undefined) {
@@ -79,12 +53,8 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         this.options.list.collection.fetch();
     },
 
-    removeDateRangeFilter: function() {
-        this.removeParams(["dr_field", "dr_start", "dr_end", "dr_offset"]);
-    },
-
     addFilterTag: function(id, val, filter, operator) {
-        if (filter.type == "daterange") operator = "is";
+        // if (filter.type == "daterange" || filter.type == "timerange") operator = "is";
         let value_lbl = val;
         let safe_id = this.convertParamToKey(id.replaceAll(".", "__"));
         if (operator === undefined) {
@@ -94,7 +64,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         if (filter.localize) {
             value_lbl = this.localizer(filter, val);
         }
-        
+
         if (filter.options) {
             let option = _.findWhere(filter.options, {value:val});
             if (option) value_lbl = option.label || val;
@@ -111,13 +81,21 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
             }
         }
 
-        this.children.fb_filters.appendChild(safe_id, new SWAM.View(_.extend({
-            id: safe_id,
-            template: "swam.ext.lists.filter_item",
-            classes: "swam-filter-item",
-            operator: operator,
-            value_label: value_lbl
-        }, filter)));
+        let view = this.children.fb_filters.getChild(safe_id);
+        if (view) {
+            view.options.operator = operator;
+            view.options.value_label = value_lbl;
+            _.extend(view.options, filter);
+            view.render();
+        } else {
+            this.children.fb_filters.appendChild(safe_id, new SWAM.View(_.extend({
+                id: safe_id,
+                template: "swam.ext.lists.filter_item",
+                classes: "swam-filter-item",
+                operator: operator,
+                value_label: value_lbl
+            }, filter)));
+        }
     },
 
     getOperatorFromParam: function(key) {
@@ -214,13 +192,21 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         return root_key;
     },
 
+
     editFilter: function(id, evt) {
         if (id === undefined) return;
         let filter = _.findWhere(this.options.filters, {name:id});
         let dv = this.getDefaultFor(id);
+
         if (filter.localize) dv = this.localizer(filter, dv);
         let defaults = {};
-        if (dv != undefined) {
+
+        let fname_post_filter = `on_prefilter_${filter.type}`;
+        if (_.isFunction(this[fname_post_filter])) {
+            this[fname_post_filter](filter, defaults);
+        }
+
+        if ((dv != undefined)&&(defaults[id] == undefined)) {
             defaults[id] = dv;
         }
         let filters = [];
@@ -243,7 +229,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         if ((filter.type == "select")&&(filter.editable)) {
             filter.force_top = true;
         }
-        
+
         SWAM.Dialog.showForm(filters, {
             title: "Add Filter",
             lbl_save: "Apply Filter",
@@ -252,20 +238,15 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
                 let data = dlg.getData();
                 let val = this.unlocalizer(filter, data[id]);
                 this.addFilterTag(id, val, filter, data.operator);
-                if (filter.type == "daterange") {
-                    if (dlg.options.view && dlg.options.view.date_fields) {
-                        this.on_daterange_picker(dlg.options.view.date_fields[id]);
-                    } else {
-                        SWAM.Dialog.warning("No Dates Selected!");
-                        return;
-                    }
-                    
+                let fname_post_filter = `on_filter_${filter.type}`;
+                if (_.isFunction(this[fname_post_filter])) {
+                    this[fname_post_filter](filter, dlg, data);
                 } else {
                     evt.operator = data.operator || filter.operator;
                     if (filter.localize) evt.localize = filter.localize;
                     this.on_input_change(id, data[id], evt);
+                    dlg.dismiss();
                 }
-                dlg.dismiss();
             }.bind(this)
         });
     },
@@ -305,13 +286,14 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         var safe_id = id.replaceAll(".", "__");
         var filter = _.findWhere(this.options.filters, {name:id});
         if (filter && filter.required) return;
-        this.children.fb_filters.removeChild(safe_id);     
-        if (filter && (filter.type == "daterange")) {
-            this.removeDateRangeFilter();
+        let fname_remove_filter = `on_remove_filter_${filter.type}`;
+        if (_.isFunction(this[fname_remove_filter])) {
+            this[fname_remove_filter](filter, safe_id);
         } else {
             this.removeParam(id);
             this.on_input_change(id, null, evt);
         }
+        this.children.fb_filters.removeChild(safe_id);
     },
 
     guess_filename: function(evt) {
@@ -376,6 +358,13 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
         SWAM.toast("Download Started", "Your file is downloading: " + filename, "success");
     },
 
+    on_unknown_filter: function(key, value) {
+        let fname_unknown_filter = `on_unknown_filter_${key}`;
+        if (_.isFunction(this[fname_unknown_filter])) {
+            this[fname_unknown_filter](key, value);
+        }
+    },
+
     on_pre_render: function() {
         this.children.fb_actions.options.defaults = this.options.list.collection.params;
         this.children.fb_actions.options.model = this.options.model;
@@ -384,15 +373,8 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
             var filter = this.getFilterFor(this.convertParamToKey(key));
             if (filter) {
                 this.addFilterTag(key, value, filter);
-            } else if (key == "dr_start") {
-                // lets add our date range filters
-                // only support one daterange
-                // TODO check the dr_field for more filters
-                var dr_filter = _.findWhere(this.options.filters, {type:"daterange"});
-                if (dr_filter) {
-                    var val = value + " - " + this.options.list.collection.params.dr_end;
-                    this.addFilterTag(dr_filter.name, val, dr_filter);
-                }
+            } else {
+                this.on_unknown_filter(key, value);
             }
         }.bind(this));
     },
