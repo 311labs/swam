@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.40 - September 04, 2024
+
+ * removed: filters completely from swamlite
+
+
 ## v0.2.39 - September 04, 2024
 
  * cleanup: removed new extensions from swam_lite
