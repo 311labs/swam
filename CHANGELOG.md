@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.38 - September 04, 2024
+
+ * hotfix: for terminals
+
+
 ## v0.2.37 - September 04, 2024
 
  * added: timerange picker with filter support
