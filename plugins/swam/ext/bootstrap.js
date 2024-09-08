@@ -29,7 +29,6 @@ SWAM.Ext.BS = {
 	},
 
 	clearVisibleToolTips: function() {
-		console.log("clearVisibleToolTips");
 		$('[role="tooltip"]').remove(); // hack to remvoe lingering tooltips
 		if (!this._bs_tips) return;
 		_.each(this._bs_tips, function(tip){

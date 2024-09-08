@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.46 - September 08, 2024
+
+ * remvoed: logging from tooltip bug
+
+
 ## v0.2.45 - September 08, 2024
 
  * fixed: bug where tooltips can linger forever
