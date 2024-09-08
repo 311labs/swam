@@ -16,9 +16,24 @@ SWAM.Ext.BS = {
 	},
 
 	enableTips: function() {
+		this.clearVisibleToolTips();
 		var tooltipTriggerList = [].slice.call(this.$el[0].querySelectorAll('[data-bs-toggle="tooltip"]'))
 		this._bs_tips = tooltipTriggerList.map(function (tooltipTriggerEl) {
+			console.log("NEW TOOLTIP??");
 		  return new bootstrap.Tooltip(tooltipTriggerEl);
+		});
+	},
+
+	on_dom_removing: function() {
+		this.clearVisibleToolTips();
+	},
+
+	clearVisibleToolTips: function() {
+		console.log("clearVisibleToolTips");
+		$('[role="tooltip"]').remove(); // hack to remvoe lingering tooltips
+		if (!this._bs_tips) return;
+		_.each(this._bs_tips, function(tip){
+			tip.dispose();
 		});
 	},
 

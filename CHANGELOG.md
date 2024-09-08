@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.45 - September 08, 2024
+
+ * fixed: bug where tooltips can linger forever
+
+
 ## v0.2.44 - September 08, 2024
 
   * changed: access requests now look for tickets
