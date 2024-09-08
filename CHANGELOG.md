@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.44 - September 08, 2024
+
+  * changed: access requests now look for tickets
+  * fixed: bug in table filter bar not rerendering corrrectly
+
+
 ## v0.2.42 - September 05, 2024
 
  * fixed: dialog media picker error during upload

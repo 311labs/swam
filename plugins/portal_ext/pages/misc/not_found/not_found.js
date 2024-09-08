@@ -74,18 +74,25 @@ PORTAL.Pages.Denied = SWAM.Page.extend({
             }
         }
 
-        app.reportIncident(
-            "access_request",
-            description,
-            details,
-            3, false, extra, extra.group);
-
-        SWAM.Dialog.show({
-            add_classes: "modal-info",
-            icon: "check-circle",
-            title: "Access Request",
-            message: "Your access request has been sent to the adminstrator for this resource."
-        });
+        if (app.reportIssue) {
+            app.reportIssue({
+                category: "access_request",
+                subject: `${username} requesting portal access`,
+                description: description,
+            });
+        } else {
+            app.reportIncident(
+                "access_request",
+                description,
+                details,
+                3, false, extra, extra.group);
+            SWAM.Dialog.show({
+                add_classes: "modal-info",
+                icon: "check-circle",
+                title: "Access Request",
+                message: "Your access request has been sent to the adminstrator for this resource."
+            });
+        }
     },
 
     on_page_enter: function() {
