@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.48 - September 09, 2024
+
+ * added: chat type for email
+
+
 ## v0.2.47 - September 08, 2024
 
  * hotfix: tooltip removal causes error

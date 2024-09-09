@@ -5,6 +5,7 @@ SWAM.Chat = {
         "upload": "upload",
         "shipping": "status",
         "note": "chat",
+        "email": "chat",
         "chat": "chat",
         "message": "chat"
     },
