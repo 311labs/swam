@@ -32,8 +32,9 @@ SWAM.Ext.BS = {
 		$('[role="tooltip"]').remove(); // hack to remvoe lingering tooltips
 		if (!this._bs_tips) return;
 		_.each(this._bs_tips, function(tip){
-			tip.dispose();
+			if (tip) tip.dispose();
 		});
+		this._bs_tips = [];
 	},
 
 	enableClipboard: function() {
@@ -91,9 +92,9 @@ SWAM.Ext.BS = {
 			this._bs_clipboard = null;
 		}
 		_.each(this._bs_tips, function(tip){
-			tip.dispose();
+			if (tip) tip.dispose();
 		});
-
+		this._bs_tips = []
 		_.each(this._bs_popovers, function(item){
 			item.dispose();
 		});

@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.47 - September 08, 2024
+
+ * hotfix: tooltip removal causes error
+
+
 ## v0.2.46 - September 08, 2024
 
  * remvoed: logging from tooltip bug
