@@ -19,7 +19,6 @@ SWAM.Ext.BS = {
 		this.clearVisibleToolTips();
 		var tooltipTriggerList = [].slice.call(this.$el[0].querySelectorAll('[data-bs-toggle="tooltip"]'))
 		this._bs_tips = tooltipTriggerList.map(function (tooltipTriggerEl) {
-			console.log("NEW TOOLTIP??");
 		  return new bootstrap.Tooltip(tooltipTriggerEl);
 		});
 	},

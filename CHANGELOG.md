@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.49 - September 10, 2024
+
+ * added: dialog helper to get model
+ * removed: debug logs for tooltips
+
+
 ## v0.2.48 - September 09, 2024
 
  * added: chat type for email

@@ -221,10 +221,12 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	on_item_dlg: function(item, dlg) {
 		let item_url_param = this.options.item_url_param;
 		if (dlg && _.isString(item_url_param)) {
+			this.active_dlg = dlg;
 			this.collection.params[item_url_param] = item.model.id;
 			this.updateURL(this.collection.params);
 			dlg.on("dialog:closed", function(d){
 			    dlg.off("dialog:closed");
+			    if (this.active_dlg == dlg) this.active_dlg = null;
 			    if (this.collection.params[item_url_param]) {
 			        delete this.collection.params[item_url_param];
 			        this.updateURL(this.collection.params);
