@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.50 - September 11, 2024
+
+ * fixed: bug where in live charts the x axis labels did not always update
+
+
 ## v0.2.49 - September 10, 2024
 
  * added: dialog helper to get model

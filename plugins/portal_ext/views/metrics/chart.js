@@ -18,6 +18,7 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
         line_width: 1,
         size: 8,
         show_table: true,
+        fill: false,
         max_colors: 20,
         start_color: [255, 0, 0],
         end_color: [0, 0, 255]
@@ -42,7 +43,8 @@ PORTAL.Views.MetricsChart = SWAM.View.extend(SWAM.Ext.BS).extend({
             hide_legend: this.options.hide_legend,
             height: this.options.height,
             xaxis_hide: this.options.xaxis_hide,
-            live_data: this.options.live_data
+            live_data: this.options.live_data,
+            fill: this.options.fill
         }));
 
         if (this.options.filters) {

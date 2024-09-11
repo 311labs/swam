@@ -26,6 +26,9 @@ SWAM.Views.Chart = SWAM.View.extend({
 
     setLabels: function(labels) {
         this.options.labels = labels;
+        if (this.chart) {
+            this.chart.data.labels = labels;
+        }
     },
 
     setDataSet: function(label, data, opts) {
