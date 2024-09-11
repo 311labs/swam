@@ -33,6 +33,7 @@ SWAM.Views.TableItem = SWAM.Views.ListItem.extend(SWAM.Ext.BS).extend({
         }
     	_.each(this.options.list.options.columns, _.bind(function(col){
     		if (_.isObject(col)) {
+                if (col.is_hidden) return;
     			if (col.hideIf && col.hideIf()) return;
                 if (col.requires_perm) {
                     if (!app.me) return;
@@ -326,6 +327,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
 
     on_render_column: function(column) {
     	if (_.isObject(column)) {
+            if (column.is_hidden) return;
     		if (column.hideIf && column.hideIf()) return;
             if (column.requires_perm) {
                 if (!app.me) return;
@@ -396,6 +398,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                 var columns = [];
                 var col_span = 0;
                 _.each(this.options.columns, function(col, i) {
+                    if (col.is_hidden) return;
                     if (col.hideIf && col.hideIf()) return;
                     if (col.requires_perm) {
                         if (!app.me) return;
@@ -459,6 +462,8 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                         field = filters.shift();
                         if (fields_to_filters[field] === undefined) fields_to_filters[field] = filters.join("|");
                     }
+                    let col = this.getColumn(col_name);
+                    if (col && col.is_hidden) return;
                     if (_.isUndefined(totals[field])) {
                         totals[field] = 0;
                     }
@@ -473,6 +478,26 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         this.localize_totals = fields_to_filters;
         this.totals = totals;
         this.trigger("totals", this);
+    },
+
+    getColumn: function(field_name) {
+        for (let column of this.options.columns) {
+            let field = column.field.split('|')[0];
+            if (field === field_name) {
+                return column;
+            }
+        }
+        return null;
+    },
+
+    hideColumn: function(field) {
+        let col = this.getColumn(field);
+        if (col) col.is_hidden = true;
+    },
+
+    showColumn: function(field) {
+        let col = this.getColumn(field);
+        if (col) col.is_hidden = false;
     },
 
     on_reset: function() {

@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.51 - September 11, 2024
+
+ * added: ability to show/hide columns
+
+
 ## v0.2.50 - September 11, 2024
 
  * fixed: bug where in live charts the x axis labels did not always update
