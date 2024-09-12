@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.53 - September 12, 2024
+
+ * added: new model dialog header with state and context menus
+
+
 ## v0.2.52 - September 12, 2024
 
  * updated: medialib shows the owner of the media item
