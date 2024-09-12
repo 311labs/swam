@@ -16,7 +16,7 @@ PORTAL.Pages.MediaItems = SWAM.Pages.TablePage.extend(SWAM.Ext.DropZone).extend(
             {label:"id", field:"id"},
             {label:"Created", field:"created|date"},
             {label:"name", field:"name"},
-            {label:"description", field:"description"},
+            {label:"user", field:"owner.username"},
             {label:"kind", field:"kind"},
             {label:"state", field:"state_display"},
         ],

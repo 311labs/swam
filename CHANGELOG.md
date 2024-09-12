@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.52 - September 12, 2024
+
+ * updated: medialib shows the owner of the media item
+
+
 ## v0.2.51 - September 11, 2024
 
  * added: ability to show/hide columns
