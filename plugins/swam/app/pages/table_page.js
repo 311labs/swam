@@ -29,7 +29,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	        action: "add",
 	        label: "<i class='bi bi-plus'></i> Add",
 	        classes: "btn btn-primary",
-	        columns:3,
+	        columns: 3,
 	        columns_classes: "col-auto",
 	    },
 		filter_bar: [

@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.54 - September 13, 2024
+
+ * cleanup: chat better support for media 
+ * cleanup: model state dialog view rendering
+
+
 ## v0.2.53 - September 12, 2024
 
  * added: new model dialog header with state and context menus

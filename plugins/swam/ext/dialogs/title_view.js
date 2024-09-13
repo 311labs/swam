@@ -45,7 +45,6 @@ SWAM.Dialog.ModelStateTitleView = SWAM.View.extend({
 
         this.addChild("action_bar", new SWAM.Form.View({
             model: this.model,
-            action_context: this.options.action_context,
             fields: fields
         }));
     },

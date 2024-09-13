@@ -111,6 +111,7 @@ SWAM.Dialog = SWAM.View.extend({
         }
 
         if (this.options.title_view) {
+            this.options.add_header_classes = "d-block border-bottom-1";
             this.addChild("title_view", this.options.title_view);
         }
         SWAM.Dialog.active_dialogs.push(this);

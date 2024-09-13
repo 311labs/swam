@@ -1,7 +1,9 @@
 <div class="row">
+    {{#options.show_icon}}
     <div class="col-auto">
         <div class="fs-2">{{{ICON(model.icon)}}}</div>
     </div>
+    {{/options.show_icon}}
     <div class="col">
         <div class="fs-6 fw-bold">
             {{{ .options.classificiation }}} #{{model.id}}

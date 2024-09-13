@@ -34,6 +34,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
         by_initials_field: "by.initials",
         by_avatar_field: "by.avatar",
         action_id_field: "media.id",
+        media_item_field: "media",
         kind_field: "kind",
         default_avatar: "/plugins/media/empty_avatar.jpg",
         system_avatar: "/plugins/media/logos/logo_sm.png"
@@ -45,6 +46,13 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
 
     get_message: function() {
         return this.model.get(this.options.message_field);
+    },
+
+    get_media: function() {
+        if (this.get_kind() == "upload") {
+            return this.model.get(this.options.media_item_field);
+        }
+        return null;
     },
 
     get_action_id: function() {

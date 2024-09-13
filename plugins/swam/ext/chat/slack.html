@@ -19,8 +19,15 @@
 	
 	<div class="chat-msg" data-chatid="{{model.id}}">
 		{{#get_action_id}}
+			{{#get_media}}
+			<div class="btn btn-link" data-id="{{get_action_id}}" data-action="chat_click_{{get_kind}}">{{{get_media|lightbox}}} <div>{{get_media.name}} 
+			{{#get_media.renditions.original}}({{get_media.renditions.original.bytes|bytes}}){{/get_media.renditions.original}}</div>
+			</div>
+			{{/get_media}}
+			{{^get_media}}
 			<div class="btn btn-link" data-id="{{get_action_id}}" data-action="chat_click_{{get_kind}}">{{{get_message|linkify('view link')}}}
 			</div>
+			{{/get_media}}
 		{{/get_action_id}}
 		{{^get_action_id}}
 			{{{get_message|linkify('view link')}}}

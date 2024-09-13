@@ -212,6 +212,18 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
 
         ]
     },
+    REFRESH_ONLY_FILTER_BUTTONS: {
+        columns: 3,
+        columns_classes: "col-sm-auto",
+        type: "buttongroup",
+        buttons: [
+            {
+                classes: "btn btn-secondary",
+                icon: "bi bi-arrow-repeat",
+                action: "reload"
+            },
+        ]
+    },
     DEFAULT_SIZE_FILTER: {
         columns: 3,
         columns_classes: "col-md col-lg col-sm-12",
