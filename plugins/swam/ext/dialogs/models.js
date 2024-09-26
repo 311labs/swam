@@ -75,6 +75,10 @@ SWAM.Dialog.editModel = function(model, opts) {
 		opts.fields = _.clone(opts.fields).concat(opts.extra_fields);
 	}
 
+	if (model.id === null) {
+		opts.changes_only = false;
+	}
+
 	var mdlg = null;
 	var callback = opts.callback;
 	var dismiss_on_submit = opts.dismiss_on_submit;

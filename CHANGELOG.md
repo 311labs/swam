@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.55 - September 26, 2024
+
+ * fixed: when saving new model, save all changes
+
+
 ## v0.2.54 - September 13, 2024
 
  * cleanup: chat better support for media 
