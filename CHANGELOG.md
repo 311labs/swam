@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.57 - October 15, 2024
+
+ * added: support for bundling incidents by group
+
+
 ## v0.2.56 - October 14, 2024
 
  * updated: model view updated to show pretty json if value is dict or list
