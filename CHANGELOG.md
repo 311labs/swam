@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.56 - October 14, 2024
+
+ * updated: model view updated to show pretty json if value is dict or list
+
+
 ## v0.2.55 - September 26, 2024
 
  * fixed: when saving new model, save all changes

@@ -522,6 +522,8 @@ SWAM.Localize = {
         if (_.isObject(value)) {
             return window.syntaxHighlight(value);
             // return JSON.stringify(value, undefined, 2);
+        } else if (_.isNumber(value)) {
+            return value;
         } else if (!value) {
             return "";
         }

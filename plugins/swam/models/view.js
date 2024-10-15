@@ -40,7 +40,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
             remote_sort: false,
             columns: [
                 {label:"field", field:"key", classes:"fw-bold"},
-                {field: "value"}
+                {label:"value", field: "value|prettyjson", td_classes:"pretty-json"}
             ]
         });
         return table;
