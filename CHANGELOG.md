@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.58 - October 23, 2024
+
+ * added: visibility into taskqueues to see workers and channels
+
+
 ## v0.2.57 - October 15, 2024
 
  * added: support for bundling incidents by group

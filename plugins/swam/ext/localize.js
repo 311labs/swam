@@ -1048,6 +1048,13 @@ SWAM.Localize = {
         return $w.html();
     },
 
+    'list2str': function(value, attr, fmt) {
+        if (_.isArray(value)) {
+            return value.join(", ");
+        }
+        return value;
+    },
+
     'lower': function(value, attr, fmt) {
         return this.lowercase(value, attr, fmt);
     },

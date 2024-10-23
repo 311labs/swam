@@ -199,18 +199,22 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
             remote_sort: false,
             add_classes: "swam-table-clickable",
             columns: [
-                {label:"Host", field: "hostname"},
+                {label:"Host", sort_by: "hostname", template:"{{{model.hostname|tooltip(model.subscribed|list2str)}}}"},
                 {label:"Up", field: "uptime|prettytimer"},
                 {
-                    label: "Running", field: "running",
+                    label: "#", field: "workers",
                     classes: "d-none d-xl-table-cell",
                 },
                 {
-                    label:"Pending", field: "pending",
+                    label: "R", field: "running",
                     classes: "d-none d-xl-table-cell",
                 },
                 {
-                    label:"Scheduled", field: "scheduled",
+                    label:"P", field: "pending",
+                    classes: "d-none d-xl-table-cell",
+                },
+                {
+                    label:"S", field: "scheduled",
                     classes: "d-none d-xl-table-cell",
                 }
             ],
