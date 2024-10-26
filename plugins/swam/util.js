@@ -456,6 +456,8 @@ window.identifyMediaType = function(contentType) {
     // Check if the contentType is in the list of video MIME types
     else if (videoMimeTypes.includes(contentType)) {
         return 'video';
+    } else if (contentType == "application/pdf") {
+        return "pdf";
     }
     // Return 'unknown' if the content type is neither image nor video
     return 'unknown';

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "SWAM"
-version = "0.2.58"
+version = "0.2.59"
 description = "Simple Web App for Mobile"
 authors = ["Ian Starnes <ian@311labs.com>"]
 

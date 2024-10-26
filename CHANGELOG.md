@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.59 - October 26, 2024
+
+ * added: new pdf preview plugin
+
+
 ## v0.2.58 - October 23, 2024
 
  * added: visibility into taskqueues to see workers and channels

@@ -129,11 +129,15 @@ SWAM.Dialog = SWAM.View.extend({
         this.trigger("dialog:closed", this);
     },
     on_action_close: function(evt) {
-        this.dismiss();
+        if (this.options.on_action_close) {
+            this.options.on_action_close(this, evt);
+        } else {
+            this.dismiss();
+        }
     },
     on_action_choice: function(evt) {
         this.choice = $(evt.currentTarget).data("id");
-        if (["no", "cancel"].indexOf(this.choice.lower()) > 0) return this.dismiss();
+        if (["no", "cancel"].indexOf(this.choice.lower()) > 0) return this.on_action_close(evt);
         this.trigger("dialog:choice", this, this.choice);
         if (this.options.callback) this.options.callback(this, this.choice);
     },
@@ -444,6 +448,18 @@ SWAM.Dialog = SWAM.View.extend({
                 src:opts.url});
         } else if ((opts.kind == "video")||(opts.kind == "V")) {
             view = new SWAM.Views.Video({src:opts.url});
+        } else if ((opts.kind == "pdf")&&(window.initPdfLib)) {
+            initPdfLib(() => {
+                view = new SWAM.Views.PDFViewer({url:opts.url});
+                SWAM.Dialog.show({
+                    fullscreen: true,
+                    scrollable: true,
+                    title: opts.title,
+                    view: view
+                });
+            });
+            return;
+            
         } else {
             window.open(opts.url, '_blank');
             return;
