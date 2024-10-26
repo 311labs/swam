@@ -1,5 +1,5 @@
 SWAM.Views.ImageViewer = SWAM.View.extend({
-    template: `<div class="image-preview-controls">
+    template: `<div class="image-preview-controls sticky-top bg-light">
         <div class="row">
             <div class="col">
                 <button class="btn btn-link" data-action="zoom_in"><i class="bi bi-zoom-in"></i></button>

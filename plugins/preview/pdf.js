@@ -26,7 +26,7 @@ function initPdfLib(callback) {
 
 
 SWAM.Views.PDFViewer = SWAM.View.extend({
-    template: `<div class="pdf-preview-controls">
+    template: `<div class="pdf-preview-controls sticky-top bg-light">
     <div class="row">
         <div class="col">
             <button class="btn btn-link" data-action="prev_page">Previous Page</button>

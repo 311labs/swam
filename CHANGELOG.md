@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.62 - October 26, 2024
+
+ * fixed: media preview controls now sticky to top
+
+
 ## v0.2.61 - October 26, 2024
 
  * added: new image previewer with zoom and rotate
