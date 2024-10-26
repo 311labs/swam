@@ -293,6 +293,10 @@ SWAM.Localize = {
         });
         return this.formatDate(d, attr, fmt || 'hh:mm:ss');
     },
+    'timer_ms': function(value, attr, fmt) {
+        const seconds = milliseconds * 0.001;
+        return this.prettytimer(seconds, attr, fmt);
+    },
     'prettyTimer': function(seconds, attr, fmt) {
         return this.prettytimer(seconds, attr, fmt);
     },
@@ -615,7 +619,7 @@ SWAM.Localize = {
             }
         }
 
-        return value.replace(this.HTML_URL_REG, function(url) {
+        return value?.replace(this.HTML_URL_REG, function(url) {
             let ulbl = url;
             if (label) ulbl = label;
             return '<a data-showurl="' + url + '" class="swam-link" href="' + url + '" target="blank">' + ulbl + '</a>';
@@ -1086,6 +1090,10 @@ SWAM.Localize = {
             return value.toUpperCase();
         }
         return value;
+    },
+
+    'unslugify': function(value, attr, fmt) {
+        return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     },
 
     'lpad': function(value, attr, fmt) {

@@ -28,7 +28,7 @@
   <tbody>
     {{#model.renditions|iter}}
     <tr>
-      <td><button data-action="lightbox" data-kind="image" data-media="{{.value.url}}" data-title="{{.key}} {{model.name}}" class="btn btn-link btn-sm">{{.key}}</button></td>
+      <td><button data-action="lightbox" data-kind="{{.value.kind}}" data-content_type="{{.value.content_type}}" data-media="{{.value.url}}" data-title="{{.key}} {{model.name}}" data-name="{{.value.name}}" class="btn btn-link btn-sm">{{.key}}</button></td>
       <td>{{.value.content_type}}</td>
       <td>{{.value.bytes|bytes}}</td>
       <td>{{.value.width}} x {{.value.height}}</td>

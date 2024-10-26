@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.61 - October 26, 2024
+
+ * added: new image previewer with zoom and rotate
+
+
 ## v0.2.60 - October 26, 2024
 
  * improved: pdf previewer with rotation and ability to download

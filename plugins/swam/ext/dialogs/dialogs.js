@@ -441,11 +441,10 @@ SWAM.Dialog = SWAM.View.extend({
         }
         if (!opts.url || !opts.kind) return true;
         let view = null;
+        if ((opts.content_type)&&(opts.kind == "*")) opts.kind = window.identifyMediaType(opts.content_type);
+
         if ((opts.kind == "image") || (opts.kind == "I")) {
-            view = new SWAM.View({
-                classes: "swam-lightbox",
-                template:"<div>{{{options.src|image}}}</div>",
-                src:opts.url});
+            view = new SWAM.Views.ImageViewer({url:opts.url, name:opts.name});
         } else if ((opts.kind == "video")||(opts.kind == "V")) {
             view = new SWAM.Views.Video({src:opts.url});
         } else if ((opts.kind == "pdf")&&(window.initPdfLib)) {
@@ -466,11 +465,10 @@ SWAM.Dialog = SWAM.View.extend({
         }
         if (!opts.title) opts.title = "Lightbox";
         return SWAM.Dialog.show({
-            add_classes: "bg-dark text-white",
             fullscreen: true,
+            scrollable: true,
             title: opts.title,
-            view: view,
-            buttons: []
+            view: view
         });
     },
 
