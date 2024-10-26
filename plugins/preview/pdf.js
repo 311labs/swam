@@ -36,8 +36,11 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
             <span id="page_num"></span> / <span id="page_count"></span>
         </div>
         <div class="col">
-            <button class="btn btn-link" data-action="zoom_in">Zoom In</button>
-            <button class="btn btn-link" data-action="zoom_out">Zoom Out</button>
+            <button class="btn btn-link" data-action="zoom_in"><i class="bi bi-zoom-in"></i></button>
+            <button class="btn btn-link" data-action="zoom_out"><i class="bi bi-zoom-out"></i></button>
+            <button class="ms-3 btn btn-link" data-action="rotate_left"><i class="bi bi-arrow-counterclockwise"></i></button>
+            <button class="btn btn-link" data-action="rotate_right"><i class="bi bi-arrow-clockwise"></i></button>
+            <button class="ms-3 btn btn-link" data-action="download"><i class="bi bi-download"></i></button>
         </div>
     </div>
 </div>
@@ -50,7 +53,9 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
         this.options.page_num = 1;
         this.options.is_rendering = false;
         this.options.zoom_level = 1.0;
+        this.options.rotation = 0;
         this.options.url = pdf_url;
+        if (!this.options.name) this.options.name = pdf_url.split("/").pop();
         pdfjsLib.getDocument(this.options.url).promise.then(pdf => {
             this.on_pdf(pdf);
         })
@@ -83,6 +88,24 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
         this.renderPage(this.options.page_num);
     },
 
+    on_action_rotate_left: function() {
+        if (this.options.zoom_level <= 0) this.options.rotation = 360;
+        this.options.rotation = this.options.rotation - 90; // Increment rotation by 90 degrees
+        this.renderPage(this.options.page_num);
+    },
+
+    on_action_rotate_right: function() {
+        this.options.rotation = (this.options.rotation + 90) % 360; // Increment rotation by 90 degrees
+        this.renderPage(this.options.page_num);
+    },
+
+    on_action_download: function() {
+      const link = document.createElement("a");
+      link.href = this.options.url;
+      link.download = this.options.name; // Use the original file name for download
+      link.click();
+    },
+
     on_pdf: function(pdf) {
         this.options.pdf_doc = pdf;
         this.$el.find("#page_count").text(this.options.pdf_doc.numPages);
@@ -92,7 +115,7 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
     renderPage: function(page_num) {
         this.options.is_rendering = true;
         this.options.pdf_doc.getPage(page_num).then(page => {
-            const viewport = page.getViewport({ scale: this.options.zoom_level });
+            const viewport = page.getViewport({ scale: this.options.zoom_level, rotation: this.options.rotation });
             this.canvas.width = viewport.width;
             this.canvas.height = viewport.height;
 

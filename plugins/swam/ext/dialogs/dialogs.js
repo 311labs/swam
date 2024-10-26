@@ -450,7 +450,7 @@ SWAM.Dialog = SWAM.View.extend({
             view = new SWAM.Views.Video({src:opts.url});
         } else if ((opts.kind == "pdf")&&(window.initPdfLib)) {
             initPdfLib(() => {
-                view = new SWAM.Views.PDFViewer({url:opts.url});
+                view = new SWAM.Views.PDFViewer({url:opts.url, name:opts.name});
                 SWAM.Dialog.show({
                     fullscreen: true,
                     scrollable: true,
