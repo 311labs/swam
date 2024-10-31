@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.63 - October 30, 2024
+
+ * fixed: better support for detecting pdf
+
+
 ## v0.2.62 - October 26, 2024
 
  * fixed: media preview controls now sticky to top

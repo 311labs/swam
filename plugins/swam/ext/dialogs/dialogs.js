@@ -441,13 +441,15 @@ SWAM.Dialog = SWAM.View.extend({
         }
         if (!opts.url || !opts.kind) return true;
         let view = null;
-        if ((opts.content_type)&&(opts.kind == "*")) opts.kind = window.identifyMediaType(opts.content_type);
+        let opt_kind = null;
+        if (opts.content_type) {
+            opt_kind = window.identifyMediaType(opts.content_type);
+            if (opt_kind != "unknown") {
+                opts.kind = opt_kind;
+            }
+        }
 
-        if ((opts.kind == "image") || (opts.kind == "I")) {
-            view = new SWAM.Views.ImageViewer({url:opts.url, name:opts.name});
-        } else if ((opts.kind == "video")||(opts.kind == "V")) {
-            view = new SWAM.Views.Video({src:opts.url});
-        } else if ((opts.kind == "pdf")&&(window.initPdfLib)) {
+        if ((opts.kind == "pdf")&&(window.initPdfLib)) {
             initPdfLib(() => {
                 view = new SWAM.Views.PDFViewer({url:opts.url, name:opts.name});
                 SWAM.Dialog.show({
@@ -458,7 +460,10 @@ SWAM.Dialog = SWAM.View.extend({
                 });
             });
             return;
-            
+        } else if ((opts.kind == "image") || (opts.kind == "I")) {
+            view = new SWAM.Views.ImageViewer({url:opts.url, name:opts.name});
+        } else if ((opts.kind == "video")||(opts.kind == "V")) {
+            view = new SWAM.Views.Video({src:opts.url});
         } else {
             window.open(opts.url, '_blank');
             return;

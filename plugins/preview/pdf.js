@@ -58,7 +58,9 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
         if (!this.options.name) this.options.name = pdf_url.split("/").pop();
         pdfjsLib.getDocument(this.options.url).promise.then(pdf => {
             this.on_pdf(pdf);
-        })
+        });
+        // this.setupPinchZoom();
+        // this.setupMouseWheelZoom();
     },
 
     on_action_next_page: function() {
@@ -77,14 +79,14 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
 
     on_action_zoom_in: function() {
         // if (this.options.is_rendering) return SWAM.toast("Error", "rendering");
-        this.options.zoom_level += 0.1;
+        this.options.zoom_level += 0.2;
         this.renderPage(this.options.page_num);
     },
 
     on_action_zoom_out: function() {
         // if (this.options.is_rendering) return SWAM.toast("Error", "rendering");
         if (this.options.zoom_level <= 0.2) return;
-        this.options.zoom_level -= 0.1;
+        this.options.zoom_level -= 0.2;
         this.renderPage(this.options.page_num);
     },
 
@@ -113,6 +115,7 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
     },
 
     renderPage: function(page_num) {
+        if (this.options.is_rendering) return;
         this.options.is_rendering = true;
         this.options.pdf_doc.getPage(page_num).then(page => {
             const viewport = page.getViewport({ scale: this.options.zoom_level, rotation: this.options.rotation });
@@ -136,6 +139,56 @@ SWAM.Views.PDFViewer = SWAM.View.extend({
         this.canvas = this.$el.find("#pdf-canvas")[0];
         this.ctx = this.canvas.getContext("2d");
         this.loadPDF(this.options.url);
+    },
+
+
+    setupPinchZoom: function() {
+        let initialDistance = null;
+
+        this.canvas.addEventListener("touchstart", (e) => {
+            if (e.touches.length === 2) {
+                initialDistance = this.getDistance(e.touches[0], e.touches[1]);
+            }
+        });
+
+        this.canvas.addEventListener("touchmove", (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = this.getDistance(e.touches[0], e.touches[1]);
+                if (initialDistance) {
+                    const scaleChange = currentDistance / initialDistance;
+                    this.options.zoom_level *= scaleChange;
+                    this.renderImage();
+                    initialDistance = currentDistance; // Update the initial distance for next move event
+                }
+            }
+        });
+
+        this.canvas.addEventListener("touchend", () => {
+            initialDistance = null; // Reset after pinch gesture ends
+        });
+    },
+
+
+    setupMouseWheelZoom: function() {
+        this.canvas.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            const delta = Math.sign(e.deltaY);
+            if (delta < 0) {
+                // Scroll up (zoom in)
+                this.options.zoom_level += 0.1;
+            } else if (delta > 0 && this.options.zoom_level > 0.2) {
+                // Scroll down (zoom out)
+                this.options.zoom_level -= 0.1;
+            }
+            this.renderPage(this.options.page_num);
+        });
+    },
+
+    getDistance: function(touch1, touch2) {
+        const dx = touch1.pageX - touch2.pageX;
+        const dy = touch1.pageY - touch2.pageY;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
 });
