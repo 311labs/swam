@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.64 - November 18, 2024
+
+ * changed: taskqueue view real runtime
+ * fixed: model view bugs when supplying fields
+
+
 ## v0.2.63 - October 30, 2024
 
  * fixed: better support for detecting pdf

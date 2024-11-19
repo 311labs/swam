@@ -25,15 +25,33 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (model.attributes) model = model.attributes;
         var obj_to_models = function(obj, col, prefix) {
             _.each(obj, function(value, key){
-                var lbl = key;
-                if (prefix) lbl = prefix + "." + key
-                if (options.fields && !options.fields.includes(lbl)) return;
-                if (_.isDict(value)) return obj_to_models(value, col, lbl);
+                let lbl = key;
+                let fkey = key;
+                if (prefix) fkey = prefix + "." + key
+                if (options.fields && !options.fields.includes(fkey)) return;
+                if (_.isDict(value)) return obj_to_models(value, col, fkey);
                 if (["modified", "created", "when", "last_activity", "last_login"].has(key)) value = SWAM.Localize.datetime(value);
-                col.add(new SWAM.Model({id:lbl, key:lbl, value:value}));
+                col.add(new SWAM.Model({id:fkey, key:lbl, value:value}));
             });
         };
-        obj_to_models(model, collection, null);
+        if (options.fields) {
+            _.each(options.fields, function(field) {
+                let value = " ";
+                if (!_.isDict(field)) {
+                    field = {label:field, field:field};
+                }
+                if (field.field && field.field.count("|")) {
+                    value = SWAM.Localize.render(field.field, model);
+                } else {
+                    if (model[field.field] != undefined) value = model[field.field];
+                    if (["modified", "created", "when", "last_activity", "last_login"].has(field.field)) value = SWAM.Localize.datetime(value);
+                }
+                collection.add(new SWAM.Model({id:field.field, key:field.label, value:value}));
+            });
+        } else {
+            obj_to_models(model, collection, null);
+        }
+        
 
         var table = new SWAM.Views.Table({
             collection: collection,

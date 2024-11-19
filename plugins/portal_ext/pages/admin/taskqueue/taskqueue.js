@@ -151,7 +151,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
            {label:"Id", field:"id"},
            {label:"State", field:"state_display"},
            {
-                label:"Runtime", field:"runtime",
+                label:"Runtime", field:"current_runtime",
                 classes: "d-none d-lg-table-cell",
            },
            {
