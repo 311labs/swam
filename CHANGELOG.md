@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.65 - November 19, 2024
+
+ * added: new html data-hasperm field for hiding elements based on permission
+
+
 ## v0.2.64 - November 18, 2024
 
  * changed: taskqueue view real runtime

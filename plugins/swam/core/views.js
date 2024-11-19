@@ -178,6 +178,7 @@ SWAM.View = SWAM.Object.extend({
         // console.log("rendering: " + this.vid);
         this.on_render();
         this.renderChildren();
+        if (this.options.hide_noperms) this.hideNoPerms();
         this.on_post_render();
         this.trigger("rendered", this);
     },
@@ -367,6 +368,18 @@ SWAM.View = SWAM.Object.extend({
             if (this.children[key]) delete this.children[key];
         }.bind(this));
         this.appended_children = {};
+    },
+
+    hideNoPerms: function() {
+        if (!app.me) return;
+        // Iterate through all elements with the 'data-hasperms' attribute
+        this.el.querySelectorAll('[data-hasperm]').forEach(element => {
+            const hasPermission = app.me.hasPerm(element.getAttribute('data-hasperm').split(','));
+            // If the function returns false, hide the element
+            if (!hasPermission) {
+                element.style.display = 'none'; // Hide the element
+            }
+        });
     },
 
     on_dom_adding: function() {},
