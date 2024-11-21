@@ -28,6 +28,7 @@ SWAM.App = SWAM.View.extend(SWAM.TouchExtension).extend(SWAM.StorageExtension).e
 
     on_init: function() {
         // turn on smart parameter parsing ('sss', 22, model.name) where model.name value is passed into localize
+        this.app_start_time = Date.now();
         if (window.Mustache) {
             window.Mustache.smart_params = 1;
             window.Mustache.smart_params_require_quotes = 0;

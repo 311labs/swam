@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.66 - November 21, 2024
+
+ * added: app.app_start_time to track when the app was launched
+
+
 ## v0.2.65 - November 19, 2024
 
  * added: new html data-hasperm field for hiding elements based on permission
