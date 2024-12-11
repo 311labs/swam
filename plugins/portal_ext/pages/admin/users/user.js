@@ -199,6 +199,29 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
         });
     },
 
+    on_action_configure_sessions: function(evt) {
+        SWAM.Dialog.editModel(this.model, {
+            callback: function(model, resp, dlg) {
+                // nothing to do?
+            },
+            fields: [
+                {
+                    label: "Session Refresh (seconds)",
+                    name: "metadata.jwt.expires_in",
+                    default: 1800,
+                    help: "Amount of time (seconds) before the session requires a refresh"
+                },
+                {
+                    label: "Refresh Expires (seconds)",
+                    name: "metadata.jwt.refresh_expires_in",
+                    default: 43200,
+                    help: "Amount of time before the session expires, and requires a new login"
+                },
+            ],
+            stack: true,
+        })
+    },
+
     generateAuthToken: function() {
         app.showBusy({icon:"key"});
         this.model.save({action:"auth_token"}, function(model, resp) {
