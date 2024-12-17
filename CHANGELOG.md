@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.67 - December 17, 2024
+
+ * BUGFIX: device metadata was not displaying correctly
+
+
 ## v0.2.66 - November 21, 2024
 
  * added: app.app_start_time to track when the app was launched
