@@ -206,16 +206,48 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
             },
             fields: [
                 {
-                    label: "Session Refresh (seconds)",
+                    label: "Session Refresh",
                     name: "metadata.jwt.expires_in",
+                    columns: 12,
                     default: 1800,
-                    help: "Amount of time (seconds) before the session requires a refresh"
+                    help: "Amount of time before the session requires a refresh",
+                    type: "select",
+                    options: [
+                        {label:"5 minutes", value:300},
+                        {label:"15 minutes", value:900},
+                        {label:"30 minutes", value:1800},
+                        {label:"1 hour", value:3600},
+                        {label:"2 hours", value:7200},
+                        {label:"3 hours", value:10800},
+                        {label:"6 hours", value:21600},
+                        {label:"12 hours", value:43200},
+                    ]
                 },
                 {
-                    label: "Refresh Expires (seconds)",
+                    label: "Refresh Expires",
                     name: "metadata.jwt.refresh_expires_in",
+                    columns: 12,
                     default: 43200,
-                    help: "Amount of time before the session expires, and requires a new login"
+                    help: "Amount of time before the session expires, and requires a new login",
+                    type: "select",
+                    options: [
+                        {label:"5 minutes", value:300},
+                        {label:"15 minutes", value:900},
+                        {label:"30 minutes", value:1800},
+                        {label:"1 hour", value:3600},
+                        {label:"2 hours", value:7200},
+                        {label:"3 hours", value:10800},
+                        {label:"6 hours", value:21600},
+                        {label:"12 hours", value:43200},
+                        {label:"1 day", value:86400},
+                        {label:"2 days", value:172800},
+                        {label:"3 days", value:259200},
+                        {label:"7 days", value:604800},
+                        {label:"15 day", value:1296000},
+                        {label:"1 month", value:2592000},
+                        {label:"3 months", value:7776000},
+                        {label:"6 months", value:15552000},
+                    ]
                 },
             ],
             stack: true,

@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.68 - January 03, 2025
+
+ * cleanup of user sessions, new incident templates
+
+
 ## v0.2.67 - December 17, 2024
 
  * BUGFIX: device metadata was not displaying correctly
