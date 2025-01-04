@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.69 - January 04, 2025
+
+ * new: status time chart for plotting status over periods of time
+
+
 ## v0.2.68 - January 03, 2025
 
  * cleanup of user sessions, new incident templates

@@ -1,0 +1,68 @@
+  /* Styling for the timeline container */
+  .status-timeline {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    overflow-x: auto;
+  }
+
+  .status-timeline .day-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+/*      border-right: 1px solid #ccc;*/
+    padding: 0px;
+  }
+
+  .status-timeline .day-hours {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+
+  /* Styling for each hour column */
+  .status-timeline .hour-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16px; /* Width for each hour column */
+/*      border-right: 1px solid #ccc;*/
+    padding: 0px;
+  }
+
+  /* Styling for hour labels */
+  .status-timeline .hour-label {
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    width: 14px; /* Adjust to your container size */
+    height: 34px; /* Adjust to your container size */
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    text-align: center;
+    transform: rotate(90deg); /* Rotate the text */
+    transform-origin: center; /* Ensure rotation is around the center */
+  }
+
+  /* Styling for each 5-minute segment */
+  .status-timeline .time-segment {
+    width: 14px; /* Width of each segment */
+    height: 5px; /* Height of each segment */
+    margin: 0.5px 0; /* Space between segments */
+    text-align: center;
+    font-size: 8px;
+    line-height: 10px;
+    color: transparent;
+    font-family: Arial, sans-serif;
+    border-radius: 3px;
+/*      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);*/
+  }
