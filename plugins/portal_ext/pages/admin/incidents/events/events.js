@@ -17,6 +17,7 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
             {label:"when", field:"created|datetime"},
             {label:"i#", field:"incident"},
             {label:"description", field:"description"},
+            {label:"ip", field:"reporter_ip"},
             {label:"hostname", field:"hostname"},
             {label:"category", field:"category"},
             {label:"level", field:"level"},

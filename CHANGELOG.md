@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.70 - January 06, 2025
+
+ * added: column incident.event ip
+
+
 ## v0.2.69 - January 04, 2025
 
  * new: status time chart for plotting status over periods of time
