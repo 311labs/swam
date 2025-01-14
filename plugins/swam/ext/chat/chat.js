@@ -7,7 +7,8 @@ SWAM.Chat = {
         "note": "chat",
         "email": "chat",
         "chat": "chat",
-        "message": "chat"
+        "message": "chat",
+        "private": "private"
     },
     BUBBLE_ICONS: {
         "upload": "upload",
@@ -17,6 +18,13 @@ SWAM.Chat = {
         "shipping": "box2-fill",
         "task": "check-square"
     },
+
+    EDITABLE: {
+        "private":true,
+        "note":true,
+        "message":true,
+        "chat":true
+    }
 }
 
 
@@ -89,6 +97,44 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
             if (name) name = name.initials();
         }
         return name;
+    },
+
+    on_action_edit: function(evt, id) {
+        SWAM.Dialog.editModel(this.model, {
+            title: "Edit Message",
+            message: "Are you sure you want to delete this message?",
+            fields: [
+                {
+                    label: "Note",
+                    name: "text",
+                    type: "textarea"
+                }
+            ]
+        });
+    },
+
+    on_action_delete: function(evt, id) {
+        SWAM.Dialog.confirm({
+            title: "Delete Message",
+            message: "Are you sure you want to delete this message?",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.lower() == "yes") {
+                    this.model.destroy(function(model, resp){
+                        if (resp.status) {
+                            this.options.list.reload();
+                        }
+                    }.bind(this));
+                }
+            }.bind(this)
+        });
+    },
+
+    can_edit: function() {
+        if ((this._can_edit === undefined) && (SWAM.Chat.EDITABLE[this.model.get("kind")])) {
+            this._can_edit = (this.model.get("by.id") == app.me.id);
+        }
+        return this._can_edit;
     },
 
     on_pre_render: function() {
@@ -220,6 +266,20 @@ SWAM.Views.ChatView = SWAM.View.extend({
         var ievt = {
             name:"message", 
             value:value,
+            private: false,
+            event:evt
+        };
+        this.trigger("new_msg", ievt);
+    },
+
+    on_action_send_private: function(evt) {
+        evt.stopPropagation();
+        let $input = this.$el.find("#message");
+        let value = $input.val();
+        var ievt = {
+            name:"message", 
+            value:value,
+            private: true,
             event:evt
         };
         this.trigger("new_msg", ievt);

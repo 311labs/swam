@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.71 - January 14, 2025
+
+ * added: support for private notes
+
+
 ## v0.2.70 - January 06, 2025
 
  * added: column incident.event ip

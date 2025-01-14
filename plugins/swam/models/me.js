@@ -60,8 +60,8 @@ SWAM.Models.Me = SWAM.Models.User.extend({
             ignore_membership = true;
             perm = perm.slice(4);
         }
-        if (this.get("is_superuser")) return true;
-        if ((perm == "staff")&&(this.isStaff())) return true;
+        if (SWAM.allow_superuser && this.get("is_superuser")) return true;
+        if (SWAM.allow_staff && (perm == "staff")&&(this.isStaff())) return true;
         if (this.getPerm(perm)) return true;
         if (ignore_membership) return false;
         if (app.group && app.group.membership) return app.group.membership.hasPerm(perm);

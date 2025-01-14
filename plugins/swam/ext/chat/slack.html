@@ -16,6 +16,12 @@
 		<div class="col-auto chat-by">{{get_by_displayname}}</div>
 		<div class="col chat-time">{{model.created|datetime}}</div>
 	</div>
+
+	{{#.can_edit}}
+	<div class="chat-edit">
+		<button class="btn btn-link btn-sm" data-action="edit">{{{ICON('pencil')}}}</button>
+		<button class="btn btn-link btn-sm" data-action="delete">{{{ICON('trash')}}}</button></div>
+	{{/.can_edit}}
 	
 	<div class="chat-msg" data-chatid="{{model.id}}">
 		{{#get_action_id}}
@@ -33,4 +39,5 @@
 			{{{get_message|linkify('view link')}}}
 		{{/get_action_id}}
 	</div>
+
 </div>

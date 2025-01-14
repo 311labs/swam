@@ -120,6 +120,17 @@ div.swam-chat-theme-slack {
           }
         }
 
+        .chat-edit {
+          display: none;
+          position: absolute;
+          right: -20px;
+          top: -10px;
+          background: white;
+          width: auto;
+          border-radius: 3px;
+          border: 1px solid gray
+        }
+
         .chat-avatar {
           position: absolute;
           left: -40px;
@@ -152,8 +163,25 @@ div.swam-chat-theme-slack {
           // // }
         }
 
+        .chat-bubble-private {
+          padding: 8px;
+          color: black;
+          background-color: #FFA4A9;
+          border-color: #b8daff;
+          opacity: 0.7;
+          &:hover {
+            opacity: 1;
+          }
+        }
+
         .chat-avatar-task, .chat-avatar-status {
           font-size: 1.4rem;
+        }
+      }
+
+      &:hover {
+        .chat-edit {
+          display: block;
         }
       }
     }

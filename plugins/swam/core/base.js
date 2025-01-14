@@ -1,4 +1,6 @@
 window.SWAM = {
+    allow_superuser: false,
+    allow_staff: false,
     renderTemplate: function(template, context) {
         return this.renderString(SWAM.getTemplate(template, true), context);
     },
