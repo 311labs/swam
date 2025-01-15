@@ -22,12 +22,12 @@
                 <div class="swam-form-input textarea-input-group"><textarea placeholder="enter a message" class="form-control form-control-textarea input-textarea" rows="2" id="message" name="message"></textarea></div>
             </div>
         </div>
-        {{^app.me|hasperm('sys.fulfillment_private')}}
+        {{^.canSendPrivate}}
         <div>
         	<button type="button" class="btn btn-primary w-100" data-action="send_msg">SEND</button>
         </div>
-        {{/app.me|hasperm('sys.fulfillment_private')}}
-        {{#app.me|hasperm('sys.fulfillment_private')}}
+        {{/.canSendPrivate}}
+        {{#.canSendPrivate}}
         <div class="row">
             <div class="col-8">
                 <button type="button" class="btn btn-primary w-100" data-action="send_msg">SEND</button>
@@ -36,6 +36,6 @@
                 <button type="button" class="btn btn-danger w-100" data-action="send_private">PRIVATE</button>
             </div>
         </div>
-        {{/app.me|hasperm('sys.fulfillment_private')}}
+        {{/.canSendPrivate}}
     </form>
 </div>

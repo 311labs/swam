@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.72 - January 14, 2025
+
+ * cleanup: chat fields and permissions
+
+
 ## v0.2.71 - January 14, 2025
 
  * added: support for private notes

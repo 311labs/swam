@@ -531,10 +531,17 @@ div.swam-metrics-banner {
 
 div#localhost_banner {
     position: fixed;
-    right: 0;
     bottom: 0;
+    left: 0;
+    border-radius: 4px;
+    background-color: #6F7779;
     font-size: 1.6rem;
     color: red;
+    text-align: center;
+    transform: translate(-30%, -20%) rotate(45deg);
+    transform-origin: center;
+    text-align: center;
+    padding: 4px 40px;
 }
 
 .overflow-y-auto {

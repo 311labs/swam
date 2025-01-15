@@ -102,11 +102,9 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
     on_action_edit: function(evt, id) {
         SWAM.Dialog.editModel(this.model, {
             title: "Edit Message",
-            message: "Are you sure you want to delete this message?",
             fields: [
                 {
-                    label: "Note",
-                    name: "text",
+                    name: this.options.message_field,
                     type: "textarea"
                 }
             ]
@@ -131,6 +129,7 @@ SWAM.Views.ChatItem = SWAM.Views.ListItem.extend({
     },
 
     can_edit: function() {
+        if (!this.options.chat.options.allow_editing) return false;
         if ((this._can_edit === undefined) && (SWAM.Chat.EDITABLE[this.model.get("kind")])) {
             this._can_edit = (this.model.get("by.id") == app.me.id);
         }
@@ -169,6 +168,9 @@ SWAM.Views.ChatView = SWAM.View.extend({
             }
         ],
         add_classes: "swam-chat-theme-slack",
+        allow_editing: false,
+        allow_private: false,
+        private_perm: "sys.view_private_group_chat",
         ItemView: SWAM.Views.ChatItem
     },
 
@@ -189,9 +191,9 @@ SWAM.Views.ChatView = SWAM.View.extend({
             empty_html: "<div class='text-center p-3 text-muted'>No Messages</div>",
             ItemView: this.options.ItemView
         }));
-        if (this.options.item_options) {
-            this.getChild("chatlist").options.item_options = this.options.item_options;
-        }
+
+        this.options.item_options = _.extend({chat: this}, this.options.item_options);
+        this.getChild("chatlist").options.item_options = this.options.item_options;
         this.collection = this.getChild("chatlist").collection;
         this.collection.params.size = 400;
         this.collection.params.sort = "id";
@@ -228,6 +230,11 @@ SWAM.Views.ChatView = SWAM.View.extend({
 
     getChatItem: function(id) {
         return this.getChild("chatlist").get(id);
+    },
+
+    canSendPrivate: function() {
+        if (!this.options.allow_private) return false;
+        return app.me.hasPerm(this.options.private_perm);
     },
 
     on_submit: function(evt) {
