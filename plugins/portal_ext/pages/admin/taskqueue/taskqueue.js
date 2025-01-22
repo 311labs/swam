@@ -34,8 +34,12 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
     defaults: {
         table_options: {
             add_classes: "swam-table-clickable small table-sm",
-            batch_select: false,
-            view_only: true // don't show edit for on click
+            view_only: true, // don't show edit for on click
+            batch_select: true,
+            batch_actions: [
+                {label:"Cancel", icon:"x-octagon", action:"cancel_task"},
+                {label:"Retry", icon:"recycle", action:"retry_task"},
+            ],
         },
         item_url_param: "item",
         add_button: null,
@@ -308,7 +312,7 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
 
     cancelTask: function(model) {
         app.showBusy();
-    model.save({action:"cancel", reason:"canceled by user " + app.me.get("username")}, function(m, resp) {
+        model.save({action:"cancel", reason:"canceled by user " + app.me.get("username")}, function(m, resp) {
             app.hideBusy();
             if (resp.status) {
                 SWAM.toast(`Task #${model.id}`, "Task has been rescheduled!", "success");
@@ -391,6 +395,75 @@ PORTAL.Pages.TaskQueue = SWAM.Pages.TablePage.extend({
         });
 
         this.on_item_dlg(item, mdlg);
+    },
+
+    on_action_cancel_task: function(evt, id) {
+        SWAM.Dialog.confirm({
+            title: "Cancel Tasks",
+            icon: "x-octagon",
+            message: "Are you sure you want to cancel the selected tasks?",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.batchCancel();
+                }
+            }.bind(this)
+        });
+    },
+
+    batchCancel: function() {
+        app.showBusy();
+        let data = {action:"cancel", reason:"canceled by user " + app.me.get("username")};
+        let selected = this.getBatchSelected();
+        _.each(selected, function(item, index) {
+            item.model.save(data, function(m, resp) {
+                if (resp.status) {
+                    SWAM.toast(`Task #${item.model.id}`, "Task has been canceled!", "success");
+                } else {
+                    SWAM.toast(`Task #${item.model.id} Error`, resp.error, "danger");
+                }
+            });
+        });
+        setTimeout(function(){
+            app.hideBusy();
+            this.collection.fetch();
+        }.bind(this), 2000);
+        this.clearBatchSelected();
+    },
+
+    on_action_retry_task: function(evt, id) {
+        SWAM.Dialog.confirm({
+            title: "Retry Tasks",
+            icon: "recycle",
+            message: "Are you sure you want to cancel the selected tasks?",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.batchRetry();
+                }
+            }.bind(this)
+        });
+    },
+
+    batchRetry: function() {
+        app.showBusy();
+        let data = {action:"retry_now"};
+        let selected = this.getBatchSelected();
+        let last_index = selected.length-1;
+        _.each(selected, function(item, index){
+            item.model.save(data, function(m, resp) {
+                if (resp.status) {
+                    SWAM.toast(`Task #${item.model.id}`, "Task has been rescheduled!", "success");
+                } else {
+                    SWAM.toast(`Task #${item.model.id} Error`, resp.error, "danger");
+                }
+            }.bind(this));
+        });
+        setTimeout(function(){
+            app.hideBusy();
+            this.collection.fetch();
+        }.bind(this), 2000);
+        this.clearBatchSelected();
     },
 
     on_action_reload_stats: function() {

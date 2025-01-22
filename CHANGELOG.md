@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.73 - January 21, 2025
+
+ * added: task queue batch actions
+
+
 ## v0.2.72 - January 14, 2025
 
  * cleanup: chat fields and permissions
