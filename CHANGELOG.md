@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.73 - January 29, 2025
+
+ * improving status timeline chart
+
+
 ## v0.2.73 - January 21, 2025
 
  * added: task queue batch actions

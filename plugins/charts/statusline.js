@@ -1,6 +1,6 @@
 SWAM.Views.StatusTimeChart = SWAM.View.extend({
     defaults: {
-      classes: "status-timeline"
+      classes: "status-timeline",
     },
 
     on_init: function() {
@@ -78,15 +78,17 @@ SWAM.Views.StatusTimeChart = SWAM.View.extend({
 
             // Add each 5-minute segment
             day_data[hkey].forEach(data => {
-              const segment = document.createElement('div');
-              segment.className = 'time-segment';
-              segment.style.backgroundColor = data.status ? 'green' : 'red'; // Green for healthy, red for unhealthy
-              segment.textContent = ' ';
-              // segment.textContent = data.time.split(':')[1]; // Display only the minutes
-              // Add tooltip using the title attribute
-              segment.title = `Time: ${data.local_time.time}, Status: ${data.text}`;
+                const segment = document.createElement('div');
+                segment.dataset.action = "item_clicked";
+                segment.dataset.label = `Date: ${data.local_time.date}, Time: ${data.local_time.time}, Status: ${data.text}`;
+                segment.className = 'time-segment';
+                segment.style.backgroundColor = data.status ? 'green' : 'red'; // Green for healthy, red for unhealthy
+                segment.textContent = ' ';
+                // segment.textContent = data.time.split(':')[1]; // Display only the minutes
+                // Add tooltip using the title attribute
+                segment.title = `Time: ${data.local_time.time}, Status: ${data.text}`;
 
-              hourColumn.appendChild(segment);
+                hourColumn.appendChild(segment);
             });
           });
 
@@ -95,5 +97,25 @@ SWAM.Views.StatusTimeChart = SWAM.View.extend({
         });
 
         this.el.scrollLeft = this.el.scrollWidth;
+    },
+
+    on_action_item_clicked: function(evt, id) {
+        SWAM.Dialog.show({ title: null, message: $(evt.currentTarget).data("label") });
+    },
+
+    refreshHistory: function() {
+      SWAM.Rest.GET(this.options.url, null, function(resp, status){
+        if (resp.status) {
+          const objects = resp.times.map((epoch_time, index) => (
+              {
+                  when: epoch_time,
+                  status: resp.states[index],
+                  text: resp.texts[index]
+              }
+          ));
+          this.setData(objects);
+          this.render();
+        }
+      }.bind(this));
     }
 });

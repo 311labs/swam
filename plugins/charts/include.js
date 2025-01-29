@@ -4,3 +4,4 @@
 chart.js
 plugins.js
 view.js
+statusline.js
