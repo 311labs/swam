@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.74 - February 19, 2025
+
+  fixed sending of browser id, was renegenerated everytime
+
+
 ## v0.2.73 - January 29, 2025
 
  * improving status timeline chart
