@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.74 - March 17, 2025
+
+ * BUGFIX in moment.js timezones
+
+
 ## v0.2.74 - February 19, 2025
 
   fixed sending of browser id, was renegenerated everytime
