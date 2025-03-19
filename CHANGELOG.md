@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.75 - March 19, 2025
+
+  * ADDED ability to get list of values from a collection
+  * ADDED ability to exclude items from a collection
+
+
 ## v0.2.74 - March 17, 2025
 
  * BUGFIX in moment.js timezones

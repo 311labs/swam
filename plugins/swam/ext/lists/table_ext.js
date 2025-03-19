@@ -91,6 +91,14 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
         this.getChild("list").addModel(model, at_top);
     },
 
+   	getBatchSelected: function() {
+		return this.getChild("list").getBatchSelected();
+	},
+
+	clearBatchSelected: function() {
+	   return this.getChild("list").clearBatchSelected();
+	},
+
     on_item_clicked: function(item, evt) {
         if (this.options.on_item_clicked) {
             this.options.on_item_clicked(item, evt);

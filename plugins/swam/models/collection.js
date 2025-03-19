@@ -1,4 +1,3 @@
-
 SWAM.Collections = SWAM.Collections || {};
 
 SWAM.Collection = SWAM.Object.extend({
@@ -16,7 +15,7 @@ SWAM.Collection = SWAM.Object.extend({
         if (_.isObject(models) && !_.isArray(models)){
             opts = models;
             models = [];
-        } 
+        }
         this.id = _.uniqueId("col");
         this.models = [];
         this.shadow_models = null;
@@ -34,7 +33,7 @@ SWAM.Collection = SWAM.Object.extend({
 
     clone: function() {
         var obj = new this.constructor(this.models, this.options);
-        obj.params = this.params;
+        obj.params = _.extend({}, this.params);
         return obj;
     },
 
@@ -91,6 +90,17 @@ SWAM.Collection = SWAM.Object.extend({
         this.models = _.filter(this.shadow_models, function(obj){
             return matcher(obj.attributes);
         });
+    },
+
+    exclude: function(ids, field) {
+        if (field === undefined) field = "id";
+        if (_.isFunction(ids.getIds)) ids = ids.getIds();
+        if (this.shadow_models == null) this.shadow_models = this.models;
+        this.models = _.filter(this.models, function(model) {
+            return !_.contains(ids, model.get(field));
+        });
+        this.length = this.models.length;
+        this.trigger("reset", this);
     },
 
     search: function(field, value, inplace) {
@@ -189,7 +199,7 @@ SWAM.Collection = SWAM.Object.extend({
             } else {
                 this.models.insertAt(model, 0);
             }
-            
+
             this.length = this.models.length;
             this.trigger("add", model);
         }
@@ -264,6 +274,18 @@ SWAM.Collection = SWAM.Object.extend({
         return output;
     },
 
+    getIds: function() {
+        return this.models.map(function(obj) {
+            return obj.id;
+        });
+    },
+
+    getValues: function(field) {
+        return this.models.map(function(obj) {
+            return obj.get(field);
+        });
+    },
+
     parseResponse: function(resp) {
         this.set(resp.data, this.options.append);
         this.count = resp.count;
@@ -289,7 +311,7 @@ SWAM.Collection = SWAM.Object.extend({
         // } else {
         //     this.pager.start = Math.max(this.pager.visible - 1 - (this.pager.visible - this.pager.current), 1);
         // }
-        
+
         this.pager.can_page = this.pager.total > 1;
 
         this.pager.has_more = (this.pager.start  + this.pager.visible) <= this.pager.total;
@@ -373,7 +395,7 @@ SWAM.Collection = SWAM.Object.extend({
 
     fetchSummary: function(callback, opts) {
         SWAM.Rest.GET(
-            this.getUrl(), 
+            this.getUrl(),
             _.extend({format:"summary_only"}, this.params),
             function(data, status) {
                 this._request = null;
@@ -528,7 +550,7 @@ SWAM.Collection = SWAM.Object.extend({
                     row.push(model.get(field_names[i]));
                 }
             }
-        
+
             output.push(row.join(","));
         }.bind(this));
         let blob = new Blob([output.join("\n")]);

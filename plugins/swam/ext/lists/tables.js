@@ -165,6 +165,14 @@ SWAM.Views.Table = SWAM.Views.List.extend({
         }
     },
 
+   	getBatchSelected: function() {
+		return this.selected;
+	},
+
+	clearBatchSelected: function() {
+		this.deselectAll();
+	},
+
     on_action_sort: function(evt) {
         var $column = $(evt.currentTarget);
     	var sort_field = $column.data("sort");
@@ -183,7 +191,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                 this.sortByField(sort_field, !this.collection.sort_descending);
             }
         }
-        
+
     },
 
     showSortMenu: function(evt, $column, sort_field) {
@@ -471,7 +479,7 @@ SWAM.Views.Table = SWAM.Views.List.extend({
                     if (v != undefined) {
                         totals[field] += v;
                     }
-                    
+
                 }, this));
             }
         }
@@ -578,5 +586,3 @@ SWAM.Views.TablePaginationPanel = SWAM.View.extend({
     }
 
 });
-
-
