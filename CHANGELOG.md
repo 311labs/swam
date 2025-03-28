@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.76 - March 28, 2025
+
+  FIXED bug in logic that expands objects when root is null
+
+
 ## v0.2.75 - March 19, 2025
 
   * ADDED ability to get list of values from a collection

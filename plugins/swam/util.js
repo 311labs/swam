@@ -142,7 +142,7 @@ window.expandObject = function(obj) {
       if (i === splitKeys.length - 1) {
         currentObj[currentKey] = obj[key];
       } else {
-        if (currentObj[currentKey] === undefined) {
+        if (typeof currentObj[currentKey] !== 'object' || currentObj[currentKey] === null) {
           currentObj[currentKey] = {};
         }
         currentObj = currentObj[currentKey];
