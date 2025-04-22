@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.76 - April 22, 2025
+
+ * added batch create and delete to collections
+
+
 ## v0.2.75 - March 19, 2025
 
   * ADDED ability to get list of values from a collection

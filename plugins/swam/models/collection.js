@@ -622,4 +622,24 @@ SWAM.Collection = SWAM.Object.extend({
             batch_data: data
         }, callback);
     }
+}, {
+    BatchCreate: function(payload, callback) {
+        let model = new this.prototype.defaults.Model();
+        SWAM.Rest.POST(model.getUrl(), {
+            rest_batch:"create",
+            batch_data: payload
+        }, (resp, status) => {
+            var col = new this();
+            col._on_fetched(resp, status)
+            if (callback) callback(col, status);
+        });
+    },
+
+    BatchDelete: function(batch_ids, callback, params) {
+        let model = new this.prototype.defaults.Model();
+        params = params || {};
+        params.rest_batch = "delete";
+        params.batch_ids = batch_ids;
+        SWAM.Rest.POST(model.getUrl(), params, callback);
+    }
 });
