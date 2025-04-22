@@ -3,6 +3,7 @@
 ## v0.2.76 - April 22, 2025
 
  * added batch create and delete to collections
+ * FIXED bug in logic that expands objects when root is null
 
 
 ## v0.2.75 - March 19, 2025
@@ -124,7 +125,7 @@
 
 ## v0.2.54 - September 13, 2024
 
- * cleanup: chat better support for media 
+ * cleanup: chat better support for media
  * cleanup: model state dialog view rendering
 
 
@@ -291,7 +292,7 @@
 ## v0.2.21 - August 14, 2024
 
  * added: ability to enable/disable showing of left panel
- 
+
 
 
 ## v0.2.20 - August 14, 2024
@@ -366,5 +367,3 @@
  * ADDED: Cloud Watch: Firewall events
  * ADDED: List all servers, versions
  * ADDED: Domain watcher, lists domains in system and ssl cert expires
- 
- 
