@@ -10,7 +10,7 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     on_init: function() {
         this.tabs = new SWAM.Views.Tabs();
-        
+
         this.tabs.addTab("Details", "details", new SWAM.Views.ModelView({
             inline:false,
             fields:[
@@ -106,7 +106,7 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
             component: "account.Member",
             param_field: null
         }));
-        
+
         this.tabs.addTab("Acitivity", "activity", new PORTAL.Views.Logs({
             param_field: "user"
         }));
@@ -287,6 +287,25 @@ PORTAL.Views.User = SWAM.View.extend(SWAM.Ext.BS).extend({
                 dlg.dismiss();
                 if (value.upper() == "YES") {
                     this.model.save({"metadata.totp_verified": ""});
+                }
+            }.bind(this)
+        });
+    },
+
+    on_action_clear_password: function() {
+        SWAM.Dialog.confirm({
+            title: "Scramble Password",
+            message: "This will scramble the user's password!<div>Are you sure?</div>",
+            callback: function(dlg, value) {
+                dlg.dismiss();
+                if (value.upper() == "YES") {
+                    this.model.save({"password": String.Random(32)}, function(model, resp) {
+                        if (resp.status) {
+                            SWAM.toast("Password", "Succesfully Scrambled");
+                        } else {
+                            SWAM.toast("Password", resp.error, "danger");
+                        }
+                    });
                 }
             }.bind(this)
         });

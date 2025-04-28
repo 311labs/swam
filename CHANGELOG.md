@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.77 - April 28, 2025
+
+  ADDED ability to scramble password
+
+
 ## v0.2.76 - April 22, 2025
 
  * added batch create and delete to collections
