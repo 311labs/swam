@@ -18,8 +18,16 @@ SWAM.Localize = {
         return value;
     },
 
-    'initials': function(value, attr, fmt) {
+    'prefix': function(value, attr, fmt) {
+        if (value === null) return "";
+        if (!_.isString(value)) value = String(value);
+        return fmt + value;
+    },
 
+    'suffix': function(value, attr, fmt) {
+        if (value === null) return "";
+        if (!_.isString(value)) value = String(value);
+        return value + fmt;
     },
 
     'phone': function(value, attr, fmt) {
@@ -69,7 +77,7 @@ SWAM.Localize = {
             if (media_kind) output += " data-kind='" + media_kind + "'";
             if (title) output += " data-title='" + title + "'";
             output += ">";
-            return output; 
+            return output;
         }
 
         if (_.isArray(fmt) && fmt.length) {
@@ -88,7 +96,7 @@ SWAM.Localize = {
         output += ">";
         return output;
     },
-    
+
     'img' :function(value, attr, fmt) {
         var d = fmt;
         var classes = "swam-image";
@@ -388,7 +396,7 @@ SWAM.Localize = {
         }
         return value;
     },
-    
+
     'datetoobj': function(value) {
         if((value === null)||(value == 0)) {
             return null;
@@ -500,7 +508,7 @@ SWAM.Localize = {
             value = value.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '');
             return value;
             // Convert the string to a JSON object
-            // Replace single quotes with double quotes 
+            // Replace single quotes with double quotes
             // Use a regular expression to match single quotes that are not inside other quotes
             // let jsonString = value.replace(/(\s*?{\s*?|\s*?,\s*?)(('\w+')\s*?:)/g, function(_, $1, $2){
             //     return $1 + $2.replace(/'/g, '"');
@@ -542,7 +550,7 @@ SWAM.Localize = {
                 value = this.pydict_to_json(value);
                 if (value != null) {
                     value = JSON.parse(value);
-                    return window.syntaxHighlight(value); 
+                    return window.syntaxHighlight(value);
                 }
                 console.log(err);
             }
@@ -818,6 +826,32 @@ SWAM.Localize = {
             console.log(err);
         }
         return value;
+    },
+
+    'number': function(value, attr, fmt) {
+        if (_.isNumber(value)) {
+            return value.toLocaleString();
+        }
+        return '0';
+    },
+
+    'squash_number': function(value, attr, fmt) {
+        fmt = fmt || 'TBMK';
+        if (_.isNumber(value)) {
+            const absValue = Math.abs(value);
+            if (absValue >= 1.0e+12 && fmt.includes('T')) {
+                return (value / 1.0e+12).toFixed(2) + "T";
+            } else if (absValue >= 1.0e+9 && fmt.includes('B')) {
+                return (value / 1.0e+9).toFixed(2) + "B";
+            } else if (absValue >= 1.0e+6 && fmt.includes('M')) {
+                return (value / 1.0e+6).toFixed(2) + "M";
+            } else if (absValue >= 1.0e+3 && fmt.includes('K')) {
+                return (value / 1.0e+3).toFixed(2) + "K";
+            } else {
+                return value.toLocaleString();
+            }
+        }
+        return '0';
     },
 
     'currency_name': function(value, attr, fmt) {
@@ -1187,6 +1221,3 @@ SWAM.Localize = {
         return mc.lookup(key);
     },
 }
-
-
-

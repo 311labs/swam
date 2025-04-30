@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.78 - April 30, 2025
+
+  ADDED new localization for numbers
+
+
 ## v0.2.77 - April 28, 2025
 
   ADDED ability to scramble password
