@@ -836,17 +836,37 @@ SWAM.Localize = {
     },
 
     'squash_number': function(value, attr, fmt) {
-        fmt = fmt || 'TBMK';
+        let formats = 'TBMK';
+        let pos = 2;
+        if (_.isString(value) && value.isNumber()) {
+            value = Number(value);
+        }
         if (_.isNumber(value)) {
             const absValue = Math.abs(value);
-            if (absValue >= 1.0e+12 && fmt.includes('T')) {
-                return (value / 1.0e+12).toFixed(2) + "T";
-            } else if (absValue >= 1.0e+9 && fmt.includes('B')) {
-                return (value / 1.0e+9).toFixed(2) + "B";
-            } else if (absValue >= 1.0e+6 && fmt.includes('M')) {
-                return (value / 1.0e+6).toFixed(2) + "M";
-            } else if (absValue >= 1.0e+3 && fmt.includes('K')) {
-                return (value / 1.0e+3).toFixed(2) + "K";
+            if (_.isArray(fmt)) {
+                if (fmt.length === 1) {
+                    if (_.isNumber(fmt[0])) {
+                        pos = parseInt(fmt[0]);
+                    } else if (_.isString(fmt[0])) {
+                        formats = fmt[0];
+                    }
+                } else {
+                    formats = fmt[0];
+                    pos = parseInt(fmt[1]);
+                }
+            } else if (_.isNumber(fmt) || (_.isString(fmt) && fmt.isNumber())) {
+                pos = parseInt(fmt);
+            } else if (_.isString(fmt)) {
+                formats = fmt;
+            }
+            if (absValue >= 1.0e+12 && formats.includes('T')) {
+                return (value / 1.0e+12).toFixed(pos) + "T";
+            } else if (absValue >= 1.0e+9 && formats.includes('B')) {
+                return (value / 1.0e+9).toFixed(pos) + "B";
+            } else if (absValue >= 1.0e+6 && formats.includes('M')) {
+                return (value / 1.0e+6).toFixed(pos) + "M";
+            } else if (absValue >= 1.0e+3 && formats.includes('K')) {
+                return (value / 1.0e+3).toFixed(pos) + "K";
             } else {
                 return value.toLocaleString();
             }
@@ -1206,7 +1226,47 @@ SWAM.Localize = {
     ignore_errors: true,
     localize: function(value, attr, fmt, context) {
         try {
+            if (attr.contains('|')||attr.contains('(')) return this.localizer(value, attr, fmt, context);
             return SWAM.Localize[attr](value, attr, fmt, context);
+        } catch (error) {
+            console.error(error);
+            if (!SWAM.Localize.ignore_errors) return error;
+        }
+        return value;
+    },
+
+    localizer: function(value, attr, fmt, context) {
+        try {
+            const functions = attr.split('|').map(fn => {
+                const bracketIndex = fn.indexOf('(');
+                if (bracketIndex !== -1) {
+                    const fnName = fn.substring(0, bracketIndex);
+                    const params = fn.substring(bracketIndex + 1, fn.length - 1).split(',').map(param => {
+                        param = param.trim();
+                        if ((param.startsWith("'") && param.endsWith("'") && param !== "'")
+                            || (param.startsWith('"') && param.endsWith('"') && param !== '"')) {
+                            return param.substring(1, param.length - 1);
+                        }
+                        return param;
+                    });
+                    return { fnName, params };
+                }
+                return { fnName: fn, params: [] };
+            });
+
+            let result = value;
+            functions.forEach(({ fnName, params }) => {
+                if (params != null) {
+                    if (params.length === 0) {
+                        params = null;
+                    } else if (params.length === 1) {
+                        params = params[0];
+                    }
+                }
+                result = SWAM.Localize[fnName](result, attr, params, context);
+            });
+
+            return result;
         } catch (error) {
             console.error(error);
             if (!SWAM.Localize.ignore_errors) return error;
