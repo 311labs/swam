@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.80 - April 30, 2025
+
+  for localize
+
+
 ## v0.2.79 - April 30, 2025
 
   FIXED Localize logic for handling pipes and attributes outside of mustache

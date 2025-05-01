@@ -837,7 +837,7 @@ SWAM.Localize = {
 
     'squash_number': function(value, attr, fmt) {
         let formats = 'TBMK';
-        let pos = 2;
+        let pos = 0;
         if (_.isString(value) && value.isNumber()) {
             value = Number(value);
         }
@@ -859,17 +859,29 @@ SWAM.Localize = {
             } else if (_.isString(fmt)) {
                 formats = fmt;
             }
+            let formattedValue;
+            let ext = '';
             if (absValue >= 1.0e+12 && formats.includes('T')) {
-                return (value / 1.0e+12).toFixed(pos) + "T";
+                formattedValue = value / 1.0e+12;
+                ext = 'T';
             } else if (absValue >= 1.0e+9 && formats.includes('B')) {
-                return (value / 1.0e+9).toFixed(pos) + "B";
+                formattedValue = value / 1.0e+9;
+                ext = 'B';
             } else if (absValue >= 1.0e+6 && formats.includes('M')) {
-                return (value / 1.0e+6).toFixed(pos) + "M";
+                formattedValue = value / 1.0e+6;
+                ext = 'M';
             } else if (absValue >= 1.0e+3 && formats.includes('K')) {
-                return (value / 1.0e+3).toFixed(pos) + "K";
+                formattedValue = value / 1.0e+3;
+                ext = 'K';
             } else {
                 return value.toLocaleString();
             }
+            // Show decimals only if the whole number is 1 digit
+            if ((formattedValue < 10) || (pos > 0)) {
+                if (pos === 0) pos = 1;
+                return formattedValue.toFixed(pos) + ext;
+            }
+            return Math.round(formattedValue) + ext;
         }
         return '0';
     },
