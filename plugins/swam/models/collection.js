@@ -8,6 +8,8 @@ SWAM.Collection = SWAM.Object.extend({
         max_visible_pages: 4,
         reset_before_fetch: false,
         reset_after_fetch: true,
+        exclude: null,
+        exclude_field: "id",
         fetch_debounced: true  // by default debounce fetch requests (ie avoid double clicks, etc)
     },
 
@@ -96,11 +98,12 @@ SWAM.Collection = SWAM.Object.extend({
         if (field === undefined) field = "id";
         if (_.isFunction(ids.getIds)) ids = ids.getIds();
         if (this.shadow_models == null) this.shadow_models = this.models;
-        this.models = _.filter(this.models, function(model) {
+        let models = _.filter(this.models, function(model) {
             return !_.contains(ids, model.get(field));
         });
-        this.length = this.models.length;
+        this.length = models.length;
         this.trigger("reset", this);
+        this.setModels(models);
     },
 
     search: function(field, value, inplace) {
@@ -127,10 +130,15 @@ SWAM.Collection = SWAM.Object.extend({
         // this will do a remove filter
     },
 
+    _excludeCheck: function(m) {
+        return (this.options.exclude && (_.contains(this.options.exclude, m.get(this.options.exclude_field))));
+    },
+
     setModels: function(models) {
         // this assumes they are already models
         this.models = [];
         _.each(models, function(m){
+            if (this._excludeCheck(m)) return;
             this.models.push(m);
             this.trigger("add", m);
         }.bind(this));
@@ -157,6 +165,7 @@ SWAM.Collection = SWAM.Object.extend({
                 if (!m.id) m.id = i+1; // fix collections with no id
                 model = new this.options.Model(m);
             }
+            if (this._excludeCheck(model)) return;
             this.models.push(model);
             this.trigger("add", model);
         }.bind(this));

@@ -54,7 +54,7 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
     defaults: {
         List: SWAM.Views.List,
     },
-    
+
     on_init: function() {
         var list_opts = _.extend({
             collection: this.options.collection,
@@ -136,16 +136,24 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         this.addChild("counter", this.counter);
         if (this.options.filter_bar) {
             if (this.options.add_button) {
-                this.options.filter_bar.unshift(this.options.add_button);
+                if (Array.isArray(this.options.add_button)) {
+                    this.options.filter_bar.unshift({
+                        type: "group",
+                        classes: "justify-content-sm-start",
+                        fields: this.options.add_button, columns:4});
+                    this.options.filter_bar[this.options.filter_bar.length - 1].columns = 8;
+                } else {
+                    this.options.filter_bar.unshift(this.options.add_button);
+                }
             } else {
                 let fitem = this.options.filter_bar[0];
                 if (fitem.type != "button") {
                     fitem.columns = 12;
                 }
             }
-            
+
             this.filters = new SWAM.Views.ListFilters({
-                list: this.list, 
+                list: this.list,
                 filter_bar: this.options.filter_bar,
                 filters: this.options.filters
             });
@@ -249,6 +257,3 @@ SWAM.Views.PaginatedList = SWAM.View.extend({
         }
     }
 });
-
-
-

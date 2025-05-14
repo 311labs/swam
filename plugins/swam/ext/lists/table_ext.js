@@ -50,7 +50,7 @@ SWAM.Views.AdvancedTable = SWAM.Views.PaginatedTable.extend({
                         type: "select",
                         name: "size",
                         options: [
-                            5, 10, 20, 50, 100
+                            5, 10, 20, 50, 100, 200
                         ]
                     },
                     SWAM.Views.PaginatedList.DEFAULT_FILTER_BUTTONS
