@@ -9,7 +9,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
     },
 
     on_fb_action_input_change: function(evt) {
-        this.on_input_change(evt.name, evt.value, evt); 
+        this.on_input_change(evt.name, evt.value, evt);
     },
 
     unlocalizer: function(evt, val) {
@@ -270,6 +270,7 @@ SWAM.Views.ListFilters = SWAM.Form.View.extend({
 
     on_action_reload: function(evt) {
         // allow the event to bubble down to page
+        this.options.list.collection.params.start = 0;
         this.options.list.collection.fetch();
     },
 
