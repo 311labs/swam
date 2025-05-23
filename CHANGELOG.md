@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.82 - May 23, 2025
+
+  CHANGED reloading a table or a list will reset the page to 1 (start=0)
+
+
 ## v0.2.81 - May 14, 2025
 
    ADDED: ability to set multiselect visible rows
