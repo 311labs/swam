@@ -1,8 +1,9 @@
 # SWAMCORE
 
-## v0.2.81 - May 23, 2025
+## v0.2.81 - May 14, 2025
 
-  CHANGED reloading a table or a list will reset the page to 1 (start=0)
+   ADDED: ability to set multiselect visible rows
+   ADDED: ability to set local filtering of excluding by a list of a specific field on a collection
 
 
 ## v0.2.80 - April 30, 2025

@@ -139,4 +139,3 @@ SWAM.Views.SearchDown = SWAM.View.extend({
         }
     }
 });
-

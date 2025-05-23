@@ -236,5 +236,3 @@ SWAM.Views.List = SWAM.View.extend({
     }
 
 });
-
-

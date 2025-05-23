@@ -50,7 +50,7 @@ SWAM.Form.buildField = function(fc, form_info) {
 	} else {
 		SWAM.Form.Builder.text(fc);
 	}
-	
+
 	if (fc.$input) {
 		if (fc.field && !fc.name) fc.name = fc.field;
 		if (fc.name) fc.$input.attr("name", fc.name);
@@ -101,7 +101,7 @@ SWAM.Form.buildField = function(fc, form_info) {
 			fc.$input.before(SWAM.Form.Builder.help(fc, form_info));
 		}
 	}
-} 
+}
 
 SWAM.Form.buildGroup = function(fc, form_info) {
 	fc.$el = $("<div />");
@@ -210,7 +210,7 @@ SWAM.Form.Builder.orderLabel = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.label = function(fc, form_info) {
-	
+
 	if (fc.label) {
 		var lbl =$("<label for='" + fc.name + "' />").addClass("form-label");
 		lbl.text(fc.label);
@@ -224,7 +224,7 @@ SWAM.Form.Builder.label = function(fc, form_info) {
 }
 
 SWAM.Form.Builder.help = function(fc, form_info) {
-	
+
 	if (fc.help) {
 		fc.help_title = fc.help_title || "Help";
 		var el =$('<button tabindex="-1" type="button" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top" data-bs-content="' + fc.help + '" />')
@@ -403,7 +403,7 @@ SWAM.Form.Builder.toggle = function(fc, form_info) {
 	fc.$wrap.addClass("form-switch");
 	fc.$input.attr("role", "switch");
 	if (fc.off_label) {
-		if (!fc.on_label) fc.on_label = fc.label; 
+		if (!fc.on_label) fc.on_label = fc.label;
 		fc.$input.data("off-label", fc.off_label);
 		fc.$input.data("on-label", fc.on_label);
 		if (fc.value == undefined) fc.value = 0;
@@ -434,7 +434,7 @@ SWAM.Form.Builder.input_group = function(fc, form_info) {
 	} else {
 		fc.$input.prop("type", fc.type);
 	}
-	
+
 	fc.$wrap.append(fc.$input);
 	if (fc.button) {
 		fc.button.classes = fc.button.classes || SWAM.Form.Builder.config.input_group_btn_classes;
@@ -475,6 +475,7 @@ SWAM.Form.Builder.select = function(fc, form_info) {
 	if (fc.size) fc.$input.addClass("form-select-" + fc.size);
 	if (fc.multiple || fc.multi) {
 		fc.$input.attr("multiple", "multiple");
+		if (fc.rows) fc.$input.attr("size", fc.rows);
 	}
 	if (fc.editable || fc.can_edit) {
 		fc.$input.addClass("editable");
@@ -620,6 +621,14 @@ SWAM.Form.Builder.searchdown = function(fc, form_info) {
 		if (!fc.options) fc.options = {};
 		fc.options.required = true;
 	}
+	if (fc.display_field) {
+        if (!fc.options) fc.options = {};
+        fc.options.display_field = fc.display_field
+	}
+	if (fc.value_field) {
+        if (!fc.options) fc.options = {};
+        fc.options.input_value_field = fc.value_field
+	}
 	if (fc.options) fc.$child.data("options", fc.options);
 	if (_.isFunction(fc.collection)) fc.collection = fc.collection(fc, form_info);
 	fc.$child.data("collection", fc.collection);
@@ -663,13 +672,13 @@ SWAM.Form.Builder.dropdown = function(fc, form_info) {
 		$button.attr("data-action", fc.action);
 	}
 	fc.$child.append($button);
-	
+
 	if (fc.items) {
 		SWAM.Form.Builder._dropdownmenu(fc, form_info);
 	} else if (fc.fields) {
 		SWAM.Form.Builder._dropdownview(fc, form_info);
 	}
-	
+
 	fc.$el.append(fc.$child);
 	return fc.$el;
 }
@@ -747,6 +756,3 @@ SWAM.Form.Builder.image = function(fc, form_info) {
 	fc.value = null;
 	return fc;
 };
-
-
-
