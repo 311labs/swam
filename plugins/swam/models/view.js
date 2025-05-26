@@ -15,7 +15,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
 
     on_render: function() {
         if (this.options.as_table) {
-            this.appendChild(SWAM.Views.ModelView.buildTable(this.options.model, this.options));
+            this.appendChild("table", SWAM.Views.ModelView.buildTable(this.options.model, this.options));
         } else {
             this.$el.html(SWAM.Views.ModelView.build(this.options.model, this.options.fields, this.options));
         }

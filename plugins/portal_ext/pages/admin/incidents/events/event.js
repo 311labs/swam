@@ -22,13 +22,8 @@ PORTAL.Views.Event = SWAM.Views.Tabs.extend({
                 columns: 6
             },
             {
-                label:"Category",
-                field:"category",
-                columns: 6
-            },
-            {
-                label:"User",
-                field:"metadata.username|ifempty|clipboard",
+                label:"Host",
+                field:"hostname|ifempty",
                 columns: 6
             },
             {
@@ -37,13 +32,18 @@ PORTAL.Views.Event = SWAM.Views.Tabs.extend({
                 columns: 6
             },
             {
-                label:"Host",
-                field:"hostname|ifempty",
+                label:"Location",
+                field:"metadata|location",
                 columns: 6
             },
             {
-                label:"Location",
-                field:"metadata|location",
+                label:"Component",
+                field:"component|ifempty",
+                columns: 6
+            },
+            {
+                label:"Component ID",
+                field:"component_id|ifempty",
                 columns: 6
             },
             {
@@ -52,8 +52,8 @@ PORTAL.Views.Event = SWAM.Views.Tabs.extend({
                 columns: 6
             },
             {
-                label:"Group ID",
-                field:"metadata.group_id|ifempty|clipboard",
+                label:"User",
+                field:"metadata.username|ifempty|clipboard",
                 columns: 6
             },
             {

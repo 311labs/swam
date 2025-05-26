@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.84 - May 26, 2025
+
+  FIX - wrong fields on event
+
+
 ## v0.2.83 - May 26, 2025
 
  ADDED - improved incident event dialogs
