@@ -34,10 +34,10 @@ SWAM.View = SWAM.Object.extend({
         if (this.options.enable_swipe) this.enableTouch();
         this.vid = _.uniqueId("SWAMView");
         if (!this.id && this.options.auto_id) this.id = this.vid;
-        if (this.options.model) this.setModel(this.options.model);
         this.setElement(document.createElement(this.tagName));
         if (this.options.parent) this.options.$parent = $(this.options.parent);
         this.on_init();
+        if (this.options.model) this.setModel(this.options.model);
         if (this.options.$parent) {
             let $el = this.options.$parent;
             this.options.$parent = null;
@@ -181,6 +181,7 @@ SWAM.View = SWAM.Object.extend({
         if (this.options.hide_noperms) this.hideNoPerms();
         this.on_post_render();
         this.trigger("rendered", this);
+        return this;
     },
     renderChildren: function(empty_parent) {
         if (!this.children) return;
@@ -193,6 +194,7 @@ SWAM.View = SWAM.Object.extend({
                 view.addToDOM(this.$el);
             }
         }.bind(this));
+        return this;
     },
     delegateEvents: function(events) {
       if (!this.isInDOM()) return;
@@ -272,6 +274,7 @@ SWAM.View = SWAM.Object.extend({
     },
 
     setModel: function(model) {
+        if (this.options.ignore_set_model) return;
         if (this.model) {
             if (this.model == model) {
                 _.each(this.children, function(child){

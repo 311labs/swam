@@ -41,5 +41,14 @@ PORTAL.Pages.GeoIPs = SWAM.Pages.TablePage.extend({
         }
         this.on_item_edit(item, evt);
     },
-});
+}, {
+    Lookup: function(ip) {
+        let model = new SWAM.Models.GeoIP();
+        model.save({ ip: ip }, (m, res) => {
+            if (res.status) {
+                SWAM.Dialog.showModel(m)
+            }
+        });
 
+    },
+});

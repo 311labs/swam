@@ -93,8 +93,9 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
 
     on_item_clicked: function(item) {
         // this.view.setModel(item.model);
-        let dlg = SWAM.Dialog.showModel(
-            item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+        // let dlg = SWAM.Dialog.showModel(
+        //     item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+        let dlg = PORTAL.Views.Event.showDialog(item.model);
         this.on_item_dlg(item, dlg);
     },
 
@@ -135,5 +136,3 @@ PORTAL.Pages.IncidentEvents = SWAM.Pages.TablePage.extend({
     }
 
 });
-
-

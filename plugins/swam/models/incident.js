@@ -174,12 +174,12 @@ SWAM.Models.IncidentRule = SWAM.Model.extend({
             editable: true,
             force_top: true,
             options: [
-                "notify", "email", 
+                "notify", "email",
                 "sms", "ignore", "resolved",
                 "group:issues",
-                "task:APP_NAME:FNAME:CHANNEL", 
-                "email:USER_NOTIFICATION", 
-                "sms:USER_NOTIFICATION", 
+                "task:APP_NAME:FNAME:CHANNEL",
+                "email:USER_NOTIFICATION",
+                "sms:USER_NOTIFICATION",
                 "webhook:URL"],
             columns: 6
         },
@@ -291,6 +291,61 @@ SWAM.Models.IncidentEvent = SWAM.Model.extend({
     defaults: {
         url:"/api/incident/event"
     },
+    getCategoryIcon: function() {
+        let icon = SWAM.Models.Incident.CATEGORY_ICONS[this.get("category")];
+        if (!icon) icon = "shield-shaded";
+        return SWAM.Icons.getIcon(icon, "text-danger");
+    }
+}, {
+    EDIT_FORM: [
+        {
+            name: "category",
+            label:"Category",
+            type: "select",
+            editable: true,
+            force_top: true,
+            placeholder: "Select category",
+            options: function() {
+                return SWAM.Models.Incident.COMPONENTS;
+            },
+            columns: 6,
+        },
+        {
+            name:"incident",
+            label:"Incident",
+            type:"text",
+            placeholder:"Enter Incident ID",
+            columns: 6
+        },
+        {
+            name:"description",
+            label:"Description",
+            type:"textarea",
+            placeholder:"Enter Description",
+            columns: 12
+        },
+        {
+            name:"details",
+            label:"Details",
+            type:"textarea",
+            placeholder:"Enter Details",
+            columns: 12
+        },
+        {
+            name:"component",
+            label:"Component",
+            type:"text",
+            placeholder:"Enter Component",
+            columns: 8
+        },
+        {
+            name:"component_id",
+            label:"Component ID",
+            type:"text",
+            placeholder:"Enter Component ID",
+            columns: 4
+        },
+    ],
 });
 
 SWAM.Collections.IncidentEvent = SWAM.Collection.extend({
@@ -360,11 +415,16 @@ SWAM.Models.Incident = SWAM.Model.extend({
     ],
     EDIT_FORM: [
         {
-            name:"description",
-            label:"Description",
-            type:"text",
-            placeholder:"Enter Name",
-            columns: 12
+            name: "category",
+            label:"Category",
+            type: "select",
+            editable: true,
+            force_top: true,
+            placeholder: "Select category",
+            options: function() {
+                return SWAM.Models.Incident.COMPONENTS;
+            },
+            columns: 6,
         },
         {
             name:"state",
@@ -373,7 +433,7 @@ SWAM.Models.Incident = SWAM.Model.extend({
             placeholder:"Select State",
             index_value: true,
             options: ["new", "opened", "paused", "ignore", "resolved"],
-            columns: 6
+            columns: 3
         },
         {
             name:"priority",
@@ -383,7 +443,29 @@ SWAM.Models.Incident = SWAM.Model.extend({
             index_value: true,
             help: "Priortiy level with 1 being the highest level and 10 being the least important!",
             start: 0, step: 1, end: 10,
-            columns: 6
+            columns: 3
+        },
+        {
+            name:"description",
+            label:"Description",
+            type:"textarea",
+            placeholder:"Enter Name",
+            columns: 12
+        },
+
+        {
+            name:"component",
+            label:"Component",
+            type:"text",
+            placeholder:"Enter Component",
+            columns: 8
+        },
+        {
+            name:"component_id",
+            label:"Component ID",
+            type:"text",
+            placeholder:"Enter Component ID",
+            columns: 4
         },
     ],
     CATEGORY_ICONS: {

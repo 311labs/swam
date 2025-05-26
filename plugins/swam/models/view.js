@@ -14,7 +14,11 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
     },
 
     on_render: function() {
-        this.$el.html(SWAM.Views.ModelView.build(this.options.model, this.options.fields, this.options));
+        if (this.options.as_table) {
+            this.appendChild(SWAM.Views.ModelView.buildTable(this.options.model, this.options));
+        } else {
+            this.$el.html(SWAM.Views.ModelView.build(this.options.model, this.options.fields, this.options));
+        }
         if (this.options.can_edit) {
             this.$el.append("<div class='my-2'><button class='btn btn-primary' data-action='edit_model'>EDIT</button></div>");
         }
@@ -51,7 +55,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
         } else {
             obj_to_models(model, collection, null);
         }
-        
+
 
         var table = new SWAM.Views.Table({
             collection: collection,
@@ -113,7 +117,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
         if (obj.label != null) {
             $wrapper.addClass("swam-field");
         }
-        
+
         if (model) {
             let value = null;
             if (obj.template) {
@@ -128,7 +132,7 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
                 value = model.get(obj.field, null, obj.localize);
                 if ((obj.localize == "prettyjson")||(obj.tag == "pre")) $wrapper = $("<pre />").appendTo($wrapper);
             }
-            
+
             if (!value) {
                 if (obj.hide_null) {
                     $fieldbox.remove();
@@ -175,4 +179,3 @@ SWAM.Views.ModelView = SWAM.View.extend(SWAM.Ext.BS).extend({
         return $("<div />").append($container).html();
     }
 });
-

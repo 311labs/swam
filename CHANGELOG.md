@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.83 - May 26, 2025
+
+ ADDED - improved incident event dialogs
+
+
 ## v0.2.82 - May 23, 2025
 
   CHANGED reloading a table or a list will reset the page to 1 (start=0)

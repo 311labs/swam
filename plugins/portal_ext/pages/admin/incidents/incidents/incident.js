@@ -27,7 +27,7 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
             this.template = "portal_ext.pages.admin.incidents.incidents.mview";
             this.getChild("tabs").addTab("Notes", "notes", this.notes);
         }
-        
+
         this.notes.on("new_msg", this.on_new_msg, this);
     },
 
@@ -219,7 +219,7 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
             template:header_template
         });
         title_view.addChild("action_bar", new SWAM.Form.View({
-            model:model, 
+            model:model,
             action_context: this,
             fields:[
             {
@@ -285,7 +285,7 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
                 } else {
                     this.showDialog(collection.getAfter(item.model), collection, parent);
                 }
-                
+
             }.bind(this);
         }
 
@@ -293,15 +293,14 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
         this.options.dlg = dlg;
         return dlg;
     }
-
 });
+
 PORTAL.Views.IncidentTabs = SWAM.Views.Tabs.extend({
     on_init: function() {
         SWAM.Views.Tabs.prototype.on_init.call(this);
-
         this.init_details_tab();
         this.init_events_tab();
-        this.init_history_tab();   
+        this.init_history_tab();
         this.setActiveTab("details");
     },
 
@@ -401,7 +400,8 @@ PORTAL.Views.IncidentTabs = SWAM.Views.Tabs.extend({
         }));
 
         this.getTab("events").on("item:clicked", function(item){
-            SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+            // SWAM.Dialog.showModel(item.model, null, {size:"lg", vsize:"lg", can_dismiss:true});
+             let dlg = PORTAL.Views.Event.showDialog(item.model);
         }.bind(this));
     },
 
