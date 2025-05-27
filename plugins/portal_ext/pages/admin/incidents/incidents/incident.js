@@ -143,6 +143,16 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
         SWAM.Dialog.show(opts);
     },
 
+    on_action_ip_lookup: function(evt, id) {
+        PORTAL.Pages.GeoIPs.Lookup(this.model.get("reporter_ip"));
+    },
+
+    on_action_abuse_lookup: function(evt, id) {
+        SWAM.Rest.GET("/incident/abuse/lookup", {ip: this.model.get("reporter_ip")}, (response, status) => {
+            console.log(response, status)
+        });
+    },
+
     showDialog: function(model, collection, parent) {
         this.setModel(model);
         let state = model.get("state");
@@ -184,7 +194,18 @@ PORTAL.Views.Incident = SWAM.View.extend(SWAM.Ext.DropZone).extend({
                 label: "Edit Incident",
                 icon: "pencil",
                 action: "edit_incident"
-            }
+            },
+            {divider:true},
+            {
+                label: "IP Lookup",
+                icon: "search",
+                action: "ip_lookup"
+            },
+            {
+                label: "Abuse IP Info",
+                icon: "shield-fill",
+                action: "abuse_lookup"
+            },
         ];
 
         if (model.get("rule")) {

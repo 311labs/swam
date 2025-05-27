@@ -19,60 +19,72 @@ PORTAL.Views.Event = SWAM.Views.Tabs.extend({
             {
                 label:"Created",
                 field:"created|datetime",
-                columns: 6
+                columns: 4
             },
             {
                 label:"Host",
                 field:"hostname|ifempty",
-                columns: 6
+                columns: 4
+            },
+            {
+                label:"Incident",
+                field:"incident_id|ifempty",
+                columns: 4
             },
             {
                 label:"IP",
                 field:"reporter_ip|ifempty|clipboard",
-                columns: 6
+                columns: 4
             },
             {
                 label:"Location",
                 field:"metadata|location",
-                columns: 6
-            },
-            {
-                label:"Component",
-                field:"component|ifempty",
-                columns: 6
-            },
-            {
-                label:"Component ID",
-                field:"component_id|ifempty",
-                columns: 6
-            },
-            {
-                label:"Group",
-                field:"metadata.group_name|ifempty",
-                columns: 6
-            },
-            {
-                label:"User",
-                field:"metadata.username|ifempty|clipboard",
-                columns: 6
-            },
-            {
-                label:"User Agent",
-                field:"metadata.http_user_agent|ifempty",
-                columns: 12
+                columns: 4
             },
             {
                 label:"Abuse Info",
                 field:"metadata.abuse_info.abuseConfidenceScore|ifempty",
                 view_action: "view_abuse",
                 view_classes: "text-primary",
-                columns: 6
+                columns: 4
+            },
+            {
+                label:"Component ID",
+                field:"component_id|ifempty",
+                columns: 4
+            },
+            {
+                label:"Component",
+                field:"component|ifempty",
+                columns: 4
             },
             {
                 label:"OSSEC ID",
                 field:"metadata.rule_id",
-                columns: 6
+                columns: 4
             },
+
+            {
+                label:"Group",
+                field:"metadata.group_name|ifempty",
+                columns: 4
+            },
+            {
+                label:"User",
+                field:"metadata.username|ifempty|clipboard",
+                columns: 4
+            },
+            {
+                label:"Category",
+                field:"category|ifempty|clipboard",
+                columns: 4
+            },
+            {
+                label:"User Agent",
+                field:"metadata.http_user_agent|ifempty",
+                columns: 12
+            },
+
         ]}));
     },
 

@@ -36,8 +36,9 @@ SWAM.View = SWAM.Object.extend({
         if (!this.id && this.options.auto_id) this.id = this.vid;
         this.setElement(document.createElement(this.tagName));
         if (this.options.parent) this.options.$parent = $(this.options.parent);
+        if (this.options.model) this.setModel(this.options.model); // we run first to handle on init
         this.on_init();
-        if (this.options.model) this.setModel(this.options.model);
+        if (this.options.model) this.setModel(this.options.model); // we run again to catch children
         if (this.options.$parent) {
             let $el = this.options.$parent;
             this.options.$parent = null;

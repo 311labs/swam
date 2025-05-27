@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.85 - May 27, 2025
+
+   FIX - bug with using this.model in view on_init
+
+
 ## v0.2.84 - May 26, 2025
 
   FIX - wrong fields on event
