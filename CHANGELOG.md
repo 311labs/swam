@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.86 - June 05, 2025
+
+  ADDED more incident fields
+
+
 ## v0.2.85 - May 27, 2025
 
    FIX - bug with using this.model in view on_init
