@@ -24,6 +24,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 
 		},
 		table_classes: "swam-table-clickable",
+		can_add: true,
 		add_button: {
 	        type: "button",
 	        action: "add",
@@ -266,6 +267,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_action_add: function(evt) {
+        if (!this.options.can_add) return;
 	    let defaults = {
 			title: this.options.dlg_add_title,
 			size: "md",

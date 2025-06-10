@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.89 - June 09, 2025
+
+  ADDED ability to toggle on and off add button in table page
+
+
 ## v0.2.88 - June 09, 2025
 
    ADDED easier to update download formats for table pages
