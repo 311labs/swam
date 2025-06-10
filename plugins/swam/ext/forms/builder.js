@@ -124,10 +124,14 @@ SWAM.Form.Builder.getValue = function(fc, form_info) {
 	if ((fc.value == undefined) && (fc.default != undefined)) fc.value = fc.default;
 
 	if (form_info.model) {
+        let mval = fc.value;
 		if ((fc.type == "date") || (fc.type == "datetime")) {
-			fc.value = form_info.model.get(fc.name, fc.value, fc.type);
+			mval = form_info.model.get(fc.name, fc.value, fc.type, true);
 		} else {
-			fc.value = form_info.model.get(fc.name, fc.value, fc.localize);
+			mval = form_info.model.get(fc.name, fc.value, fc.localize);
+		}
+		if (mval != undefined) {
+			fc.value = mval;
 		}
 		if (_.isDict(fc.value)) {
 			if (fc.value.id) {

@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.87 - June 09, 2025
+
+   FIXED but with datepickers causes from date localize
+
+
 ## v0.2.86 - June 05, 2025
 
   ADDED more incident fields

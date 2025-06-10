@@ -949,7 +949,7 @@ SWAM.Localize = {
     },
     'moment': function(value, attr, fmt, default_fmt) {
         value = this.safe_datetime(value, attr, fmt);
-        if (value == 0) return "none";
+        if (value == 0) return null;
         var tz = moment.tz.guess();
         if (this.force_timezone) tz = this.force_timezone;
         if (_.isArray(fmt)) {

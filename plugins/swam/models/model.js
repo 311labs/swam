@@ -28,7 +28,7 @@ SWAM.Model = SWAM.Object.extend({
 
     on_init: function() {
         // this is just a simple helper method to avoid having to call inheritance chains
-        
+
     },
 
     clear: function() {
@@ -65,12 +65,12 @@ SWAM.Model = SWAM.Object.extend({
                 this.attributes[key] = value;
                 this.trigger("change", this);
             }
-            
+
         }
         if (this.attributes.id && !this.options.no_id) this.id = this.attributes.id;
     },
 
-    get: function(key, defaultValue, localize) {
+    get: function(key, defaultValue, localize, include_params) {
         if (localize) {
             return this.lookup(key  + "|" + localize);
         } else if (key.contains("|")) {
@@ -94,6 +94,10 @@ SWAM.Model = SWAM.Object.extend({
             } else {
                 ret = this[a];
             }
+        }
+
+        if ((ret === undefined) || (ret === null)) {
+            if (include_params && this.params) ret = this.params[a];
         }
 
         if ((ret === undefined) || (ret === null)) {
@@ -188,7 +192,7 @@ SWAM.Model = SWAM.Object.extend({
     setDebounced: function(key, value) {
         if (!this._debounce_set) {
            let ms = 2000;
-           this._debounce_set = window.debounce( 
+           this._debounce_set = window.debounce(
                this.set.bind(this),
                ms
            );
@@ -220,7 +224,7 @@ SWAM.Model = SWAM.Object.extend({
     fetchDebounced: function(callback, opts) {
         if (!this._debounce_fetch) {
            this.options.fetch_debounce_time = this.options.fetch_debounce_time || 400;
-           this._debounce_fetch = window.debounce( 
+           this._debounce_fetch = window.debounce(
                this.fetch.bind(this),
                this.options.fetch_debounce_time
            );
