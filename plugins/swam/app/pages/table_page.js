@@ -79,12 +79,21 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 				} else if (this.options.search_field) {
 					searchfield.name = this.options.search_field;
 				}
-				
+
 			}
 		}
 
+		if (this.options.download_formats) {
+            var download_field = _.find(this.options.filter_bar[0].fields, function(field) {
+     			return (field.type == "buttongroup");
+      		});
+            if (download_field) {
+                download_field.buttons[1].items = this.options.download_formats;
+            }
+		}
+
 		if (this.options.table_options) this.options.list_options = this.options.table_options;
-		this.options.list_options = _.extend({}, 
+		this.options.list_options = _.extend({},
 			{download_prefix:"download", download_group_prefix:this.options.group_filtering},
 			{download_prefix:this.options.download_prefix}, this.options.list_options);
 		if (this.options.summary_template) this.options.list_options.summary_template = this.options.summary_template;
@@ -93,7 +102,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 			icon: this.options.icon,
 			title: this.options.title,
 			Collection: this.options.Collection,
-			collection: this.options.collection, 
+			collection: this.options.collection,
 			filter_bar: this.options.filter_bar,
 			add_filter_buttons: this.options.add_filter_buttons,
 			filters: this.options.filters,
@@ -159,7 +168,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	},
 
 	on_loading_end: function() {
-		
+
 	},
 
 	on_pre_render: function() {
@@ -305,7 +314,7 @@ SWAM.Pages.TablePage = SWAM.Page.extend({
 	                    item.model.destroy(function(model, resp) {
 	                    	if (index == selected.length-1) {
 	                    		app.hideBusy();
-	                    	}	             
+	                    	}
 	                        if (resp.status) {
 	                        	deleted += 1;
 	                            if (index == selected.length-1) {

@@ -1,5 +1,11 @@
 # SWAMCORE
 
+## v0.2.88 - June 09, 2025
+
+   ADDED easier to update download formats for table pages
+   ADDED group.slug for easier filenaming
+
+
 ## v0.2.87 - June 09, 2025
 
    FIXED but with datepickers causes from date localize

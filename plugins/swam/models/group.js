@@ -6,6 +6,10 @@ SWAM.Models.Group = SWAM.Model.extend({
     	url:"/api/account/group"
     },
 
+    slug: function() {
+        return this.get("name").toLowerCase().replace(/[^a-z0-9]/g, "-");
+    },
+
     checkSetting: function(key) {
         if (_.isArray(key)) {
             var i=0;
