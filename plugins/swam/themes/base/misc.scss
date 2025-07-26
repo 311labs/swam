@@ -694,3 +694,34 @@ div#localhost_banner {
         /*      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);*/
     }
 }
+
+@media print {
+    body,
+    #app_body,
+    #panel_main,
+    #page,
+    #pages {
+        position: relative !important;
+        margin: 0;
+        background: white !important;
+        font-size: 12pt;
+    }
+    #panel-left,
+    #panel-right,
+    #title-bar {
+        display: none;
+    }
+    #pages .page-view {
+        display: block !important;
+        position: static !important;
+        margin: 0 !important;
+        padding: 20pt !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: white !important;
+        box-shadow: none !important;
+        width: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+}

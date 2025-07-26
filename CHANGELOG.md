@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.90 - July 26, 2025
+
+  ADDED: better print support
+
+
 ## v0.2.89 - June 09, 2025
 
   ADDED ability to toggle on and off add button in table page
