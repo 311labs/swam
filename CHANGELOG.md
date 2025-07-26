@@ -1,5 +1,10 @@
 # SWAMCORE
 
+## v0.2.91 - July 26, 2025
+
+  ADDED: new wiki css for better rendering including blockquotes
+
+
 ## v0.2.90 - July 26, 2025
 
   ADDED: better print support

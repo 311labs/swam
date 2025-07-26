@@ -1,313 +1,315 @@
 body.app {
-	position: fixed;
-	top:0;left:0;right:0;bottom:0;
-	&.app-mobile {
-		overflow: hidden;
-	}
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    &.app-mobile {
+        overflow: hidden;
+    }
 }
 
 #app_body {
-	position: fixed;
-	top:0;left:0;right:0;bottom:0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-	#panel-main {
-		transition-property: left, right;
-		position: absolute;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		header {
-			position: absolute;
-			left: 0;
-			top: 0;
-			right: 0;
-			height: $topbar-height;
-			background: $topbar-background;
-			color: $topbar-color;
-			border-bottom: $topbar-border;
-			box-shadow: $topbar-box-shadow;
-			z-index: 100;
-		}
-	}
+    #panel-main {
+        transition-property: left, right;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        header {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: $topbar-height;
+            background: $topbar-background;
+            color: $topbar-color;
+            border-bottom: $topbar-border;
+            box-shadow: $topbar-box-shadow;
+            z-index: 100;
+        }
+    }
 
-	#pages {
+    #pages {
+        &.pages-absolute {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            overflow-y: auto;
+            background: $page-background;
+        }
 
-		&.pages-absolute {
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			right: 0;
-			overflow-y: auto;
-			background: $page-background;
-		}
+        div.page-view {
+            &.page-fullscreen {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
 
-		div.page-view {
-			&.page-fullscreen {
-				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				right: 0;
-			}
+            &.page-fullscreen-topbar {
+                position: absolute;
+                top: $topbar-height;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                overflow-y: auto;
+            }
 
-			&.page-fullscreen-topbar {
-				position: absolute;
-				top: $topbar-height;
-				left: 0;
-				bottom: 0;
-				right: 0;
-				overflow-y: auto;
-			}
-			
-			&.page-scroll {
-				overflow-y: auto;
-			}
+            &.page-scroll {
+                overflow-y: auto;
+            }
 
-			&.page-padded {
-				padding: 15px;
-			}
+            &.page-padded {
+                padding: 15px;
+            }
 
-			&.has-topbar {
-				margin-top: $topbar-height;
-			}
+            &.has-topbar {
+                margin-top: $topbar-height;
+            }
 
-			&.has-footer {
-				padding-bottom: $topbar-height;
-			}
-		}
-	}
+            &.has-footer {
+                padding-bottom: $topbar-height;
+            }
+        }
+    }
 
-	#panel-left {
-		position: absolute;
-		left: 0px;
-		top: 0;
-		bottom: 0;
-		width: $panel-left-width;
-		background: $panel-left-background;
-		color: $panel-left-color;
-		transform: translateX(-120%);
-		user-select: none;
-	}
+    #panel-left {
+        position: absolute;
+        left: 0px;
+        top: 0;
+        bottom: 0;
+        width: $panel-left-width;
+        background: $panel-left-background;
+        color: $panel-left-color;
+        transform: translateX(-120%);
+        user-select: none;
+    }
 
-	#panel-right {
-		position: absolute;
-		right: 0px;
-		top: 0;
-		bottom: 0;
-		width: $panel-right-width;
-		background: $panel-right-background;
-		color: $panel-right-color;
-		transform: translateX(120%);
-		// user-select: none;
-		z-index: 101;
-	}
+    #panel-right {
+        position: absolute;
+        right: 0px;
+        top: 0;
+        bottom: 0;
+        width: $panel-right-width;
+        background: $panel-right-background;
+        color: $panel-right-color;
+        transform: translateX(120%);
+        // user-select: none;
+        z-index: 101;
+    }
 }
 
 #app_body.panel-animate {
-	div#panel-left,
-	div#panel-right,
-	div#panel-main {
-		transition-duration: 400ms;
-	}
+    div#panel-left,
+    div#panel-right,
+    div#panel-main {
+        transition-duration: 400ms;
+    }
 }
 
 #app_body.bottom-bar-reveal {
-	div#panel-main {
-		bottom: 100px;
-	}
+    div#panel-main {
+        bottom: 100px;
+    }
 }
 
-
 #app_body.panel-left-reveal {
-	div#panel-main {
-		left: $panel-left-width;
-	}
-	div#panel-left{
-		transform: translateX(0);
-	}
+    div#panel-main {
+        left: $panel-left-width;
+    }
+    div#panel-left {
+        transform: translateX(0);
+    }
 }
 
 #app_body.panel-left-reveal.slide {
-	div#panel-main {
-		right: -$panel-left-width;
-	}
+    div#panel-main {
+        right: -$panel-left-width;
+    }
 }
 
 #app_body.panel-left-reveal-partial {
-
-	div#panel-left {
-		width: $panel-left-partial-width;
-		left: $panel-left-partial-width;
-	}
-	div#panel-main {
-		left: $panel-left-partial-width;
-		right: -$panel-left-partial-width;
-		div#panel-left div#nav ul.nav-items ul.nav-submenu li {
-		    padding-left: 2px;
-		}
-	}
+    div#panel-left {
+        width: $panel-left-partial-width;
+        left: $panel-left-partial-width;
+    }
+    div#panel-main {
+        left: $panel-left-partial-width;
+        right: -$panel-left-partial-width;
+        div#panel-left div#nav ul.nav-items ul.nav-submenu li {
+            padding-left: 2px;
+        }
+    }
 }
-
 
 #app_body.panel-right-reveal {
-	div#panel-main {
-		right: $panel-right-width;
-	}
+    div#panel-main {
+        right: $panel-right-width;
+    }
 
-	div#panel-right {
-		transform: translateX(0);
-	}
+    div#panel-right {
+        transform: translateX(0);
+    }
 
-	.panel-right-reveal-hide {
-		display: none;
-	}
+    .panel-right-reveal-hide {
+        display: none;
+    }
 }
 
-
-
-
 @media (max-width: 760px) {
-	#app_body.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
-		div#panel-main {
-			left: $panel-left-width;
-			right: -$panel-left-width;
-		}
+    #app_body.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
+        div#panel-main {
+            left: $panel-left-width;
+            right: -$panel-left-width;
+        }
 
-		div#panel-left {
-			z-index: 0;
-		}
-	}
+        div#panel-left {
+            z-index: 0;
+        }
+    }
 
-	#app_body.panel-left-reveal-mobile-menu {
-		div#panel-main{
-			left: $panel-left-width;
-			right: -$panel-left-width;
-		}
-	}
+    #app_body.panel-left-reveal-mobile-menu {
+        div#panel-main {
+            left: $panel-left-width;
+            right: -$panel-left-width;
+        }
+    }
 
-	#app_body.panel-right-reveal {
-		div#panel-right {
-			position: fixed;
-			left: 0;
-			width: 100%;
-		}
-	}
+    #app_body.panel-right-reveal {
+        div#panel-right {
+            position: fixed;
+            left: 0;
+            width: 100%;
+        }
+    }
 }
 
 @media (max-width: 1200px) {
-	#app_body.panel-right-reveal {
-		div#panel-main{ 
-			right: 0;
-		}
-		div#panel-right {
-			position: fixed;
-		}
-	}
+    #app_body.panel-right-reveal {
+        div#panel-main {
+            right: 0;
+        }
+        div#panel-right {
+            position: fixed;
+        }
+    }
 }
-
 
 #app_body.use-mobile-menu {
-	.topnav-brand{
-		.brand-img {
-			display: none;
-		}
-		.brand-title {
-			position: absolute;
-			opacity: 0.2;
-			left: 50px;
-		}
-		.mobile-menu-icon {
-			display: inline-block;
-		}
-	}
+    .topnav-brand {
+        .brand-img {
+            display: none;
+        }
+        .brand-title {
+            position: absolute;
+            opacity: 0.2;
+            left: 50px;
+        }
+        .mobile-menu-icon {
+            display: inline-block;
+        }
+    }
 
-	&.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
-		div#panel-main {
-			left: 0;
-		}
-	}
+    &.panel-left-reveal:not(.panel-left-reveal-mobile-menu) {
+        div#panel-main {
+            left: 0;
+        }
+    }
 
-	&.panel-left-reveal-mobile-menu {
-		div#panel-main{
-			left: $panel-left-width;
-			right: -$panel-left-width;
-		}
-	}
+    &.panel-left-reveal-mobile-menu {
+        div#panel-main {
+            left: $panel-left-width;
+            right: -$panel-left-width;
+        }
+    }
 }
 
-
-@media
-(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     /* Retina-specific stuff here */
     div#panel-left.no-group div#nav ul.nav-items > li {
         font-weight: 200;
     }
 }
 
-
 .print-only {
-	display: none;
+    display: none;
 }
 
 @media print {
-	@page {
-		margin: 0mm;
-	}
-	.print-only {
-		display: block !important;
-	}
-	.no-print, .no-print *
-	{
-		display: none !important;
-	}
-	html{
-		max-height: 297.01 mm;
-		max-width: 209.97 mm;
-	}
-	div#panel-left {
-		display: none;
-	}
-	div.page-view-body{
-		padding-top: 10px !important;
-	}
-	body.panel-left-reveal {
-		div#panel-main {
-			left: 0px !important;
-		}
-		#pages {
-			top:0px !important;
-		}
-	}
-	.et-page {
-		overflow: visible !important;
-	}
-	.page-view-header {
+    @page {
+        margin: 0mm;
+    }
+    .print-only {
+        display: block !important;
+    }
+    .no-print,
+    .no-print * {
         display: none !important;
-	}
-	div.page-view-body {
-		overflow: auto!important;
-	}
-	.et-wrapper, #panel-main, #app, html, #panel-main, body, #page, div.page-view, section.page, div.page-view-body, div.page-toc{
-		position: unset !important;
-		float : none !important ;
-		overflow:none !important;
-	}
-	html, #panel-main{
-		height: 100%;
-	}
-	.et-wrapper {
-		height: auto !important;
-	}
-	div#admin-bar {
-		display: none;
-	}
-	nav.topnav {
-		display: none;
-	}
+    }
+    html {
+        max-height: 297.01 mm;
+        max-width: 209.97 mm;
+    }
+    div#panel-left {
+        display: none;
+    }
+    div.page-view-body {
+        padding-top: 10px !important;
+    }
+    body.panel-left-reveal {
+        div#panel-main {
+            left: 0px !important;
+        }
+        #pages {
+            top: 0px !important;
+        }
+    }
+    .et-page {
+        overflow: visible !important;
+    }
+    .page-view-header {
+        display: none !important;
+    }
+    div.page-view-body {
+        overflow: auto !important;
+    }
+    .et-wrapper,
+    #panel-main,
+    #app,
+    html,
+    #panel-main,
+    body,
+    #page,
+    div.page-view,
+    section.page,
+    div.page-view-body,
+    div.page-toc {
+        position: unset !important;
+        float: none !important ;
+        overflow: none !important;
+    }
+    html,
+    #panel-main {
+        height: 100%;
+    }
+    .et-wrapper {
+        height: auto !important;
+    }
+    div#admin-bar {
+        display: none;
+    }
+    nav.topnav {
+        display: none;
+    }
 }
-
-
-
-
