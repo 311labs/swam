@@ -21,10 +21,17 @@ SWAM.Views.ImageViewer = SWAM.View.extend({
         if (!this.options.name) this.options.name = image_url.split("/").pop();
 
         const img = new Image();
+        img.crossOrigin = "anonymous"; // ADD THIS LINE - MUST be before setting src
         img.onload = () => {
             this.options.image = img;
             this.renderImage(); // Render image when it has loaded
         };
+
+        img.onerror = () => {
+            console.error('Failed to load image with CORS:', image_url);
+            // Handle error - maybe retry without CORS or show message
+        };
+
         img.src = image_url;
     },
 
@@ -49,11 +56,15 @@ SWAM.Views.ImageViewer = SWAM.View.extend({
         this.renderImage();
     },
 
-    on_action_download: function() {
-        const link = document.createElement("a");
-        link.href = this.canvas.toDataURL("image/jpeg");
-        link.download = this.options.name; // Use the original file name for download
-        link.click();
+    on_action_download: function () {
+        try {
+            const link = document.createElement("a");
+            link.href = this.canvas.toDataURL("image/jpeg");
+            link.download = this.options.name; // Use the original file name for download
+            link.click();
+        } catch (error) {
+            SWAM.toast("Downoad Error", "This image cannot be downloaded due to cross-origin restrictions", "danger", 5000)
+        }
     },
 
     renderImage: function() {
