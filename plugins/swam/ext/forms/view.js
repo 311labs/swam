@@ -423,6 +423,7 @@ SWAM.Form.View = SWAM.View.extend({
           var picker = new easepick.create({
                 element:sel,
                 date: sel.value,
+                format: "M/DD/YYYY",
                 css: [
                   // 'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css',
                   '/swamcore/plugins/datepicker.css?v=1.2.0',
@@ -460,6 +461,7 @@ SWAM.Form.View = SWAM.View.extend({
         var list = [].slice.call(this.$el[0].querySelectorAll('input.input-daterange'));
         let config = {
             plugins: ['RangePlugin', 'AmpPlugin', 'LockPlugin'],
+            format: "M/DD/YYYY",
             css: [
               '/swamcore/plugins/datepicker.css?v=1.2.0',
             ],
